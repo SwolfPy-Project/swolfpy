@@ -71,10 +71,11 @@ def test_transpose(my_range): # Excel reference: https://support.office.com/en-u
     for i in [my_range]:
         if isinstance(i, ExcelError) or i in ErrorCodes:
             return i
-    #print(my_range)
+    print('my_range')
     #print(type(my_range))
     #a = np.array(my_range.values)
     #
+    print(my_range)	
     if isinstance(my_range, Range):
         return my_range.values
     else:
@@ -761,21 +762,39 @@ def offset(reference, rows, cols, height=None, width=None): # Excel reference: h
     return ref_sheet + start_address + end_address
 
 def sumproduct(*ranges): # Excel reference: https://support.office.com/en-us/article/SUMPRODUCT-function-16753e75-9f68-4874-94ac-4d2145a2fd2e
+    #print('Ranges 1')
+    #print(ranges[1])
     range_list = list(ranges)
-
+    vals = []
+	
+    for val in range_list:
+        vals.append(val.values)
+		
+	
     for r in range_list: # if a range has no values (i.e if it's empty)
         if len(r.values) == 0:
             return 0
 
-    for range in range_list:
-        for item in range.values:
+    for range_i in range_list:
+        for item in range_i.values:
             # If there is an ExcelError inside a Range, sumproduct should output an ExcelError
             if isinstance(item, ExcelError):
                 return ExcelError("#N/A", "ExcelErrors are present in the sumproduct items")
 
     reduce(check_length, range_list) # check that all ranges have the same size
 
-    return reduce(lambda X, Y: X + Y, reduce(lambda x, y: Range.apply_all('multiply', x, y), range_list).values)
+    #return reduce(lambda X, Y: X + Y, reduce(lambda x, y: Range.apply_all('multiply', x, y), range_list).values)
+	
+    mul = 1
+    sum = 0
+    for val in range(len(vals[0])):
+        for val2 in range(len(vals)):
+            mul = mul*vals[val2][val]
+        sum += mul
+        mul = 1
+    return sum
+
+	
 
 def iferror(value, value_if_error): # Excel reference: https://support.office.com/en-us/article/IFERROR-function-c526fd07-caeb-47b8-8bb6-63f3e417f611
 
