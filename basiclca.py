@@ -329,7 +329,8 @@ class New_Toplevel:
 
         filez =  filedialog.askopenfilenames(initialdir = ".",title = "Select files",filetypes = (("CSV files","*.csv"),("All files","*.*")))
         #self.model = Model(root.filename)
-        self.model_files=File_Handler (root.tk.splitlist(filez))
+        self.model_files=File_Handler ()
+		self.model_files.setFileList(root.tk.splitlist(filez))
         
 		
         #for i in range(1,6):
@@ -363,7 +364,8 @@ class New_Toplevel:
 
     def onOpenModelDescriptionFile(self):
         file =  filedialog.askopenfilename(initialdir = ".",title = "Select file",filetypes = (("CSV files","*.csv"),("All files","*.*")))
-        self.model_description_file=File_Handler (file)
+        self.model_description_file=File_Handler ()
+		self.model_description_file.setFileList(file)
 		
         self.Label15 = Label()		
         self.Label15.place(relx=0.4, rely=0.005, height=21, width=500)

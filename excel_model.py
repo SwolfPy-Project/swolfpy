@@ -1,6 +1,7 @@
 from koala.ExcelCompiler import ExcelCompiler
 from koala import Spreadsheet
 #!!Bug in Koala - does not accept sheet names with spaces!!
+#!!Another Bug. When you set named ranges it will not calculate. Only will calculate when set to cell val (manually)!!
 
 class Excel_Model:
 	
@@ -15,7 +16,7 @@ class Excel_Model:
 	def set_val(self, cell, val):
 		self.sp.set_value(cell,val)
 	
-	def eval(self, cell):
+	def eval(self, cell): 
 		return self.sp.evaluate(cell)
 		
 	def dump_binary(self, file):
@@ -46,3 +47,16 @@ class Excel_Model:
 		for i in outputs:
 			values[i] = self.eval(i)
 		return values
+    
+a = Excel_Model()
+model_file_path1 = 'AD3.gzip'
+data_file_path1 = 'AD_input_data.csv'
+
+outputs = ['elecCons']
+from file_handler import *
+csv_data = File_Handler()
+csv_data.load_csv(data_file_path1)
+a.load_excel('AD_no_spaces.xlsx')
+#a.load_binary('AD3.gzip')
+a.set_named_range(csv_data.data)
+a.read_named_range(outputs)

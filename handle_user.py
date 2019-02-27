@@ -3,8 +3,6 @@ from usermodel import *
 from file_handler import *
 
 
-
-
 #this information will be read from file
 
 types = ['SSMRF','WTE','Landfill','AD']
@@ -19,10 +17,10 @@ model = Model2(types,waste_in,waste_out)
 #allocates a list of user models. Each item on the list is an object. This information will be user input
 user_inputs = []
 
-model_file_path1 = 'AD_final.gzip'
+model_file_path1 = 'AD3.gzip'
 data_file_path1 = 'AD_input_data.csv'
 
-outputs = ['elecProd','eq_life']
+outputs = ['elecProd','eq_life','elecCons']
 
 csv_data = File_Handler()
 csv_data.load_csv(data_file_path1)
