@@ -1,4 +1,4 @@
-class File_Handler:
+class FileHandler:
 	def __init__(self):
 		pass
 			
@@ -8,17 +8,21 @@ class File_Handler:
 	def getFileList(self):
 		return self.files
 	
-	#def load_csv(self, file_path):
-	#	import csv
-	#	with open(file_path, 'r') as f:
-	#		reader = csv.reader(f)
-	#		self.data = list(list(rec) for rec in csv.reader(f, delimiter=','))
-	#	f.close()
-	
-	def load_csv (self, file_path): #só tá lendo chave e valor..não lê mais nada
+
+
+	def loadCSV (self, file_path): #só lê chave e valor
 		import csv
 		with open(file_path, mode='r') as infile:
 			next(infile) #skip header
 			reader = csv.reader(infile)
-			self.data = {rows[1]:float(rows[2]) for rows in reader}
+			self.data = {rows[0]:(rows[1]) for rows in reader}
 		infile.close()
+		
+	def loadCSVList (self, file_path):
+		import csv
+		with open(file_path, mode='r') as infile:
+			next(infile)
+			reader = csv.reader(infile)
+			self.data = list(list(rec) for rec in csv.reader(infile, delimiter=','))
+		infile.close()
+	

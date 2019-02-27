@@ -8,4 +8,6 @@ class TranslationTable:
 	def getVal(self, key):
 		return self.fh.data[key]
 		
+	def asDict(self):
+		return self.fh.data
 	
