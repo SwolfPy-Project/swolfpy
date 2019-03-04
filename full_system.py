@@ -10,7 +10,7 @@ def main():
 	
 	#loading model file
 	model = FileHandler()
-	model.loadCSVList('full_system3.csv')
+	model.loadCSVList('full_system.csv')
 	
 	#loading translatin tables
 	ei = TranslationTable ('eco_invent_TT.csv')
