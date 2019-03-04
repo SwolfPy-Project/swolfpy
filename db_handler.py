@@ -15,6 +15,12 @@ class Exchange:
 		
 	def get_exchanges(self):
 		return self.data
+	
+	def __repr__(self):
+		string = str()
+		for i in self.data:
+			string =  string + str(i['input']) + ' - ' + str(i['amount']) + ' ' +str(i['unit']) + ', '  
+		return string
 
 class DatabaseHandler:
 
