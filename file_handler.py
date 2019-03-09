@@ -1,3 +1,4 @@
+import csv
 class FileHandler:
 	def __init__(self):
 		pass
@@ -11,7 +12,6 @@ class FileHandler:
 
 
 	def loadCSV (self, file_path): #só lê chave e valor
-		import csv
 		with open(file_path, mode='r') as infile:
 			next(infile) #skip header
 			reader = csv.reader(infile)
@@ -19,10 +19,16 @@ class FileHandler:
 		infile.close()
 		
 	def loadCSVList (self, file_path):
-		import csv
 		with open(file_path, mode='r') as infile:
 			next(infile)
 			reader = csv.reader(infile)
 			self.data = list(list(rec) for rec in csv.reader(infile, delimiter=','))
 		infile.close()
+	
+	def writeCSVList (self, file_path, data):
+		with open(file_path, 'w', newline='') as outfile:
+			outfile.write('Activity,Material,Database,Key,Amount\n') #header 		
+			writer = csv.writer(outfile)
+			writer.writerows(data)
+	
 	
