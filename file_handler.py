@@ -24,11 +24,22 @@ class FileHandler:
 			reader = csv.reader(infile)
 			self.data = list(list(rec) for rec in csv.reader(infile, delimiter=','))
 		infile.close()
-	
+
+		
+
 	def writeCSVList (self, file_path, data):
+		csv.register_dialect('myDialect', delimiter = ',', lineterminator = '\n')
 		with open(file_path, 'w', newline='') as outfile:
 			outfile.write('Activity,Material,Database,Key,Amount\n') #header 		
-			writer = csv.writer(outfile)
+			writer = csv.writer(outfile, dialect='myDialect')
 			writer.writerows(data)
+		outfile.close()
+		
+	def appendCSVList (self, file_path, data):
+		csv.register_dialect('myDialect', delimiter = ',', lineterminator = '\n')
+		with open(file_path, 'a', newline='') as outfile:	
+			writer = csv.writer(outfile, dialect='myDialect')
+			writer.writerows(data)
+		outfile.close()
 	
 	
