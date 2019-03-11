@@ -13,23 +13,43 @@ class ProcessModel(object):
 		self.process_model_inputs = process_model_inputs
 		self.material_properties = material_properties
 		self.outputs = dict()
-		self.outputs['biosphere'] = list()
-		self.outputs['technosphere'] = list()
-		self.outputs['waste'] = list()
-		self.outputs['initial'] = list()
-		self.check()
+		self.outputs['Biosphere'] = list()
+		self.outputs['Technosphere'] = list()
+		self.outputs['Waste'] = list()
+		self.outputs['Initial'] = list()
+		self.check_process_model()
 		
-	def check (self):
+	def check_process_model (self):
 		for value in self.required_inputs:
 			if value not in self.process_model_inputs:
 				raise Exception ('Required input {} not available in Process Model inputs' .format(value))
-
-	def create_output(self, filename): #still needs refinement
+	
+	
+	def check_outputs(self, db):
+		if db not in ['Biosphere', 'Technosphere', 'Waste']:
+			raise Exception ('{} not a Biosphere, Technosphere, Waste output' .format(db))
+	
+	
+	def create_output(self, flow, material, db, code, amount):
+		self.check_outputs(db)
+		temp = list()
+		temp.append(flow)
+		temp.append(material)
+		temp.append(db)
+		temp.append(code)
+		temp.append(amount)
+		if flow == 'Initial':
+			self.outputs[flow].append(temp)
+		else:
+			self.outputs[db].append(temp)
+			
+	
+	def write_output(self, filename): 
 		write = FileHandler()
-		temp_list = list()
-		for key, value in self.outputs.items():
-			temp_list.append(value)
-		write.writeCSVList (filename,self.outputs.values())
+		write.writeCSVList (filename,self.outputs['Initial'])
+		write.appendCSVList (filename,self.outputs['Biosphere'])
+		write.appendCSVList (filename,self.outputs['Technosphere'])
+		write.appendCSVList (filename,self.outputs['Waste'])
 		
 				
 class Collection(ProcessModel):
@@ -44,5 +64,3 @@ class Treatment(ProcessModel):
 			ProcessModel.__init__(self, name, required_inputs, allowable_inputs, allowable_outputs, process_model_inputs, material_properties)
 
 			
-a = Collection('test',['a','b','c'],['a','b','c'],['a','b','c'],['a','b','c'],'a')
-a.create_output('a.csv')
