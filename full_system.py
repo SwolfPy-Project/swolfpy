@@ -118,7 +118,7 @@ class FullSystem:
     
 		self.ck = list(chunks(activities, len(activities)//num_cores))
 		t1 = time.time()
-		self.a=Parallel(n_jobs=-1)(delayed(parallel)(data,activity,db_tt,dbh,db_map) for activity in activities)
+		result=Parallel(n_jobs=-1)(delayed(parallel)(data,activity,db_tt,dbh,db_map) for activity in activities)
 		t2 = time.time()
 		#parallel_q(data,activities,db_tt,dbh,db_map,q)
 		
@@ -132,16 +132,20 @@ class FullSystem:
 		currentDT = datetime.datetime.now()
 		print (str(currentDT))	
 		print (t2-t1)
-		self.ex =q
+		
+		#retrieving answers from parallel processing
+		for val in result:
+			exchanges[list(val.keys())[0]]=list(val.values())[0]
+		
 		#self.ex = exchanges[0]
 		#fim da treta demorada
 		
 		#Linking activities with exchanges
-		#for val in activities:
-		#	dbh.add_exchanges(val, self.ex[val])
+		for val in activities:
+			dbh.add_exchanges(val, exchanges[val])
 		
 		#Writing to DB
-		#dbh.write() 
+		dbh.write() 
 		
 	def run_no_TT(self):
 		model = FileHandler()
