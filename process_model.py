@@ -5,7 +5,7 @@ from file_handler import *
 
 class ProcessModel(object):
 
-	def __init__ (self, name, required_inputs, allowable_inputs, allowable_waste_outputs, allowable_bio_techno_outputs, process_model_inputs, material_properties):
+	def __init__ (self, name, required_inputs=[], allowable_inputs=[], allowable_waste_outputs={}, allowable_bio_techno_outputs={}, process_model_inputs=[], material_properties={}):
 		self.name = name
 		self.required_inputs = required_inputs
 		self.allowable_inputs = allowable_inputs
@@ -14,12 +14,7 @@ class ProcessModel(object):
 		self.process_model_inputs = process_model_inputs
 		self.material_properties = material_properties
 		self.outputs = dict()
-		self.outputs['Biosphere'] = list()
-		self.outputs['Technosphere'] = list()
-		self.outputs['Waste'] = list()
 		self.outputs['Initial'] = list()
-		self.outputs['Waste_technosphere'] = list()
-		self.outputs['biosphere3'] = list()
 		self.allowable_bio_techno_outputs['Technosphere'] = list()
 		self.allowable_bio_techno_outputs['Biosphere'] = list()
 		allowable_waste_outputs = list()
@@ -47,7 +42,11 @@ class ProcessModel(object):
 		if flow == 'Initial':
 			self.outputs[flow].append(temp)
 		else:
-			self.outputs[db].append(temp)
+			if db in self.outputs.keys():
+				self.outputs[db].append(temp)
+			else:
+				self.outputs[db]=list()
+				self.outputs[db].append(temp)
 			
 	
 	def get_output(self):
@@ -62,11 +61,9 @@ class ProcessModel(object):
 	def write_output(self, filename): 
 		write = FileHandler()
 		write.writeCSVList (filename,self.outputs['Initial'])
-		write.appendCSVList (filename,self.outputs['Biosphere'])
-		write.appendCSVList (filename,self.outputs['Technosphere'])
-		write.appendCSVList (filename,self.outputs['Waste'])
-		write.appendCSVList (filename,self.outputs['Waste_technosphere'])
-		write.appendCSVList (filename,self.outputs['biosphere3'])
+		for key in self.outputs:
+			write.appendCSVList(filename,self.outputs[key])
+
 
 	def import_from_SWOLF(self, SWOLF_data):
 		materials = set()
@@ -83,20 +80,17 @@ class ProcessModel(object):
 					self.allowable_bio_techno_outputs['Biosphere'].append(key2[1])
 					self.create_output(SWOLF_data['process name'],key,key2[0],key2[1],value2)
 					materials.add(key)
-					
-		for x in materials:
-			self.create_output('Initial',x,'Waste','Landfill',1/len(materials))
 			
 		
 class Collection(ProcessModel):
 	
-	def __init__ (self, name, required_inputs, allowable_inputs, allowable_waste_outputs, allowable_bio_techno_outputs, process_model_inputs, material_properties):
+	def __init__ (self, name, required_inputs=[], allowable_inputs=[], allowable_waste_outputs={}, allowable_bio_techno_outputs={}, process_model_inputs=[], material_properties={}):
 			ProcessModel.__init__(self, name, required_inputs, allowable_inputs, allowable_waste_outputs, allowable_bio_techno_outputs, process_model_inputs, material_properties)
 	
 
 class Treatment(ProcessModel):
 
-		def __init__ (self, name, required_inputs, allowable_inputs, allowable_waste_outputs, allowable_bio_techno_outputs, process_model_inputs, material_properties):
+		def __init__ (self, name, required_inputs=[], allowable_inputs=[], allowable_waste_outputs={}, allowable_bio_techno_outputs={}, process_model_inputs=[], material_properties={}):
 			ProcessModel.__init__(self, name, required_inputs, allowable_inputs, allowable_waste_outputs, allowable_bio_techno_outputs, process_model_inputs, material_properties)
 
 			
