@@ -21,7 +21,7 @@ print('Importing SWOLF data')
 
 SWOLF_data = a.read_output_from_SWOLF ("Landfill", "trad_landfill _BW2.xlsx")
 
-tr = Treatment('Landfill',['a','b','c'],['a','b','c'],{},{},['a','b','c'],'more material properties here') 
+tr = Treatment('Landfill') 
 tr.import_from_SWOLF(SWOLF_data)
 
 tr.write_output('test.csv')
