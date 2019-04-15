@@ -109,14 +109,14 @@ class FullSystem:
 			exchanges[activity] = Exchange()
 		
 		#treta demorada
-		currentDT = datetime.datetime.now()
-		print (str(currentDT))
+		#currentDT = datetime.datetime.now()
+		#print (str(currentDT))
 		
 		num_cores =4
 		#= multiprocessing.cpu_count()
 		q = multiprocessing.Queue()
     
-		self.ck = list(chunks(activities, len(activities)//num_cores))
+		#self.ck = list(chunks(activities, len(activities)//num_cores))
 		t1 = time.time()
 		result=Parallel(n_jobs=-1)(delayed(parallel)(data,activity,db_tt,dbh,db_map) for activity in activities)
 		t2 = time.time()
@@ -129,9 +129,9 @@ class FullSystem:
 		#	multiprocessing.Process(target=parallel_q, args=(data,self.ck[i],db_tt,dbh,db_map,q)).start()
 		
 		
-		currentDT = datetime.datetime.now()
-		print (str(currentDT))	
-		print (t2-t1)
+		#currentDT = datetime.datetime.now()
+		#print (str(currentDT))	
+		#print (t2-t1)
 		
 		#retrieving answers from parallel processing
 		for val in result:
