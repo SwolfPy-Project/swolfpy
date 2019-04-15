@@ -10,3 +10,5 @@ lca = LCA(functional_unit, ('IPCC_2007_SWOLF', 'climate change', 'GWP100yr'))
 lca.lci()
 lca.lcia()
 print("grass WTE ", "IPCC 2007 SWOLF ",lca.score)
+
+"""Test"""
