@@ -4,6 +4,8 @@ Created on Thu Apr 11 13:03:36 2019
 
 @author: msmsa
 """
+from brightway2 import *
+
 db = Database("Waste")
 functional_unit = {db.get("Initial") : 1}
 lca = LCA(functional_unit, ('IPCC_2007_SWOLF', 'climate change', 'GWP100yr')) 
