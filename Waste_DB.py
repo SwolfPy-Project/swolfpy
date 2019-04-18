@@ -1,206 +1,53 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Apr 11 11:10:43 2019
+from db_handler import *
 
-@author: msmsa
-"""
-from brightway2 import *
-del databases["Waste"]
+class WasteDB(object):
 
-db = Database("Waste")
+	def __init__(self):
+		if "Waste" in databases:
+			del databases["Waste"]
+			
+		self.dbh = DatabaseHandler('Waste')
+		self.activities = ['Initial','3 : Bottom Ash','4 : Fly Ash','5 : Separated Organics','6 : Other Residual','7 : RDF','8 : Wastewater','9 : OCC','10 : Mixed Paper','11 : ONP','12 : OFF','13 : Other','14 : PET (#1)',
+						'15 : HDPE-Unsorted (#2)','16 : HDPE-P (#2A)','17 : HDPE-T (#2B)','18 : PVC (#3)','19 : LDPE/Film ( #4)','20 : Polypropylene (#5)','21 : Polystyrene (#6)','22 : Other (#7)','23 : Mixed Plastic',
+						'24 : Al','25 : Fe','26 : Cu','27 : Brown','28 : Clear','29 : Green','30 : Mixed Glass']
 
-data = {
-        
-("Waste", 'Initial'): {
-    "name": 'initial',
-    "exchanges": [{
-    "amount": 1.0,
-    "input": ('WTE', 'WTE-Yard Trimmings, Grass'),
-    "type": "technosphere"
-    }],
-       'unit': 'Mg',
-},
-        
-("Waste", '3 : Bottom Ash'): {
-    "name": '3 : Bottom Ash',
-    "exchanges": [{
-    "amount": 1.0,
-    "input": ('LF', 'Landfill-Bottom Ash'),
-    "type": "technosphere"
-    }],
-       'unit': 'Mg',
-},
-        
-("Waste", '4 : Fly Ash'): {
-    "name": '4 : Fly Ash',
-    "exchanges": [{
-    "amount": 1.0,
-    "input": ('LF', 'Landfill-Fly Ash'),
-    "type": "technosphere"
-    }],
-    'unit': 'Mg',
-},
-            
-("Waste", '5 : Separated Organics'): {
-    "name": '5 : Separated Organics',
-    "exchanges": [],
-       'unit': 'Mg',
-    } ,
+		for val in self.activities:
+			self.dbh.add_activity(val,val,'Mg')
+	
+		self.exchanges = dict()
 
-("Waste", '6 : Other Residual'): {
-    "name": '6 : Other Residual',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-            
-("Waste", '7 : RDF'): {
-    "name": '7 : RDF',
-    "exchanges": [],
-       'unit': 'Mg',
-    } ,
-("Waste", '8 : Wastewater'): {
-    "name": '8 : Wastewater',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-            
-("Waste", '9 : OCC'): {
-    "name": '9 : OCC',
-    "exchanges": [],
-       'unit': 'Mg',
-    } ,
-    
-("Waste", '10 : Mixed Paper'): {
-    "name": '10 : Mixed Paper',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-            
-("Waste", '11 : ONP'): {
-    "name": '11 : ONP',
-    "exchanges": [],
-       'unit': 'Mg',
-    } ,
-("Waste", '12 : OFF'): {
-    "name": '12 : OFF',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-            
-("Waste", '13 : Other'): {
-    "name": '13 : Other',
-    "exchanges": [],
-       'unit': 'Mg',
-    } ,
-        
-("Waste", '14 : PET (#1)'): {
-    "name": '14 : PET (#1)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-            
-("Waste", '15 : HDPE-Unsorted (#2)'): {
-    "name": '15 : HDPE-Unsorted (#2)',
-    "exchanges": [],
-       'unit': 'Mg',
-    } ,
-
-("Waste",  '16 : HDPE-P (#2A)'): {
-    "name":  '16 : HDPE-P (#2A)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-("Waste",  '17 : HDPE-T (#2B)'): {
-    "name":  '17 : HDPE-T (#2B)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
+		for activity in self.activities:
+			self.exchanges[activity] = Exchange()
+	
+	def get_activities(self, name):
+		return self.dbh.get_all_activities(name)
+	
+	def write(self):
+		self.dbh.write()
 
 
-("Waste",  '18 : PVC (#3)'): {
-    "name":  '18 : PVC (#3)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
 
+#data = {
+#        
+#("Waste", 'Initial'): {
+#    "name": 'initial',
+#    "exchanges": [{
+#    "amount": 1.0,
+#    "input": ('WTE', 'WTE-Yard Trimmings, Grass'),
+#    "type": "technosphere"
+#    }],
+#       'unit': 'Mg',
+#},
+#        
+#("Waste", '3 : Bottom Ash'): {
+#    "name": '3 : Bottom Ash',
+#    "exchanges": [{
+#    "amount": 1.0,
+#    "input": ('LF', 'Landfill-Bottom Ash'),
+#    "type": "technosphere"
+#    }],
+#       'unit': 'Mg',
+#},
+#
+#} ,
 
-("Waste",  '19 : LDPE/Film ( #4)'): {
-    "name":  '19 : LDPE/Film ( #4)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-
-("Waste",  '20 : Polypropylene (#5)'): {
-    "name":  '20 : Polypropylene (#5)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-
-("Waste",  '21 : Polystyrene (#6)'): {
-    "name":  '21 : Polystyrene (#6)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-
-("Waste",  '22 : Other (#7)'): {
-    "name":  '22 : Other (#7)',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-
-("Waste",  '23 : Mixed Plastic'): {
-    "name":  '23 : Mixed Plastic',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-
-("Waste",  '24 : Al'): {
-    "name":  '24 : Al',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-("Waste",  '25 : Fe'): {
-    "name":  '25 : Fe',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-("Waste",  '26 : Cu'): {
-    "name":   '26 : Cu',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-("Waste",  '27 : Brown'): {
-    "name":  '27 : Brown',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-("Waste",  '28 : Clear'): {
-    "name":  '28 : Clear',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-("Waste",  '29 : Green'): {
-    "name":  '29 : Green',
-    "exchanges": [],
-       'unit': 'Mg',
-} ,
-
-("Waste",  '30 : Mixed Glass'): {
-    "name":  '30 : Mixed Glass',
-    "exchanges": [],
-       'unit': 'Mg',
-}      
-    }
-         
-db.write(data)
