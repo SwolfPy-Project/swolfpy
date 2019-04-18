@@ -1,4 +1,5 @@
 from brightway2 import *
+from bw2data import query
 
 class Exchange:
 
@@ -57,6 +58,15 @@ class DatabaseHandler:
 	
 	def get_db_name(self):
 		return self.db_name
+		
+	def get_all_activities(self, name):
+		temp = Database(name)
+		filter = query.Filter('name', 'notin', '')
+		res = temp.query(filter)
+		activities = list()
+		for val in res.result.values():
+			activities.append(val['name'])
+		return activities
 		
 
 
