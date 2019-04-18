@@ -33,15 +33,3 @@ fs.run_no_TT()
 t2 = time.time()
 print('Time to run full system: %0.1f secs' % (t2-t1))
 print('Total time to run: %0.1f secs' % (t2-t3))
-
-
-"""
-print('Running LCA')
-
-db = Database("Waste")
-functional_unit = {db.get("Initial") : 1}
-lca = LCA(functional_unit, ('IPCC 2007', 'climate change', 'GWP 100a')) 
-lca.lci()
-lca.lcia()
-print(lca.score)
-"""
