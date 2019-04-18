@@ -7,7 +7,7 @@ Created on Thu Apr 18 09:18:42 2019
 
 from brightway2 import *
 
-if True:
+if False:
     if "BW2_Base" in projects:
         projects.delete_project('BW2_Base',delete_dir=True) # be sure to delete the directory also
     
@@ -55,7 +55,7 @@ functional_unit = {db.get("Initial") : 1}
 lca = LCA(functional_unit, ('IPCC_2007_SWOLF', 'climate change', 'GWP100yr')) 
 lca.lci()
 lca.lcia()
-print("grass Grass ", "IPCC 2007 SWOLF ",lca.score)
+print("WTE Grass ", "IPCC 2007 SWOLF ",lca.score)
 
 
 print ("\n", "######    Adding new initial     ######")
@@ -91,18 +91,38 @@ calculation_setups['WTE_vs_LF']
 lca = MultiLCA('WTE_vs_LF') 
 lca.results
 import pandas as pd
-pd.DataFrame(index=['IPCC_2007_SWOLF','acidification','ecotoxicity','eutrophication','ozone depletion'], columns=["WTE", "LF"], data=lca.results.T)
+A=pd.DataFrame(index=['IPCC_2007_SWOLF','acidification','ecotoxicity','eutrophication','ozone depletion'], columns=["WTE", "LF"], data=lca.results.T)
 
-
-
+print(A)
 
 
 
 print ("\n", "######    Creating new project _ new scenario with different waste DB or process DB     ######")
+projects.set_current("BW2_Base")
+if "BW2_S1" in projects:
+    projects.delete_project('BW2_S1',delete_dir=True) # be sure to delete the directory also
        
 projects.copy_project("BW2_S1")
 print("(name , number of DB, size(GB)) \n" , projects.report() )  
 
+
+print ("\n", "######    Importing -----> ","Collection" , "     ######" )
+from Collection import *
+
+
+Initial = Exchange()
+Initial.add_exchange(("Collection_SF", 'SF_Collection'), 1, 'Mg', 'technosphere')
+Waste_DB.dbh.add_activity("Initial","Initial","Mg",Initial)
+Waste_DB.write() 
+
+
+print ("\n", "######    Running the LCA      ######")
+db = Database("Waste")
+functional_unit = {db.get("Initial") : 1}
+lca = LCA(functional_unit, ('IPCC_2007_SWOLF', 'climate change', 'GWP100yr')) 
+lca.lci()
+lca.lcia()
+print("Branch Collection and disposing at LF", "IPCC 2007 SWOLF ",lca.score)
 
 
   
