@@ -89,7 +89,6 @@ class ProcessModel(object):
     #    for x in materials:
     #        self.create_output('Initial',x,'Waste','Landfill',1/len(materials))
             
-        
 class Collection(ProcessModel):
 	
 	def __init__ (self, name, required_inputs=[], allowable_inputs=[], allowable_waste_outputs={}, allowable_bio_techno_outputs={}, process_model_inputs=[], material_properties={}):
