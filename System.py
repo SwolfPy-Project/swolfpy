@@ -20,6 +20,7 @@ if False:
     print ("\n", "######    Importing ----->  SWOLF WASTE TECHNOSPHERE","     ######") 
     from process_model_output import *     # create the waste_technosphere
 
+projects.set_current("BW2_Base")
 
 print ("\n", "######    Importing ----->  SWOLF METHODS","     ######" )
 from SWOLF_method import *   # adding the methods
@@ -29,11 +30,9 @@ from Waste_DB import *
 Waste_DB = WasteDB()
 Waste_DB.write()         # create an empty waste Database
 
-for j in ["WTE_DB", "landfill_DB"]:         # importing the processes' databases
-    print ("\n", "######    Importing -----> ",j , "     ######" )
-    exec("from %s import *" % j)
-    
-    
+
+import WTE_DB
+import landfill_DB
 
 Bottom_ash = Exchange()
 Bottom_ash.add_exchange(('LF', 'Landfill-Bottom Ash'), 1, 'Mg', 'technosphere')
@@ -107,7 +106,7 @@ print("(name , number of DB, size(GB)) \n" , projects.report() )
 
 
 print ("\n", "######    Importing -----> ","Collection" , "     ######" )
-from Collection import *
+import Collection
 
 
 Initial = Exchange()
