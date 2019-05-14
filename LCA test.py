@@ -65,11 +65,12 @@ for x in range(len(dd)):
 plt.legend([x[1] for x in dd],loc=3)
 plt.title('Top Emisison Contribution, CutOff = 0.05, YardTrimming_Grass to WTE')
 
-""""       #####################   Top acitivity  """"
+"""     #####################   Top acitivity  """
 
 from bw2analyzer import ContributionAnalysis
 CA=ContributionAnalysis()
 V=CA.annotated_top_processes(lca)
+
 """
 CA.annotated_top_emissions(lca,names = True)
 Get list of most damaging processes in an LCA, sorted by ``abs(direct impact)``.
@@ -126,11 +127,11 @@ plt.title('Top Activities Contribution, CutOff = 0.05, YardTrimming_Grass to WTE
 
 
 lca.top_emissions()
+
 lca.top_activities()
 
 
-print("grass WTE ", "IPCC 2007 SWOLF ",lca.score)
-
+"""
 from bw2calc import GraphTraversal
 gt = GraphTraversal()
 print(gt.calculate({db.get("Initial") : 1}, ('IPCC_2007_SWOLF', 'climate change', 'GWP100yr')))
@@ -144,3 +145,8 @@ functional_unit = {db.get("Initial") : 1}
 slca = SerializedLCAReport(functional_unit, ('IPCC 2001', 'climate change', 'GWP 100a'),iterations = 10)
 slca.calculate()
 slca.write()
+
+"""
+
+
+

@@ -14,12 +14,19 @@ if "Collection_SF" in databases:
 db = Database("Collection_SF")
 
 data = {
-("Collection_SF", 'Yard Trimmings, Branches'): {
+("Collection_SF", 'Yard_Trimmings_Branches'): {
     "name": 'Yard Trimmings, Branches',
     "exchanges": [
-    {"amount": 1.0,
-    "input": ('LF', 'Landfill-Yard Trimmings, Branches'),
+    {"amount": 0,
+     "formula":"percent_to_LF",
+    "input": ('LF', 'Landfill-Yard_Trimmings_Branches'),
     "type": "technosphere"},
+     
+     {"amount": 0,
+     "formula":"percent_to_WTE",
+    "input": ('WTE', 'WTE-Yard_Trimmings_Branches'),
+    "type": "technosphere"},
+     
     {"amount": 9.88,
     "input": ("Waste_technosphere", 'Collection _Diesel  (per unit fuel)'),
     "type": "technosphere"}
@@ -30,7 +37,7 @@ data = {
     "name": 'SF_Collection',
     "exchanges": [
     {"amount": 1,
-    "input": ("Collection_SF", 'Yard Trimmings, Branches'),
+    "input": ("Collection_SF", 'Yard_Trimmings_Branches'),
     "type": "technosphere"}
     ],
        'unit': 'Mg',

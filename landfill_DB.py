@@ -17,10 +17,10 @@ if "LF" in databases:
 
 a = ProcessModelOutput()
 a.create_waste_technosphere()
-print('Importing SWOLF data')
+#print('Importing SWOLF data')
 
-SWOLF_data = a.read_output_from_SWOLF ("Landfill", "trad_landfill _BW2.xlsx")
-
+#SWOLF_data = a.read_output_from_SWOLF ("Landfill", "trad_landfill _BW2.xlsx")
+SWOLF_data = a.read_output_from_SWOLF ("Landfill", "trad_landfill _BW2 - shortname.xlsx")
 tr = Treatment('Landfill') 
 tr.import_from_SWOLF(SWOLF_data)
 
