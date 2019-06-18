@@ -83,7 +83,7 @@ class ProcessModelOutput():
         else:
             data=pd.read_csv(filepath,header=None)
         waste = (data[np.arange(2,31).tolist()][8:69]).to_dict()
-        technosphere = (data[[2]+np.arange(33,72).tolist()][8:69]).to_dict()
+        technosphere = (data[[2]+np.arange(33,78).tolist()][8:69]).to_dict()
         biosphere =  (data[np.arange(0,63).tolist()][71:1824]).to_dict()
         
         # revising the waste dictionary. waste[key1][key2] , key1: waste fraction , key2: Waste_stream
@@ -114,7 +114,7 @@ class ProcessModelOutput():
         
         
         # revising the technosphere dictionary. technosphere[key1][key2] , key1: waste fraction , key2: technosphere stream
-        EE=[str(i) + " : "+technosphere[i][8] for i in ([2]+np.arange(33,72).tolist())]  # name of the prodcuts _ waste
+        EE=[str(i) + " : "+technosphere[i][8] for i in ([2]+np.arange(33,78).tolist())]  # name of the prodcuts _ waste
         technosphere[EE[0]]=technosphere.pop(2)
         y=33
         for x in EE[1:]:
