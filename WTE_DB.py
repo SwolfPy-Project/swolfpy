@@ -17,17 +17,17 @@ a = ProcessModelOutput()
 a.create_waste_technosphere()
 print('Importing SWOLF data')
 
-#SWOLF_data = a.read_output_from_SWOLF ("WTE", "WTE_BW2.csv")
-SWOLF_data = a.read_output_from_SWOLF ("WTE", "WTE_BW2 - shortname.csv")
+SWOLF_data = a.read_output_from_SWOLF ("WTE", "WTE_BW2.csv")
+
 
 
 
 tr = Treatment('WTE') 
 tr.import_from_SWOLF(SWOLF_data)
-tr.write_output('test.csv')
+tr.write_output('WTE_test.csv')
 
 print('Importing Full System')
-fs = FullSystem('test.csv','database_TT_WTE.csv')
+fs = FullSystem('WTE_test.csv','database_TT_WTE.csv')
 print('Running Full System')
 t1 = time.time()
 fs.run_no_TT()

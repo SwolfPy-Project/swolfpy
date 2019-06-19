@@ -54,6 +54,10 @@ class project():
         self.waste_treatment['RWC']= self.find_destination('RWC')
         self.waste_treatment['SSRC']= self.find_destination('SSRC')
         self.waste_treatment['MWC']= self.find_destination('MWC')
+        
+        
+        self.process_inputdata={}
+        self.process_model={}
     
     def find_destination(self,product):
         destination=[]
@@ -125,9 +129,9 @@ class project():
             self.parameters_list+=P
                             
     def import_database(self,name,path,waste_treatment):
-        process = Process_Model(name,waste_treatment)
-        process_data = process.read_output_from_SWOLF(path)
-        (P,G)=process.Write_DB(name)
+        self.process_model[name] = Process_Model(name,waste_treatment)
+        self.process_inputdata[name] = self.process_model[name].read_output_from_SWOLF(path)
+        (P,G)=self.process_model[name].Write_DB(name)
         return((P,G))
     
     def report_parameters(self):
@@ -144,7 +148,11 @@ class project():
                     
     def update_parameters(self,new_param_data):
         self.new_param_data=new_param_data
-        self.parameters_list= copy.deepcopy(new_param_data)
+        for j in self.new_param_data:
+            for k in self.parameters_list:
+                if k['name'] == j['name']:
+                    k['amount']=j['amount']
+        
         parameters.new_project_parameters(self.new_param_data)
         for j in self.processes:
             if len(self.act_include_param[j]) > 0:
@@ -208,6 +216,10 @@ class project():
                     
         plt.legend([x[1] for x in dd],loc=3)
         plt.title('Top Activities Contribution, CutOff = 0.05,'+scenario_name)
+        
+
+                
+        
 
         
         

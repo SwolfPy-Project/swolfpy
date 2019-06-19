@@ -18,7 +18,7 @@ ecoinvent_test.apply_strategies()
 ecoinvent_test.statistics()
 ecoinvent_test.write_database()
 
-DB
+DB =Database('ecoinvent_test')
 Activity=DB.random()
 
 IF = ('IPCC 2007', 'climate change', 'GWP 100a')

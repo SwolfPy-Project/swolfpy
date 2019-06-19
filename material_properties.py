@@ -80,6 +80,7 @@ def check_nan(x):  # replace zeros when there is no data ("nan")
 
 def load_material (file_path):  # read the xlsx file
     inputdata = pd.ExcelFile("SWMCommonData.xlsx")
+
     Mateiral_Properties = inputdata.parse(sheet_name="Material Properties",index_col="Materials")
     return Mateiral_Properties
 

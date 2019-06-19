@@ -10,22 +10,24 @@ import datetime
 t3 = time.time()
 
 
-if "LF" in databases:
-    del databases["LF"]
-
-
+if "Reprocessing" in databases:
+    del databases["Reprocessing"]
 
 a = ProcessModelOutput()
 a.create_waste_technosphere()
-#print('Importing SWOLF data')
+print('Importing SWOLF data')
 
-SWOLF_data = a.read_output_from_SWOLF ("Landfill", "trad_landfill _BW2.xlsx")
-tr = Treatment('Landfill') 
+SWOLF_data = a.read_output_from_SWOLF ("Reprocessing", "Material_Reprocessing_BW2.csv")
+
+
+
+
+tr = Treatment('Reprocessing') 
 tr.import_from_SWOLF(SWOLF_data)
+tr.write_output('Reprocessing_test.csv')
 
-tr.write_output('test.csv')
 print('Importing Full System')
-fs = FullSystem('test.csv','database_TT_LF.csv')
+fs = FullSystem('Reprocessing_test.csv','database_TT_Reprocessing.csv')
 print('Running Full System')
 t1 = time.time()
 fs.run_no_TT()

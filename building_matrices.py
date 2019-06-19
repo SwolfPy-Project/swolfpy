@@ -4,9 +4,9 @@ from bw2calc.utils import get_seed
 import numpy as np
 import time
 
-db = Database("Waste")
-functional_unit = {db.get("Initial") : 1}
-lca = LCA(functional_unit, ('IPCC_2007_SWOLF', 'climate change', 'GWP100yr')) 
+db = Database("waste")
+functional_unit = {db.get("scenario1") : 1}
+lca = LCA(functional_unit, ('IPCC 2007', 'climate change', 'GWP 100a')) 
 lca.lci()
 lca.lcia()
 
@@ -50,7 +50,7 @@ for i in range(1000):
 		lca.lcia_calculation()
 		if lca.weighting:
 			lca.weighting_calculation()
-		#print(lca.score)
+		print(lca.score)
 			
 t2 = time.time()
 print('total time for 1000 runs: %0.1f secs' % (t2-t1))			

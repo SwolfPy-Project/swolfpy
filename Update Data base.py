@@ -73,10 +73,10 @@ ylabel("Probability")
 #db.get("AAA").delete()
 
 ### How to update a database
-new_act=db.new_activity(code = "AAA" , name = "BBB",location = "GLO", comment = " msm test",type = "process", unit = "kg" )
+new_act=db.new_activity(code = "AAAA" , name = "BBB",location = "GLO", comment = " msm test",type = "process", unit = "kg" )
 new_act.save()
 
-new_ex = new_act.new_exchange(input=('biosphere3', 'f9749677-9c9f-4678-ab55-c607dfdc2cb9'), amount=1, type='biosphere')
+new_ex = new_act.new_exchange(input=('biosphere3', 'f9749677-9c9f-4678-ab55-c607dfdc2cb9'), amount=1, type='biosphere', uncertainty_type = 3)
 new_ex['uncertainty type'],new_ex['loc'], new_ex['scale'] = 3, 1, 0.25
 new_ex.save()
 

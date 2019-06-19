@@ -7,9 +7,34 @@ class WasteDB(object):
 			del databases["Waste"]
 			
 		self.dbh = DatabaseHandler('Waste')
-		self.activities = ['Initial','3 : Bottom Ash','4 : Fly Ash','5 : Separated Organics','6 : Other Residual','7 : RDF','8 : Wastewater','9 : OCC','10 : Mixed Paper','11 : ONP','12 : OFF','13 : Other','14 : PET (#1)',
-						'15 : HDPE-Unsorted (#2)','16 : HDPE-P (#2A)','17 : HDPE-T (#2B)','18 : PVC (#3)','19 : LDPE/Film ( #4)','20 : Polypropylene (#5)','21 : Polystyrene (#6)','22 : Other (#7)','23 : Mixed Plastic',
-						'24 : Al','25 : Fe','26 : Cu','27 : Brown','28 : Clear','29 : Green','30 : Mixed Glass']
+		self.activities = ['3_Bottom Ash',
+ '4_Fly Ash',
+ '5_Separated Organics',
+ '6_Other Residual',
+ '7_RDF',
+ '8_Wastewater',
+ '9_OCC',
+ '10_Mixed Paper',
+ '11_ONP',
+ '12_OFF',
+ '13_Other',
+ '14_PET (#1)',
+ '15_HDPE-Unsorted (#2)',
+ '16_HDPE-P (#2A)',
+ '17_HDPE-T (#2B)',
+ '18_PVC (#3)',
+ '19_LDPE/Film ( #4)',
+ '20_Polypropylene (#5)',
+ '21_Polystyrene (#6)',
+ '22_Other (#7)',
+ '23_Mixed Plastic',
+ '24_Al',
+ '25_Fe',
+ '26_Cu',
+ '27_Brown',
+ '28_Clear',
+ '29_Green',
+ '30_Mixed Glass']
 
 		for val in self.activities:
 			self.dbh.add_activity(val,val,'Mg')
@@ -24,30 +49,3 @@ class WasteDB(object):
 	
 	def write(self):
 		self.dbh.write()
-
-
-
-#data = {
-#        
-#("Waste", 'Initial'): {
-#    "name": 'initial',
-#    "exchanges": [{
-#    "amount": 1.0,
-#    "input": ('WTE', 'WTE-Yard Trimmings, Grass'),
-#    "type": "technosphere"
-#    }],
-#       'unit': 'Mg',
-#},
-#        
-#("Waste", '3 : Bottom Ash'): {
-#    "name": '3 : Bottom Ash',
-#    "exchanges": [{
-#    "amount": 1.0,
-#    "input": ('LF', 'Landfill-Bottom Ash'),
-#    "type": "technosphere"
-#    }],
-#       'unit': 'Mg',
-#},
-#
-#} ,
-
