@@ -3,7 +3,17 @@ from stats_arrays.random import MCRandomNumberGenerator
 from bw2calc.utils import get_seed
 import numpy as np
 import time
+from brightway2 import *
+from bw2data.parameters import ActivityParameter, DatabaseParameter, ProjectParameter, Group
+from process_model_msm3 import *
+import pandas as pd
+from Required_keys import *
+import copy
+from bw2analyzer import ContributionAnalysis
 
+
+
+projects.set_current("demo_2")
 db = Database("waste")
 functional_unit = {db.get("scenario1") : 1}
 lca = LCA(functional_unit, ('IPCC 2007', 'climate change', 'GWP 100a')) 
@@ -20,23 +30,74 @@ biosphere_dict = dict(zip(lca.biosphere_dict.values(),lca.biosphere_dict.keys())
 bio_matrix = dict()
 biosphere_dict_names = dict()
 #changing biosphere codes into names from biosphere 3 db
-for key,val in biosphere_dict.items():
-	biosphere_dict_names[key]=get_activity(val)
+#for key,val in biosphere_dict.items():
+#	biosphere_dict_names[key]=get_activity(val)
+#
 
 for i in lca.bio_params:
-	if (biosphere_dict_names[i[2]], activities_dict[i[3]]) not in bio_matrix.keys():
-		bio_matrix[(biosphere_dict_names[i[2]], activities_dict[i[3]])] = i[6]
-	else: #duplicates...adds -1 and prints
-		bio_matrix[(str(biosphere_dict_names[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
-		print(biosphere_dict_names[i[2]], activities_dict[i[3]])
+	if (biosphere_dict[i[2]], activities_dict[i[3]]) not in bio_matrix.keys():
+		bio_matrix[(biosphere_dict[i[2]], activities_dict[i[3]])] = i[6]
+	else:
+		bio_matrix[(str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
+
+#for i in lca.bio_params:
+#	if (biosphere_dict_names[i[2]], activities_dict[i[3]]) not in bio_matrix.keys():
+#		bio_matrix[(biosphere_dict_names[i[2]], activities_dict[i[3]])] = i[6]
+#	else: #duplicates...adds -1 and prints
+#		bio_matrix[(str(biosphere_dict_names[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
+#		# print(biosphere_dict_names[i[2]], activities_dict[i[3]])
 
 
+
+a = Process_Model("WTE", {"WTE":1})
+b = Process_Model("LF", {"LF":1})
+
+a.read_output_from_SWOLF("WTE_BW2.csv")
+b.read_output_from_SWOLF("trad_landfill _BW2.xlsx")
+
+		
 #update bio_matrix and tech_matrix
 # time test	
+lca_scores = list()
 t1 = time.time()
 
 
 for i in range(1000):
+	#--WTE--
+	#Technosphere
+	for material,value in a.process_model_output['Technosphere'].items():
+		for key2, value2 in value.items():
+			if value2!=0:
+				value2 = 1.1 * value2
+				if tech_matrix[((key2),(a.process_name, material))] != value2:
+					tech_matrix[((key2),(a.process_name, material))] = value2 
+	#Biosphere				
+	for material,value in a.process_model_output['Biosphere'].items():
+		for key2, value2 in value.items():
+			if value2!=0:
+				value2 = 1.1 * value2
+				if bio_matrix[((key2),(a.process_name, material))] != value2:
+					bio_matrix[((key2),(a.process_name, material))] = value2 				
+					
+					
+	#--LF--				
+	#Technosphere
+	for material,value in b.process_model_output['Technosphere'].items():
+		for key2, value2 in value.items():
+			if value2!=0:
+				value2 = 1.1 * value2
+				if tech_matrix[((key2),(b.process_name, material))] != value2:
+					tech_matrix[((key2),(b.process_name, material))] = value2 
+	
+	#Biosphere				
+	for material,value in b.process_model_output['Biosphere'].items():
+		for key2, value2 in value.items():
+			if value2!=0:
+				value2 = 1.1 * value2
+				if bio_matrix[((key2),(b.process_name, material))] != value2:
+					bio_matrix[((key2),(b.process_name, material))] = value2 				
+	
+	
 	tech = np.array(list(tech_matrix.values()), dtype=float)
 	bio = np.array(list(bio_matrix.values()), dtype=float)
 	#populate bio/tech array	
@@ -50,7 +111,9 @@ for i in range(1000):
 		lca.lcia_calculation()
 		if lca.weighting:
 			lca.weighting_calculation()
-		print(lca.score)
+		lca_scores.append(lca.score)
 			
 t2 = time.time()
-print('total time for 1000 runs: %0.1f secs' % (t2-t1))			
+print('total time for 1000 runs: %0.1f secs' % (t2-t1))
+#print(lca_scores)
+
