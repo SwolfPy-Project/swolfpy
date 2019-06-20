@@ -69,7 +69,7 @@ for i in range(1000):
 	for material,value in a.process_model_output['Technosphere'].items():
 		for key2, value2 in value.items():
 			if value2!=0:
-				value2 = 1.1*value2
+				value2 = np.random.rand()
 				if tech_matrix[((key2),(a.process_name, material))] != value2:
 					tech_matrix[((key2),(a.process_name, material))] = value2 
 
@@ -77,7 +77,7 @@ for i in range(1000):
 	for material,value in a.process_model_output['Biosphere'].items():
 		for key2, value2 in value.items():
 			if value2!=0:
-				value2 = 1.1 * value2
+				value2 = np.random.rand()
 				if bio_matrix[((key2),(a.process_name, material))] != value2:
 					bio_matrix[((key2),(a.process_name, material))] = value2 				
 					
@@ -88,7 +88,7 @@ for i in range(1000):
 	for material,value in b.process_model_output['Technosphere'].items():
 		for key2, value2 in value.items():
 			if value2!=0:
-				value2 = 1.1*value2
+				value2 = np.random.rand()
 				if tech_matrix[((key2),(b.process_name, material))] != value2:
 					tech_matrix[((key2),(b.process_name, material))] = value2 
 	
@@ -96,7 +96,7 @@ for i in range(1000):
 	for material,value in b.process_model_output['Biosphere'].items():
 		for key2, value2 in value.items():
 			if value2!=0:
-				value2 = 1.1*value2
+				value2 = np.random.rand()
 				if bio_matrix[((key2),(b.process_name, material))] != value2:
 					bio_matrix[((key2),(b.process_name, material))] = value2
 
