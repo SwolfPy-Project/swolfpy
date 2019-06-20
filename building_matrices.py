@@ -56,21 +56,23 @@ a.read_output_from_SWOLF("WTE_BW2.csv")
 b.read_output_from_SWOLF("trad_landfill _BW2.xlsx")
 
 		
-#update bio_matrix and tech_matrix
-# time test	
+	
 lca_scores = list()
+lca_scores.append(lca.score)
 t1 = time.time()
 
 
 for i in range(1000):
 	#--WTE--
 	#Technosphere
+	#a.read_output_from_SWOLF("WTE_BW2.csv") #reloading from file...slow!
 	for material,value in a.process_model_output['Technosphere'].items():
 		for key2, value2 in value.items():
 			if value2!=0:
-				value2 = 1.1 * value2
+				value2 = 1.1*value2
 				if tech_matrix[((key2),(a.process_name, material))] != value2:
 					tech_matrix[((key2),(a.process_name, material))] = value2 
+
 	#Biosphere				
 	for material,value in a.process_model_output['Biosphere'].items():
 		for key2, value2 in value.items():
@@ -82,10 +84,11 @@ for i in range(1000):
 					
 	#--LF--				
 	#Technosphere
+	#b.read_output_from_SWOLF("trad_landfill _BW2.xlsx") #realoading from file...slow!
 	for material,value in b.process_model_output['Technosphere'].items():
 		for key2, value2 in value.items():
 			if value2!=0:
-				value2 = 1.1 * value2
+				value2 = 1.1*value2
 				if tech_matrix[((key2),(b.process_name, material))] != value2:
 					tech_matrix[((key2),(b.process_name, material))] = value2 
 	
@@ -93,9 +96,10 @@ for i in range(1000):
 	for material,value in b.process_model_output['Biosphere'].items():
 		for key2, value2 in value.items():
 			if value2!=0:
-				value2 = 1.1 * value2
+				value2 = 1.1*value2
 				if bio_matrix[((key2),(b.process_name, material))] != value2:
-					bio_matrix[((key2),(b.process_name, material))] = value2 				
+					bio_matrix[((key2),(b.process_name, material))] = value2
+
 	
 	
 	tech = np.array(list(tech_matrix.values()), dtype=float)
@@ -111,9 +115,11 @@ for i in range(1000):
 		lca.lcia_calculation()
 		if lca.weighting:
 			lca.weighting_calculation()
-		lca_scores.append(lca.score)
+	lca_scores.append(lca.score)
 			
 t2 = time.time()
 print('total time for 1000 runs: %0.1f secs' % (t2-t1))
 #print(lca_scores)
 
+#reading file 1000 runs 2450.1s - 2.45s/run
+#not reading file 1000 runs in 54s - 0.054s/run
