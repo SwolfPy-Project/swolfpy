@@ -111,7 +111,7 @@ class WTE:
         self.Combustion_Emission['Stack_Dioxins_Furans'] = self.WTE_input.Stack_Gas_Conc_Non_metal['Dioxins_Furans']['amount']/10**12 * self.Combustion_Emission['Flue_gas']
         self.Combustion_Emission['Stack_Dioxins_Furans']['Unit'] = 'kg/kg ww'
         
-        ### Post-Combustion Solids
+        ### Post_Combustion Solids
         
         self.Post_Combustion_Solids = pd.DataFrame(index = self.Index)
         
@@ -151,7 +151,13 @@ class WTE:
         for m in key4.keys():    
             self.Post_Combustion_Solids['Bottom_ash_'+m] = self.Material_Properties[key4[m]][4:]/100 * (1-self.Material_Properties['Moisture Content'][4:]/100) * self.WTE_input.Bottom_Ash_metal_emission[m]['amount']
             self.Post_Combustion_Solids['Bottom_ash_'+m]['Unit'] = 'kg/kg ww'
-        
+            
+        ### APC_Consumption
+        self.APC_Consumption = pd.DataFrame(index = self.Index)
+        for x in ['lime','carbon','ammonia']:
+            self.APC_Consumption[x] = self.WTE_input.Material_Consumption[x]['amount']*1000
+            self.APC_Consumption[x]['Unit']= 'kg/Mg ww'
+
     def setup_MC(self):
         self.WTE_input.setup_MC()
     def MC_calc(self):      
@@ -186,7 +192,7 @@ class WTE:
             Waste[y]['Cu'] = self.Post_Combustion_Solids['Copper_Recovery'][y]
         
         ### Output Technospphere Database
-            Technosphere[y][('Technosphere', 'Electricity_production')] = self.Energy_Calculations['Net_Electricity_Use'][y]
+            Technosphere[y][('Technosphere', 'Electricity_production')] = (-1) * self.Energy_Calculations['Net_Electricity_Use'][y]
             
             Technosphere[y][('Technosphere', 'Heat_Steam')] = self.Energy_Calculations['Heat_Recovered'][y]
             
@@ -198,34 +204,40 @@ class WTE:
             self.WTE_input.Material_Consumption['lime']['Distance_from_prod_fac'] * self.WTE_input.Material_Consumption['lime']['Empty_Return_Truck'] + \
             self.WTE_input.Material_Consumption['carbon']['Distance_from_prod_fac'] * self.WTE_input.Material_Consumption['carbon']['Empty_Return_Truck']
             
+            Technosphere[y][('Technosphere', 'lime_hydrated_loose_weight_RoW_lime_production')] = self.APC_Consumption['lime'][y]
+            
+            Technosphere[y][('Technosphere', 'ammonia_liquid_RoW_ammonia_production_steam_reforming_liquid')] = self.APC_Consumption['ammonia'][y]
+            
+            Technosphere[y][('Technosphere', 'charcoal_GLO_charcoal_production')] = self.APC_Consumption['carbon'][y]
+            
         ### Output Biosphere Database
+            key5={'Ammonia':(('biosphere3', '87883a4e-1e3e-4c9d-90c0-f1bea36f8014'),'Stack_Ammonia'),
+                  'Antimony':(('biosphere3', '77927dac-dea3-429d-a434-d5a71d92c4f7'),'Sb'),
+                  'Arsenic':(('biosphere3', 'dc6dbdaa-9f13-43a8-8af5-6603688c6ad0'),'As'),
+                  'Barium':(('biosphere3', '7e246e3a-5cff-43fc-a8e6-02d191424559'),'Ba'),
+                  'Cadmium':(('biosphere3', '1c5a7322-9261-4d59-a692-adde6c12de92'),'Cd'),
+                  'Carbon dioxide, fossil':(('biosphere3', '349b29d1-3e58-4c66-98b9-9d1a076efd2e'),'CO2_fossil'),
+                  'Carbon dioxide, non-fossil':(('biosphere3', 'eba59fd6-f37e-41dc-9ca3-c7ea22d602c7'),'CO2_biogenic'),
+                  'Carbon monoxide, fossil':(('biosphere3', 'ba2f3f82-c93a-47a5-822a-37ec97495275'),'Stack_CO'),
+                  'Chromium':(('biosphere3', 'e142b577-e934-4085-9a07-3983d4d92afb'),'Cr'),
+                  'Copper':(('biosphere3', 'ec8144d6-d123-43b1-9c17-a295422a0498'),'Cu'),
+                  'Dinitrogen monoxide':(('biosphere3', '20185046-64bb-4c09-a8e7-e8a9e144ca98'),'Stack_Nitrous_Oxide'),
+                  'Dioxins, measured as 2,3,7,8-tetrachlorodibenzo-p-dioxin':(('biosphere3', '082903e4-45d8-4078-94cb-736b15279277'),'Stack_Dioxins_Furans'),
+                  'Hydrocarbons, unspecified':(('biosphere3', 'f9abb851-8731-4c5b-b057-863996a1f94a'),'Stack_Hydrocarbons'),
+                  'Hydrogen chloride':(('biosphere3', 'c941d6d0-a56c-4e6c-95de-ac685635218d'),'Stack_HCl'),
+                  'Lead':(('biosphere3', '8e123669-94d3-41d8-9480-a79211fe7c43'),'Pb'),
+                  'Mercury':(('biosphere3', '71234253-b3a7-4dfe-b166-a484ad15bee7'),'Hg'),
+                  'Methane':(('biosphere3', 'b53d3744-3629-4219-be20-980865e54031'),'Stack_Methane'),
+                  'Nickel':(('biosphere3', 'a5506f4b-113f-4713-95c3-c819dde6e48b'),'Ni'),
+                  'Nitrogen oxides':(('biosphere3', 'c1b91234-6f24-417b-8309-46111d09c457'),'Stack_NOx'),
+                  'Particulates, < 2.5 um':(('biosphere3', '21e46cb8-6233-4c99-bac3-c41d2ab99498'),'Stack_PM'),
+                  'Selenium':(('biosphere3', '454c61fd-c52b-4a04-9731-f141bb7b5264'),'Se'),
+                  'Sulfur dioxide':(('biosphere3', 'fd7aa71c-508c-480d-81a6-8052aad92646'),'Stack_SO2'),
+                  'Zinc':(('biosphere3', '5ce378a0-b48d-471c-977d-79681521efde'),'Zn')}
+            for x in key5:
+                Biosphere[y][key5[x][0]]= self.Combustion_Emission[key5[x][1]][y]
         
         return(self.WTE)
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

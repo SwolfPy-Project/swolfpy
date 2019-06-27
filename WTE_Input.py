@@ -27,16 +27,16 @@ class WTE_input:
         
         ### Non-Metal Emissions at WTE Facility (Stack_Gas_Concentration)
         self.Stack_Gas_Conc_Non_metal ={
-                "Sulfur_dioxide":{"Name":"Sulfur dioxide","amount":2,"unit":"ppmv @ 7% oxygen, dry","Reference":None},
-                "HCl":{"Name":"HCl","amount":2,"unit":"ppmv @ 7% oxygen, dry","Reference":None},
-                "NOx":{"Name":"NOx","amount":35,"unit":"ppmv @ 7% oxygen, dry","Reference":None},
-                "CO":{"Name":"CO","amount":20,"unit":"ppmv @ 7% oxygen, dry","Reference":None},
-                "PM":{"Name":"PM","amount":1.5,"unit":"mg/dscm  @ 7% oxygen, dry","Reference":None},
-                "Dioxins_Furans":{"Name":"Dioxins / Furans","amount":1.5,"unit":"ng/dscm  @ 7% oxygen, dry","Reference":None},
-                "Methane":{"Name":"Methane","amount":1.1,"unit":"ppmv @ 7% oxygen, dry","Reference":None},
-                "Nitrous_Oxide":{"Name":"Nitrous Oxide","amount":1.3,"unit":"ppmv @ 7% oxygen, dry","Reference":None},
-                "Ammonia":{"Name":"Ammonia","amount":2,"unit":"ppmv @ 7% oxygen, dry","Reference":None},
-                "Hydrocarbons":{"Name":"Hydrocarbons","amount":1,"unit":"ppmv @ 7% oxygen, dry","Reference":None}
+                "Sulfur_dioxide":{"Name":"Sulfur dioxide","amount":2,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 2, 'scale': 0.2, 'uncertainty_type': 3},
+                "HCl":{"Name":"HCl","amount":2,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 2, 'scale': 0.2, 'uncertainty_type': 3},
+                "NOx":{"Name":"NOx","amount":35,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 35, 'scale': 2, 'uncertainty_type': 3},
+                "CO":{"Name":"CO","amount":20,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 20, 'scale': 2, 'uncertainty_type': 3},
+                "PM":{"Name":"PM","amount":1.5,"unit":"mg/dscm  @ 7% oxygen, dry","Reference":None,'loc': 1.5, 'scale': 0.2, 'uncertainty_type': 3},
+                "Dioxins_Furans":{"Name":"Dioxins / Furans","amount":1.5,"unit":"ng/dscm  @ 7% oxygen, dry","Reference":None,'loc': 1.5, 'scale': 0.2, 'uncertainty_type': 3},
+                "Methane":{"Name":"Methane","amount":1.1,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 1.1, 'scale': 0.2, 'uncertainty_type': 3},
+                "Nitrous_Oxide":{"Name":"Nitrous Oxide","amount":1.3,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 1.3, 'scale': 0.2, 'uncertainty_type': 3},
+                "Ammonia":{"Name":"Ammonia","amount":2,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 2, 'scale': 0.2, 'uncertainty_type': 3},
+                "Hydrocarbons":{"Name":"Hydrocarbons","amount":1,"unit":"ppmv @ 7% oxygen, dry","Reference":None,'loc': 1, 'scale': 0.2, 'uncertainty_type': 3}
                 }
         
         ### Metal Emissions at WTE Facility (Fraction in stack)
@@ -106,7 +106,7 @@ class WTE_input:
         
         ### Material Consumption
         self.Material_Consumption ={
-        "lime":{'name':'Mg lime/Mg MSW','amount':0.012,"unit":'Mg/Mgww',"Reference":None ,"Distance_from_prod_fac":100, "Empty_Return_Truck":1}, 
+        "lime":{'name':'Mg lime/Mg MSW','amount':0.012,"unit":'Mg/Mgww',"Reference":None ,"Distance_from_prod_fac":100, "Empty_Return_Truck":1,'loc': 0.012, 'scale': 0.002, 'uncertainty_type': 3}, 
         "ammonia":{'name':'Mg ammonia/Mg MSW','amount':0.0004,"unit":'Mg/Mgww',"Reference":None ,"Distance_from_prod_fac":100, "Empty_Return_Truck":1},
         "carbon":{'name':'Mg carbon/Mg MSW','amount':0.0006,"unit":'Mg/Mgww',"Reference":None ,"Distance_from_prod_fac":100, "Empty_Return_Truck":1}       
                 }

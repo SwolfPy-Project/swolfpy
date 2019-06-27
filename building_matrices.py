@@ -66,7 +66,7 @@ lca_scores.append(lca.score)
 t1 = time.time()
 
 
-for i in range(10000):
+for i in range(200):
     #--WTE--
     #Technosphere
     #a.read_output_from_SWOLF("WTE_BW2.csv") #reloading from file...slow!
@@ -78,6 +78,13 @@ for i in range(10000):
             if value2!=0 and not np.isnan(value2):
                 if tech_matrix[((key2),(process_name, material))] != value2:
                     tech_matrix[((key2),(process_name, material))] = value2 
+
+    for material,value in a_dict["Biosphere"].items():
+        for key2, value2 in value.items():
+            if value2!=0 and not np.isnan(value2):
+                if bio_matrix[((key2),(process_name, material))] != value2:
+                    bio_matrix[((key2),(process_name, material))] = value2 
+                    
 
     #Biosphere                
     '''for material,value in a.process_model_output['Biosphere'].items():
@@ -124,7 +131,7 @@ for i in range(10000):
     lca_scores.append(lca.score)
             
 t2 = time.time()
-print('total time for 10000 runs: %0.1f secs' % (t2-t1))
+print('total time for 200 runs: %0.1f secs' % (t2-t1))
 #print(lca_scores)
 
 #reading file 1000 runs 2450.1s - 2.45s/run
