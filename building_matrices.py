@@ -115,10 +115,12 @@ if __name__=='__main__':
 	lca_scores = list()
 	lca_scores.append(lca.score)
 	t1 = time.time()
-	
-	#result=Parallel(n_jobs=2)(delayed(parallel_mc)(A,lca,tech_matrix,bio_matrix) for i in range (50))
-	nproc = 2
-	n = 20
+	nproc = 4
+	n = 200
+
+	result=Parallel(n_jobs=nproc)(delayed(parallel_mc)(A,lca,tech_matrix,bio_matrix) for i in range (n))
+	#for i in range (n):
+	#	lca_scores.append(parallel_mc(A,lca,tech_matrix,bio_matrix))
 	#q = multiprocessing.Queue() # a queue for communicating results
 	#for i in range(nproc):
 	#    multiprocessing.Process(target=parallel_mc_q, args=(A, lca, tech_matrix, bio_matrix,n//nproc, q)).start()
@@ -126,15 +128,15 @@ if __name__=='__main__':
 	#p = multiprocessing.Pool(nproc)
 	#p.map(worker, (A, lca, tech_matrix, bio_matrix, n))
 	
-	with pool_adapter(multiprocessing.Pool(processes=nproc)) as pool:
-		results = pool.map(
-			worker,
-			[
-				(A, lca, tech_matrix, bio_matrix, n//nproc)
-				for _ in range(nproc)
-			]
-		)
-	res = [x for lst in results for x in lst]
+	#with pool_adapter(multiprocessing.Pool(processes=nproc)) as pool:
+	#	results = pool.map(
+	#		worker,
+	#		[
+	#			(A, lca, tech_matrix, bio_matrix, n//nproc)
+	#			for _ in range(nproc)
+	#		]
+	#	)
+	#res = [x for lst in results for x in lst]
 			
 			
 			
