@@ -84,17 +84,6 @@ class WTE_input:
                 "Zn":{"Name":"Zn","amount":0.5182,"unit":None,"Reference":None}
                 }
         
-        self.Imported_data = {
-                "mw_C":{"Name":"mw_C","amount":12,"unit":None,"Reference":None},
-                "mw_Cl":{"Name":"mw_Cl","amount":35.453,"unit":None,"Reference":None},
-                "mw_H":{"Name":"mw_H","amount":1.0079,"unit":None,"Reference":None},
-                "mw_O":{"Name":"mw_O","amount":15.999,"unit":None,"Reference":None},
-                "mw_N":{"Name":"mw_N","amount":14.007,"unit":None,"Reference":None},
-                "mw_S":{"Name":"mw_S","amount":32.065,"unit":None,"Reference":None},
-                "Density_Air":{"Name":"Density_Air","amount":22.4,"unit":"L/mol","Reference":None},
-                "Water_Evap_Heat":{"Name":"Water_Evap_Heat","amount":2.26,"unit":"MJ/Kg","Reference":None},
-                "Hydrocarbons":{"Name":"Hydrocarbons","amount":86.18,"unit":None,"Reference":None}
-                }
         
         ### Metals Recovery
         self.Metals_Recovery={
@@ -112,7 +101,7 @@ class WTE_input:
                 }
         
         self.WTE_Input_list = [self.Economic_parameters, self.Elec_Prod_Eff,self.Stack_Gas_Conc_Non_metal,self.Stack_metal_emission,\
-                               self.Fly_Ash_metal_emission,self.Bottom_Ash_metal_emission,self.Imported_data,self.Metals_Recovery,self.Material_Consumption]
+                               self.Fly_Ash_metal_emission,self.Bottom_Ash_metal_emission,self.Metals_Recovery,self.Material_Consumption]
         
     
     def setup_MC(self):

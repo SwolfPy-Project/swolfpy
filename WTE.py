@@ -7,10 +7,13 @@ Created on Thu Jun 13 15:10:31 2019
 import numpy as np
 import pandas as pd
 from WTE_Input import *
+from CommonData import *
 from stats_arrays import *
+
 
 class WTE:
     def __init__(self):
+        self.CommonData = CommonData()
         self.WTE_input= WTE_input()
         ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
@@ -25,13 +28,14 @@ class WTE:
          'Aerobic_Residual', 'Anaerobic_Residual', 'Bottom_Ash', 'Fly_Ash', 'Diapers_and_sanitary_products', 'Waste_Fraction_47', 'Waste_Fraction_48',
          'Waste_Fraction_49', 'Waste_Fraction_50', 'Waste_Fraction_51', 'Waste_Fraction_52', 'Waste_Fraction_53', 'Waste_Fraction_54', 'Waste_Fraction_55',
          'Waste_Fraction_56', 'Waste_Fraction_57', 'Waste_Fraction_58', 'Waste_Fraction_59', 'Waste_Fraction_60']
-        
+
         
     def calc(self):
+
         ### Energy Calculations
         self.Energy_Calculations=pd.DataFrame(index = self.Index)
         
-        self.Energy_Calculations['Energy_Loss_Due_to_Water'] = (-1) * self.Material_Properties['Moisture Content'][4:] / 100 * self.WTE_input.Imported_data['Water_Evap_Heat']['amount']
+        self.Energy_Calculations['Energy_Loss_Due_to_Water'] = (-1) * self.Material_Properties['Moisture Content'][4:] / 100 * self.CommonData.Evap_heat['Water_Evap_Heat']['amount']
         self.Energy_Calculations['Energy_Loss_Due_to_Water']['Unit'] = 'MJ/kgww'
         
         self.Energy_Calculations['Energy_Loss_Due_to_Ashes'] = (-1) *  self.process_data['Heat Lost via Ashes - Cp (J/g K)'][3:] * \
@@ -57,16 +61,15 @@ class WTE:
         self.Energy_Calculations['Heat_Recovered'] = self.Energy_Calculations['Total_Energy_Produced'][1:] * 1000 * self.WTE_input.Elec_Prod_Eff['Heat_prod_Eff']['amount']
         self.Energy_Calculations['Heat_Recovered']['Unit'] = 'MJ/Mgww'
             
-          
         ### Combustion Emission
         self.Combustion_Emission = pd.DataFrame(index = self.Index)
         
         self.Combustion_Emission['CO2_fossil'] = self.Material_Properties['Fossil Carbon Content'][4:] / 100 * self.process_data['Combustion Efficiency (% of VS)']\
-                                            * (1-self.Material_Properties['Moisture Content'][4:]/100) * (self.WTE_input.Imported_data['mw_C']['amount'] + 2*self.WTE_input.Imported_data['mw_O']['amount'])/self.WTE_input.Imported_data['mw_C']['amount']
+                                            * (1-self.Material_Properties['Moisture Content'][4:]/100) * (self.CommonData.MW['CO2']['amount'])/self.CommonData.MW['C']['amount']
         self.Combustion_Emission['CO2_fossil']['Unit'] = 'kg/kgww'
         
         self.Combustion_Emission['CO2_biogenic'] = self.Material_Properties['Biogenic Carbon Content'][4:] / 100 * self.process_data['Combustion Efficiency (% of VS)']\
-                                            * (1-self.Material_Properties['Moisture Content'][4:]/100) * (self.WTE_input.Imported_data['mw_C']['amount'] + 2*self.WTE_input.Imported_data['mw_O']['amount'])/self.WTE_input.Imported_data['mw_C']['amount']
+                                            * (1-self.Material_Properties['Moisture Content'][4:]/100) * (self.CommonData.MW['CO2']['amount'])/self.CommonData.MW['C']['amount']
         self.Combustion_Emission['CO2_biogenic']['Unit'] = 'kg/kgww'
         
         ### Stack metal emissions
@@ -74,16 +77,16 @@ class WTE:
         for m in key1.keys():
             self.Combustion_Emission[m] = self.Material_Properties[key1[m]][4:] / 100 * self.WTE_input.Stack_metal_emission[m]['amount'] * (1-self.Material_Properties['Moisture Content'][4:]/100)
             self.Combustion_Emission[m]['Unit'] = 'kg/kgww'
-            
+        
         ### mole content of input waste
         self.Combustion_Emission['C_mole'] = (self.Material_Properties['Biogenic Carbon Content'][4:]+self.Material_Properties['Fossil Carbon Content'][4:]) / 100 \
-                                        /self.WTE_input.Imported_data['mw_C']['amount'] * 1000
+                                        /self.CommonData.MW['C']['amount'] * 1000
         self.Combustion_Emission['C_mole']['Unit'] = 'Moles per dry kg'
         
-        key2={'Hydrogen Content':('mw_H','H_mole'),'Oxygen Content':('mw_O','O_mole'),'Nitrogen Content':('mw_N','N_mole'),'Chlorine':('mw_Cl','Cl_mole'),\
-              'Sulphur':('mw_S','S_mole')}
+        key2={'Hydrogen Content':('H','H_mole'),'Oxygen Content':('O','O_mole'),'Nitrogen Content':('N','N_mole'),'Chlorine':('Cl','Cl_mole'),\
+              'Sulphur':('S','S_mole')}
         for m in key2.keys():
-            self.Combustion_Emission[key2[m][1]] = self.Material_Properties[m][4:] / 100 /self.WTE_input.Imported_data[key2[m][0]]['amount'] * 1000
+            self.Combustion_Emission[key2[m][1]] = self.Material_Properties[m][4:] / 100 /self.CommonData.MW[key2[m][0]]['amount'] * 1000
             self.Combustion_Emission[key2[m][1]]['Unit'] = 'Moles per dry kg'
         
         self.Combustion_Emission['alpha'] = -0.699*self.Combustion_Emission['O_mole'][1:]+1.5*self.Combustion_Emission['C_mole'][1:]+0.35*self.Combustion_Emission['H_mole'][1:]-0.244* \
@@ -94,15 +97,15 @@ class WTE:
                                                         /4+5*self.Combustion_Emission['Cl_mole'][1:]/4+self.Combustion_Emission['N_mole'][1:]/2
         self.Combustion_Emission['Moles_per_dry_flue_gas']['unit'] = 'mole/kgDryFlueGas'
         
-        self.Combustion_Emission['Flue_gas'] = self.Combustion_Emission['Moles_per_dry_flue_gas'][1:] * self.WTE_input.Imported_data['Density_Air']['amount']/ 1000 * (1-self.Material_Properties['Moisture Content'][4:]/100)
+        self.Combustion_Emission['Flue_gas'] = self.Combustion_Emission['Moles_per_dry_flue_gas'][1:] * self.CommonData.STP['Density_Air']['amount']/ 1000 * (1-self.Material_Properties['Moisture Content'][4:]/100)
         self.Combustion_Emission['Flue_gas']['unit'] = 'dscm FlueGas/kgww'   #Dry Standard Cubic meter
             
-        key3={'Stack_SO2':('Sulfur_dioxide',self.WTE_input.Imported_data['mw_S']['amount']+2*self.WTE_input.Imported_data['mw_O']['amount']),'Stack_HCl':('HCl',self.WTE_input.Imported_data['mw_H']['amount']+self.WTE_input.Imported_data['mw_C']['amount']),\
-              'Stack_NOx':('NOx',self.WTE_input.Imported_data['mw_N']['amount']+2*self.WTE_input.Imported_data['mw_O']['amount']),'Stack_CO':('CO',self.WTE_input.Imported_data['mw_C']['amount']+self.WTE_input.Imported_data['mw_O']['amount']),\
-              'Stack_Methane':('Methane',self.WTE_input.Imported_data['mw_C']['amount']+4*self.WTE_input.Imported_data['mw_H']['amount']),'Stack_Nitrous_Oxide':('Nitrous_Oxide',2*self.WTE_input.Imported_data['mw_N']['amount']+self.WTE_input.Imported_data['mw_O']['amount']),\
-              'Stack_Ammonia':('Ammonia',self.WTE_input.Imported_data['mw_N']['amount']+3*self.WTE_input.Imported_data['mw_H']['amount']),'Stack_Hydrocarbons':('Hydrocarbons',self.WTE_input.Imported_data['Hydrocarbons']['amount'])}
+        key3={'Stack_SO2':('Sulfur_dioxide',self.CommonData.MW['SO2']['amount']),'Stack_HCl':('HCl',self.CommonData.MW['HCl']['amount']),\
+              'Stack_NOx':('NOx',self.CommonData.MW['NOx']['amount']),'Stack_CO':('CO',self.CommonData.MW['CO']['amount']),\
+              'Stack_Methane':('Methane',self.CommonData.MW['CH4']['amount']),'Stack_Nitrous_Oxide':('Nitrous_Oxide',self.CommonData.MW['Nitrous_Oxide']['amount']),\
+              'Stack_Ammonia':('Ammonia',self.CommonData.MW['Ammonia']['amount']),'Stack_Hydrocarbons':('Hydrocarbons',self.CommonData.MW['Hydrocarbons']['amount'])}
         for m in key3.keys():
-            self.Combustion_Emission[m] = self.WTE_input.Stack_Gas_Conc_Non_metal[key3[m][0]]['amount']/10**6*key3[m][1]/1000 / (self.WTE_input.Imported_data['Density_Air']['amount'] / 1000) * self.Combustion_Emission['Flue_gas']
+            self.Combustion_Emission[m] = self.WTE_input.Stack_Gas_Conc_Non_metal[key3[m][0]]['amount']/10**6*key3[m][1]/1000 / (self.CommonData.STP['Density_Air']['amount'] / 1000) * self.Combustion_Emission['Flue_gas']
             self.Combustion_Emission[m]['Unit'] = 'kg/kg ww'
         
         self.Combustion_Emission['Stack_PM'] = self.WTE_input.Stack_Gas_Conc_Non_metal['PM']['amount']/10**6 * self.Combustion_Emission['Flue_gas']
@@ -110,6 +113,7 @@ class WTE:
         
         self.Combustion_Emission['Stack_Dioxins_Furans'] = self.WTE_input.Stack_Gas_Conc_Non_metal['Dioxins_Furans']['amount']/10**12 * self.Combustion_Emission['Flue_gas']
         self.Combustion_Emission['Stack_Dioxins_Furans']['Unit'] = 'kg/kg ww'
+        
         
         ### Post_Combustion Solids
         
@@ -156,7 +160,8 @@ class WTE:
         self.APC_Consumption = pd.DataFrame(index = self.Index)
         for x in ['lime','carbon','ammonia']:
             self.APC_Consumption[x] = self.WTE_input.Material_Consumption[x]['amount']*1000
-            self.APC_Consumption[x]['Unit']= 'kg/Mg ww'
+            self.APC_Consumption.loc[x,'Unit']= 'kg/Mg ww'
+        
 
     def setup_MC(self):
         self.WTE_input.setup_MC()
@@ -238,9 +243,6 @@ class WTE:
                 Biosphere[y][key5[x][0]]= self.Combustion_Emission[key5[x][1]][y]
         
         return(self.WTE)
-
-
-
 
 
 
