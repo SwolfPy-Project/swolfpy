@@ -53,10 +53,10 @@ for i in lca.bio_params:
 A = WTE()
 A.setup_MC()
 
-#a = Process_Model("WTE", {"WTE":1})
+a = Process_Model("WTE", {"WTE":1})
 #b = Process_Model("LF", {"LF":1})
 
-#a.read_output_from_SWOLF("WTE_BW2.csv")
+a.read_output_from_SWOLF("WTE_BW2.csv")
 #b.read_output_from_SWOLF("trad_landfill _BW2.xlsx")
 
         
