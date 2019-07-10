@@ -11,11 +11,10 @@ from Required_keys import *
 import copy
 from bw2analyzer import ContributionAnalysis
 from WTE import *
-from joblib import Parallel, delayed
-import multiprocessing
 import sys
 from multiprocessing import Queue
 from multiprocessing import Pool
+import multiprocessing as mp
 import threading 
 from brightway2 import LCA
 from bw2data import projects
@@ -107,12 +106,13 @@ class ParallelData(LCA):
 		lca_scores = list()
 		#lca_scores.append(self.lca.score)
 		t1 = time.time()
+		#nproc = mp.cpu_count()
 		nproc = 4
 		n = 200
 		
 
 		
-		with pool_adapter(multiprocessing.Pool(processes=nproc)) as pool:
+		with pool_adapter(mp.Pool(processes=nproc)) as pool:
 			results = pool.map(
 				worker,
 				[
@@ -123,7 +123,7 @@ class ParallelData(LCA):
 		self.res = [x for lst in results for x in lst]
 		
 		t2 = time.time()
-		print('total time for %d runs: %0.1f secs' % ((n, t2-t1)))
+		print('total time for %d runs: %0.1f secs. Using %d threads' % ((n, t2-t1, nproc)))
 	
 
 	
@@ -138,97 +138,12 @@ if __name__=='__main__':
 	a = ParallelData(functional_unit, method, project) 
 	
 	from matplotlib.pylab import *
-	hist(a.res, normed=True, histtype="step")
+	hist(a.res, density=True, histtype="step")
 	xlabel('(IPCC 2007, climate change, GWP 100a)')
 	ylabel("Probability")
 	
 	
-	#changing biosphere codes into names from biosphere 3 db
-	#for key,val in biosphere_dict.items():
-	#    biosphere_dict_names[key]=get_activity(val)
-	#
 	
-	
-	
-	#for i in lca.bio_params:
-	#    if (biosphere_dict_names[i[2]], activities_dict[i[3]]) not in bio_matrix.keys():
-	#        bio_matrix[(biosphere_dict_names[i[2]], activities_dict[i[3]])] = i[6]
-	#    else: #duplicates...adds -1 and prints
-	#        bio_matrix[(str(biosphere_dict_names[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
-	#        # print(biosphere_dict_names[i[2]], activities_dict[i[3]])
-	
-	
-	
-	
-	#a = Process_Model("WTE", {"WTE":1})
-	#b = Process_Model("LF", {"LF":1})
-	
-	#a.read_output_from_SWOLF("WTE_BW2.csv")
-	#b.read_output_from_SWOLF("trad_landfill _BW2.xlsx")
-	
-			
-		
-	
-
-	#result=Parallel(n_jobs=nproc)(delayed(parallel_mc)(A,lca,tech_matrix,bio_matrix) for i in range (n))
-	#for i in range (n):
-	#	lca_scores.append(parallel_mc(A,lca,tech_matrix,bio_matrix))
-	#q = multiprocessing.Queue() # a queue for communicating results
-	#for i in range(nproc):
-	#    multiprocessing.Process(target=parallel_mc_q, args=(A, lca, tech_matrix, bio_matrix,n//nproc, q)).start()
-	#multiprocessing.Process(target=parallel_mc_q, args=(A, lca, tech_matrix, bio_matrix, q)).start()
-	
-	#p = multiprocessing.Pool(nproc)
-	#p.map(worker, (A, lca, tech_matrix, bio_matrix, n))
-	
-	
-			
-			
-			
-	
-	#for i in range(200):
-		#--WTE--
-		#Technosphere
-		#a.read_output_from_SWOLF("WTE_BW2.csv") #reloading from file...slow!
-		
-						
-	
-		#Biosphere                
-	#for material,value in a.process_model_output['Biosphere'].items():
-	#        for key2, value2 in value.items():
-	#            if value2!=0:
-	#                value2 *= 1+ np.random.rand()
-	#                if bio_matrix[((key2),(a.process_name, material))] != value2:
-	#                    bio_matrix[((key2),(a.process_name, material))] = value2                 
-	#                    
-	#                    
-	#    #--LF--                
-	#    #Technosphere
-	#    b.read_output_from_SWOLF("trad_landfill _BW2.xlsx") #realoading from file...slow!
-	#    for material,value in b.process_model_output['Technosphere'].items():
-	#        for key2, value2 in value.items():
-	#            if value2!=0:
-	#                value2 *=1+ np.random.rand()
-	#                if tech_matrix[((key2),(b.process_name, material))] != value2:
-	#                    tech_matrix[((key2),(b.process_name, material))] = value2 
-	#    
-	#    #Biosphere                
-	#    for material,value in b.process_model_output['Biosphere'].items():
-	#        for key2, value2 in value.items():
-	#            if value2!=0:
-	#                value2 *= 1+ np.random.rand()
-	#                if bio_matrix[((key2),(b.process_name, material))] != value2:
-	#                    bio_matrix[((key2),(b.process_name, material))] = value2
-	#
-	#    
-	#    
-	
-				
-	
-	#print(lca_scores)
-	
-	#reading file 1000 runs 2450.1s - 2.45s/run
-	#not reading file 1000 runs in 54s - 0.054s/run
 	
 
 
