@@ -105,12 +105,11 @@ class WTE_input:
         
     
     def setup_MC(self):
-        self.list_var =str()
+        self.list_var = list()
         for x in self.WTE_Input_list:
             for y in x:
-                self.list_var+=str(x[y])+','
-        self.list_var = self.list_var[:-1]
-        exec("self.Vars = UncertaintyBase.from_dicts(%s)" % self.list_var )
+                self.list_var.append(x[y])
+        self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
         self.rand = MCRandomNumberGenerator(self.Vars)
       
     def gen_MC(self):
