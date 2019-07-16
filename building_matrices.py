@@ -1,22 +1,13 @@
 from brightway2 import *
-from stats_arrays.random import MCRandomNumberGenerator
-from bw2calc.utils import get_seed
 import numpy as np
 import time
 from brightway2 import *
-from bw2data.parameters import ActivityParameter, DatabaseParameter, ProjectParameter, Group
-from process_model_msm3 import *
-import pandas as pd
 from Required_keys import *
-import copy
-from bw2analyzer import ContributionAnalysis
 from WTE import *
 import multiprocessing as mp
 import sys
 from multiprocessing import Queue
 from multiprocessing import Pool
-
-import threading 
 from brightway2 import LCA
 from bw2data import projects
     
@@ -34,77 +25,37 @@ else:
 
 
 def worker(args):
-    project,functional_unit,method,A,tech_matrix,bio_matrix,n = args
+    project, functional_unit, method,process_models, process_model_names, tech_matrix, bio_matrix, n = args
     projects.set_current(project, writable=False)
     lca = LCA(functional_unit, method)
     lca.lci()
     lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method ,A, tech_matrix, bio_matrix) for x in range(n)]
+    return [parallel_mc (lca, project, functional_unit, method, process_models, process_model_names, tech_matrix, bio_matrix) for x in range(n)]
 
 
 
-def parallel_mc (lca, project, functional_unit, method, A, tech_matrix, bio_matrix):
+def parallel_mc (lca, project, functional_unit, method, process_models, process_model_names, tech_matrix, bio_matrix):
 
-
-    A.MC_calc()
-    a_dict = A.report()
-
-    process_name = a_dict.pop("process name")
-    for material,value in a_dict["Technosphere"].items():
-        for key2, value2 in value.items():
-            if value2!=0 and not np.isnan(value2):
-                if tech_matrix[((key2),(process_name, material))] != value2:
-                    tech_matrix[((key2),(process_name, material))] = value2 
+    for process in process_models:
+        process.MC_calc()
     
-    for material,value in a_dict["Biosphere"].items():
-        for key2, value2 in value.items():
-            if value2!=0 and not np.isnan(value2):
-                if bio_matrix[((key2),(process_name, material))] != value2:
-                    bio_matrix[((key2),(process_name, material))] = value2
+    i = 0
+    for process_name in process_model_names:
+        report_dict = process_models[i].report()
 
-    #A.MC_calc()
-    #a_dict = A.report()
-    #process_name = 'WTE1'
-    #for material,value in a_dict["Technosphere"].items():
-    #    for key2, value2 in value.items():
-    #        if value2!=0 and not np.isnan(value2):
-    #            if tech_matrix[((key2),(process_name, material))] != value2:
-    #                tech_matrix[((key2),(process_name, material))] = value2 
-    #
-    #for material,value in a_dict["Biosphere"].items():
-    #    for key2, value2 in value.items():
-    #        if value2!=0 and not np.isnan(value2):
-    #            if bio_matrix[((key2),(process_name, material))] != value2:
-    #                bio_matrix[((key2),(process_name, material))] = value2 
-    #A.MC_calc()
-    #a_dict = A.report()    
-    #process_name = 'WTE2'
-    #for material,value in a_dict["Technosphere"].items():
-    #    for key2, value2 in value.items():
-    #        if value2!=0 and not np.isnan(value2):
-    #            if tech_matrix[((key2),(process_name, material))] != value2:
-    #                tech_matrix[((key2),(process_name, material))] = value2 
-    #
-    #for material,value in a_dict["Biosphere"].items():
-    #    for key2, value2 in value.items():
-    #        if value2!=0 and not np.isnan(value2):
-    #            if bio_matrix[((key2),(process_name, material))] != value2:
-    #                bio_matrix[((key2),(process_name, material))] = value2 
-    #A.MC_calc()
-    #a_dict = A.report()    
-    #process_name = 'WTE3'
-    #for material,value in a_dict["Technosphere"].items():
-    #    for key2, value2 in value.items():
-    #        if value2!=0 and not np.isnan(value2):
-    #            if tech_matrix[((key2),(process_name, material))] != value2:
-    #                tech_matrix[((key2),(process_name, material))] = value2 
-    #
-    #for material,value in a_dict["Biosphere"].items():
-    #    for key2, value2 in value.items():
-    #        if value2!=0 and not np.isnan(value2):
-    #            if bio_matrix[((key2),(process_name, material))] != value2:
-    #                bio_matrix[((key2),(process_name, material))] = value2 
-    #
+        for material,value in report_dict["Technosphere"].items():
+            for key2, value2 in value.items():
+                if value2!=0 and not np.isnan(value2):
+                    if tech_matrix[((key2),(process_name, material))] != value2:
+                        tech_matrix[((key2),(process_name, material))] = value2 
+		
+        for material,value in report_dict["Biosphere"].items():
+            for key2, value2 in value.items():
+                if value2!=0 and not np.isnan(value2):
+                    if bio_matrix[((key2),(process_name, material))] != value2:
+                        bio_matrix[((key2),(process_name, material))] = value2
+        i+=1
+		
 	
     tech = np.array(list(tech_matrix.values()), dtype=float)
     bio = np.array(list(bio_matrix.values()), dtype=float)
@@ -123,13 +74,15 @@ def parallel_mc (lca, project, functional_unit, method, A, tech_matrix, bio_matr
 
 
 class ParallelData(LCA):
-    def __init__(self, functional_unit, method, project):
+    def __init__(self, functional_unit, method, project, process_models, process_model_names):
         super(ParallelData, self).__init__(functional_unit, method)
         self.lci()
         self.lcia()
         self.functional_unit = functional_unit
         self.method = method
         self.project = project
+        self.process_models = process_models
+        self.process_model_names = process_model_names
         
         
         activities_dict = dict(zip(self.activity_dict.values(),self.activity_dict.keys()))
@@ -149,45 +102,58 @@ class ParallelData(LCA):
                 bio_matrix[(str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
                 
         
-        A = WTE()
-        A.setup_MC()
+        for x in self.process_models:
+            x.setup_MC()
+
         
-        lca_scores = list()
-        #lca_scores.append(self.lca.score)
+
         t1 = time.time()
 		#nproc = mp.cpu_count()
         nproc = 4
-        n = 200
+        n = 1000
         
 
         
         with pool_adapter(mp.Pool(processes=nproc)) as pool:
-            results = pool.map(
+            res = pool.map(
                 worker,
                 [
-                    (self.project,self.functional_unit,self.method,A,tech_matrix, bio_matrix,n//nproc)
+                    (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, tech_matrix, bio_matrix, n//nproc)
                     for _ in range(nproc)
                 ]
             )
-        self.res = [x for lst in results for x in lst]
+        self.results = [x for lst in res for x in lst]
         
         t2 = time.time()
-        print('total time for %d runs: %0.1f secs. Using %d threads' % ((n, t2-t1, nproc)))
+        print('total time for %d runs: %0.1f secs. Using %d threads and %d process model(s)' % ((n, t2-t1, nproc, len(self.process_models))))
     
 
     
     
 if __name__=='__main__':
-    project = "demo_2"
+    project = "demo_5"
     projects.set_current(project)
     db = Database("waste")
     functional_unit = {db.get("scenario1") : 1}
     method = ('IPCC 2007', 'climate change', 'GWP 100a')
-
-    a = ParallelData(functional_unit, method, project) 
+	
+    process_models = list()
+    process_model_names = list()
+	
+    process_models.append(WTE())
+    process_models.append(WTE())
+    process_models.append(WTE())
+    process_models.append(WTE())
+	
+    process_model_names.append('WTE')
+    process_model_names.append('WTE1')
+    process_model_names.append('WTE2')
+    process_model_names.append('WTE3')
+	
+    a = ParallelData(functional_unit, method, project, process_models, process_model_names) 
     
     from matplotlib.pylab import *
-    hist(a.res, density=True, histtype="step")
+    hist(a.results, density=True, histtype="step")
     xlabel('(IPCC 2007, climate change, GWP 100a)')
     ylabel("Probability")
     
