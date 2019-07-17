@@ -29,12 +29,10 @@ class Comp:
                       'Waste_Fraction_49', 'Waste_Fraction_50', 'Waste_Fraction_51', 'Waste_Fraction_52', 'Waste_Fraction_53', 'Waste_Fraction_54',
                       'Waste_Fraction_55', 'Waste_Fraction_56', 'Waste_Fraction_57', 'Waste_Fraction_58', 'Waste_Fraction_59', 'Waste_Fraction_60']
         self.Assumed_Comp = pd.Series(self.Comp_input.Assumed_Comp,index=self.Index)
-        
-    def calc(self):
-
-        ### Mass Flows
+        self.SD=pd.read_excel('comp_stat.xlsx', index_col = 'Index')
+                ### Mass Flows
         self.Mass_flows=pd.DataFrame(index = self.Index)
-
+    def calc(self):
 ### Pretreatment and screan   
         
         self.Mass_flows ['Mass at tipping floor'] = 1000
@@ -270,7 +268,6 @@ class Comp:
         
         
     def calc2(self):
-        self.SD=pd.read_excel('comp_stat.xlsx', index_col = 'Index')
 
 ### Carbon Balance        
         self.Mass_flows['Mass of C loss during composting'] = self.SD['C loss of substrates during active composting'][1:]+self.SD['Mass of C loss from substrates in curing'][1:]

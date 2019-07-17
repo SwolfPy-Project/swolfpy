@@ -4,6 +4,7 @@ import time
 from brightway2 import *
 from Required_keys import *
 from WTE import *
+from Composting import *
 import multiprocessing as mp
 import sys
 from multiprocessing import Queue
@@ -48,15 +49,15 @@ def parallel_mc (lca, project, functional_unit, method, process_models, process_
                 if value2!=0 and not np.isnan(value2):
                     if tech_matrix[((key2),(process_name, material))] != value2:
                         tech_matrix[((key2),(process_name, material))] = value2 
-		
+        
         for material,value in report_dict["Biosphere"].items():
             for key2, value2 in value.items():
                 if value2!=0 and not np.isnan(value2):
                     if bio_matrix[((key2),(process_name, material))] != value2:
                         bio_matrix[((key2),(process_name, material))] = value2
         i+=1
-		
-	
+        
+    
     tech = np.array(list(tech_matrix.values()), dtype=float)
     bio = np.array(list(bio_matrix.values()), dtype=float)
     
@@ -108,9 +109,9 @@ class ParallelData(LCA):
         
 
         t1 = time.time()
-		#nproc = mp.cpu_count()
+        #nproc = mp.cpu_count()
         nproc = 4
-        n = 1000
+        n = 100
         
 
         
@@ -131,25 +132,33 @@ class ParallelData(LCA):
     
     
 if __name__=='__main__':
-    project = "demo_5"
+    project = "demo_6"
     projects.set_current(project)
     db = Database("waste")
-    functional_unit = {db.get("scenario1") : 1}
+    functional_unit = {db.get("scenario3") : 1}
     method = ('IPCC 2007', 'climate change', 'GWP 100a')
-	
+    
     process_models = list()
     process_model_names = list()
-	
+    
     process_models.append(WTE())
     process_models.append(WTE())
     process_models.append(WTE())
     process_models.append(WTE())
-	
+    process_models.append(Comp())
+    process_models.append(Comp())
+    process_models.append(Comp())
+    process_models.append(Comp())
+    
+    
     process_model_names.append('WTE')
     process_model_names.append('WTE1')
     process_model_names.append('WTE2')
     process_model_names.append('WTE3')
-	
+    process_model_names.append('COMP')
+    process_model_names.append('COMP1')
+    process_model_names.append('COMP2')
+    process_model_names.append('COMP3')
     a = ParallelData(functional_unit, method, project, process_models, process_model_names) 
     
     from matplotlib.pylab import *
