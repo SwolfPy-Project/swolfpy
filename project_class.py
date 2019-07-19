@@ -12,6 +12,7 @@ import pandas as pd
 from Required_keys import *
 import copy
 from bw2analyzer import ContributionAnalysis
+from Parameters import *
 
 
 class project():
@@ -144,19 +145,31 @@ class project():
         for j in self.processes:
             if len(self.act_include_param[j]) > 0:
                 for r in self.act_include_param[j]:
-                    parameters.add_exchanges_to_group(j,r)   
+                    parameters.add_exchanges_to_group(j,r)
+	
+    def create_unified_params(self):
+        unified_dict = dict()
+        for item in self.process_model.values():
+            for key, value in item.uncertain_parameters.param_uncertainty_dict.items():
+                unified_dict[key]=value
+        self.unified_params = Parameters()
+        self.unified_params.param_uncertainty_dict = unified_dict
+        		
                     
     def update_parameters(self,new_param_data):
+        self.create_unified_params()
         self.new_param_data=new_param_data
         for j in self.new_param_data:
             for k in self.parameters_list:
                 if k['name'] == j['name']:
                     k['amount']=j['amount']
+                    self.unified_params.update_values(j['name'],j['amount'])
         
         parameters.new_project_parameters(self.new_param_data)
         for j in self.processes:
             if len(self.act_include_param[j]) > 0:
                 ActivityParameter.recalculate_exchanges(j)
+        self.unified_params.check_sum()
                 
     def process_start_scenario(self,input_dict,scenario_name):
         self.input_dict=input_dict
