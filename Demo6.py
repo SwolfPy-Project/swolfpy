@@ -26,7 +26,7 @@ mojtaba.init_project('SWOLF_AccountMode_LCI DATA.csv')
 mojtaba.write_project()
 mojtaba.group_exchanges()
 
-gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0},
+gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0.1},
  {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0.25},
  {'name': 'frac_of_Other_Residual_from_AD_to_WTE1', 'amount': 0.25},
  {'name': 'frac_of_Other_Residual_from_AD_to_WTE2', 'amount': 0.25},
@@ -41,11 +41,11 @@ gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_COMP1_to_WTE1', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP1_to_WTE2', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP1_to_WTE3', 'amount': 0.2},
- {'name': 'frac_of_Other_Residual_from_COMP2_to_LF', 'amount': 0.2},
- {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE', 'amount': 0.2},
- {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE1', 'amount': 0.2},
- {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE2', 'amount': 0.2},
- {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE3', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_COMP2_to_LF', 'amount': 0.15},
+ {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE', 'amount': 0.14},
+ {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE1', 'amount': 0.35},
+ {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE2', 'amount': 0.1},
+ {'name': 'frac_of_Other_Residual_from_COMP2_to_WTE3', 'amount': 0.26},
  {'name': 'frac_of_Other_Residual_from_COMP3_to_LF', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP3_to_WTE', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP3_to_WTE1', 'amount': 0.2},
@@ -86,24 +86,24 @@ gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0},
  {'name': 'frac_of_Cu_from_WTE3_to_REPROC', 'amount': 1}]
 
 mojtaba.update_parameters(gg)
-scenario1 = {"WTE":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1},"WTE1":{"Yard_Trimmings_Grass":2,"Paper_Bags":2,"Mixed_Plastic":2},
-             "WTE2":{"Yard_Trimmings_Grass":1,"Paper_Bags":0.1,"Mixed_Plastic":1},
-             "WTE3":{"Yard_Trimmings_Grass":0.1,"Paper_Bags":1,"Mixed_Plastic":1},
-             "COMP":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":7},"COMP1":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":5},
-             "COMP2":{"Yard_Trimmings_Grass":9,"Yard_Trimmings_Leaves":6},"COMP3":{"Yard_Trimmings_Grass":3,"Yard_Trimmings_Leaves":1}}
-mojtaba.process_start_scenario(scenario1,'scenario1')
-mojtaba.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
-
-scenario2 = {"WTE":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
-             "WTE1":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
-             "WTE2":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
-             "WTE3":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
-             "COMP":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":7},
-             "COMP1":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":5},
-             "COMP2":{"Yard_Trimmings_Grass":9,"Yard_Trimmings_Leaves":6},
-             "COMP3":{"Yard_Trimmings_Grass":3,"Yard_Trimmings_Leaves":1}}
-mojtaba.process_start_scenario(scenario2,'scenario2')
-mojtaba.Do_LCA("scenario2",('IPCC 2007', 'climate change', 'GWP 100a'),1)
+#scenario1 = {"WTE":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1},"WTE1":{"Yard_Trimmings_Grass":2,"Paper_Bags":2,"Mixed_Plastic":2},
+#             "WTE2":{"Yard_Trimmings_Grass":1,"Paper_Bags":0.1,"Mixed_Plastic":1},
+#             "WTE3":{"Yard_Trimmings_Grass":0.1,"Paper_Bags":1,"Mixed_Plastic":1},
+#             "COMP":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":7},"COMP1":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":5},
+#             "COMP2":{"Yard_Trimmings_Grass":9,"Yard_Trimmings_Leaves":6},"COMP3":{"Yard_Trimmings_Grass":3,"Yard_Trimmings_Leaves":1}}
+#mojtaba.process_start_scenario(scenario1,'scenario1')
+#mojtaba.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
+#
+#scenario2 = {"WTE":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#             "WTE1":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#             "WTE2":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#             "WTE3":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#             "COMP":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":7},
+#             "COMP1":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":5},
+#             "COMP2":{"Yard_Trimmings_Grass":9,"Yard_Trimmings_Leaves":6},
+#             "COMP3":{"Yard_Trimmings_Grass":3,"Yard_Trimmings_Leaves":1}}
+#mojtaba.process_start_scenario(scenario2,'scenario2')
+#mojtaba.Do_LCA("scenario2",('IPCC 2007', 'climate change', 'GWP 100a'),1)
 
 
 
