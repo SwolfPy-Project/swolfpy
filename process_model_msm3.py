@@ -10,6 +10,7 @@ from biosphere_key import *
 from brightway2 import *
 # Reading the keys 
 from Required_keys import *
+from Parameters import *
 #elementary_flows =load_Elementary_flows("Elementary flows_EcoinventV3.csv")
 #biosphere_keys = create_biosphere_key(elementary_flows)
 
@@ -31,6 +32,8 @@ class Process_Model():
         ### ==========================
         self.database_Waste_technosphere = Database("Technosphere")
         ### ==========================
+		
+        self.uncertain_parameters = Parameters()
         
     
     def check_nan(self, x):  # replace zeros when there is no data ("nan")
@@ -156,6 +159,7 @@ class Process_Model():
         self.parameters=[]
         self.list_of_params=[]
         self.act_in_group =set()
+        self.params_dict = dict()
         for x in  self.process_model_output ["Waste"].keys():
             self.db_data[(self.DB_name,x)] ={}    # add activity to database
             self.db_data[(self.DB_name,x)]['name'] = self.DB_name+"_"+x
@@ -190,6 +194,11 @@ class Process_Model():
                                 if "frac_of_"+key+'_from_'+self.DB_name+'_to_'+p not in self.list_of_params:
                                     self.parameters.append({'name':"frac_of_"+key+'_from_'+self.DB_name+'_to_'+p ,'amount':0})
                                     self.list_of_params.append("frac_of_"+key+'_from_'+self.DB_name+'_to_'+p)
+                                    self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p] = set()
+                                    self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((p,key),(self.process_name+'_product' , x+'_'+key)))
+                                    self.uncertain_parameters.add_parameter(key,self.DB_name,p)									
+                                else:
+                                    self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((p,key),(self.process_name+'_product' , x+'_'+key)))									
                                 self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex)
                         else:
                             for p in self.waste_treatment[key]:
@@ -202,6 +211,11 @@ class Process_Model():
                                 if "frac_of_"+key+'_from_'+self.DB_name+'_to_'+p not in self.list_of_params:
                                     self.parameters.append({'name':"frac_of_"+key+'_from_'+self.DB_name+'_to_'+p ,'amount':0})
                                     self.list_of_params.append("frac_of_"+key+'_from_'+self.DB_name+'_to_'+p)
+                                    self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p] = set()
+                                    self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((p,x),(self.process_name+'_product' , x+'_'+key)))
+                                    self.uncertain_parameters.add_parameter(key,self.DB_name,p)									
+                                else:
+                                    self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((p,x),(self.process_name+'_product' , x+'_'+key)))								
                                 self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex)
                             
                                 
@@ -252,14 +266,5 @@ class Process_Model():
         self.database_Waste.write(self.db_waste_data)
         db = Database(self.DB_name)
         db.write(self.db_data)
+        self.uncertain_parameters.set_params_dict(self.params_dict)
         return(self.parameters,self.act_in_group)
-
-    
-    
-    
-
-        
-        
-
-    
-    
