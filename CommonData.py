@@ -66,3 +66,25 @@ class CommonData:
                 'MFEP':{"Name":"Phosphorus mineral fertilizer equivalent","amount":1,"unit":'kg N/kg N applied',"Reference":None},         
                 'MFEK':{"Name":"Potassium mineral fertilizer equivalent","amount":1,"unit":'kg N/kg N applied',"Reference":None}
                 }
+        
+#############################        
+### Waste Water Treatment ###
+############################# 
+        
+### Waste water Treatment
+        self.WWT = {
+                    'bod_rem':{"Name":"BOD Removal Efficiency","amount":97,"unit":'%',"Reference":'2'},
+                    'cod_rem':{"Name":"COD Removal Efficiency","amount":95,"unit":'%',"Reference":'5'},
+                    'tss_rem':{"Name":"TSS (Total suspended solids) Removal Efficiency","amount":96,"unit":'%',"Reference":'2'},
+                    'n_rem':{"Name":"Total Nitrogen Removal Efficiency","amount":72,"unit":'%',"Reference":'5'},
+                    'p_rem':{"Name":"Phosphate Removal Efficiency","amount":84,"unit":'%',"Reference":'5'},
+                    'metals_rem':{"Name":"Metals Removal Efficiency","amount":85,"unit":'%',"Reference":'2'}
+                    }
+
+### Leachate Treatment  (BOD Treatment)
+        self.Leachate_treat ={
+                    'ad_leachDens':{"Name":"Leachate density","amount":1,"unit":'kg/L',"Reference":None},
+                    'sludgef':{"Name":"Solid waste produced per volume of leachate","amount":1.20,"unit":'kg waste/m3 leachate',"Reference":'2'},
+                    'co2bod':{"Name":"CO2 Biomass produced per BOD removed","amount":3.60,"unit":'kg CO2b/kg BOD',"Reference":'2'},
+                    'elecBOD':{"Name":"Electricity used per mass of BOD removed","amount":0.99,"unit":'kWh/kg BOD removed',"Reference":'2'}
+                    }
