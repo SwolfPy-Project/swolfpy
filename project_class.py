@@ -149,11 +149,16 @@ class project():
 	
     def create_unified_params(self):
         unified_dict = dict()
+        unified_dict2 = dict()
         for item in self.process_model.values():
             for key, value in item.uncertain_parameters.param_uncertainty_dict.items():
                 unified_dict[key]=value
+				
+            for key, value in item.uncertain_parameters.params_dict.items():
+                unified_dict2[key]=value
         self.unified_params = Parameters()
-        self.unified_params.param_uncertainty_dict = unified_dict
+        self.unified_params.set_params_uncertainty_dict(unified_dict)
+        self.unified_params.set_params_dict(unified_dict2)
         		
                     
     def update_parameters(self,new_param_data):
