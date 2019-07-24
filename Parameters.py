@@ -97,7 +97,7 @@ class Parameters():
 		self.rand = MCRandomNumberGenerator(self.vars)
 		self.param_uncertainty_dict_MC = copy.deepcopy(self.param_uncertainty_dict)
 			
-	def next(self):
+	def MC_calc(self):
 		vals = self.rand.next()
 		i = 0
 		sum = 0
@@ -110,7 +110,8 @@ class Parameters():
 		self.normalize()
 		for key in self.params_dict.keys():
 			for item in self.params_dict[key]:
-				matrix[item] = self.get_param_MC_val(key)
+				if self.get_param_MC_val(key) != 0:
+					matrix[item] = self.get_param_MC_val(key)
 		#for item in vals:
 		#	for item2 in self.params_dict[self.uncertainty_vals[i]]:
 		#		matrix[item2] = self.get_param_MC_val(self.uncertainty_vals[i])			

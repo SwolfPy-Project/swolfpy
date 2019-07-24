@@ -5,6 +5,8 @@ Created on Wed May 22 19:19:12 2019
 @author: msmsa
 """
 from project_class import *
+from building_matrices import *
+
 Treatment_processes = {}
 Treatment_processes['AD']={'path':"AD_BW2.csv",'input_type':['MOC','Separated_Organics']}
 Treatment_processes['COMP']={'path':"Composting_BW2.csv",'input_type':['MOC','Separated_Organics']}
@@ -23,11 +25,11 @@ mojtaba.init_project('SWOLF_AccountMode_LCI DATA.csv')
 mojtaba.write_project()
 mojtaba.group_exchanges()
 
-gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 1},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE1', 'amount': 0},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE2', 'amount': 0},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE3', 'amount': 0},
+gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE1', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE2', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE3', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP_to_LF', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_COMP_to_WTE', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_COMP_to_WTE1', 'amount': 0},
@@ -72,11 +74,25 @@ scenario1 = {"WTE":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1},"
              "WTE2":{"Yard_Trimmings_Grass":1,"Paper_Bags":0.1,"Mixed_Plastic":1},
              "WTE3":{"Yard_Trimmings_Grass":0.1,"Paper_Bags":1,"Mixed_Plastic":1}}
 mojtaba.process_start_scenario(scenario1,'scenario1')
-mojtaba.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
+#mojtaba.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
 
 
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 1, scale = 0.1, uncertainty_type = 3)
 
 
+project = "demo_5"
+projects.set_current(project)
+db = Database("waste")
+functional_unit = {db.get("scenario1") : 1}
+method = ('IPCC 2007', 'climate change', 'GWP 100a')
+
+a = ParallelData(functional_unit, method, project, parameters=mojtaba.unified_params) 
+a.run(4,1000)
+from matplotlib.pylab import *
+hist(a.results, density=True, histtype="step")
+xlabel('(IPCC 2007, climate change, GWP 100a)')
+ylabel("Probability")
+    
 
 
 

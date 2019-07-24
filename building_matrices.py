@@ -26,38 +26,59 @@ else:
 
 
 def worker(args):
-    project, functional_unit, method,process_models, process_model_names, tech_matrix, bio_matrix, n = args
+    project, functional_unit, method, process_models, process_model_names, tech_matrix, bio_matrix, n = args
     projects.set_current(project, writable=False)
     lca = LCA(functional_unit, method)
     lca.lci()
     lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method, process_models, process_model_names, tech_matrix, bio_matrix) for x in range(n)]
+    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names) for x in range(n)]
+
+def worker2(args):
+    project, functional_unit, method, param, tech_matrix, bio_matrix, n = args
+    projects.set_current(project, writable=False)
+    lca = LCA(functional_unit, method)
+    lca.lci()
+    lca.lcia()
+    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, parameters=param) for x in range(n)]
+
+def worker3(args):
+    project, functional_unit, method, parameters, process_models, process_model_names, tech_matrix, bio_matrix, n = args
+    projects.set_current(project, writable=False)
+    lca = LCA(functional_unit, method)
+    lca.lci()
+    lca.lcia()
+    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names, parameters) for x in range(n)]
 
 
 
-def parallel_mc (lca, project, functional_unit, method, process_models, process_model_names, tech_matrix, bio_matrix):
-
-    for process in process_models:
-        process.MC_calc()
+def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models = None, process_model_names = None, parameters = None):
     
-    i = 0
-    for process_name in process_model_names:
-        report_dict = process_models[i].report()
-
-        for material,value in report_dict["Technosphere"].items():
-            for key2, value2 in value.items():
-                if value2!=0 and not np.isnan(value2):
-                    if tech_matrix[((key2),(process_name, material))] != value2:
-                        tech_matrix[((key2),(process_name, material))] = value2 
+    if process_models:
+        for process in process_models:
+            process.MC_calc()
+		
+        i = 0
+        for process_name in process_model_names:
+            report_dict = process_models[i].report()
+	
+            for material,value in report_dict["Technosphere"].items():
+                for key2, value2 in value.items():
+                    if value2!=0 and not np.isnan(value2):
+                        if tech_matrix[((key2),(process_name, material))] != value2:
+                            tech_matrix[((key2),(process_name, material))] = value2 
+			
+            for material,value in report_dict["Biosphere"].items():
+                for key2, value2 in value.items():
+                    if value2!=0 and not np.isnan(value2):
+                        if bio_matrix[((key2),(process_name, material))] != value2:
+                            bio_matrix[((key2),(process_name, material))] = value2
+            i+=1
         
-        for material,value in report_dict["Biosphere"].items():
-            for key2, value2 in value.items():
-                if value2!=0 and not np.isnan(value2):
-                    if bio_matrix[((key2),(process_name, material))] != value2:
-                        bio_matrix[((key2),(process_name, material))] = value2
-        i+=1
-        
-    
+    if parameters:
+        for key, value in parameters.MC_calc().items():
+            if key in tech_matrix:
+                tech_matrix[key] = value	
+	
     tech = np.array(list(tech_matrix.values()), dtype=float)
     bio = np.array(list(bio_matrix.values()), dtype=float)
     
@@ -75,7 +96,7 @@ def parallel_mc (lca, project, functional_unit, method, process_models, process_
 
 
 class ParallelData(LCA):
-    def __init__(self, functional_unit, method, project, process_models, process_model_names):
+    def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, parameters = None):
         super(ParallelData, self).__init__(functional_unit, method)
         self.lci()
         self.lcia()
@@ -84,49 +105,85 @@ class ParallelData(LCA):
         self.project = project
         self.process_models = process_models
         self.process_model_names = process_model_names
+        self.parameters = parameters
         
         
         activities_dict = dict(zip(self.activity_dict.values(),self.activity_dict.keys()))
-        tech_matrix = dict()
+        self.tech_matrix = dict()
         for i in self.tech_params:
-            tech_matrix[(activities_dict[i[2]], activities_dict[i[3]])] = i[6]
+            self.tech_matrix[(activities_dict[i[2]], activities_dict[i[3]])] = i[6]
         
         
         biosphere_dict = dict(zip(self.biosphere_dict.values(),self.biosphere_dict.keys()))
-        bio_matrix = dict()
+        self.bio_matrix = dict()
         biosphere_dict_names = dict()
         
         for i in self.bio_params:
-            if (biosphere_dict[i[2]], activities_dict[i[3]]) not in bio_matrix.keys():
-                bio_matrix[(biosphere_dict[i[2]], activities_dict[i[3]])] = i[6]
+            if (biosphere_dict[i[2]], activities_dict[i[3]]) not in self.bio_matrix.keys():
+                self.bio_matrix[(biosphere_dict[i[2]], activities_dict[i[3]])] = i[6]
             else:
-                bio_matrix[(str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
+                self.bio_matrix[(str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
                 
         
-        for x in self.process_models:
-            x.setup_MC()
 
-        
+
+    def run(self, nproc, n):
 
         t1 = time.time()
-        #nproc = mp.cpu_count()
-        nproc = 4
-        n = 100
-        
+        #nproc = mp.cpu_count()        
 
-        
-        with pool_adapter(mp.Pool(processes=nproc)) as pool:
-            res = pool.map(
-                worker,
-                [
-                    (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, tech_matrix, bio_matrix, n//nproc)
-                    for _ in range(nproc)
-                ]
-            )
-        self.results = [x for lst in res for x in lst]
+        if self.process_models and not self.parameters:
+		
+            for x in self.process_models:
+                x.setup_MC()
+				
+            with pool_adapter(mp.Pool(processes=nproc)) as pool:
+                res = pool.map(
+                    worker,
+                    [
+                        (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, self.tech_matrix, self.bio_matrix, n//nproc)
+                        for _ in range(nproc)
+                    ]
+                )
+            self.results = [x for lst in res for x in lst]
+            t2 = time.time()
+            print('total time for %d runs: %0.1f secs. Using %d threads and %d process model(s)' % ((n, t2-t1, nproc, len(self.process_models))))
+			
+        elif self.parameters and not self.process_models:
+		
+            self.parameters.setup_MC()
+			
+            with pool_adapter(mp.Pool(processes=nproc)) as pool:
+                    res = pool.map(
+                    worker2,
+                    [
+                        (self.project, self.functional_unit, self.method, self.parameters, self.tech_matrix, self.bio_matrix, n//nproc)
+                        for _ in range(nproc)
+                    ]
+                )
+            self.results = [x for lst in res for x in lst]
+			
+        else:
+		
+            for x in self.process_models:
+                x.setup_MC()
+				
+            self.parameters.setup_MC()
+
+            with pool_adapter(mp.Pool(processes=nproc)) as pool:
+                res = pool.map(
+                    worker3,
+                    [
+                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.tech_matrix, self.bio_matrix, n//nproc)
+                        for _ in range(nproc)
+                    ]
+                )
+            self.results = [x for lst in res for x in lst]
+			
+		
         
         t2 = time.time()
-        print('total time for %d runs: %0.1f secs. Using %d threads and %d process model(s)' % ((n, t2-t1, nproc, len(self.process_models))))
+        print('total time for %d runs: %0.1f secs. Using %d threads ' % ((n, t2-t1, nproc)))
     
 
     
@@ -160,7 +217,8 @@ if __name__=='__main__':
     process_model_names.append('COMP2')
     process_model_names.append('COMP3')
     a = ParallelData(functional_unit, method, project, process_models, process_model_names) 
-    
+    a.run(4,100)
+	
     from matplotlib.pylab import *
     hist(a.results, density=True, histtype="step")
     xlabel('(IPCC 2007, climate change, GWP 100a)')
