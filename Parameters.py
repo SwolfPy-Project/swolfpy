@@ -28,7 +28,7 @@ class Parameters():
 			for list_item in item:
 				sum += list_item[1]
 				if sum != 1:
-					print("sum is %d and not equal to 1!" %(sum))
+					print("sum is greater than 1!")
 					for i in item:
 						print ("%s : %f" % (i[2],i[1]))
 					sum = 0
