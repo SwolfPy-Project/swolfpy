@@ -23,16 +23,19 @@ class Parameters():
 		
 	def check_sum(self):
 		sum = 0
+		flag = 1
 		for item in self.param_uncertainty_dict.values():
 			for list_item in item:
 				sum += list_item[1]
-				if sum > 1:
-					print("sum is greater than 1!")
+				if sum != 1:
+					print("sum is %d and not equal to 1!" %(sum))
 					for i in item:
 						print ("%s : %f" % (i[2],i[1]))
-					return 0
+					sum = 0
+					flag = 0
+					break
 			sum = 0
-		return 1
+		return flag
 			
 		
 	def set_params_dict(self, params_dict):

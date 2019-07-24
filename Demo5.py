@@ -23,7 +23,7 @@ mojtaba.init_project('SWOLF_AccountMode_LCI DATA.csv')
 mojtaba.write_project()
 mojtaba.group_exchanges()
 
-gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0},
+gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 1},
  {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_AD_to_WTE1', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_AD_to_WTE2', 'amount': 0},
@@ -39,7 +39,7 @@ gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_REPROC_to_WTE2', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_REPROC_to_WTE3', 'amount': 0},
  {'name': 'frac_of_Bottom_Ash_from_REPROC_to_LF', 'amount': 1},
- {'name': 'frac_of_Other_Residual_from_SSMRF_to_LF', 'amount': 0},
+ {'name': 'frac_of_Other_Residual_from_SSMRF_to_LF', 'amount': 1},
  {'name': 'frac_of_Other_Residual_from_SSMRF_to_WTE', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_SSMRF_to_WTE1', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_SSMRF_to_WTE2', 'amount': 0},
