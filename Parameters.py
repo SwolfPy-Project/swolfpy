@@ -27,7 +27,7 @@ class Parameters():
 		for item in self.param_uncertainty_dict.values():
 			for list_item in item:
 				sum += list_item[1]
-				if sum != 1:
+				if sum > 1:
 					print("sum is greater than 1!")
 					for i in item:
 						print ("%s : %f" % (i[2],i[1]))
