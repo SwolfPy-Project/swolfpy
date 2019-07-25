@@ -77,8 +77,9 @@ mojtaba.process_start_scenario(scenario1,'scenario1')
 #mojtaba.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
 
 
-mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 1, scale = 0.1, uncertainty_type = 3)
-
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.5, scale = 0.3, uncertainty_type = 3)
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE', loc = 0.5, scale = 0.3, uncertainty_type = 3)
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE1', loc = 0.5, scale = 0.3, uncertainty_type = 3)
 
 project = "demo_5"
 projects.set_current(project)

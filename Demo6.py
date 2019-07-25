@@ -5,6 +5,8 @@ Created on Wed May 22 19:19:12 2019
 @author: msmsa
 """
 from project_class import *
+from building_matrices import *
+
 Treatment_processes = {}
 Treatment_processes['AD']={'path':"AD_BW2.csv",'input_type':['MOC','Separated_Organics']}
 Treatment_processes['COMP']={'path':"Composting_BW2.csv",'input_type':['MOC','Separated_Organics']}
@@ -26,11 +28,11 @@ mojtaba.init_project('SWOLF_AccountMode_LCI DATA.csv')
 mojtaba.write_project()
 mojtaba.group_exchanges()
 
-gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0.1},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0.25},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE1', 'amount': 0.25},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE2', 'amount': 0.25},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE3', 'amount': 0.25},
+gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE1', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE2', 'amount': 0.2},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE3', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP_to_LF', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP_to_WTE', 'amount': 0.2},
  {'name': 'frac_of_Other_Residual_from_COMP_to_WTE1', 'amount': 0.2},
@@ -140,13 +142,31 @@ scenario3 = {"WTE":{'Yard_Trimmings_Leaves':1, 'Yard_Trimmings_Grass':1, 'Yard_T
              "COMP2":{"Yard_Trimmings_Grass":9,"Yard_Trimmings_Leaves":6},
              "COMP3":{"Yard_Trimmings_Grass":3,"Yard_Trimmings_Leaves":1}}
 mojtaba.process_start_scenario(scenario3,'scenario3')
-mojtaba.Do_LCA("scenario3",('IPCC 2007', 'climate change', 'GWP 100a'),1)
+#mojtaba.Do_LCA("scenario3",('IPCC 2007', 'climate change', 'GWP 100a'),1)
 
 
 
 
 
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_LF', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE1', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE2', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE3', loc = 0.2, scale = 0.1, uncertainty_type = 3)
 
+project = "demo_6"
+projects.set_current(project)
+db = Database("waste")
+functional_unit = {db.get("scenario3") : 1}
+method = ('IPCC 2007', 'climate change', 'GWP 100a')
+
+a = ParallelData(functional_unit, method, project, parameters=mojtaba.unified_params) 
+a.run(4,1000)
+from matplotlib.pylab import *
+hist(a.results, density=True, histtype="step")
+xlabel('(IPCC 2007, climate change, GWP 100a)')
+ylabel("Probability")
+    
 
 
 
