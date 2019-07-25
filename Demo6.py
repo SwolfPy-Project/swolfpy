@@ -6,6 +6,9 @@ Created on Wed May 22 19:19:12 2019
 """
 from project_class import *
 from building_matrices import *
+from WTE import *
+from Composting import *
+import pickle
 
 Treatment_processes = {}
 Treatment_processes['AD']={'path':"AD_BW2.csv",'input_type':['MOC','Separated_Organics']}
@@ -96,10 +99,10 @@ mojtaba.update_parameters(gg)
 #mojtaba.process_start_scenario(scenario1,'scenario1')
 #mojtaba.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
 #
-#scenario2 = {"WTE":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
-#             "WTE1":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
-#             "WTE2":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
-#             "WTE3":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines_':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#scenario2 = {"WTE":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#             "WTE1":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#             "WTE2":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
+#             "WTE3":{"Yard_Trimmings_Grass":1,"Paper_Bags":1,"Mixed_Plastic":1,'Wood':1,'Office_Paper':2 ,'Magazines':1, 'third_Class_Mail':3, 'Folding_Containers' : 2, 'Mixed_Paper' :1 },
 #             "COMP":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":7},
 #             "COMP1":{"Yard_Trimmings_Grass":2,"Yard_Trimmings_Leaves":5},
 #             "COMP2":{"Yard_Trimmings_Grass":9,"Yard_Trimmings_Leaves":6},
@@ -110,28 +113,28 @@ mojtaba.update_parameters(gg)
 
 
 scenario3 = {"WTE":{'Yard_Trimmings_Leaves':1, 'Yard_Trimmings_Grass':1, 'Yard_Trimmings_Branches':1, 'Food_Waste_Vegetable':1, 'Food_Waste_Non_Vegetable':1,
-                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines_':1, 'third_Class_Mail':1,
+                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines':1, 'third_Class_Mail':1,
                       'Folding_Containers':1, 'Paper_Bags':1, 'Mixed_Paper':1, 'Paper_Non_recyclable':1, 'HDPE_Translucent_Containers':1, 'HDPE_Pigmented_Containers':1, 'PET_Containers':1,
                       'Plastic_Other_1_Polypropylene':1, 'Plastic_Other_2':1, 'Mixed_Plastic':1, 'Plastic_Film':1, 'Plastic_Non_Recyclable':1, 'Ferrous_Cans':1, 'Ferrous_Metal_Other':1,
                       'Aluminum_Cans':1, 'Aluminum_Foil':1, 'Aluminum_Other':1, 'Ferrous_Non_recyclable':1, 'Al_Non_recyclable':1, 'Glass_Brown':1, 'Glass_Green':1,
                       'Glass_Clear':1, 'Mixed_Glass':1, 'Glass_Non_recyclable':1, 'Misc_Organic':1, 'Misc_Inorganic':1, 'E_waste':1, 'Aerobic_Residual':1,
                       'Anaerobic_Residual':1, 'Bottom_Ash':1, 'Fly_Ash':1, 'Diapers_and_sanitary_products':1},
              "WTE1":{'Yard_Trimmings_Leaves':1, 'Yard_Trimmings_Grass':1, 'Yard_Trimmings_Branches':1, 'Food_Waste_Vegetable':1, 'Food_Waste_Non_Vegetable':1,
-                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines_':1, 'third_Class_Mail':1,
+                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines':1, 'third_Class_Mail':1,
                       'Folding_Containers':1, 'Paper_Bags':1, 'Mixed_Paper':1, 'Paper_Non_recyclable':1, 'HDPE_Translucent_Containers':1, 'HDPE_Pigmented_Containers':1, 'PET_Containers':1,
                       'Plastic_Other_1_Polypropylene':1, 'Plastic_Other_2':1, 'Mixed_Plastic':1, 'Plastic_Film':1, 'Plastic_Non_Recyclable':1, 'Ferrous_Cans':1, 'Ferrous_Metal_Other':1,
                       'Aluminum_Cans':1, 'Aluminum_Foil':1, 'Aluminum_Other':1, 'Ferrous_Non_recyclable':1, 'Al_Non_recyclable':1, 'Glass_Brown':1, 'Glass_Green':1,
                       'Glass_Clear':1, 'Mixed_Glass':1, 'Glass_Non_recyclable':1, 'Misc_Organic':1, 'Misc_Inorganic':1, 'E_waste':1, 'Aerobic_Residual':1,
                       'Anaerobic_Residual':1, 'Bottom_Ash':1, 'Fly_Ash':1, 'Diapers_and_sanitary_products':1},
              "WTE2":{'Yard_Trimmings_Leaves':1, 'Yard_Trimmings_Grass':1, 'Yard_Trimmings_Branches':1, 'Food_Waste_Vegetable':1, 'Food_Waste_Non_Vegetable':1,
-                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines_':1, 'third_Class_Mail':1,
+                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines':1, 'third_Class_Mail':1,
                       'Folding_Containers':1, 'Paper_Bags':1, 'Mixed_Paper':1, 'Paper_Non_recyclable':1, 'HDPE_Translucent_Containers':1, 'HDPE_Pigmented_Containers':1, 'PET_Containers':1,
                       'Plastic_Other_1_Polypropylene':1, 'Plastic_Other_2':1, 'Mixed_Plastic':1, 'Plastic_Film':1, 'Plastic_Non_Recyclable':1, 'Ferrous_Cans':1, 'Ferrous_Metal_Other':1,
                       'Aluminum_Cans':1, 'Aluminum_Foil':1, 'Aluminum_Other':1, 'Ferrous_Non_recyclable':1, 'Al_Non_recyclable':1, 'Glass_Brown':1, 'Glass_Green':1,
                       'Glass_Clear':1, 'Mixed_Glass':1, 'Glass_Non_recyclable':1, 'Misc_Organic':1, 'Misc_Inorganic':1, 'E_waste':1, 'Aerobic_Residual':1,
                       'Anaerobic_Residual':1, 'Bottom_Ash':1, 'Fly_Ash':1, 'Diapers_and_sanitary_products':1},
              "WTE3":{'Yard_Trimmings_Leaves':1, 'Yard_Trimmings_Grass':1, 'Yard_Trimmings_Branches':1, 'Food_Waste_Vegetable':1, 'Food_Waste_Non_Vegetable':1,
-                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines_':1, 'third_Class_Mail':1,
+                      'Wood':1, 'Wood_Other':1, 'Textiles':1, 'Rubber_Leather':1, 'Newsprint':1, 'Corr_Cardboard':1, 'Office_Paper':1, 'Magazines':1, 'third_Class_Mail':1,
                       'Folding_Containers':1, 'Paper_Bags':1, 'Mixed_Paper':1, 'Paper_Non_recyclable':1, 'HDPE_Translucent_Containers':1, 'HDPE_Pigmented_Containers':1, 'PET_Containers':1,
                       'Plastic_Other_1_Polypropylene':1, 'Plastic_Other_2':1, 'Mixed_Plastic':1, 'Plastic_Film':1, 'Plastic_Non_Recyclable':1, 'Ferrous_Cans':1, 'Ferrous_Metal_Other':1,
                       'Aluminum_Cans':1, 'Aluminum_Foil':1, 'Aluminum_Other':1, 'Ferrous_Non_recyclable':1, 'Al_Non_recyclable':1, 'Glass_Brown':1, 'Glass_Green':1,
@@ -154,31 +157,8 @@ mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE1
 mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE2', loc = 0.2, scale = 0.1, uncertainty_type = 3)
 mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE3', loc = 0.2, scale = 0.1, uncertainty_type = 3)
 
-project = "demo_6"
-projects.set_current(project)
-db = Database("waste")
-functional_unit = {db.get("scenario3") : 1}
-method = ('IPCC 2007', 'climate change', 'GWP 100a')
+pickle.dump(mojtaba, open ("project.p", "wb")) 
 
-a = ParallelData(functional_unit, method, project, parameters=mojtaba.unified_params) 
-a.run(4,1000)
-from matplotlib.pylab import *
-hist(a.results, density=True, histtype="step")
-xlabel('(IPCC 2007, climate change, GWP 100a)')
-ylabel("Probability")
-    
-
-
-
-
-
-
-
-
-
-
-
-     
         
         
     
