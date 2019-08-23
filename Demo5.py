@@ -77,9 +77,9 @@ mojtaba.process_start_scenario(scenario1,'scenario1')
 #mojtaba.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
 
 
-mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.5, scale = 0.3, uncertainty_type = 3)
-mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE', loc = 0.5, scale = 0.3, uncertainty_type = 3)
-mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE1', loc = 0.5, scale = 0.3, uncertainty_type = 3)
+#mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.5, scale = 0.3, uncertainty_type = 3)
+#mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE', loc = 0.5, scale = 0.3, uncertainty_type = 3)
+#mojtaba.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE1', loc = 0.5, scale = 0.3, uncertainty_type = 3)
 
 project = "demo_5"
 projects.set_current(project)
@@ -87,7 +87,15 @@ db = Database("waste")
 functional_unit = {db.get("scenario1") : 1}
 method = ('IPCC 2007', 'climate change', 'GWP 100a')
 
-a = ParallelData(functional_unit, method, project, parameters=mojtaba.unified_params) 
+#a = ParallelData(functional_unit, method, project, parameters=mojtaba.unified_params) 
+
+process_models = list()
+process_model_names = list()
+    
+process_models.append(WTE())
+process_model_names.append('WTE')
+
+a = ParallelData(functional_unit, method, project, process_models, process_model_names)
 a.run(4,1000)
 from matplotlib.pylab import *
 hist(a.results, density=True, histtype="step")

@@ -11,6 +11,7 @@ from CommonData import *
 from stats_arrays import *
 
 
+
 class WTE:
     def __init__(self):
         self.CommonData = CommonData()
@@ -155,10 +156,45 @@ class WTE:
             self.APC_Consumption.loc['Unit',x]= 'kg/Mg ww'
         
 
+    def create_uncertainty_from_inputs(self):
+        self.uncertain_dict = dict()
+        cols = list(self.process_data)
+        for col in range(0,len(cols),7):
+            self.uncertain_dict[cols[col]] = list()
+            for val in range(len(self.process_data[cols[col]][3:])):
+                self.uncertain_dict[cols[col]].append(dict())
+                if not np.isnan(self.process_data[cols[col+1]][3+val]):
+                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = int(self.process_data[cols[col+1]][3+val])
+                    self.uncertain_dict[cols[col]][val]['loc'] = self.process_data[cols[col+2]][3+val]
+                    self.uncertain_dict[cols[col]][val]['scale'] = self.process_data[cols[col+3]][3+val]
+                    self.uncertain_dict[cols[col]][val]['shape'] = self.process_data[cols[col+4]][3+val]
+                    self.uncertain_dict[cols[col]][val]['minimum'] = self.process_data[cols[col+5]][3+val]
+                    self.uncertain_dict[cols[col]][val]['maximum'] = self.process_data[cols[col+6]][3+val]
+                else:
+                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = 0
+							
+        self.variables = dict()
+        self.rng = dict()
+        for key in self.uncertain_dict.keys():
+            self.variables[key] = UncertaintyBase.from_dicts(*self.uncertain_dict[key])
+            self.rng[key] = MCRandomNumberGenerator(self.variables[key])
+		
+    def uncertainty_input_next(self):
+        data = dict()
+        for key in self.rng.keys():
+            data[key] = self.rng[key].next()
+            for val in range(len(self.process_data[key][3:])):
+                if not np.isnan(data[key][val]):			
+                    self.process_data.at[(self.process_data.index.values[3+val]),key] = data[key][val]
+
+		
+		
     def setup_MC(self):
         self.WTE_input.setup_MC()
+        self.create_uncertainty_from_inputs()
     def MC_calc(self):      
         self.WTE_input.gen_MC()
+        self.uncertainty_input_next()
         self.calc()
     def report(self):
         ### Output

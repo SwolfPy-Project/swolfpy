@@ -162,7 +162,9 @@ class ParallelData(LCA):
                     ]
                 )
             self.results = [x for lst in res for x in lst]
-			
+            t2 = time.time()
+            print('total time for %d runs: %0.1f secs. Using %d threads ' % ((n, t2-t1, nproc)))
+ 			
         else:
 		
             for x in self.process_models:
@@ -178,12 +180,9 @@ class ParallelData(LCA):
                         for _ in range(nproc)
                     ]
                 )
-            self.results = [x for lst in res for x in lst]
-			
-		
-        
-        t2 = time.time()
-        print('total time for %d runs: %0.1f secs. Using %d threads ' % ((n, t2-t1, nproc)))
+            self.results = [x for lst in res for x in lst]     
+            t2 = time.time()
+            print('total time for %d runs: %0.1f secs. Using %d threads ' % ((n, t2-t1, nproc)))
     
 
     
