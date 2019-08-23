@@ -9,7 +9,16 @@ import numpy as np
 from stats_arrays import *
 class AD_input:
     def __init__(self):
-        pass
+
+### Assumed Composition 
+        self.Assumed_Comp = [0.1587847314,0.1199794853,0.1172076820,0.3296762444,0.0824190611,0.0065468408,0.0000264482,
+                             0.0058447349,0.0006849813,0.0065073226,0.0191333727,0.0034644248,0.0010472311,0.0028584798,
+                             0.0036027383,0.0027399253,0.0000264482,0.0385170270,0.0021076349,0.0038200882,0.0070342313,
+                             0.0000264482,0.0000264482,0.0000264482,0.0103537562,0.0295859243,0.0015148626,0.0002897998,
+                             0.0009484357,0.0012118900,0.0000264482,0.0000264482,0.0001317272,0.0143846079,0.0061648320,
+                             0.0041098880,0.0000264482,0.0000264482,0.0000264482,0.0190635573,0.0,0.0,0.0,0.0,0.0,0.0,
+                             0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]       
+
 
 ### Land application inputs
         self.Land_app = {
@@ -31,6 +40,15 @@ class AD_input:
                 'dmRed_Dig':{'Name':'VS reduction of digestate during curing','amount':0.3,'unit':None,'Referenc':'29'},
                 'VSlossPerCloss':{'Name':'Mass of VS loss per mole of C loss','amount':12,'unit':'g/mol C','Referenc':None},
                 }
+
+### Curing Windrow Turning
+        self.Windrow_turn = {
+                'Tcur':{'Name':'Retention time in windrows','amount':21 ,'unit':'days','Referenc':None},
+                'Mwta':{'Name':'Turning energy required per ton of compost','amount':0.24 ,'unit':'kWh/Mg','Referenc':None},
+                'Mwfa':{'Name':'The fuel consumption of a windrow turner','amount':0.13 ,'unit':'L/kWh','Referenc':None},
+                'turnFreq':{'Name':'Turning frequency','amount':0.43 ,'unit':'1/days','Referenc':None}
+                }
+        
         
 ### Facility Operation
         self.AD_operation = {
@@ -38,6 +56,7 @@ class AD_input:
                 'ophrsperday':{'Name':'Daily operating hours','amount':8,'unit':'hours','Referenc':None},
                 'opdaysperyear':{'Name':'Annual operating days','amount':260,'unit':'days','Referenc':None},
                 'retentionTime':{'Name':'Average retention time in reactor','amount':21,'unit':'days','Referenc':None},
+                'recircMax':{'Name':'Maximum proportion of reactor water that can come from recirculation','amount':0.8,'unit':'fraction','Referenc':None},
                 'isDw':{'Name':'Dewater digestate? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
                 'isCured':{'Name':'Cure digestate solids stream? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
                 'choice_BU':{'Name':'Digestate Beneficial Use (1) or No Beneficial Use (0)','amount':1,'unit':'0/1','Referenc':None},
@@ -82,13 +101,81 @@ class AD_input:
                 'payload_POTW':{'Name':'Actual payload of truck to treatment facility','amount':23 ,'unit':'Mg','Referenc':None},
                 'er_wwtpLF':{'Name':'Empty return from LF to WWTP (1-Yes, 0-No)','amount':1 ,'unit':'0/1','Referenc':None},
                 'payload_LFPOTW':{'Name':'Actual payload of truck to LF from WWTP','amount':23 ,'unit':'Mg','Referenc':None},
-                'lchBODcont':{'Name':'BOD','amount':2300 ,'unit':'mg/L','Referenc':'28'},
-                'lchCODcont':{'Name':'COD','amount':61610 ,'unit':'mg/L','Referenc':'31'},
-                'lchTSScont':{'Name':'Total suspended solids','amount':1450 ,'unit':'mg/L','Referenc':'28'},
-                'conc_totN':{'Name':'Total N','amount':1350 ,'unit':'mg/L','Referenc':'28'},
+                'lchBODcont':{'Name':'BOD','amount':2.3 ,'unit':'kg/m3','Referenc':'28'},
+                'lchCODcont':{'Name':'COD','amount':61.610 ,'unit':'kg/m3','Referenc':'31'},
+                'lchTSScont':{'Name':'Total suspended solids','amount':1.450 ,'unit':'kg/m3','Referenc':'28'},
+                'conc_totN':{'Name':'Total N','amount':1.350 ,'unit':'kg/m3','Referenc':'28'},
+                'conc_Fe':{'Name':'Iron','amount':0 ,'unit':'kg/m3','Referenc':None},
+                'conc_Cu':{'Name':'Copper','amount':0 ,'unit':'kg/m3','Referenc':None},
+                'conc_Cd':{'Name':'Cadmium','amount':0.00003 ,'unit':'kg/m3','Referenc':39},
+                'conc_As':{'Name':'Arsenic','amount':0 ,'unit':'kg/m3','Referenc':None},
+                'conc_Hg':{'Name':'Mercury','amount':0.000026 ,'unit':'kg/m3','Referenc':39},
+                'conc_P':{'Name':'Phosphate','amount':0.06 ,'unit':'kg/m3','Referenc':39},
+                'conc_Se':{'Name':'Selenium','amount':0 ,'unit':'kg/m3','Referenc':None},
+                'conc_Cr':{'Name':'Chromium','amount':0 ,'unit':'kg/m3','Referenc':None},
+                'conc_Pb':{'Name':'Lead','amount':0.00261 ,'unit':'kg/m3','Referenc':39},
+                'conc_Zn':{'Name':'Zinc','amount':0.0108 ,'unit':'kg/m3','Referenc':39},
+                'conc_Ba':{'Name':'Barium','amount':0 ,'unit':'kg/m3','Referenc':None},
+                'conc_Ag':{'Name':'Silver','amount':0 ,'unit':'kg/m3','Referenc':None},
                 'wwtp_lf_dist':{'Name':'Distance from WWTP to landfill','amount':25 ,'unit':'km','Referenc':None}
                 }
-             
+### Screening
+        self.Post_Screen ={
+                'ad_engScreen':{"Name":"Post-screen specific electricity consumption","amount":0.000882,"unit":'kWh/kg',"Reference":7},
+                'ad_scrEff_WC':{"Name":"Proportion of wood chips remaining after post-screening","amount":0.75,"unit":'fraction',"Reference":None}
+                }
+
+### Material Properties
+        self.Material_Properties ={
+            'ad_mcReactor':{'Name':'Reactor moisture content','amount':0.92 ,'unit':'mass water/total mass','Referenc':20},
+            'ad_mcFC':{'Name':'Finished compost moisture content','amount':0.45 ,'unit':'mass water/total mass','Referenc':None},
+            'ad_densFC':{'Name':'Density of final compost','amount':700 ,'unit':'kg/m3','Referenc':2},
+            'wcMC':{'Name':'Wood chip moisture content','amount':0.1586 ,'unit':'%','Referenc':None},
+            'wcVSC':{'Name':'Wood chip VS content','amount':0.906 ,'unit':'%TS','Referenc':None}
+            }
+        
+### Dewatering Parameters
+        self.Dewater ={
+            'elec_dw':{'Name':'Electricity Use','amount':75 ,'unit':'kWh/Mg TS throughput','Referenc':None},
+            'ad_mcDigestate':{'Name':'Moisture Content of Solids Stream After Dewatering','amount':0.76 ,'unit':'mass water/total mass','Referenc':None}
+            }
+
+### Digestate Properties 
+        self.Dig_prop = {
+                'mcInitComp':{'Name':'Composting beginning moisture content (used to calculate wood chip requirements)','amount': 0.6,'unit':'mass water/total mass','Referenc':None},
+                'digliqdens':{'Name':'Digestate Liquids Density','amount':1 ,'unit':'kg/L','Referenc':None},
+                'perNSolid':{'Name':'Percent N to solids','amount':96 ,'unit':'%','Referenc':None},
+                'perPSolid':{'Name':'Percent P to solids','amount':98.7 ,'unit':'%','Referenc':None},
+                'perKSolid':{'Name':'Percent K to solids','amount':98.7 ,'unit':'%','Referenc':None}
+                }
+
+### Facility Energy Use
+        self.Fac_Energy = {
+        'Dsl_facility':{'Name':'Diesel fuel used by anaerobic digestion facility (not curing)','amount':0.3 ,'unit':'L/Mg','Referenc':28},
+        'elec_preproc':{'Name':'Pre-processing Electricity Use','amount':9 ,'unit':'kWh/Mg','Referenc':28},
+        'elec_facility':{'Name':'AD facility electricity use (excluding pre-process, dewatering, and curing)','amount':49 ,'unit':'kWh/Mg','Referenc':28}
+                }  
+
+### Front End Loader
+        self.Loader = {
+                'hpFEL':{"Name":"Front end loader use per facility capacity.","amount":0.168 ,"unit":'kW/Mgd',"Reference":'5'},
+                'mfFEL':{"Name":"Front end loader specific fuel consumption.","amount":0.26 ,"unit":'L/kWh',"Reference":'6'}
+                }
+
+### Wood Chip Shredding
+        self.shredding ={
+                'Mtgp':{"Name":"Grinder power rating.","amount":10.6,"unit":'kWh/Mg',"Reference":'9'},
+                'Mtgf':{"Name":"Grinder fuel consumption","amount":0.25,"unit":'L/kWh',"Reference":'9'}
+                }
+
+### Soil Sequestration
+        self.Soil_seq ={
+                'perCStor':{"Name":"Percent of carbon in finished compost remaining after 100 years","amount":10,"unit":'%',"Reference":'3'},
+                'percCStor_LF':{"Name":"Percent of carbon in compost remaining after 100 years","amount":100,"unit":'%',"Reference":None},
+                'humFormFac':{"Name":"100 year carbon storage from humus formation","amount":0,"unit":'kg-C/kg-C in compost',"Reference":'4'}
+                }        
+        
+                
 """        
         {
 '':{'Name':'','amount': ,'unit':'','Referenc':None},

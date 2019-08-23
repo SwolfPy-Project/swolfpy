@@ -71,7 +71,7 @@ class Comp_input:
                 'preNH3toN2O':{"Name":"Proportion of removed NH3 that becomes Nitrous Oxide","amount":0,"unit":None,"Reference":'18'},
                 'bfVOCre':{"Name":"Biofilter VOC removal efficiency","amount":18,"unit":'%',"Reference":'32'},
                 'percCStor':{"Name":"Percent of carbon in compost remaining after 100 years","amount":10,"unit":'%',"Reference":'5'},
-                'percCStor_LF':{"Name":"Percent of carbon in compost remaining after 100 years","amount":100,"unit":'%',"Reference":'5'},
+                'percCStor_LF':{"Name":"Percent of carbon in compost remaining after 100 years","amount":100,"unit":'%',"Reference":None},
                 'humFormFac':{"Name":"100 year carbon storage from humus formation","amount":0,"unit":'kg-C/kg-C in Compost',"Reference":'6'}
                 }
         
@@ -122,7 +122,7 @@ class Comp_input:
         self.Fertilizer_offsest = {
                 'choice_BU':{"Name":"Offset Beneficial Use of Compost? (0=no; 1=yes)","amount":1,"unit":None,"Reference":None},
                 'peatOff':{"Name":"Soil amendment offset peat (1) or no (0)","amount":1,"unit":None,"Reference":None},
-                'fertOff':{"Name":"Soil amendment offset fertilizer (1) or no (0)","amount":0,"unit":None,"Reference":None}
+                'fertOff':{"Name":"Soil amendment offset fertilizer (1) or no (0)","amount":1,"unit":None,"Reference":None}
                 }              
         
 ### Active Compost Force Aeration        

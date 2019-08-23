@@ -32,7 +32,6 @@ class Comp:
         self.Assumed_Comp = pd.Series(self.Comp_input.Assumed_Comp,index=self.Index)
         self.SD=pd.read_excel('comp_stat.xlsx', index_col = 'Index')
                 ### Mass Flows
-        self.Mass_flows=pd.DataFrame(index = self.Index)
         self.LCI = pd.DataFrame(index = self.Index)
     def calc(self):
 ### Initial mass at tipping floor  
@@ -57,7 +56,7 @@ class Comp:
                                (self.Comp_input.Degradation_Parameters['initMC']['amount']* self.mixed.flow - self.mixed.water)/(1-self.Comp_input.Degradation_Parameters['initMC']['amount'])
         water_flow = self.water_added * self.mixed.data['sol_cont']/self.mixed.solid
         self.substrate_to_ac = add_water(self.mixed,water_flow,self.Material_Properties[4:],self.process_data[3:])
-             
+
 ### Active Composting
         self.substrate_to_ps=ac_comp(self.substrate_to_ac,self.CommonData,self.process_data[3:],self.Comp_input,self.Comp_input.Degradation_Parameters,self.Comp_input.Biological_Degredation,self.Assumed_Comp,self.Material_Properties[4:],self.LCI)
 

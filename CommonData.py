@@ -51,7 +51,7 @@ class CommonData:
         
 ### STP Measurements
         self.STP = {'mole_to_L':{"Name":"mole to Liter","amount":22.41 ,"unit":"L","Reference":None},
-                   'm3CH4_to_kg':{"Name":"m3 CH4 to kg CH4","amount": 0.716 ,"unit":"kg","Reference":None},
+                   'm3CH4_to_kg':{"Name":"m3 CH4 to kg CH4","amount": 0.71589 ,"unit":"kg","Reference":None},
                    'm3CO2_to_kg':{"Name":"m3 CO2 to kg","amount": self.MW['CO2']['amount']/22.41 ,"unit":"kg","Reference":None},
                    "Density_Air":{"Name":"Density_Air","amount":22.4,"unit":"L/mol","Reference":None}
                    }
