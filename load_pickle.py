@@ -42,8 +42,28 @@ proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE1', 
 proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE2', loc = 0.2, scale = 0.1, uncertainty_type = 3)
 proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP_to_WTE3', loc = 0.2, scale = 0.1, uncertainty_type = 3)
 
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP1_to_LF', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP1_to_WTE', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP1_to_WTE1', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP1_to_WTE2', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP1_to_WTE3', loc = 0.2, scale = 0.1, uncertainty_type = 3)
 
-a = ParallelData(functional_unit, method, project, process_models, process_model_names, parameters=proj.unified_params) 
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP2_to_LF', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP2_to_WTE', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP2_to_WTE1', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP2_to_WTE2', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP2_to_WTE3', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+
+
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP3_to_LF', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP3_to_WTE', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP3_to_WTE1', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP3_to_WTE2', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+proj.unified_params.add_uncertainty('frac_of_Other_Residual_from_COMP3_to_WTE3', loc = 0.2, scale = 0.1, uncertainty_type = 3)
+
+
+
+a = ParallelData(functional_unit, method, project, parameters=proj.unified_params) 
 a.run(8,1000)
 from matplotlib.pylab import *
 hist(a.results, density=True, histtype="step")
