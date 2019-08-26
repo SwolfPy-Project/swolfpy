@@ -1,10 +1,9 @@
 from brightway2 import *
 import numpy as np
-#from time import time
-from brightway2 import *
 from Required_keys import *
 from WTE import *
 from Composting import *
+from AD import *
 import multiprocessing as mp
 import sys
 from multiprocessing import Queue
@@ -67,6 +66,17 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
                     if value2!=0 and not np.isnan(value2):
                         if tech_matrix[((key2),(process_name, material))] != value2:
                             tech_matrix[((key2),(process_name, material))] = value2 
+                            
+            for material,value in report_dict["Waste"].items():
+                for key2, value2 in value.items():
+                    if key2 in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual','RDF','Al','Fe','Cu']:
+                        key2 = (process_name + "_product",material+'_'+key2)
+                    else:
+                        key2 = (process_name + "_product",key2)
+                    if value2!=0 and not np.isnan(value2):
+                        if tech_matrix[((key2),(process_name, material))] != value2:
+                            tech_matrix[((key2),(process_name, material))] = value2
+                            print(tech_matrix[((key2),(process_name, material))])
 			
             for material,value in report_dict["Biosphere"].items():
                 for key2, value2 in value.items():
@@ -90,7 +100,6 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
         lca.lcia_calculation()
         if lca.weighting:
             lca.weighting_calculation()
-
     return(lca.score)
     
     
@@ -177,43 +186,11 @@ class ParallelData(LCA):
 
 
     
-"""    
+   
 if __name__=='__main__':
-    project = "demo_6"
-    projects.set_current(project)
-    db = Database("waste")
-    functional_unit = {db.get("scenario3") : 1}
-    method = ('IPCC 2007', 'climate change', 'GWP 100a')
+    pass
     
-    process_models = list()
-    process_model_names = list()
-    
-    process_models.append(WTE())
-    process_models.append(WTE())
-    process_models.append(WTE())
-    process_models.append(WTE())
-    process_models.append(Comp())
-    process_models.append(Comp())
-    process_models.append(Comp())
-    process_models.append(Comp())
-    
-    
-    process_model_names.append('WTE')
-    process_model_names.append('WTE1')
-    process_model_names.append('WTE2')
-    process_model_names.append('WTE3')
-    process_model_names.append('COMP')
-    process_model_names.append('COMP1')
-    process_model_names.append('COMP2')
-    process_model_names.append('COMP3')
-    a = ParallelData(functional_unit, method, project, process_models, process_model_names) 
-    a.run(4,100)
-	
-    from matplotlib.pylab import *
-    hist(a.results, density=True, histtype="step")
-    xlabel('(IPCC 2007, climate change, GWP 100a)')
-    ylabel("Probability")
      
-"""    
+  
 
 

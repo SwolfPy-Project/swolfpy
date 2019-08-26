@@ -18,8 +18,9 @@ class WTE:
         self.WTE_input= WTE_input()
         ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
+        self.Material_Properties.fillna(0,inplace=True)
         self.process_data=pd.read_excel("Material properties - process modles.xlsx", sheet_name = 'WTE', index_col = 'Parameter')
-        
+        self.process_data.fillna(0,inplace=True)
         self.Index = self.CommonData.Index
 
         
@@ -157,21 +158,22 @@ class WTE:
         
 
     def create_uncertainty_from_inputs(self):
+        self.process_data_1=pd.read_excel("Material properties - process modles.xlsx", sheet_name = 'WTE', index_col = 'Parameter')
         self.uncertain_dict = dict()
-        cols = list(self.process_data)
+        cols = list(self.process_data_1)
         for col in range(0,len(cols),7):
             self.uncertain_dict[cols[col]] = list()
             for val in range(len(self.process_data[cols[col]][3:])):
                 self.uncertain_dict[cols[col]].append(dict())
-                if not np.isnan(self.process_data[cols[col+1]][3+val]):
-                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = int(self.process_data[cols[col+1]][3+val])
-                    self.uncertain_dict[cols[col]][val]['loc'] = self.process_data[cols[col+2]][3+val]
-                    self.uncertain_dict[cols[col]][val]['scale'] = self.process_data[cols[col+3]][3+val]
-                    self.uncertain_dict[cols[col]][val]['shape'] = self.process_data[cols[col+4]][3+val]
-                    self.uncertain_dict[cols[col]][val]['minimum'] = self.process_data[cols[col+5]][3+val]
-                    self.uncertain_dict[cols[col]][val]['maximum'] = self.process_data[cols[col+6]][3+val]
+                if not np.isnan(self.process_data_1[cols[col+1]][3+val]):
+                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = int(self.process_data_1[cols[col+1]][3+val])
+                    self.uncertain_dict[cols[col]][val]['loc'] = self.process_data_1[cols[col+2]][3+val]
+                    self.uncertain_dict[cols[col]][val]['scale'] = self.process_data_1[cols[col+3]][3+val]
+                    self.uncertain_dict[cols[col]][val]['shape'] = self.process_data_1[cols[col+4]][3+val]
+                    self.uncertain_dict[cols[col]][val]['minimum'] = self.process_data_1[cols[col+5]][3+val]
+                    self.uncertain_dict[cols[col]][val]['maximum'] = self.process_data_1[cols[col+6]][3+val]
                 else:
-                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = 0
+                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = 1
 							
         self.variables = dict()
         self.rng = dict()
@@ -185,7 +187,7 @@ class WTE:
             data[key] = self.rng[key].next()
             for val in range(len(self.process_data[key][3:])):
                 if not np.isnan(data[key][val]):			
-                    self.process_data.at[(self.process_data.index.values[3+val]),key] = data[key][val]
+                    self.process_data.at[(self.process_data_1.index.values[3+val]),key] = data[key][val]
 
 		
 		

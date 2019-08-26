@@ -100,11 +100,12 @@ class WTE_input:
         "carbon":{'name':'Mg carbon/Mg MSW','amount':0.0006,"unit":'Mg/Mgww',"Reference":None ,"Distance_from_prod_fac":100, "Empty_Return_Truck":1}       
                 }
         
-        self.WTE_Input_list = [self.Economic_parameters, self.Elec_Prod_Eff,self.Stack_Gas_Conc_Non_metal,self.Stack_metal_emission,\
-                               self.Fly_Ash_metal_emission,self.Bottom_Ash_metal_emission,self.Metals_Recovery,self.Material_Consumption]
-        
+
     
     def setup_MC(self):
+        self.WTE_Input_list = [self.Economic_parameters, self.Elec_Prod_Eff,self.Stack_Gas_Conc_Non_metal,self.Stack_metal_emission,\
+                       self.Fly_Ash_metal_emission,self.Bottom_Ash_metal_emission,self.Metals_Recovery,self.Material_Consumption]
+        
         self.list_var = list()
         for x in self.WTE_Input_list:
             for y in x:

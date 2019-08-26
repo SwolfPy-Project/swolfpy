@@ -168,7 +168,8 @@ class Process_Model():
             
             
             for key in self.process_model_output ["Waste"][x]:
-                if self.process_model_output ["Waste"][x][key] != 0:
+                #if self.process_model_output ["Waste"][x][key] != 0:
+                if True:
                     if key in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual',
                      'RDF','Al','Fe','Cu']:
                         ex = {}                        # add exchange to activities
@@ -246,7 +247,8 @@ class Process_Model():
                         
           
             for key in self.process_model_output ["Technosphere"][x]:
-                if self.process_model_output ["Technosphere"][x][key] != 0:
+                #if self.process_model_output ["Technosphere"][x][key] != 0:
+                if True:
                     ex = {}                        # add exchange to activities
                     ex['amount'] = self.process_model_output ["Technosphere"][x][key]
                     ex['input'] = key
@@ -254,7 +256,8 @@ class Process_Model():
                     self.db_data[(self.DB_name,x)]['exchanges'].append(ex)
                     
             for key in self.process_model_output ["Biosphere"][x]:
-                if self.process_model_output ["Biosphere"][x][key] != 0:
+                #if self.process_model_output ["Biosphere"][x][key] != 0:
+                if True:
                     ex = {}                        # add exchange to activities
                     ex['amount'] = self.process_model_output ["Biosphere"][x][key]
                     ex['input'] = key

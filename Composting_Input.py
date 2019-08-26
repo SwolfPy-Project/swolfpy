@@ -158,12 +158,11 @@ class Comp_input:
                 'Minv':{"Name":"Vessel energy use per weight of material","amount":0,"unit":'kWh/Mg',"Reference":'27'}
                 }
         
-        self.COMP_Input_list = [self.Op_Param, self.Substrate_Parameters["Sawdust"], self.Substrate_Parameters["Wood_Chips"], self.Substrate_Parameters["Screen Rejects"],\
-                                self.Degradation_Parameters, self.Biological_Degredation, self.Land_app, self.Odor_Cont, self.Vaccum_sys,self.Screen,self.Curing, self.Loader,\
-                                self.Office,self.Fertilizer_offsest, self.AC_Aeration]
-        
-    
+
     def setup_MC(self):
+        self.COMP_Input_list = [self.Op_Param, self.Substrate_Parameters["Sawdust"], self.Substrate_Parameters["Wood_Chips"], self.Substrate_Parameters["Screen Rejects"],\
+                        self.Degradation_Parameters, self.Biological_Degredation, self.Land_app, self.Odor_Cont, self.Vaccum_sys,self.Screen,self.Curing, self.Loader,\
+                        self.Office,self.Fertilizer_offsest, self.AC_Aeration]
         self.list_var = list()
         for x in self.COMP_Input_list:
             for y in x:

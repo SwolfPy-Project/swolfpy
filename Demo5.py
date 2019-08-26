@@ -6,6 +6,7 @@ Created on Wed May 22 19:19:12 2019
 """
 from project_class import *
 from building_matrices import *
+from WTE import *
 
 Treatment_processes = {}
 Treatment_processes['AD']={'path':"AD_BW2.csv",'input_type':['MOC','Separated_Organics']}

@@ -77,7 +77,7 @@ class AD:
         add_LCI('Electricity Use', self.AD_input.Fac_Energy['elec_preproc']['amount'] ,self.LCI) 
 
 ### Compost use
-        self.x = AD_compost_use(self.FinalCompost,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.Assumed_Comp,self.AD_input,self.LCI)
+        AD_compost_use(self.FinalCompost,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.Assumed_Comp,self.AD_input,self.LCI)
 
 ### Transportation Compost
         add_LCI('Full_Medium-duty truck transport of compost to land application', self.FinalCompost.data['mass'] * self.AD_input.Land_app['distLand']['amount'] ,self.LCI)
@@ -123,12 +123,20 @@ class AD:
                 Technosphere[y][('Technosphere', 'Nitrogen_Fertilizer')] = self.LCI['Nitrogen Mineral Fertilizer Equivalent mass to offset'][y]
                 Technosphere[y][('Technosphere', 'Phosphorous_Fertilizer')] = self.LCI['Phosphorous Mineral Fertilizer Equivalent mass to offset'][y]
                 Technosphere[y][('Technosphere', 'Potassium_Fertilizer')] = self.LCI['Potassium Mineral Fertilizer Equivalent mass to offset'][y]
+            else:
+                Technosphere[y][('Technosphere', 'Nitrogen_Fertilizer')] = 0
+                Technosphere[y][('Technosphere', 'Phosphorous_Fertilizer')] = 0
+                Technosphere[y][('Technosphere', 'Potassium_Fertilizer')] = 0
             
             if self.AD_input.AD_operation['peatOff']['amount'] == 1 and self.AD_input.AD_operation['choice_BU']['amount'] == 1:
                 Technosphere[y][('Technosphere', 'Peat')] = self.LCI['Peat Equivalent mass to offset'][y]
+            else:
+                Technosphere[y][('Technosphere', 'Peat')] = 0
             
             if self.AD_input.AD_operation['choice_BU']['amount'] == 0:
                 Technosphere[y][('Technosphere', 'compost_to_LF')] = self.LCI['compost_to_LF'][y]
+            else:
+                Technosphere[y][('Technosphere', 'compost_to_LF')] = 0
             
 ### Output Biosphere Database
             Biosphere[y][('biosphere3', '87883a4e-1e3e-4c9d-90c0-f1bea36f8014')]= self.LCI['Ammonia'][y] #Ammonia ('air',)
@@ -164,12 +172,20 @@ class AD:
             if self.AD_input.AD_operation['choice_BU']['amount'] == 1:
                 Biosphere[y][('biosphere3', 'b9291c72-4b1d-4275-8068-4c707dc3ce33')]= self.LCI['Nitrate (ground water)'][y] #Nitrate ('water', 'ground-')
                 Biosphere[y][('biosphere3', '7ce56135-2ca5-4fba-ad52-d62a34bfeb35')]= self.LCI['Nitrate (Surface water)'][y] #Nitrate ('water', 'surface water')
-            
+            else:
+                Biosphere[y][('biosphere3', 'b9291c72-4b1d-4275-8068-4c707dc3ce33')]= 0 #Nitrate ('water', 'ground-')
+                Biosphere[y][('biosphere3', '7ce56135-2ca5-4fba-ad52-d62a34bfeb35')]= 0 #Nitrate ('water', 'surface water')
+
 
 
             if self.AD_input.AD_operation['choice_BU']['amount'] == 0:
                 Biosphere[y][('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')]= self.LCI['Ammonium, ion (ground water)'][y] #'Ammonium, ion' (kilogram, None, ('water', 'ground-'))
                 Biosphere[y][('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')]= self.LCI['Ammonium, ion (surface water)'][y] # 'Ammonium, ion' (kilogram, None, ('water', 'surface water'))  
+            else:
+                Biosphere[y][('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')]= 0 #'Ammonium, ion' (kilogram, None, ('water', 'ground-'))
+                Biosphere[y][('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')]= 0 # 'Ammonium, ion' (kilogram, None, ('water', 'surface water'))  
+     
+        
         return(self.AD)    
 
 """

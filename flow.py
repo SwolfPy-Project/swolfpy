@@ -747,4 +747,4 @@ def AD_compost_use(input,CommonData,process_data,Material_Properties,assumed_com
         NH4_SW= 0.3597/100 * input.data['N_cont']
         add_LCI('Ammonium, ion (ground water)', NH4_GW * CommonData.MW['Ammonium']['amount']/CommonData.MW['N']['amount'] ,LCI)
         add_LCI('Ammonium, ion (surface water)', NH4_SW * CommonData.MW['Ammonium']['amount']/CommonData.MW['N']['amount'] ,LCI)   
-    return(NO3_GW * CommonData.MW['Nitrate']['amount']/CommonData.MW['N']['amount'])
+ 

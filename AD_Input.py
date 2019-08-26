@@ -59,7 +59,7 @@ class AD_input:
                 'recircMax':{'Name':'Maximum proportion of reactor water that can come from recirculation','amount':0.8,'unit':'fraction','Referenc':None},
                 'isDw':{'Name':'Dewater digestate? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
                 'isCured':{'Name':'Cure digestate solids stream? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
-                'choice_BU':{'Name':'Digestate Beneficial Use (1) or No Beneficial Use (0)','amount':1,'unit':'0/1','Referenc':None},
+                'choice_BU':{'Name':'Digestate Beneficial Use (1) or No Beneficial Use (0)','amount':0,'unit':'0/1','Referenc':None},
                 'peatOff':{'Name':'Digestate Beneficial Use offsets Peat (1 - Yes; 0 - No)','amount':1,'unit':'0/1','Referenc':None},
                 'fertOff':{'Name':'Digestate Beneficial Use offsets Fertilizer (1 - Yes; 0 - No)','amount':1,'unit':'0/1','Referenc':None},
                 }
@@ -175,12 +175,13 @@ class AD_input:
                 'humFormFac':{"Name":"100 year carbon storage from humus formation","amount":0,"unit":'kg-C/kg-C in compost',"Reference":'4'}
                 }        
 
-        self.AD_Input_list = [self.Land_app,self.Curing_Bio,self.Windrow_turn,self.AD_operation,self.Biogas_gen,self.emission_factor['Flare'],self.emission_factor['Engine'],
-                             self.Digestate_treatment,self.Post_Screen,self.Material_Properties,self.Dewater,self.Dig_prop,self.Fac_Energy,
-                             self.Loader,self.shredding,self.Soil_seq]
+
         
     
     def setup_MC(self):
+        self.AD_Input_list = [self.Land_app,self.Curing_Bio,self.Windrow_turn,self.AD_operation,self.Biogas_gen,self.emission_factor['Flare'],self.emission_factor['Engine'],
+                     self.Digestate_treatment,self.Post_Screen,self.Material_Properties,self.Dewater,self.Dig_prop,self.Fac_Energy,
+                     self.Loader,self.shredding,self.Soil_seq]
         self.list_var = list()
         for x in self.AD_Input_list:
             for y in x:
