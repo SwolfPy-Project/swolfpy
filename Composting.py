@@ -30,10 +30,9 @@ class Comp:
                       'Waste_Fraction_49', 'Waste_Fraction_50', 'Waste_Fraction_51', 'Waste_Fraction_52', 'Waste_Fraction_53', 'Waste_Fraction_54',
                       'Waste_Fraction_55', 'Waste_Fraction_56', 'Waste_Fraction_57', 'Waste_Fraction_58', 'Waste_Fraction_59', 'Waste_Fraction_60']
         self.Assumed_Comp = pd.Series(self.Comp_input.Assumed_Comp,index=self.Index)
-        self.SD=pd.read_excel('comp_stat.xlsx', index_col = 'Index')
-                ### Mass Flows
-        self.LCI = pd.DataFrame(index = self.Index)
+
     def calc(self):
+        self.LCI = pd.DataFrame(index = self.Index)
 ### Initial mass at tipping floor  
         self.Input = flow(self.Material_Properties[4:])
         self.Input.init_flow(1000)
@@ -90,7 +89,7 @@ class Comp:
     
     def MC_calc(self):      
         self.Comp_input.gen_MC()
-        self.calc2()
+        self.calc()
         
     def report(self):
 ### Output
@@ -144,17 +143,19 @@ class Comp:
                 Biosphere[y][('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')]= self.LCI['Ammonium, ion (ground water)'][y] #'Ammonium, ion' (kilogram, None, ('water', 'ground-'))
                 Biosphere[y][('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')]= self.LCI['Ammonium, ion (surface water)'][y] # 'Ammonium, ion' (kilogram, None, ('water', 'surface water'))          
         return(self.COMP)
-        
+
+"""       
 A=Comp()
 DD=A.calc()
 AA=A.LCI
 COMP=A.report() 
 
-"""
+
 from time import time
 c= time()
 for i in range(100):
     A.calc()
+    A.report()
 print(time()-c)
 """
        

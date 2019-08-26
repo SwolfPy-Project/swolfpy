@@ -174,7 +174,28 @@ class AD_input:
                 'percCStor_LF':{"Name":"Percent of carbon in compost remaining after 100 years","amount":100,"unit":'%',"Reference":None},
                 'humFormFac':{"Name":"100 year carbon storage from humus formation","amount":0,"unit":'kg-C/kg-C in compost',"Reference":'4'}
                 }        
+
+        self.AD_Input_list = [self.Land_app,self.Curing_Bio,self.Windrow_turn,self.AD_operation,self.Biogas_gen,self.emission_factor['Flare'],self.emission_factor['Engine'],
+                             self.Digestate_treatment,self.Post_Screen,self.Material_Properties,self.Dewater,self.Dig_prop,self.Fac_Energy,
+                             self.Loader,self.shredding,self.Soil_seq]
         
+    
+    def setup_MC(self):
+        self.list_var = list()
+        for x in self.AD_Input_list:
+            for y in x:
+                self.list_var.append(x[y])
+        self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
+        self.rand = MCRandomNumberGenerator(self.Vars)
+      
+    def gen_MC(self):
+        data = self.rand.next()
+        i=0
+        for x in self.AD_Input_list:
+            for y in x:
+                if not np.isnan(data[i]):  
+                    x[y]['amount'] = data[i]
+                i+=1        
                 
 """        
         {

@@ -124,14 +124,22 @@ class project():
         self.parameters_list=[]
         self.act_include_param={}
         for j in self.Treatment_processes:
-            (P,G)=self.import_database(j,self.Treatment_processes[j]['path'],self.waste_treatment)
+            if 'path' in self.Treatment_processes[j].keys():
+                (P,G)=self.import_database(j,self.waste_treatment,self.Treatment_processes[j]['path'])
+            else:
+                (P,G)=self.import_database(j,self.waste_treatment)
             self.parameters[j]=P
             self.act_include_param[j]=G
             self.parameters_list+=P
                             
-    def import_database(self,name,path,waste_treatment):
+    def import_database(self,name,waste_treatment,path = None):
         self.process_model[name] = Process_Model(name,waste_treatment)
-        self.process_inputdata[name] = self.process_model[name].read_output_from_SWOLF(path)
+        if path:
+            self.process_inputdata[name] = self.process_model[name].read_output_from_SWOLF(path)
+        else:
+            self.Treatment_processes[name]['model'].calc()
+            self.process_inputdata[name] = self.Treatment_processes[name]['model'].report()
+            self.process_model[name].process_model_output = self.Treatment_processes[name]['model'].report()
         (P,G)=self.process_model[name].Write_DB(name)
         return((P,G))
     

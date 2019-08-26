@@ -1,6 +1,6 @@
 from brightway2 import *
 import numpy as np
-import time
+#from time import time
 from brightway2 import *
 from Required_keys import *
 from WTE import *
@@ -11,6 +11,7 @@ from multiprocessing import Queue
 from multiprocessing import Pool
 from brightway2 import LCA
 from bw2data import projects
+
     
 if sys.version_info < (3, 0):
     # multiprocessing.pool as a context manager not available in Python 2.7
@@ -127,11 +128,7 @@ class ParallelData(LCA):
         
 
 
-    def run(self, nproc, n):
-
-        t1 = time.time()
-        #nproc = mp.cpu_count()        
-
+    def run(self, nproc, n):       
         if self.process_models and not self.parameters:
 		
             for x in self.process_models:
@@ -146,9 +143,7 @@ class ParallelData(LCA):
                     ]
                 )
             self.results = [x for lst in res for x in lst]
-            t2 = time.time()
-            print('total time for %d runs: %0.1f secs. Using %d threads and %d process model(s)' % ((n, t2-t1, nproc, len(self.process_models))))
-			
+
         elif self.parameters and not self.process_models:
 		
             self.parameters.setup_MC()
@@ -162,9 +157,7 @@ class ParallelData(LCA):
                     ]
                 )
             self.results = [x for lst in res for x in lst]
-            t2 = time.time()
-            print('total time for %d runs: %0.1f secs. Using %d threads ' % ((n, t2-t1, nproc)))
- 			
+
         else:
 		
             for x in self.process_models:
@@ -181,12 +174,10 @@ class ParallelData(LCA):
                     ]
                 )
             self.results = [x for lst in res for x in lst]     
-            t2 = time.time()
-            print('total time for %d runs: %0.1f secs. Using %d threads ' % ((n, t2-t1, nproc)))
-    
+
 
     
-    
+"""    
 if __name__=='__main__':
     project = "demo_6"
     projects.set_current(project)
@@ -222,8 +213,7 @@ if __name__=='__main__':
     hist(a.results, density=True, histtype="step")
     xlabel('(IPCC 2007, climate change, GWP 100a)')
     ylabel("Probability")
-    
-    
-    
+     
+"""    
 
 
