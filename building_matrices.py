@@ -63,7 +63,7 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
 	
             for material,value in report_dict["Technosphere"].items():
                 for key2, value2 in value.items():
-                    if value2!=0 and not np.isnan(value2):
+                    if not np.isnan(value2):
                         if tech_matrix[((key2),(process_name, material))] != value2:
                             tech_matrix[((key2),(process_name, material))] = value2 
                             
@@ -73,14 +73,14 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
                         key2 = (process_name + "_product",material+'_'+key2)
                     else:
                         key2 = (process_name + "_product",key2)
-                    if value2!=0 and not np.isnan(value2):
+                    if not np.isnan(value2):
                         if tech_matrix[((key2),(process_name, material))] != value2:
                             tech_matrix[((key2),(process_name, material))] = value2
                             print(tech_matrix[((key2),(process_name, material))])
 			
             for material,value in report_dict["Biosphere"].items():
                 for key2, value2 in value.items():
-                    if value2!=0 and not np.isnan(value2):
+                    if not np.isnan(value2):
                         if bio_matrix[((key2),(process_name, material))] != value2:
                             bio_matrix[((key2),(process_name, material))] = value2
             i+=1
