@@ -97,3 +97,21 @@ class CommonData:
                     'co2bod':{"Name":"CO2 Biomass produced per BOD removed","amount":3.60,"unit":'kg CO2b/kg BOD',"Reference":'2'},
                     'elecBOD':{"Name":"Electricity used per mass of BOD removed","amount":0.99,"unit":'kWh/kg BOD removed',"Reference":'2'}
                     }
+        
+    def setup_MC(self):
+        self.CommonData_Input_list = [self.Land_app, self.WWT, self.Leachate_treat]
+        self.list_var = list()
+        for x in self.CommonData_Input_list:
+            for y in x:
+                self.list_var.append(x[y])
+        self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
+        self.rand = MCRandomNumberGenerator(self.Vars)
+      
+    def gen_MC(self):
+        data = self.rand.next()
+        i=0
+        for x in self.CommonData_Input_list:
+            for y in x:
+                if not np.isnan(data[i]):  
+                    x[y]['amount'] = data[i]
+                i+=1  

@@ -10,9 +10,11 @@ from AD import *
 from Composting import *
 from WTE import *
 from brightway2 import *
+from CommonData import *
 from time import time
 
 if __name__=='__main__':
+    
     Treatment_processes = {}
     Treatment_processes['AD']={'input_type':['MOC','Separated_Organics'],'model': AD()}
     Treatment_processes['COMP']={'input_type':['MOC','Separated_Organics'], 'model': Comp()}
@@ -106,19 +108,39 @@ if __name__=='__main__':
     method = ('IPCC 2007', 'climate change', 'GWP 100a')
     
     
-    
+    CommonData = CommonData()
     process_models = list()
     process_model_names = list()
         
+    CommonData.Land_app = {
+                'cmpLandDies':{"Name":"Compost application diesel use","amount":0.8,"unit":'L/Mg compost',"Reference":None,
+                               'uncertainty_type':3,'loc':0.8,'scale':0.2},
+                'NO3runoff':{"Name":"Nitrogen runoff to surface water","amount":0.14,"unit":'kg N/kg N applied',"Reference":None},
+                'NO3leach':{"Name":"Nitrogen leaching to ground water","amount":0.135,"unit":'kg N/kg N applied',"Reference":'23'},
+                'MFEN':{"Name":"Nitrogen mineral fertilizer equivalent","amount":0.4,"unit":'kg N/kg N applied',"Reference":None},
+                'MFEP':{"Name":"Phosphorus mineral fertilizer equivalent","amount":1,"unit":'kg N/kg N applied',"Reference":None},         
+                'MFEK':{"Name":"Potassium mineral fertilizer equivalent","amount":1,"unit":'kg N/kg N applied',"Reference":None},
+                'DslAppN':{"Name":"Fertilizer - Diesel fuel for application per kg N","amount":0.00229 ,"unit":'L/kg',"Reference":None},
+                'DslAppP':{"Name":"Fertilizer - Diesel fuel for application per kg P","amount":0.00186 ,"unit":'L/kg',"Reference":None},
+                'DslAppK':{"Name":"Fertilizer - Diesel fuel for application per kg K","amount":0.00125 ,"unit":'L/kg',"Reference":None},
+                'fert_NO3Run':{"Name":"Fertilizer - Nitrate runoff to surface water","amount":10 ,"unit":'%',"Reference":None},
+                'fert_NO3Leach':{"Name":"Fertilizer - Nitrate leaching to ground water","amount":10 ,"unit":'%',"Reference":None},
+                'fert_N2O':{"Name":"Fertilizer - N released as N2O","amount":2.3 ,"unit":'%',"Reference":None},
+                'fert_NH3':{"Name":"Fertilizer - N as NH3","amount":50 ,"unit":'%',"Reference":None},
+                'fert_NH3Evap':{"Name":"Fertilizer - NH3 evaporated","amount":5 ,"unit":'%',"Reference":None}
+                        }
+
+
+
 
     process_models.append(Treatment_processes['AD']['model'])
     process_model_names.append('AD')
     
     
     t1 = time()
-    n=1000
-    #a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names)
-    a = ParallelData(functional_unit, method, project,parameters=demo.unified_params)
+    n=100
+    a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names,common_data=CommonData)
+    #a = ParallelData(functional_unit, method, project,parameters=demo.unified_params)
     
     a.run(4,n)
     t2=time()

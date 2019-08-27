@@ -26,12 +26,12 @@ else:
 
 
 def worker(args):
-    project, functional_unit, method, process_models, process_model_names, tech_matrix, bio_matrix, n = args
+    project, functional_unit, method, process_models, process_model_names, common_data, tech_matrix, bio_matrix, n = args
     projects.set_current(project, writable=False)
     lca = LCA(functional_unit, method)
     lca.lci()
     lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names) for x in range(n)]
+    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names, common_data=common_data) for x in range(n)]
 
 def worker2(args):
     project, functional_unit, method, param, tech_matrix, bio_matrix, n = args
@@ -42,20 +42,26 @@ def worker2(args):
     return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, parameters=param) for x in range(n)]
 
 def worker3(args):
-    project, functional_unit, method, parameters, process_models, process_model_names, tech_matrix, bio_matrix, n = args
+    project, functional_unit, method, parameters, process_models, process_model_names, common_data, tech_matrix, bio_matrix, n = args
     projects.set_current(project, writable=False)
     lca = LCA(functional_unit, method)
     lca.lci()
     lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names, parameters) for x in range(n)]
+    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names, parameters, common_data) for x in range(n)]
 
 
 
-def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models = None, process_model_names = None, parameters = None):
+def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models = None, process_model_names = None, parameters = None, common_data = None):
     
     if process_models:
-        for process in process_models:
-            process.MC_calc()
+        if common_data:
+            common_data.gen_MC()
+            for process in process_models:
+                process.CommonData = common_data
+                process.MC_calc()
+        else:    
+            for process in process_models:
+                process.MC_calc()
 		
         i = 0
         for process_name in process_model_names:
@@ -106,7 +112,7 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
 
 
 class ParallelData(LCA):
-    def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, parameters = None):
+    def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, common_data = None, parameters = None):
         super(ParallelData, self).__init__(functional_unit, method)
         self.lci()
         self.lcia()
@@ -116,6 +122,7 @@ class ParallelData(LCA):
         self.process_models = process_models
         self.process_model_names = process_model_names
         self.parameters = parameters
+        self.common_data = common_data
         
         
         activities_dict = dict(zip(self.activity_dict.values(),self.activity_dict.keys()))
@@ -139,7 +146,8 @@ class ParallelData(LCA):
 
     def run(self, nproc, n):       
         if self.process_models and not self.parameters:
-		
+            if self.common_data:
+                self.common_data.setup_MC()
             for x in self.process_models:
                 x.setup_MC()
 				
@@ -147,7 +155,7 @@ class ParallelData(LCA):
                 res = pool.map(
                     worker,
                     [
-                        (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, self.tech_matrix, self.bio_matrix, n//nproc)
+                        (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, n//nproc)
                         for _ in range(nproc)
                     ]
                 )
@@ -168,6 +176,8 @@ class ParallelData(LCA):
             self.results = [x for lst in res for x in lst]
 
         else:
+            if self.common_data:
+                self.common_data.setup_MC()
 		
             for x in self.process_models:
                 x.setup_MC()
@@ -178,7 +188,7 @@ class ParallelData(LCA):
                 res = pool.map(
                     worker3,
                     [
-                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.tech_matrix, self.bio_matrix, n//nproc)
+                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, n//nproc)
                         for _ in range(nproc)
                     ]
                 )
