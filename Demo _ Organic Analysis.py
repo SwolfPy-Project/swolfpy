@@ -17,7 +17,7 @@ if __name__=='__main__':
     Treatment_processes['AD']={'input_type':['MOC','Separated_Organics'],'model': AD()}
     Treatment_processes['COMP']={'input_type':['MOC','Separated_Organics'], 'model': Comp()}
     Treatment_processes['LF']={'path':"trad_landfill _BW2.xlsx",'input_type':['MWC','RWC','Bottom_Ash','Fly_Ash','Other_Residual']}
-#    Treatment_processes['WTE']={'model':WTE(),'input_type':['MWC','RWC','Other_Residual','RDF']}
+    Treatment_processes['WTE']={'model':WTE(),'input_type':['MWC','RWC','Other_Residual','RDF']}
 #    Treatment_processes['REPROC']={'path':"Material_Reprocessing_BW2.csv",'input_type':['OCC', 'Mixed_Paper', 'ONP', 'OFF', 'Fiber_Other', \
 #                   'PET', 'HDPE_Unsorted', 'HDPE_P', 'HDPE_T', 'PVC', 'LDPE_Film', 'Polypropylene', 'Polystyrene', 'Plastic_Other', \
 #                   'Mixed_Plastic', 'Al', 'Fe', 'Cu', 'Brown_glass', 'Clear_glass', 'Green_glass', 'Mixed_Glass']}  
@@ -28,12 +28,18 @@ if __name__=='__main__':
     demo.group_exchanges()
     
     gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 1},
+ {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_COMP_to_LF', 'amount': 1},
- {'name': 'frac_of_Bottom_Ash_from_LF_to_LF', 'amount': 0},
- {'name': 'frac_of_Fly_Ash_from_LF_to_LF', 'amount': 0},
- {'name': 'frac_of_Separated_Organics_from_LF_to_AD', 'amount': 0},
+ {'name': 'frac_of_Other_Residual_from_COMP_to_WTE', 'amount': 0},
+ {'name': 'frac_of_Bottom_Ash_from_LF_to_LF', 'amount': 1},
+ {'name': 'frac_of_Fly_Ash_from_LF_to_LF', 'amount': 1},
+ {'name': 'frac_of_Separated_Organics_from_LF_to_AD', 'amount': 1},
  {'name': 'frac_of_Separated_Organics_from_LF_to_COMP', 'amount': 0},
- {'name': 'frac_of_Other_Residual_from_LF_to_LF', 'amount': 0}]
+ {'name': 'frac_of_Other_Residual_from_LF_to_LF', 'amount': 1},
+ {'name': 'frac_of_Other_Residual_from_LF_to_WTE', 'amount': 0},
+ {'name': 'frac_of_RDF_from_LF_to_WTE', 'amount': 1},
+ {'name': 'frac_of_Bottom_Ash_from_WTE_to_LF', 'amount': 1},
+ {'name': 'frac_of_Fly_Ash_from_WTE_to_LF', 'amount': 1}]
     
     demo.update_parameters(gg)
     scenario1 = {"AD":{"Yard_Trimmings_Branches":1}}
@@ -70,22 +76,24 @@ if __name__=='__main__':
 #                 }
 #                     
 # =============================================================================
-    #demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.8, scale = 0.3, uncertainty_type = 3,minimum=0,maximum=1)
+    demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.8, scale = 0.3, uncertainty_type = 7,minimum=0,maximum=2)
+    demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE', loc = 0.8, scale = 0.3, uncertainty_type = 7,minimum=0,maximum=2)
     
-    
-    Treatment_processes['AD']['model'].AD_input.AD_operation = {
-                'ad_lifetime':{'Name':'Facility economic lifetime','amount':20,'unit':'years','Referenc':None},
-                'ophrsperday':{'Name':'Daily operating hours','amount':8,'unit':'hours','Referenc':None},
-                'opdaysperyear':{'Name':'Annual operating days','amount':260,'unit':'days','Referenc':None},
-                'retentionTime':{'Name':'Average retention time in reactor','amount':21,'unit':'days','Referenc':None},
-                'recircMax':{'Name':'Maximum proportion of reactor water that can come from recirculation','amount':0.8,'unit':'fraction','Referenc':None},
-                'isDw':{'Name':'Dewater digestate? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
-                'isCured':{'Name':'Cure digestate solids stream? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
-                'choice_BU':{'Name':'Digestate Beneficial Use (1) or No Beneficial Use (0)','amount':0,'unit':'0/1','Referenc':None,
-                             'uncertainty_type':7,'minimum':0,'maximum':2},
-                'peatOff':{'Name':'Digestate Beneficial Use offsets Peat (1 - Yes; 0 - No)','amount':1,'unit':'0/1','Referenc':None},
-                'fertOff':{'Name':'Digestate Beneficial Use offsets Fertilizer (1 - Yes; 0 - No)','amount':1,'unit':'0/1','Referenc':None},
-                }
+# =============================================================================
+#     Treatment_processes['AD']['model'].AD_input.AD_operation = {
+#                 'ad_lifetime':{'Name':'Facility economic lifetime','amount':20,'unit':'years','Referenc':None},
+#                 'ophrsperday':{'Name':'Daily operating hours','amount':8,'unit':'hours','Referenc':None},
+#                 'opdaysperyear':{'Name':'Annual operating days','amount':260,'unit':'days','Referenc':None},
+#                 'retentionTime':{'Name':'Average retention time in reactor','amount':21,'unit':'days','Referenc':None},
+#                 'recircMax':{'Name':'Maximum proportion of reactor water that can come from recirculation','amount':0.8,'unit':'fraction','Referenc':None},
+#                 'isDw':{'Name':'Dewater digestate? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
+#                 'isCured':{'Name':'Cure digestate solids stream? (0=no; 1=yes)','amount':1,'unit':'0/1','Referenc':None},
+#                 'choice_BU':{'Name':'Digestate Beneficial Use (1) or No Beneficial Use (0)','amount':0,'unit':'0/1','Referenc':None,
+#                              'uncertainty_type':7,'minimum':0,'maximum':2},
+#                 'peatOff':{'Name':'Digestate Beneficial Use offsets Peat (1 - Yes; 0 - No)','amount':1,'unit':'0/1','Referenc':None},
+#                 'fertOff':{'Name':'Digestate Beneficial Use offsets Fertilizer (1 - Yes; 0 - No)','amount':1,'unit':'0/1','Referenc':None},
+#                 }
+# =============================================================================
     
     
     
@@ -108,9 +116,9 @@ if __name__=='__main__':
     
     
     t1 = time()
-    n=100
-    a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names)
-    
+    n=1000
+    #a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names)
+    a = ParallelData(functional_unit, method, project,parameters=demo.unified_params)
     
     a.run(4,n)
     t2=time()
