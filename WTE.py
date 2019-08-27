@@ -157,7 +157,7 @@ class WTE:
             self.APC_Consumption.loc['Unit',x]= 'kg/Mg ww'
         
 
-    def create_uncertainty_from_inputs(self):
+    def create_uncertainty_from_inputs(self,seed=None):
         self.process_data_1=pd.read_excel("Material properties - process modles.xlsx", sheet_name = 'WTE', index_col = 'Parameter')
         self.uncertain_dict = dict()
         cols = list(self.process_data_1)
@@ -179,7 +179,7 @@ class WTE:
         self.rng = dict()
         for key in self.uncertain_dict.keys():
             self.variables[key] = UncertaintyBase.from_dicts(*self.uncertain_dict[key])
-            self.rng[key] = MCRandomNumberGenerator(self.variables[key])
+            self.rng[key] = MCRandomNumberGenerator(self.variables[key],seed=seed)
 		
     def uncertainty_input_next(self):
         data = dict()
@@ -191,13 +191,14 @@ class WTE:
 
 		
 		
-    def setup_MC(self):
-        self.WTE_input.setup_MC()
+    def setup_MC(self,seed=None):
+        self.WTE_input.setup_MC(seed)
         self.create_uncertainty_from_inputs()
     def MC_calc(self):      
-        self.WTE_input.gen_MC()
+        input_list = self.WTE_input.gen_MC()
         self.uncertainty_input_next()
         self.calc()
+        return(input_list)
     def report(self):
         ### Output
         self.WTE = {}

@@ -102,25 +102,30 @@ class WTE_input:
         
 
     
-    def setup_MC(self):
-        self.WTE_Input_list = [self.Economic_parameters, self.Elec_Prod_Eff,self.Stack_Gas_Conc_Non_metal,self.Stack_metal_emission,\
-                       self.Fly_Ash_metal_emission,self.Bottom_Ash_metal_emission,self.Metals_Recovery,self.Material_Consumption]
+    def setup_MC(self,seed = None):
+        self.WTE_Input_list = {'Economic_parameters':self.Economic_parameters, 'Elec_Prod_Eff':self.Elec_Prod_Eff,'Stack_Gas_Conc_Non_metal':self.Stack_Gas_Conc_Non_metal,
+                               'Stack_metal_emission':self.Stack_metal_emission, 'Fly_Ash_metal_emission':self.Fly_Ash_metal_emission,
+                               'Bottom_Ash_metal_emission':self.Bottom_Ash_metal_emission,'Metals_Recovery':self.Metals_Recovery,
+                               'Material_Consumption':self.Material_Consumption}
         
         self.list_var = list()
-        for x in self.WTE_Input_list:
+        for x in self.WTE_Input_list.values():
             for y in x:
                 self.list_var.append(x[y])
         self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars)
+        self.rand = MCRandomNumberGenerator(self.Vars,seed=seed)
       
     def gen_MC(self):
         data = self.rand.next()
         i=0
-        for x in self.WTE_Input_list:
-            for y in x:
+        input_list = []
+        for x in self.WTE_Input_list.keys():
+            for y in self.WTE_Input_list[x]:
                 if not np.isnan(data[i]):  
-                    x[y]['amount'] = data[i]
-                i+=1
+                    self.WTE_Input_list[x][y]['amount'] = data[i]
+                    input_list.append( ((x , y) , data[i]) )
+                i+=1        
+        return(input_list)
               
         
     

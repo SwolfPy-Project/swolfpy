@@ -94,9 +94,9 @@ class Parameters():
         else:
             self.uncertainty_base[self.uncertainty_vals.index(long_name)] = base_dict
             
-    def setup_MC(self):
+    def setup_MC(self,seed=None):
         self.vars = UncertaintyBase.from_dicts(*self.uncertainty_base)
-        self.rand = MCRandomNumberGenerator(self.vars)
+        self.rand = MCRandomNumberGenerator(self.vars,seed=seed)
         self.param_uncertainty_dict_MC = copy.deepcopy(self.param_uncertainty_dict)
             
     def MC_calc(self):
@@ -109,8 +109,12 @@ class Parameters():
             i+=1
         
         i=0
+        param_keys = list()
+        param_vals = list()
         self.normalize()
         for key in self.params_dict.keys():
+            param_keys.append(key)
+            param_vals.append(self.get_param_MC_val(key))
             for item in self.params_dict[key]:
                 #if self.get_param_MC_val(key) != 0:
                     matrix[item] = self.get_param_MC_val(key)
@@ -118,6 +122,6 @@ class Parameters():
         #    for item2 in self.params_dict[self.uncertainty_vals[i]]:
         #        matrix[item2] = self.get_param_MC_val(self.uncertainty_vals[i])            
         #    i+=1
-        return matrix
+        return (matrix,tuple(zip(param_keys,param_vals)))
             
             

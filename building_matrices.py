@@ -10,6 +10,7 @@ from multiprocessing import Queue
 from multiprocessing import Pool
 from brightway2 import LCA
 from bw2data import projects
+import os
 
     
 if sys.version_info < (3, 0):
@@ -52,16 +53,17 @@ def worker3(args):
 
 
 def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models = None, process_model_names = None, parameters = None, common_data = None):
+    uncertain_inputs = list()
     
     if process_models:
         if common_data:
-            common_data.gen_MC()
+            uncertain_inputs += common_data.gen_MC()
             for process in process_models:
                 process.CommonData = common_data
-                process.MC_calc()
+                uncertain_inputs += process.MC_calc()
         else:    
             for process in process_models:
-                process.MC_calc()
+                uncertain_inputs += process.MC_calc()
 		
         i = 0
         for process_name in process_model_names:
@@ -92,7 +94,9 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
             i+=1
         
     if parameters:
-        for key, value in parameters.MC_calc().items():
+        matrix,params = parameters.MC_calc()
+        uncertain_inputs += params
+        for key, value in matrix.items():
             if key in tech_matrix:
                 tech_matrix[key] = value	
 	
@@ -106,13 +110,13 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
         lca.lcia_calculation()
         if lca.weighting:
             lca.weighting_calculation()
-    return(lca.score)
+    return(os.getpid(),lca.score,uncertain_inputs)
     
     
 
 
 class ParallelData(LCA):
-    def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, common_data = None, parameters = None):
+    def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, common_data = None, parameters = None,seed = None):
         super(ParallelData, self).__init__(functional_unit, method)
         self.lci()
         self.lcia()
@@ -123,6 +127,7 @@ class ParallelData(LCA):
         self.process_model_names = process_model_names
         self.parameters = parameters
         self.common_data = common_data
+        self.seed = seed
         
         
         activities_dict = dict(zip(self.activity_dict.values(),self.activity_dict.keys()))
@@ -147,9 +152,9 @@ class ParallelData(LCA):
     def run(self, nproc, n):       
         if self.process_models and not self.parameters:
             if self.common_data:
-                self.common_data.setup_MC()
+                self.common_data.setup_MC(self.seed)
             for x in self.process_models:
-                x.setup_MC()
+                x.setup_MC(self.seed)
 				
             with pool_adapter(mp.Pool(processes=nproc)) as pool:
                 res = pool.map(
@@ -163,7 +168,7 @@ class ParallelData(LCA):
 
         elif self.parameters and not self.process_models:
 		
-            self.parameters.setup_MC()
+            self.parameters.setup_MC(self.seed)
 			
             with pool_adapter(mp.Pool(processes=nproc)) as pool:
                     res = pool.map(
@@ -177,12 +182,12 @@ class ParallelData(LCA):
 
         else:
             if self.common_data:
-                self.common_data.setup_MC()
+                self.common_data.setup_MC(self.seed)
 		
             for x in self.process_models:
-                x.setup_MC()
+                x.setup_MC(self.seed)
 				
-            self.parameters.setup_MC()
+            self.parameters.setup_MC(self.seed)
 
             with pool_adapter(mp.Pool(processes=nproc)) as pool:
                 res = pool.map(
@@ -202,5 +207,4 @@ if __name__=='__main__':
     
      
   
-
 

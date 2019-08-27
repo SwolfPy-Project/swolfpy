@@ -74,7 +74,7 @@ class Comp:
         self.final_comp.data['K_cont']= (self.mixed.data['sol_cont']-self.ps_res.data['sol_cont']- self.vac_res.data['sol_cont']) * self.Material_Properties['Potassium Content'][4:]/100
 
 ### Compost use
-        compost_use(self.final_comp,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.Comp_input.Biological_Degredation,self.Comp_input.Land_app,self.Comp_input.Fertilizer_offsest,self.LCI)
+        compost_use(self.final_comp,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.Comp_input.Biological_Degredation,self.Comp_input.Land_app,self.Comp_input.Fertilizer_offset,self.LCI)
 
 ### office
         Office_elec = ( self.Comp_input.Office['Mta']['amount'] * self.Comp_input.Office['Mea']['amount'] / 1000 ) /self.Comp_input.Op_Param['Taod']['amount'] 
@@ -85,7 +85,7 @@ class Comp:
         add_LCI('Medium-duty empty return', self.final_comp.data['mass']/1000 / self.Comp_input.Land_app['land_payload']['amount']* self.Comp_input.Land_app['distLand']['amount'] ,self.LCI)
 
 ### process_data update    
-    def create_uncertainty_from_inputs(self):
+    def create_uncertainty_from_inputs(self,seed=None):
         self.process_data_1=pd.read_excel("Material properties - process modles.xlsx", sheet_name = 'COMP', index_col = 'Parameter')
         self.uncertain_dict = dict()
         cols = list(self.process_data_1)
@@ -107,7 +107,7 @@ class Comp:
         self.rng = dict()
         for key in self.uncertain_dict.keys():
             self.variables[key] = UncertaintyBase.from_dicts(*self.uncertain_dict[key])
-            self.rng[key] = MCRandomNumberGenerator(self.variables[key])
+            self.rng[key] = MCRandomNumberGenerator(self.variables[key],seed=seed)
 		
     def uncertainty_input_next(self):
         data = dict()
@@ -120,14 +120,15 @@ class Comp:
 
 
 
-    def setup_MC(self):
-        self.Comp_input.setup_MC()
+    def setup_MC(self,seed=None):
+        self.Comp_input.setup_MC(seed)
         #self.create_uncertainty_from_inputs()
     
     def MC_calc(self):      
-        self.Comp_input.gen_MC()
+        input_list = self.Comp_input.gen_MC()
         #self.uncertainty_input_next()
         self.calc()
+        return(input_list)
         
     def report(self):
 ### Output
@@ -155,15 +156,15 @@ class Comp:
             Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Medium_Duty_Diesel_Truck')] =  self.LCI['Medium-duty truck transportation to land application'][y]
             Technosphere[y][('Technosphere', 'Empty_Return_Medium_Duty_Diesel_Truck')] =  self.LCI['Medium-duty empty return'][y]
         
-            if self.Comp_input.Fertilizer_offsest['choice_BU']['amount'] == 1 & self.Comp_input.Fertilizer_offsest['fertOff']['amount'] == 1:
+            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1 & self.Comp_input.Fertilizer_offset['fertOff']['amount'] == 1:
                 Technosphere[y][('Technosphere', 'Nitrogen_Fertilizer') ] = self.LCI[('Technosphere', 'Nitrogen_Fertilizer') ][y]
                 Technosphere[y][('Technosphere', 'Phosphorous_Fertilizer')] = self.LCI[('Technosphere', 'Phosphorous_Fertilizer')][y]
                 Technosphere[y][('Technosphere', 'Potassium_Fertilizer')] = self.LCI[('Technosphere', 'Potassium_Fertilizer')][y]
             
-            if self.Comp_input.Fertilizer_offsest['choice_BU']['amount'] == 1 & self.Comp_input.Fertilizer_offsest['peatOff']['amount'] == 1:
+            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1 & self.Comp_input.Fertilizer_offset['peatOff']['amount'] == 1:
                 Technosphere[y][('Technosphere', 'Peat')] = self.LCI[('Technosphere', 'Peat')][y]
             
-            if self.Comp_input.Fertilizer_offsest['choice_BU']['amount'] == 0:
+            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 0:
                 Technosphere[y][('Technosphere', 'compost_to_LF')] = self.LCI[('Technosphere', 'compost_to_LF')][y]
 ### Output Biosphere Database
             Biosphere[y][('biosphere3', '87883a4e-1e3e-4c9d-90c0-f1bea36f8014')]= self.LCI['Ammonia'][y] #  Ammonia ('air',)
@@ -173,11 +174,11 @@ class Comp:
             Biosphere[y][('biosphere3', 'da1157e2-7593-4dfd-80dd-a3449b37a4d8')]= self.LCI['Methane, non-fossil'][y] #Methane, non-fossil ('air',)
             Biosphere[y][('biosphere3', 'c1b91234-6f24-417b-8309-46111d09c457')]= self.LCI['Nitrogen oxides'][y] #Nitrogen oxides ('air',)
             Biosphere[y][('biosphere3', 'd3260d0e-8203-4cbb-a45a-6a13131a5108')]= self.LCI['VOCs emitted'][y] #NMVOC, non-methane volatile organic compounds, unspecified origin ('air',)
-            if self.Comp_input.Fertilizer_offsest['choice_BU']['amount'] == 1:
+            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1:
                 Biosphere[y][('biosphere3', 'b9291c72-4b1d-4275-8068-4c707dc3ce33')]= self.LCI['Nitrate (ground water)'][y] #Nitrate ('water', 'ground-')
                 Biosphere[y][('biosphere3', '7ce56135-2ca5-4fba-ad52-d62a34bfeb35')]= self.LCI['Nitrate (Surface water)'][y] #Nitrate ('water', 'surface water')
             
-            if self.Comp_input.Fertilizer_offsest['choice_BU']['amount'] == 0:
+            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 0:
                 Biosphere[y][('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')]= self.LCI['Ammonium, ion (ground water)'][y] #'Ammonium, ion' (kilogram, None, ('water', 'ground-'))
                 Biosphere[y][('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')]= self.LCI['Ammonium, ion (surface water)'][y] # 'Ammonium, ion' (kilogram, None, ('water', 'surface water'))          
         return(self.COMP)

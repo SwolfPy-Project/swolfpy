@@ -178,26 +178,29 @@ class AD_input:
 
         
     
-    def setup_MC(self):
-        self.AD_Input_list = [self.Land_app,self.Curing_Bio,self.Windrow_turn,self.AD_operation,self.Biogas_gen,self.emission_factor['Flare'],self.emission_factor['Engine'],
-                     self.Digestate_treatment,self.Post_Screen,self.Material_Properties,self.Dewater,self.Dig_prop,self.Fac_Energy,
-                     self.Loader,self.shredding,self.Soil_seq]
+    def setup_MC(self,seed=None):
+        self.AD_Input_list = {'Land_app':self.Land_app,'Curing_Bio':self.Curing_Bio,'Windrow_turn':self.Windrow_turn,'AD_operation':self.AD_operation,'Biogas_gen':self.Biogas_gen,
+                              'emission_factor[Flare]':self.emission_factor['Flare'], 'emission_factor[Engine]':self.emission_factor['Engine'],
+                              'Digestate_treatment':self.Digestate_treatment,'Post_Screen':self.Post_Screen,'Material_Properties':self.Material_Properties,'Dewater':self.Dewater,
+                              'Dig_prop':self.Dig_prop,'Fac_Energy':self.Fac_Energy, 'Loader':self.Loader,'shredding':self.shredding,'Soil_seq':self.Soil_seq}
         self.list_var = list()
-        for x in self.AD_Input_list:
+        for x in self.AD_Input_list.values():
             for y in x:
                 self.list_var.append(x[y])
         self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars)
+        self.rand = MCRandomNumberGenerator(self.Vars,seed=seed)
       
     def gen_MC(self):
         data = self.rand.next()
         i=0
-        for x in self.AD_Input_list:
-            for y in x:
+        input_list = []
+        for x in self.AD_Input_list.keys():
+            for y in self.AD_Input_list[x]:
                 if not np.isnan(data[i]):  
-                    x[y]['amount'] = data[i]
+                    self.AD_Input_list[x][y]['amount'] = data[i]
+                    input_list.append( ( (x , y) , data[i]) )
                 i+=1        
-                
+        return(input_list)
 """        
         {
 '':{'Name':'','amount': ,'unit':'','Referenc':None},

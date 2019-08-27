@@ -119,7 +119,7 @@ class Comp_input:
                 }         
         
 ### Avoided Fertilizer Production Offsets
-        self.Fertilizer_offsest = {
+        self.Fertilizer_offset = {
                 'choice_BU':{"Name":"Offset Beneficial Use of Compost? (0=no; 1=yes)","amount":1,"unit":None,"Reference":None},
                 'peatOff':{"Name":"Soil amendment offset peat (1) or no (0)","amount":1,"unit":None,"Reference":None},
                 'fertOff':{"Name":"Soil amendment offset fertilizer (1) or no (0)","amount":1,"unit":None,"Reference":None}
@@ -159,26 +159,29 @@ class Comp_input:
                 }
         
 
-    def setup_MC(self):
-        self.COMP_Input_list = [self.Op_Param, self.Substrate_Parameters["Sawdust"], self.Substrate_Parameters["Wood_Chips"], self.Substrate_Parameters["Screen Rejects"],\
-                        self.Degradation_Parameters, self.Biological_Degredation, self.Land_app, self.Odor_Cont, self.Vaccum_sys,self.Screen,self.Curing, self.Loader,\
-                        self.Office,self.Fertilizer_offsest, self.AC_Aeration]
+    def setup_MC(self,seed=None):
+        self.COMP_Input_list = {'Op_Param':self.Op_Param, 'Substrate_Parameters[Sawdust]':self.Substrate_Parameters["Sawdust"], 'Substrate_Parameters[Wood_Chips]':self.Substrate_Parameters["Wood_Chips"],
+                                'Substrate_Parameters[Screen Rejects]':self.Substrate_Parameters["Screen Rejects"], 'Degradation_Parameters':self.Degradation_Parameters,
+                                'Biological_Degredation':self.Biological_Degredation, 'Land_app':self.Land_app, 'Odor_Cont':self.Odor_Cont,
+                                'Vaccum_sys':self.Vaccum_sys,'Screen':self.Screen,'Curing':self.Curing, 'Loader':self.Loader,
+                                'Office':self.Office,'Fertilizer_offset':self.Fertilizer_offset, 'AC_Aeration':self.AC_Aeration}
         self.list_var = list()
-        for x in self.COMP_Input_list:
+        for x in self.COMP_Input_list.values():
             for y in x:
                 self.list_var.append(x[y])
         self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars)
+        self.rand = MCRandomNumberGenerator(self.Vars,self.Vars,seed=seed)
       
     def gen_MC(self):
         data = self.rand.next()
         i=0
-        for x in self.COMP_Input_list:
-            for y in x:
+        input_list = []
+        for x in self.COMP_Input_list.keys():
+            for y in self.COMP_Input_list[x]:
                 if not np.isnan(data[i]):  
-                    x[y]['amount'] = data[i]
-                i+=1
-
-
+                    self.COMP_Input_list[x][y]['amount'] = data[i]
+                    input_list.append( ( (x , y) , data[i]) )
+                i+=1        
+        return(input_list)
 
 

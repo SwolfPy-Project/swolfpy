@@ -84,7 +84,7 @@ class AD:
         add_LCI('Empty_Medium-duty truck transport return from land application', self.FinalCompost.data['mass']/1000 / self.AD_input.Land_app['land_payload']['amount']* self.AD_input.Land_app['distLand']['amount'] ,self.LCI)
 
 ### process_data update    
-    def create_uncertainty_from_inputs(self):
+    def create_uncertainty_from_inputs(self,seed=None):
         self.process_data_1=pd.read_excel("Material properties - process modles.xlsx", sheet_name = 'AD', index_col = 'Parameter')
         self.uncertain_dict = dict()
         cols = list(self.process_data_1)
@@ -106,7 +106,7 @@ class AD:
         self.rng = dict()
         for key in self.uncertain_dict.keys():
             self.variables[key] = UncertaintyBase.from_dicts(*self.uncertain_dict[key])
-            self.rng[key] = MCRandomNumberGenerator(self.variables[key])
+            self.rng[key] = MCRandomNumberGenerator(self.variables[key],seed=seed)
 		
     def uncertainty_input_next(self):
         data = dict()
@@ -116,14 +116,15 @@ class AD:
                 if not np.isnan(data[key][val]):			
                     self.process_data.at[(self.process_data_1.index.values[3+val]),key] = data[key][val]
 
-    def setup_MC(self):
-        self.AD_input.setup_MC()
+    def setup_MC(self,seed=None):
+        self.AD_input.setup_MC(seed)
         #self.create_uncertainty_from_inputs()
     
     def MC_calc(self):      
-        self.AD_input.gen_MC()
+        input_list = self.AD_input.gen_MC()
         #self.uncertainty_input_next()
         self.calc()
+        return(input_list)
         
     def report(self):
 ### Output

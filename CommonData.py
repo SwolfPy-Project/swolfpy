@@ -98,20 +98,23 @@ class CommonData:
                     'elecBOD':{"Name":"Electricity used per mass of BOD removed","amount":0.99,"unit":'kWh/kg BOD removed',"Reference":'2'}
                     }
         
-    def setup_MC(self):
-        self.CommonData_Input_list = [self.Land_app, self.WWT, self.Leachate_treat]
+    def setup_MC(self,seed = None):
+        self.CommonData_Input_list = {'Land_app':self.Land_app, 'WWT':self.WWT, 'Leachate_treat':self.Leachate_treat}
         self.list_var = list()
-        for x in self.CommonData_Input_list:
+        for x in self.CommonData_Input_list.values():
             for y in x:
                 self.list_var.append(x[y])
         self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars)
+        self.rand = MCRandomNumberGenerator(self.Vars,seed=seed)
       
     def gen_MC(self):
         data = self.rand.next()
         i=0
-        for x in self.CommonData_Input_list:
-            for y in x:
+        input_list = []
+        for x in self.CommonData_Input_list.keys():
+            for y in self.CommonData_Input_list[x]:
                 if not np.isnan(data[i]):  
-                    x[y]['amount'] = data[i]
-                i+=1  
+                    self.CommonData_Input_list[x][y]['amount'] = data[i]
+                    input_list.append( ( (x , y) , data[i]) )
+                i+=1        
+        return(input_list)
