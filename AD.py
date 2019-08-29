@@ -176,7 +176,7 @@ class AD:
             
 ### Output Biosphere Database
             Biosphere[y][('biosphere3', '87883a4e-1e3e-4c9d-90c0-f1bea36f8014')]= self.LCI['Ammonia'][y] #Ammonia ('air',)
-            Biosphere[y][('biosphere3', 'e4e9febc-07c1-403d-8d3a-6707bb4d96e6')]= -self.LCI['Direct Carbon Storage and Humus Formation'][y]# Carbon dioxide, from soil or biomass stock ('air',)
+            Biosphere[y][('biosphere3', 'e4e9febc-07c1-403d-8d3a-6707bb4d96e6')]= self.LCI['Direct Carbon Storage and Humus Formation'][y]# Carbon dioxide, from soil or biomass stock ('air',)
             Biosphere[y][('biosphere3', 'eba59fd6-f37e-41dc-9ca3-c7ea22d602c7')]= self.LCI['CO2-biogenic emissions from digested liquids treatment'][y] +  self.LCI['Carbon dioxide, non-fossil _ Curing'][y]\
                                                                                 + self.LCI['Carbon dioxide, non-fossil _ Land application'][y] + self.LCI['Carbon dioxide, non-fossil (in biogas)'][y] \
                                                                                 + self.LCI['Carbon dioxide, non-fossil from comubstion'][y] # Carbon dioxide, non-fossil ('air',)
