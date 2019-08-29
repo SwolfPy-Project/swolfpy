@@ -140,7 +140,7 @@ class Comp:
             Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Medium_Duty_Diesel_Truck')] =  self.LCI['Medium-duty truck transportation to land application'][y]
             Technosphere[y][('Technosphere', 'Empty_Return_Medium_Duty_Diesel_Truck')] =  self.LCI['Medium-duty empty return'][y]
         
-            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1 & self.Comp_input.Fertilizer_offset['fertOff']['amount'] == 1:
+            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1 and self.Comp_input.Fertilizer_offset['fertOff']['amount'] == 1:
                 Technosphere[y][('Technosphere', 'Nitrogen_Fertilizer') ] = self.LCI[('Technosphere', 'Nitrogen_Fertilizer') ][y]
                 Technosphere[y][('Technosphere', 'Phosphorous_Fertilizer')] = self.LCI[('Technosphere', 'Phosphorous_Fertilizer')][y]
                 Technosphere[y][('Technosphere', 'Potassium_Fertilizer')] = self.LCI[('Technosphere', 'Potassium_Fertilizer')][y]
@@ -149,7 +149,7 @@ class Comp:
                 Technosphere[y][('Technosphere', 'Phosphorous_Fertilizer')] = 0
                 Technosphere[y][('Technosphere', 'Potassium_Fertilizer')] = 0
             
-            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1 & self.Comp_input.Fertilizer_offset['peatOff']['amount'] == 1:
+            if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1 and self.Comp_input.Fertilizer_offset['peatOff']['amount'] == 1:
                 Technosphere[y][('Technosphere', 'Peat')] = self.LCI[('Technosphere', 'Peat')][y]
             else:
                 Technosphere[y][('Technosphere', 'Peat')] = 0
