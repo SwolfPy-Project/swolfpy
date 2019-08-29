@@ -1,7 +1,6 @@
 from brightway2 import *
 import numpy as np
 from Required_keys import *
-from WTE import *
 from Composting import *
 from AD import *
 import multiprocessing as mp
@@ -27,24 +26,36 @@ else:
 
 
 def worker(args):
-    project, functional_unit, method, process_models, process_model_names, common_data, tech_matrix, bio_matrix, n = args
+    project, functional_unit, method, process_models, process_model_names, common_data, tech_matrix, bio_matrix,seed ,n = args
     projects.set_current(project, writable=False)
+    if common_data:
+        common_data.setup_MC(seed)
+    for x in process_models:
+        x.setup_MC(seed)
     lca = LCA(functional_unit, method)
     lca.lci()
     lca.lcia()
     return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names, common_data=common_data) for x in range(n)]
 
 def worker2(args):
-    project, functional_unit, method, param, tech_matrix, bio_matrix, n = args
+    project, functional_unit, method, param, tech_matrix, bio_matrix,seed ,n = args
     projects.set_current(project, writable=False)
+    parameters.setup_MC(seed)
     lca = LCA(functional_unit, method)
     lca.lci()
     lca.lcia()
     return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, parameters=param) for x in range(n)]
 
 def worker3(args):
-    project, functional_unit, method, parameters, process_models, process_model_names, common_data, tech_matrix, bio_matrix, n = args
+    project, functional_unit, method, parameters, process_models, process_model_names, common_data, tech_matrix, bio_matrix,seed, n = args
     projects.set_current(project, writable=False)
+    if common_data:
+        common_data.setup_MC(seed)
+		
+    for x in process_models:
+        x.setup_MC(seed)		
+    parameters.setup_MC(seed)
+    
     lca = LCA(functional_unit, method)
     lca.lci()
     lca.lcia()
@@ -151,50 +162,36 @@ class ParallelData(LCA):
 
     def run(self, nproc, n):       
         if self.process_models and not self.parameters:
-            if self.common_data:
-                self.common_data.setup_MC(self.seed)
-            for x in self.process_models:
-                x.setup_MC(self.seed)
-				
             with pool_adapter(mp.Pool(processes=nproc)) as pool:
                 res = pool.map(
                     worker,
                     [
-                        (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, n//nproc)
-                        for _ in range(nproc)
+                        (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix,self.seed + i, n//nproc)
+                        for i in range(nproc)
                     ]
                 )
             self.results = [x for lst in res for x in lst]
 
         elif self.parameters and not self.process_models:
-		
-            self.parameters.setup_MC(self.seed)
 			
             with pool_adapter(mp.Pool(processes=nproc)) as pool:
                     res = pool.map(
                     worker2,
                     [
-                        (self.project, self.functional_unit, self.method, self.parameters, self.tech_matrix, self.bio_matrix, n//nproc)
-                        for _ in range(nproc)
+                        (self.project, self.functional_unit, self.method, self.parameters, self.tech_matrix, self.bio_matrix,self.seed+i, n//nproc)
+                        for i in range(nproc)
                     ]
                 )
             self.results = [x for lst in res for x in lst]
 
         else:
-            if self.common_data:
-                self.common_data.setup_MC(self.seed)
-		
-            for x in self.process_models:
-                x.setup_MC(self.seed)
-				
-            self.parameters.setup_MC(self.seed)
 
             with pool_adapter(mp.Pool(processes=nproc)) as pool:
                 res = pool.map(
                     worker3,
                     [
-                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, n//nproc)
-                        for _ in range(nproc)
+                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix,self.seed + i, n//nproc)
+                        for i in range(nproc)
                     ]
                 )
             self.results = [x for lst in res for x in lst]     
