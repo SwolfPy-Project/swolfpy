@@ -131,22 +131,6 @@ class Comp:
         return(input_list)
         
     def report(self):
-### Output
-        self.COMP = {}
-        Waste={}
-        Technosphere={}
-        Biosphere={}
-        self.COMP ["process name"] = 'COMP'
-        self.COMP  ["Waste"] = Waste
-        self.COMP  ["Technosphere"] = Technosphere
-        self.COMP  ["Biosphere"] = Biosphere
-        
-        for x in [Waste,Technosphere, Biosphere]:
-            for y in self.Index:
-                x[y]={}
-                                                       
-               
-        for y in self.Index:
 ### Output Waste Database 
             Waste[y]['Other_Residual'] = self.ps_res.data['mass'][y]/1000+self.vac_res.data['mass'][y]/1000+self.S2_residuls.data['mass'][y]/1000 
              
@@ -160,12 +144,21 @@ class Comp:
                 Technosphere[y][('Technosphere', 'Nitrogen_Fertilizer') ] = self.LCI[('Technosphere', 'Nitrogen_Fertilizer') ][y]
                 Technosphere[y][('Technosphere', 'Phosphorous_Fertilizer')] = self.LCI[('Technosphere', 'Phosphorous_Fertilizer')][y]
                 Technosphere[y][('Technosphere', 'Potassium_Fertilizer')] = self.LCI[('Technosphere', 'Potassium_Fertilizer')][y]
+            else:
+                Technosphere[y][('Technosphere', 'Nitrogen_Fertilizer') ] = 0
+                Technosphere[y][('Technosphere', 'Phosphorous_Fertilizer')] = 0
+                Technosphere[y][('Technosphere', 'Potassium_Fertilizer')] = 0
             
             if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1 & self.Comp_input.Fertilizer_offset['peatOff']['amount'] == 1:
                 Technosphere[y][('Technosphere', 'Peat')] = self.LCI[('Technosphere', 'Peat')][y]
-            
+            else:
+                Technosphere[y][('Technosphere', 'Peat')] = 0
+                
             if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 0:
                 Technosphere[y][('Technosphere', 'compost_to_LF')] = self.LCI[('Technosphere', 'compost_to_LF')][y]
+            else:
+                Technosphere[y][('Technosphere', 'compost_to_LF')] = 0
+                
 ### Output Biosphere Database
             Biosphere[y][('biosphere3', '87883a4e-1e3e-4c9d-90c0-f1bea36f8014')]= self.LCI['Ammonia'][y] #  Ammonia ('air',)
             Biosphere[y][('biosphere3', 'e4e9febc-07c1-403d-8d3a-6707bb4d96e6')]= self.LCI['Carbon dioxide, non-fossil storage'][y] #Carbon dioxide, from soil or biomass stock ('air',)
@@ -174,15 +167,23 @@ class Comp:
             Biosphere[y][('biosphere3', 'da1157e2-7593-4dfd-80dd-a3449b37a4d8')]= self.LCI['Methane, non-fossil'][y] #Methane, non-fossil ('air',)
             Biosphere[y][('biosphere3', 'c1b91234-6f24-417b-8309-46111d09c457')]= self.LCI['Nitrogen oxides'][y] #Nitrogen oxides ('air',)
             Biosphere[y][('biosphere3', 'd3260d0e-8203-4cbb-a45a-6a13131a5108')]= self.LCI['VOCs emitted'][y] #NMVOC, non-methane volatile organic compounds, unspecified origin ('air',)
+            
             if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 1:
                 Biosphere[y][('biosphere3', 'b9291c72-4b1d-4275-8068-4c707dc3ce33')]= self.LCI['Nitrate (ground water)'][y] #Nitrate ('water', 'ground-')
                 Biosphere[y][('biosphere3', '7ce56135-2ca5-4fba-ad52-d62a34bfeb35')]= self.LCI['Nitrate (Surface water)'][y] #Nitrate ('water', 'surface water')
+            else:
+                Biosphere[y][('biosphere3', 'b9291c72-4b1d-4275-8068-4c707dc3ce33')]= 0 #Nitrate ('water', 'ground-')
+                Biosphere[y][('biosphere3', '7ce56135-2ca5-4fba-ad52-d62a34bfeb35')]= 0 #Nitrate ('water', 'surface water')
             
             if self.Comp_input.Fertilizer_offset['choice_BU']['amount'] == 0:
                 Biosphere[y][('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')]= self.LCI['Ammonium, ion (ground water)'][y] #'Ammonium, ion' (kilogram, None, ('water', 'ground-'))
                 Biosphere[y][('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')]= self.LCI['Ammonium, ion (surface water)'][y] # 'Ammonium, ion' (kilogram, None, ('water', 'surface water'))          
+            else:
+                Biosphere[y][('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')]= 0 #'Ammonium, ion' (kilogram, None, ('water', 'ground-'))
+                Biosphere[y][('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')]= 0 # 'Ammonium, ion' (kilogram, None, ('water', 'surface water'))          
+           
+                
         return(self.COMP)
-
 """       
 A=Comp()
 DD=A.calc()
