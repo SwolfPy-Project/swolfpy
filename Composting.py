@@ -131,6 +131,22 @@ class Comp:
         return(input_list)
         
     def report(self):
+### Output
+        self.COMP = {}
+        Waste={}
+        Technosphere={}
+        Biosphere={}
+        self.COMP ["process name"] = 'COMP'
+        self.COMP  ["Waste"] = Waste
+        self.COMP  ["Technosphere"] = Technosphere
+        self.COMP  ["Biosphere"] = Biosphere
+        
+        for x in [Waste,Technosphere, Biosphere]:
+            for y in self.Index:
+                x[y]={}
+                                                       
+               
+        for y in self.Index:        
 ### Output Waste Database 
             Waste[y]['Other_Residual'] = self.ps_res.data['mass'][y]/1000+self.vac_res.data['mass'][y]/1000+self.S2_residuls.data['mass'][y]/1000 
              
@@ -190,13 +206,15 @@ DD=A.calc()
 AA=A.LCI
 COMP=A.report() 
 
+"""
 
 from time import time
+A=Comp()
 c= time()
 for i in range(100):
     A.calc()
     A.report()
 print(time()-c)
-"""
+
        
         
