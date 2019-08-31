@@ -19,7 +19,7 @@ if __name__=='__main__':
     Treatment_processes['AD']={'input_type':['MOC','Separated_Organics'],'model': AD()}
     Treatment_processes['COMP']={'input_type':['MOC','Separated_Organics'], 'model': Comp()}
     Treatment_processes['LF']={'path':"trad_landfill _BW2.xlsx",'input_type':['MWC','RWC','Bottom_Ash','Fly_Ash','Other_Residual']}
-    Treatment_processes['WTE']={'model':WTE(),'input_type':['MWC','RWC','Other_Residual','RDF']}
+#    Treatment_processes['WTE']={'model':WTE(),'input_type':['MWC','RWC','Other_Residual','RDF']}
 #    Treatment_processes['REPROC']={'path':"Material_Reprocessing_BW2.csv",'input_type':['OCC', 'Mixed_Paper', 'ONP', 'OFF', 'Fiber_Other', \
 #                   'PET', 'HDPE_Unsorted', 'HDPE_P', 'HDPE_T', 'PVC', 'LDPE_Film', 'Polypropylene', 'Polystyrene', 'Plastic_Other', \
 #                   'Mixed_Plastic', 'Al', 'Fe', 'Cu', 'Brown_glass', 'Clear_glass', 'Green_glass', 'Mixed_Glass']}  
@@ -129,7 +129,12 @@ if __name__=='__main__':
 
     process_models.append(Treatment_processes['AD']['model'])
     process_model_names.append('AD')
-    
+# =============================================================================
+#     process_models.append(Treatment_processes['COMP']['model'])
+#     process_model_names.append('COMP')
+#     process_models.append(Treatment_processes['WTE']['model'])
+#     process_model_names.append('WTE')
+# =============================================================================
     
     t1 = time()
     n=100

@@ -275,7 +275,13 @@ class WTE:
         
         return(self.WTE)
 
-
+from time import time
+A=WTE()
+B = time()
+for i in range(100):
+    A.calc() 
+    A.report()
+print(time()-B)
 
 
 

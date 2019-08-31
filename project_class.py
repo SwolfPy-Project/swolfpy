@@ -7,7 +7,7 @@ Created on Wed May 29 12:13:23 2019
 
 from brightway2 import *
 from bw2data.parameters import ActivityParameter, DatabaseParameter, ProjectParameter, Group
-from process_model_msm3 import *
+from process_model import *
 import pandas as pd
 from Required_keys import *
 import copy
