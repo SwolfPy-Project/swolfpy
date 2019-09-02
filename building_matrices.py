@@ -30,8 +30,11 @@ def worker(args):
     projects.set_current(project, writable=False)
     if common_data:
         common_data.setup_MC(seed)
-    for x in process_models:
-        x.setup_MC(seed)
+    if process_models:
+        for x in process_models:
+            x.setup_MC(seed)
+    if parameters:
+        parameters.setup_MC(seed)
     lca = LCA(functional_unit, method[0])
     lca.lci()
     lca.lcia()
