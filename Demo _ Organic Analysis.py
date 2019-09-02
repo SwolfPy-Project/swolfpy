@@ -69,9 +69,7 @@ if __name__=='__main__':
                 'humFormFac':{"Name":"100 year carbon storage from humus formation","amount":0,"unit":'kg-C/kg-C in Compost',"Reference":'6'}
                 }
                     
-# =============================================================================
-#     demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.8, scale = 0.3, uncertainty_type = 7,minimum=0,maximum=2)
-# =============================================================================
+    demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.8, scale = 0.3, uncertainty_type = 7,minimum=0,maximum=2)
     
     Treatment_processes['AD']['model'].AD_input.AD_operation = {
                 'ad_lifetime':{'Name':'Facility economic lifetime','amount':20,'unit':'years','Referenc':None},
@@ -91,6 +89,13 @@ if __name__=='__main__':
     
     
     
+    from project_class import *
+    from building_matrices import *
+    from AD import *
+    from Composting import *
+    from WTE import *
+    from brightway2 import *
+    from CommonData import *
     from time import time
     project = "Organic_Analysis"
     projects.set_current(project)
@@ -123,9 +128,9 @@ if __name__=='__main__':
 
     process_models.append(Treatment_processes['AD']['model'])
     process_model_names.append('AD')
+    process_models.append(Treatment_processes['COMP']['model'])
+    process_model_names.append('COMP')
 # =============================================================================
-#     process_models.append(Treatment_processes['COMP']['model'])
-#     process_model_names.append('COMP')
 #     process_models.append(Treatment_processes['WTE']['model'])
 #     process_model_names.append('WTE')
 # =============================================================================
@@ -133,7 +138,7 @@ if __name__=='__main__':
     t1 = time()
     n=100
     #a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names)
-    a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names,common_data=CommonData,seed = 1)
+    a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names,parameters=demo.unified_params,common_data=CommonData,seed = 1)
     #a = ParallelData(functional_unit, method, project,parameters=demo.unified_params)
     
     a.run(4,n)

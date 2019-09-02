@@ -6,8 +6,8 @@ Created on Wed Mar 27 12:25:05 2019
 """
 import pandas as pd
 import numpy as np
-from stats_arrays import *
-class WTE_input:
+from MC import *
+class WTE_input(MC):
     def __init__(self):
         ### WTE Economic Input Parameters
         self.Economic_parameters = {
@@ -100,34 +100,13 @@ class WTE_input:
         "carbon":{'name':'Mg carbon/Mg MSW','amount':0.0006,"unit":'Mg/Mgww',"Reference":None ,"Distance_from_prod_fac":100, "Empty_Return_Truck":1}       
                 }
         
-
-    
-    def setup_MC(self,seed = None):
+### Monte_carlo          
+    def setup_MC(self,seed=None):
         self.WTE_Input_list = {'Economic_parameters':self.Economic_parameters, 'Elec_Prod_Eff':self.Elec_Prod_Eff,'Stack_Gas_Conc_Non_metal':self.Stack_Gas_Conc_Non_metal,
-                               'Stack_metal_emission':self.Stack_metal_emission, 'Fly_Ash_metal_emission':self.Fly_Ash_metal_emission,
-                               'Bottom_Ash_metal_emission':self.Bottom_Ash_metal_emission,'Metals_Recovery':self.Metals_Recovery,
-                               'Material_Consumption':self.Material_Consumption}
-        
-        self.list_var = list()
-        for x in self.WTE_Input_list.values():
-            for y in x:
-                self.list_var.append(x[y])
-        self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars,seed=seed)
-      
-    def gen_MC(self):
-        data = self.rand.next()
-        i=0
-        input_list = []
-        for x in self.WTE_Input_list.keys():
-            for y in self.WTE_Input_list[x]:
-                if not np.isnan(data[i]):  
-                    self.WTE_Input_list[x][y]['amount'] = data[i]
-                    input_list.append( ((x , y) , data[i]) )
-                i+=1        
-        return(input_list)
-              
-        
-    
-    
+                           'Stack_metal_emission':self.Stack_metal_emission, 'Fly_Ash_metal_emission':self.Fly_Ash_metal_emission,
+                           'Bottom_Ash_metal_emission':self.Bottom_Ash_metal_emission,'Metals_Recovery':self.Metals_Recovery,
+                           'Material_Consumption':self.Material_Consumption}
+        super(WTE_input,self).__init__(self.WTE_Input_list )
+        super().setup_MC(seed)    
+
     

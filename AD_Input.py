@@ -6,9 +6,10 @@ Created on Wed Jul 17 16:37:44 2019
 """
 import pandas as pd
 import numpy as np
-from stats_arrays import *
-class AD_input:
+from MC import *
+class AD_input(MC):
     def __init__(self):
+
 
 ### Assumed Composition 
         self.Assumed_Comp = [0.1587847314,0.1199794853,0.1172076820,0.3296762444,0.0824190611,0.0065468408,0.0000264482,
@@ -174,41 +175,12 @@ class AD_input:
                 'percCStor_LF':{"Name":"Percent of carbon in compost remaining after 100 years","amount":100,"unit":'%',"Reference":None},
                 'humFormFac':{"Name":"100 year carbon storage from humus formation","amount":0,"unit":'kg-C/kg-C in compost',"Reference":'4'}
                 }        
-
-
         
-    
+### Monte_carlo          
     def setup_MC(self,seed=None):
         self.AD_Input_list = {'Land_app':self.Land_app,'Curing_Bio':self.Curing_Bio,'Windrow_turn':self.Windrow_turn,'AD_operation':self.AD_operation,'Biogas_gen':self.Biogas_gen,
-                              'emission_factor[Flare]':self.emission_factor['Flare'], 'emission_factor[Engine]':self.emission_factor['Engine'],
-                              'Digestate_treatment':self.Digestate_treatment,'Post_Screen':self.Post_Screen,'Material_Properties':self.Material_Properties,'Dewater':self.Dewater,
-                              'Dig_prop':self.Dig_prop,'Fac_Energy':self.Fac_Energy, 'Loader':self.Loader,'shredding':self.shredding,'Soil_seq':self.Soil_seq}
-        self.list_var = list()
-        for x in self.AD_Input_list.values():
-            for y in x:
-                self.list_var.append(x[y])
-        self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars,seed=seed)
-      
-    def gen_MC(self):
-        data = self.rand.next()
-        i=0
-        input_list = []
-        for x in self.AD_Input_list.keys():
-            for y in self.AD_Input_list[x]:
-                if not np.isnan(data[i]):  
-                    self.AD_Input_list[x][y]['amount'] = data[i]
-                    input_list.append( ( (x , y) , data[i]) )
-                i+=1        
-        return(input_list)
-"""        
-        {
-'':{'Name':'','amount': ,'unit':'','Referenc':None},
-'':{'Name':'','amount': ,'unit':'','Referenc':None},
-'':{'Name':'','amount': ,'unit':'','Referenc':None},
-'':{'Name':'','amount': ,'unit':'','Referenc':None},
-'':{'Name':'','amount': ,'unit':'','Referenc':None},
-'':{'Name':'','amount': ,'unit':'','Referenc':None},
-                }
-        
-"""
+                          'emission_factor[Flare]':self.emission_factor['Flare'], 'emission_factor[Engine]':self.emission_factor['Engine'],
+                          'Digestate_treatment':self.Digestate_treatment,'Post_Screen':self.Post_Screen,'Material_Properties':self.Material_Properties,'Dewater':self.Dewater,
+                          'Dig_prop':self.Dig_prop,'Fac_Energy':self.Fac_Energy, 'Loader':self.Loader,'shredding':self.shredding,'Soil_seq':self.Soil_seq}
+        super().__init__(self.AD_Input_list)
+        super().setup_MC(seed)

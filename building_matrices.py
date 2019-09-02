@@ -157,7 +157,7 @@ class ParallelData(LCA):
         self.results = [x for lst in res for x in lst]
 
     
-   
+        #worker((self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed, n//nproc))
 if __name__=='__main__':
     pass
     

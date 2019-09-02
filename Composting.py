@@ -14,7 +14,7 @@ from flow import *
 class Comp:
     def __init__(self):
         self.CommonData = CommonData()
-        self.Comp_input= Comp_input()
+        self.Comp_input= Composting_input()
         ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
         self.Material_Properties.fillna(0,inplace=True)

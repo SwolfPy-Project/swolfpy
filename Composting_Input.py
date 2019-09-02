@@ -6,8 +6,8 @@ Created on Mon Jul  1 21:17:40 2019
 """
 import pandas as pd
 import numpy as np
-from stats_arrays import *
-class Comp_input:
+from MC import *
+class Composting_input(MC):
     def __init__(self):
         pass
     
@@ -165,30 +165,14 @@ class Comp_input:
                 'Minv':{"Name":"Vessel energy use per weight of material","amount":0,"unit":'kWh/Mg',"Reference":'27'}
                 }
         
-
+### Monte_carlo          
     def setup_MC(self,seed=None):
         self.COMP_Input_list = {'Op_Param':self.Op_Param, 'Substrate_Parameters[Sawdust]':self.Substrate_Parameters["Sawdust"], 'Substrate_Parameters[Wood_Chips]':self.Substrate_Parameters["Wood_Chips"],
-                                'Substrate_Parameters[Screen Rejects]':self.Substrate_Parameters["Screen Rejects"], 'Degradation_Parameters':self.Degradation_Parameters,
-                                'Biological_Degredation':self.Biological_Degredation, 'Land_app':self.Land_app, 'Odor_Cont':self.Odor_Cont,
-                                'Vaccum_sys':self.Vaccum_sys,'Screen':self.Screen,'Curing':self.Curing, 'Loader':self.Loader,
-                                'Office':self.Office,'Fertilizer_offset':self.Fertilizer_offset, 'AC_Aeration':self.AC_Aeration}
-        self.list_var = list()
-        for x in self.COMP_Input_list.values():
-            for y in x:
-                self.list_var.append(x[y])
-        self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars,self.Vars,seed=seed)
-      
-    def gen_MC(self):
-        data = self.rand.next()
-        i=0
-        input_list = []
-        for x in self.COMP_Input_list.keys():
-            for y in self.COMP_Input_list[x]:
-                if not np.isnan(data[i]):  
-                    self.COMP_Input_list[x][y]['amount'] = data[i]
-                    input_list.append( ( (x , y) , data[i]) )
-                i+=1        
-        return(input_list)
+                'Substrate_Parameters[Screen Rejects]':self.Substrate_Parameters["Screen Rejects"], 'Degradation_Parameters':self.Degradation_Parameters,
+                'Biological_Degredation':self.Biological_Degredation, 'Land_app':self.Land_app, 'Odor_Cont':self.Odor_Cont,
+                'Vaccum_sys':self.Vaccum_sys,'Screen':self.Screen,'Curing':self.Curing, 'Loader':self.Loader,
+                'Office':self.Office,'Fertilizer_offset':self.Fertilizer_offset, 'AC_Aeration':self.AC_Aeration}
+        super(Composting_input,self).__init__(self.COMP_Input_list)
+        super().setup_MC(seed)
 
 
