@@ -30,21 +30,15 @@ if __name__=='__main__':
     demo.group_exchanges()
     
     gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 1},
- {'name': 'frac_of_Other_Residual_from_AD_to_WTE', 'amount': 0},
  {'name': 'frac_of_Other_Residual_from_COMP_to_LF', 'amount': 1},
- {'name': 'frac_of_Other_Residual_from_COMP_to_WTE', 'amount': 0},
  {'name': 'frac_of_Bottom_Ash_from_LF_to_LF', 'amount': 1},
  {'name': 'frac_of_Fly_Ash_from_LF_to_LF', 'amount': 1},
  {'name': 'frac_of_Separated_Organics_from_LF_to_AD', 'amount': 1},
  {'name': 'frac_of_Separated_Organics_from_LF_to_COMP', 'amount': 0},
- {'name': 'frac_of_Other_Residual_from_LF_to_LF', 'amount': 1},
- {'name': 'frac_of_Other_Residual_from_LF_to_WTE', 'amount': 0},
- {'name': 'frac_of_RDF_from_LF_to_WTE', 'amount': 1},
- {'name': 'frac_of_Bottom_Ash_from_WTE_to_LF', 'amount': 1},
- {'name': 'frac_of_Fly_Ash_from_WTE_to_LF', 'amount': 1}]
+ {'name': 'frac_of_Other_Residual_from_LF_to_LF', 'amount': 1}]
     
     demo.update_parameters(gg)
-    scenario1 = {"AD":{"Yard_Trimmings_Grass":1},"COMP":{"Yard_Trimmings_Grass":2,"Paper_Bags":2,"Mixed_Plastic":2},'WTE':{"Yard_Trimmings_Grass":1}}
+    scenario1 = {"AD":{"Yard_Trimmings_Grass":1},"COMP":{"Yard_Trimmings_Grass":2,"Paper_Bags":2,"Mixed_Plastic":2}}
     demo.process_start_scenario(scenario1,'scenario1')
     
     
@@ -75,8 +69,9 @@ if __name__=='__main__':
                 'humFormFac':{"Name":"100 year carbon storage from humus formation","amount":0,"unit":'kg-C/kg-C in Compost',"Reference":'6'}
                 }
                     
-    demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.8, scale = 0.3, uncertainty_type = 7,minimum=0,maximum=2)
-    demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_WTE', loc = 0.8, scale = 0.3, uncertainty_type = 7,minimum=0,maximum=2)
+# =============================================================================
+#     demo.unified_params.add_uncertainty('frac_of_Other_Residual_from_AD_to_LF', loc = 0.8, scale = 0.3, uncertainty_type = 7,minimum=0,maximum=2)
+# =============================================================================
     
     Treatment_processes['AD']['model'].AD_input.AD_operation = {
                 'ad_lifetime':{'Name':'Facility economic lifetime','amount':20,'unit':'years','Referenc':None},
@@ -101,8 +96,7 @@ if __name__=='__main__':
     projects.set_current(project)
     db = Database("waste")
     functional_unit = {db.get("scenario1") : 1}
-    method = ('IPCC 2007', 'climate change', 'GWP 100a')
-    
+    method = [('SWOLF_IPCC','SWOLF'),('SWOLF_Acidification','SWOLF')]
     
     CommonData = CommonData()
     process_models = list()
@@ -139,7 +133,7 @@ if __name__=='__main__':
     t1 = time()
     n=100
     #a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names)
-    a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names,parameters=demo.unified_params,common_data=CommonData,seed = 1)
+    a = ParallelData(functional_unit, method, project,process_models=process_models,process_model_names=process_model_names,common_data=CommonData,seed = 1)
     #a = ParallelData(functional_unit, method, project,parameters=demo.unified_params)
     
     a.run(4,n)

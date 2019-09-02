@@ -50,11 +50,11 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
         else:    
             for process in process_models:
                 uncertain_inputs += process.MC_calc()
-		
+        
         i = 0
         for process_name in process_model_names:
             report_dict = process_models[i].report()
-	
+    
             for material,value in report_dict["Technosphere"].items():
                 for key2, value2 in value.items():
                     if not np.isnan(value2):
@@ -71,7 +71,7 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
                         if tech_matrix[((key2),(process_name, material))] != value2:
                             tech_matrix[((key2),(process_name, material))] = value2
                             print(tech_matrix[((key2),(process_name, material))])
-			
+            
             for material,value in report_dict["Biosphere"].items():
                 for key2, value2 in value.items():
                     if not np.isnan(value2):
@@ -84,8 +84,8 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
         uncertain_inputs += params
         for key, value in matrix.items():
             if key in tech_matrix:
-                tech_matrix[key] = value	
-	
+                tech_matrix[key] = value    
+    
     tech = np.array(list(tech_matrix.values()), dtype=float)
     bio = np.array(list(bio_matrix.values()), dtype=float)
     
@@ -95,16 +95,16 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
     if lca.lcia:
         lca.lcia_calculation()
 
-	lca_results = dict()
-	lca_results[method[0]]=lca.score
-	
-	if len(method)>1:
-		for i in range(1,len(method)):
-		lca.switch_method(method[i])
-		    if lca.lcia:
-				lca.lcia_calculation()
-		lca_results[method[i]]=lca.score
-	
+    lca_results = dict()
+    lca_results[method[0]]=lca.score
+    
+    if len(method)>1:
+        for i in range(1,len(method)):
+            lca.switch_method(method[i])
+            lca.lcia_calculation()
+            lca_results[method[i]]=lca.score
+        lca.switch_method(method[0])
+    
     return(os.getpid(),lca_results,uncertain_inputs)
     
     
@@ -143,16 +143,15 @@ class ParallelData(LCA):
                 
         
     def run(self, nproc, n):       
-        if self.process_models and not self.parameters:
-            with pool_adapter(mp.Pool(processes=nproc)) as pool:
-                res = pool.map(
-                    worker,
-                    [
-                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed + i, n//nproc)
-                        for i in range(nproc)
-                    ]
-                )
-            self.results = [x for lst in res for x in lst]
+        with pool_adapter(mp.Pool(processes=nproc)) as pool:
+            res = pool.map(
+                worker,
+                [
+                    (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed + i, n//nproc)
+                    for i in range(nproc)
+                ]
+            )
+        self.results = [x for lst in res for x in lst]
 
     
    
