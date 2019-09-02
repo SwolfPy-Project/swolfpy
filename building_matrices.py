@@ -26,41 +26,16 @@ else:
 
 
 def worker(args):
-    project, functional_unit, method, process_models, process_model_names, common_data, tech_matrix, bio_matrix,seed ,n = args
+    project, functional_unit, method, parameters, process_models, process_model_names, common_data, tech_matrix, bio_matrix, seed , n = args
     projects.set_current(project, writable=False)
     if common_data:
         common_data.setup_MC(seed)
     for x in process_models:
         x.setup_MC(seed)
-    lca = LCA(functional_unit, method)
+    lca = LCA(functional_unit, method[0])
     lca.lci()
     lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names, common_data=common_data) for x in range(n)]
-
-def worker2(args):
-    project, functional_unit, method, param, tech_matrix, bio_matrix,seed ,n = args
-    projects.set_current(project, writable=False)
-    parameters.setup_MC(seed)
-    lca = LCA(functional_unit, method)
-    lca.lci()
-    lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, parameters=param) for x in range(n)]
-
-def worker3(args):
-    project, functional_unit, method, parameters, process_models, process_model_names, common_data, tech_matrix, bio_matrix,seed, n = args
-    projects.set_current(project, writable=False)
-    if common_data:
-        common_data.setup_MC(seed)
-		
-    for x in process_models:
-        x.setup_MC(seed)		
-    parameters.setup_MC(seed)
-    
-    lca = LCA(functional_unit, method)
-    lca.lci()
-    lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models, process_model_names, parameters, common_data) for x in range(n)]
-
+    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models=process_models, process_model_names=process_model_names, parameters=parameters, common_data=common_data) for x in range(n)]
 
 
 def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models = None, process_model_names = None, parameters = None, common_data = None):
@@ -89,9 +64,9 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
             for material,value in report_dict["Waste"].items():
                 for key2, value2 in value.items():
                     if key2 in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual','RDF','Al','Fe','Cu']:
-                        key2 = (process_name + "_product",material+'_'+key2)
+                        key2 = (process_name + "_product", material + '_' + key2)
                     else:
-                        key2 = (process_name + "_product",key2)
+                        key2 = (process_name + "_product", key2)
                     if not np.isnan(value2):
                         if tech_matrix[((key2),(process_name, material))] != value2:
                             tech_matrix[((key2),(process_name, material))] = value2
@@ -119,16 +94,25 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
     lca.lci_calculation()
     if lca.lcia:
         lca.lcia_calculation()
-        if lca.weighting:
-            lca.weighting_calculation()
-    return(os.getpid(),lca.score,uncertain_inputs)
+
+	lca_results = dict()
+	lca_results[method[0]]=lca.score
+	
+	if len(method)>1:
+		for i in range(1,len(method)):
+		lca.switch_method(method[i])
+		    if lca.lcia:
+				lca.lcia_calculation()
+		lca_results[method[i]]=lca.score
+	
+    return(os.getpid(),lca_results,uncertain_inputs)
     
     
 
 
 class ParallelData(LCA):
     def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, common_data = None, parameters = None,seed = None):
-        super(ParallelData, self).__init__(functional_unit, method)
+        super(ParallelData, self).__init__(functional_unit, method[0])
         self.lci()
         self.lcia()
         self.functional_unit = functional_unit
@@ -158,44 +142,17 @@ class ParallelData(LCA):
                 self.bio_matrix[(str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
                 
         
-
-
     def run(self, nproc, n):       
         if self.process_models and not self.parameters:
             with pool_adapter(mp.Pool(processes=nproc)) as pool:
                 res = pool.map(
                     worker,
                     [
-                        (self.project, self.functional_unit, self.method, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix,self.seed + i, n//nproc)
+                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed + i, n//nproc)
                         for i in range(nproc)
                     ]
                 )
             self.results = [x for lst in res for x in lst]
-
-        elif self.parameters and not self.process_models:
-			
-            with pool_adapter(mp.Pool(processes=nproc)) as pool:
-                    res = pool.map(
-                    worker2,
-                    [
-                        (self.project, self.functional_unit, self.method, self.parameters, self.tech_matrix, self.bio_matrix,self.seed+i, n//nproc)
-                        for i in range(nproc)
-                    ]
-                )
-            self.results = [x for lst in res for x in lst]
-
-        else:
-
-            with pool_adapter(mp.Pool(processes=nproc)) as pool:
-                res = pool.map(
-                    worker3,
-                    [
-                        (self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix,self.seed + i, n//nproc)
-                        for i in range(nproc)
-                    ]
-                )
-            self.results = [x for lst in res for x in lst]     
-
 
     
    
