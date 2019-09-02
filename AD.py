@@ -224,17 +224,14 @@ class AD:
         
         return(self.AD)    
 
-"""
-A=AD()
-A.calc()
-AA=A.report()
-AAA=A.LCI
-"""
-from time import time
-B = time()
-A=AD()
-for i in range(100):
-    A.calc() 
-    A.report()
-print(time()-B)
+
+# =============================================================================
+# from time import time
+# B = time()
+# A=AD()
+# for i in range(100):
+#     A.calc() 
+#     A.report()
+# print(time()-B)
+# =============================================================================
 

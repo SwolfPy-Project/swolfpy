@@ -59,6 +59,13 @@ class Comp_input:
                 'acDegProp':{"Name":"Proportion of mass loss that occurs during active composting","amount":90,"unit":'%',"Reference":None},
                 }
 
+### Material Properties
+        self.Material_Properties ={
+            'densFC':{'Name':'Density of final compost','amount':700 ,'unit':'kg/m3','Referenc':None},
+            'densPeat':{"Name":"Density of peat","amount":200,"unit":'kg/m3',"Reference":None},
+            'PeatSubFac':{"Name":"Volumetric peat replacement factor","amount":1,"unit":None,"Reference":None}
+            }
+
 ### Biological Degredation
         self.Biological_Degredation = {
                 'pCasCH4':{"Name":"Proportion of emitted C emitted as CH4","amount":0.017,"unit":None,"Reference":'12'},
@@ -122,7 +129,7 @@ class Comp_input:
         self.Fertilizer_offset = {
                 'choice_BU':{"Name":"Offset Beneficial Use of Compost? (0=no; 1=yes)","amount":1,"unit":None,"Reference":None},
                 'peatOff':{"Name":"Soil amendment offset peat (1) or no (0)","amount":1,"unit":None,"Reference":None},
-                'fertOff':{"Name":"Soil amendment offset fertilizer (1) or no (0)","amount":1,"unit":None,"Reference":None}
+                'fertOff':{"Name":"Soil amendment offset fertilizer (1) or no (0)","amount":0,"unit":None,"Reference":None}
                 }              
         
 ### Active Compost Force Aeration        

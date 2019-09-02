@@ -534,25 +534,18 @@ class Comp:
 
 
 
-A=Comp()
-DD=A.calc2()
-
-from time import time
-c= time()
-for i in range(100):
-    A.calc2()
-    A.report()
-print(time()-c)
+# =============================================================================
+# A=Comp()
+# DD=A.calc2()
+# from time import time
+# c= time()
+# for i in range(100):
+#     A.calc2()
+#     A.report()
+# print(time()-c)
+# =============================================================================
 
         
-A=Comp()
-A.calc()
-
-      
-A.calc2()       
-BB= A.Mass_flows.transpose() 
-BBB = A.LCI.transpose() 
-
-COMP=A.report()        
+   
         
         

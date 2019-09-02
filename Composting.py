@@ -74,7 +74,7 @@ class Comp:
         self.final_comp.data['K_cont']= (self.mixed.data['sol_cont']-self.ps_res.data['sol_cont']- self.vac_res.data['sol_cont']) * self.Material_Properties['Potassium Content'][4:]/100
 
 ### Compost use
-        compost_use(self.final_comp,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.Comp_input.Biological_Degredation,self.Comp_input.Land_app,self.Comp_input.Fertilizer_offset,self.LCI)
+        compost_use(self.final_comp,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.Comp_input.Biological_Degredation,self.Comp_input.Land_app,self.Comp_input.Fertilizer_offset,self.Comp_input,self.LCI)
 
 ### office
         Office_elec = ( self.Comp_input.Office['Mta']['amount'] * self.Comp_input.Office['Mea']['amount'] / 1000 ) /self.Comp_input.Op_Param['Taod']['amount'] 
@@ -200,21 +200,17 @@ class Comp:
            
                 
         return(self.COMP)
-"""       
-A=Comp()
-DD=A.calc()
-AA=A.LCI
-COMP=A.report() 
 
-"""
 
-from time import time
-A=Comp()
-c= time()
-for i in range(100):
-    A.calc()
-    A.report()
-print(time()-c)
+# =============================================================================
+# from time import time
+# A=Comp()
+# c= time()
+# for i in range(100):
+#     A.calc()
+#     A.report()
+# print(time()-c)
+# =============================================================================
 
        
         
