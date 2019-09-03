@@ -12,6 +12,7 @@ from WTE import *
 from brightway2 import *
 from CommonData import *
 from time import time
+import pickle
 
 if __name__=='__main__':
     
@@ -24,7 +25,9 @@ if __name__=='__main__':
 #                   'PET', 'HDPE_Unsorted', 'HDPE_P', 'HDPE_T', 'PVC', 'LDPE_Film', 'Polypropylene', 'Polystyrene', 'Plastic_Other', \
 #                   'Mixed_Plastic', 'Al', 'Fe', 'Cu', 'Brown_glass', 'Clear_glass', 'Green_glass', 'Mixed_Glass']}  
     
-    demo = project("Organic_Analysis",Treatment_processes)
+    
+    Project_name = "Organic_Analysis"
+    demo = project(Project_name,Treatment_processes)
     demo.init_project('SWOLF_AccountMode_LCI DATA.csv')
     demo.write_project()
     demo.group_exchanges()
@@ -43,6 +46,32 @@ if __name__=='__main__':
     
     
     demo.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
+
+### Save object    
+    file = open(Project_name,'wb')
+    pickle.dump(demo,file)
+    
+    
+### Load object
+    import pickle
+    Project_name = "Organic_Analysis"
+    demo = pickle.load(open(Project_name,'rb'))        
+    from project_class import *
+    from building_matrices import *
+    from AD import *
+    from Composting import *
+    from WTE import *
+    from brightway2 import *
+    from CommonData import *
+    from time import time
+    
+    
+    
+    Treatment_processes = {}
+    Treatment_processes['AD']={'input_type':['MOC','Separated_Organics'],'model': AD()}
+    Treatment_processes['COMP']={'input_type':['MOC','Separated_Organics'], 'model': Comp()}
+    Treatment_processes['LF']={'path':"trad_landfill _BW2.xlsx",'input_type':['MWC','RWC','Bottom_Ash','Fly_Ash','Other_Residual']}
+    
     
     
     Treatment_processes['AD']['model'].AD_input.Curing_Bio = {
@@ -88,15 +117,6 @@ if __name__=='__main__':
     
     
     
-    
-    from project_class import *
-    from building_matrices import *
-    from AD import *
-    from Composting import *
-    from WTE import *
-    from brightway2 import *
-    from CommonData import *
-    from time import time
     project = "Organic_Analysis"
     projects.set_current(project)
     db = Database("waste")
@@ -144,6 +164,18 @@ if __name__=='__main__':
     a.run(4,n)
     t2=time()
     print(n, 'runs in: ', t2-t1)
+
+### save results as Dataframe and pickle   
+    AA=a.result_to_DF()
+    a.save_results('test')
+    
+### Load data frame from pickle       
+    AAA=pd.read_pickle('test')
+    
+    
+    
+    
+    
 # =============================================================================
 #     from matplotlib.pylab import *
 #     hist(a.results, density=True, histtype="step")

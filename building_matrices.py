@@ -1,8 +1,6 @@
 from brightway2 import *
 import numpy as np
 from Required_keys import *
-from Composting import *
-from AD import *
 import multiprocessing as mp
 import sys
 from multiprocessing import Queue
@@ -10,6 +8,7 @@ from multiprocessing import Pool
 from brightway2 import LCA
 from bw2data import projects
 import os
+import pandas as pd
 
     
 if sys.version_info < (3, 0):
@@ -155,7 +154,19 @@ class ParallelData(LCA):
                 ]
             )
         self.results = [x for lst in res for x in lst]
+    
+    def result_to_DF(self):
+        output=pd.DataFrame()
+### Reporting the LCIA results; Create a column for each method
+        for j in self.results[0][1].keys():
+            output[j] = [self.results[i][1][j] for i in range(len(self.results))]
+### Reporting the input data    
+        for j in range(len(self.results[0][2])):
+                output[self.results[0][2][j][0]] = [self.results[i][2][j][1] for i in range(len(self.results))]
+        return(output)
 
+    def save_results(self,name):
+        self.result_to_DF().to_pickle(name)
     
         #worker((self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed, n//nproc))
 if __name__=='__main__':
