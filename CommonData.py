@@ -6,8 +6,8 @@ Created on Mon Jul  1 20:05:32 2019
 """
 import pandas as pd
 import numpy as np
-from stats_arrays import *
-class CommonData:
+from MC import *
+class CommonData(MC):
     def __init__(self):
 ### Materials
         self.Index = ['Unit','Yard_Trimmings_Leaves', 'Yard_Trimmings_Grass', 'Yard_Trimmings_Branches', 'Food_Waste_Vegetable', 'Food_Waste_Non_Vegetable',
@@ -97,24 +97,9 @@ class CommonData:
                     'co2bod':{"Name":"CO2 Biomass produced per BOD removed","amount":3.60,"unit":'kg CO2b/kg BOD',"Reference":'2'},
                     'elecBOD':{"Name":"Electricity used per mass of BOD removed","amount":0.99,"unit":'kWh/kg BOD removed',"Reference":'2'}
                     }
-        
-    def setup_MC(self,seed = None):
+
+### Monte_carlo          
+    def setup_MC(self,seed=None):
         self.CommonData_Input_list = {'Land_app':self.Land_app, 'WWT':self.WWT, 'Leachate_treat':self.Leachate_treat}
-        self.list_var = list()
-        for x in self.CommonData_Input_list.values():
-            for y in x:
-                self.list_var.append(x[y])
-        self.Vars  = UncertaintyBase.from_dicts(*self.list_var)
-        self.rand = MCRandomNumberGenerator(self.Vars,seed=seed)
-      
-    def gen_MC(self):
-        data = self.rand.next()
-        i=0
-        input_list = []
-        for x in self.CommonData_Input_list.keys():
-            for y in self.CommonData_Input_list[x]:
-                if not np.isnan(data[i]):  
-                    self.CommonData_Input_list[x][y]['amount'] = data[i]
-                    input_list.append( ( (x , y) , data[i]) )
-                i+=1        
-        return(input_list)
+        super().__init__(self.CommonData_Input_list)
+        super().setup_MC(seed)
