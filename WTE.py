@@ -155,50 +155,18 @@ class WTE:
         for x in ['lime','carbon','ammonia']:
             self.APC_Consumption[x] = self.WTE_input.Material_Consumption[x]['amount']*1000
             self.APC_Consumption.loc['Unit',x]= 'kg/Mg ww'
-        
-
-    def create_uncertainty_from_inputs(self,seed=None):
-        self.process_data_1=pd.read_excel("Material properties - process modles.xlsx", sheet_name = 'WTE', index_col = 'Parameter')
-        self.uncertain_dict = dict()
-        cols = list(self.process_data_1)
-        for col in range(0,len(cols),7):
-            self.uncertain_dict[cols[col]] = list()
-            for val in range(len(self.process_data[cols[col]][3:])):
-                self.uncertain_dict[cols[col]].append(dict())
-                if not np.isnan(self.process_data_1[cols[col+1]][3+val]):
-                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = int(self.process_data_1[cols[col+1]][3+val])
-                    self.uncertain_dict[cols[col]][val]['loc'] = self.process_data_1[cols[col+2]][3+val]
-                    self.uncertain_dict[cols[col]][val]['scale'] = self.process_data_1[cols[col+3]][3+val]
-                    self.uncertain_dict[cols[col]][val]['shape'] = self.process_data_1[cols[col+4]][3+val]
-                    self.uncertain_dict[cols[col]][val]['minimum'] = self.process_data_1[cols[col+5]][3+val]
-                    self.uncertain_dict[cols[col]][val]['maximum'] = self.process_data_1[cols[col+6]][3+val]
-                else:
-                    self.uncertain_dict[cols[col]][val]['uncertainty_type'] = 1
-							
-        self.variables = dict()
-        self.rng = dict()
-        for key in self.uncertain_dict.keys():
-            self.variables[key] = UncertaintyBase.from_dicts(*self.uncertain_dict[key])
-            self.rng[key] = MCRandomNumberGenerator(self.variables[key],seed=seed)
-		
-    def uncertainty_input_next(self):
-        data = dict()
-        for key in self.rng.keys():
-            data[key] = self.rng[key].next()
-            for val in range(len(self.process_data[key][3:])):
-                if not np.isnan(data[key][val]):			
-                    self.process_data.at[(self.process_data_1.index.values[3+val]),key] = data[key][val]
-
-		
+        		
 		
     def setup_MC(self,seed=None):
         self.WTE_input.setup_MC(seed)
-        self.create_uncertainty_from_inputs()
+        self.WTE_input.create_uncertainty_from_inputs("WTE",self.process_data,seed)
+		
     def MC_calc(self):      
         input_list = self.WTE_input.gen_MC()
-        self.uncertainty_input_next()
+        input_list2 = self.WTE_input.uncertainty_input_next()
         self.calc()
-        return(input_list)
+        return(input_list+input_list2)
+		
     def report(self):
         ### Output
         self.WTE = {}
