@@ -72,7 +72,6 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
                     if not np.isnan(value2):
                         if tech_matrix[((key2),(process_name, material))] != value2:
                             tech_matrix[((key2),(process_name, material))] = value2
-                            print(tech_matrix[((key2),(process_name, material))])
             
             for material,value in report_dict["Biosphere"].items():
                 for key2, value2 in value.items():

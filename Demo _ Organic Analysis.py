@@ -13,6 +13,7 @@ from brightway2 import *
 from CommonData import *
 from time import time
 import pickle
+from SWOLF_method import *
 
 if __name__=='__main__':
     
@@ -31,6 +32,7 @@ if __name__=='__main__':
     demo.init_project('SWOLF_AccountMode_LCI DATA.csv')
     demo.write_project()
     demo.group_exchanges()
+    import_methods()
     
     gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 1},
  {'name': 'frac_of_Other_Residual_from_COMP_to_LF', 'amount': 1},
