@@ -332,7 +332,7 @@ def compost_use(input,CommonData,process_data,Material_Properties,Biological_Deg
         C_CH4_Flared = C_CH4 * process_data['Percent of Generated Methane Flared']/100
         C_CH4_Emitted = C_CH4 * process_data['Percent of Generated Methane Emitted']/100
         C_CH4_EnergyRec = C_CH4 * process_data['Percent of Generated Methane used for Energy']/100
-        C_CH4_Electricity = C_CH4_EnergyRec*CommonData.MW['CH4']['amount']/CommonData.MW['C']['amount']*50/3.6  # LHV of Methane: 50 MJ/kg
+        C_CH4_Electricity = C_CH4_EnergyRec*CommonData.MW['CH4']['amount']/CommonData.MW['C']['amount']*50/3.6 * 0.36  # LHV of Methane: 50 MJ/kg
                 
         add_LCI('Carbon dioxide, non-fossil storage', -(C_storage) * CommonData.MW['CO2']['amount']/CommonData.MW['C']['amount'] ,LCI)
         add_LCI('Carbon dioxide, non-fossil', (C_released+C_CH4_EnergyRec+C_CH4_Flared+C_CH4_Oxidized) * CommonData.MW['CO2']['amount']/CommonData.MW['C']['amount'] ,LCI)
@@ -734,7 +734,7 @@ def AD_compost_use(input,CommonData,process_data,Material_Properties,assumed_com
         C_CH4_Flared = C_CH4 * process_data['Percent of Generated Methane Flared']/100
         C_CH4_Emitted = C_CH4 * process_data['Percent of Generated Methane Emitted']/100
         C_CH4_EnergyRec = C_CH4 * process_data['Percent of Generated Methane used for Energy']/100
-        C_CH4_Electricity = C_CH4_EnergyRec*CommonData.MW['CH4']['amount']/CommonData.MW['C']['amount']*50/3.6  # LHV of Methane: 50 MJ/kg
+        C_CH4_Electricity = C_CH4_EnergyRec*CommonData.MW['CH4']['amount']/CommonData.MW['C']['amount']*50/3.6 *0.36 # LHV of Methane: 50 MJ/kg
                 
         add_LCI('Direct Carbon Storage and Humus Formation', -(C_storage) * CommonData.MW['CO2']['amount']/CommonData.MW['C']['amount'] ,LCI)
         add_LCI('Carbon dioxide, non-fossil _ Land application', (C_released+C_CH4_EnergyRec+C_CH4_Flared+C_CH4_Oxidized) * CommonData.MW['CO2']['amount']/CommonData.MW['C']['amount'] ,LCI)
