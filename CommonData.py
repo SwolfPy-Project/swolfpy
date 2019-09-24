@@ -46,17 +46,19 @@ class CommonData(MC):
         
 ### Unit Conversion
         self.UC = {'BTU_KJ':{"Name":"BTU to KJ","amount":1.055,"unit":"kJ","Reference":None},
-                  'KJ_BTU':{"Name":"KJ to BTU","amount":1 / 1.055,"unit":"BTU","Reference":None}}
+                  'KJ_BTU':{"Name":"KJ to BTU","amount":1 / 1.055,"unit":"BTU","Reference":None}
+                  }
         
         
 ### STP Measurements
         self.STP = {'mole_to_L':{"Name":"mole to Liter","amount":22.41 ,"unit":"L","Reference":None},
-                   'm3CH4_to_kg':{"Name":"m3 CH4 to kg CH4","amount": 0.71589 ,"unit":"kg","Reference":None},
+                   'm3CH4_to_kg':{"Name":"m3 CH4 to kg CH4","amount": 0.71589 ,"unit":"kg/m3","Reference":None},
                    'm3CO2_to_kg':{"Name":"m3 CO2 to kg","amount": self.MW['CO2']['amount']/22.41 ,"unit":"kg","Reference":None},
                    "Density_Air":{"Name":"Density_Air","amount":22.4,"unit":"L/mol","Reference":None}
                    }
         
         self.Evap_heat = {"Water_Evap_Heat":{"Name":"Water_Evap_Heat","amount":2.26,"unit":"MJ/Kg","Reference":None}}
+        self.LHV ={'CH4':{'Name':'Energy content of methane','amount':37.7 ,'unit':'MJ/m3 at STP','Reference':None}}
         
 ### Land application inputs
         self.Land_app = {
