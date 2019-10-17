@@ -129,7 +129,7 @@ class Composting_input(MC):
         self.Fertilizer_offset = {
                 'choice_BU':{"Name":"Offset Beneficial Use of Compost? (0=no; 1=yes)","amount":1,"unit":None,"Reference":None},
                 'peatOff':{"Name":"Soil amendment offset peat (1) or no (0)","amount":1,"unit":None,"Reference":None},
-                'fertOff':{"Name":"Soil amendment offset fertilizer (1) or no (0)","amount":0,"unit":None,"Reference":None}
+                'fertOff':{"Name":"Soil amendment offset fertilizer (1) or no (0)","amount":1,"unit":None,"Reference":None}
                 }              
         
 ### Active Compost Force Aeration        

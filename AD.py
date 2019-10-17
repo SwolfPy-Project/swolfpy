@@ -132,7 +132,7 @@ class AD:
         Waste={}
         Technosphere={}
         Biosphere={}
-        self.AD ["process name"] = 'COMP'
+        self.AD ["process name"] = 'AD'
         self.AD  ["Waste"] = Waste
         self.AD  ["Technosphere"] = Technosphere
         self.AD  ["Biosphere"] = Biosphere
@@ -150,7 +150,7 @@ class AD:
             Technosphere[y][('Technosphere', 'Electricity_production')] = self.LCI['Electricity Production'][y]
             Technosphere[y][('Technosphere', 'Electricity_consumption')] = self.LCI['Electricity Use'][y]
             Technosphere[y][('Technosphere', 'Equipment_Diesel')] = self.LCI['Diesel Total'][y]
-            Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck')] = self.LCI['Full_Total heavy duty truck tranport'][y]
+            Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck')] = self.LCI['Full_Total heavy duty truck transport'][y]
             Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Medium_Duty_Diesel_Truck')] = self.LCI['Full_Medium-duty truck transport of compost to land application'] [y]
             Technosphere[y][('Technosphere', 'Empty_Return_Heavy_Duty_Diesel_Truck')] = self.LCI['Empty_Total heavy duty truck empty return'][y]
             Technosphere[y][('Technosphere', 'Empty_Return_Medium_Duty_Diesel_Truck')] = self.LCI['Empty_Medium-duty truck transport return from land application'][y]
@@ -231,6 +231,17 @@ class AD:
 # A=AD()
 # for i in range(100):
 #     A.calc() 
+#     A.report()
+# print(time()-B)
+# =============================================================================
+
+
+# =============================================================================
+# A=AD()
+# A.calc() 
+# from time import time
+# B = time()
+# for i in range(100):
 #     A.report()
 # print(time()-B)
 # =============================================================================

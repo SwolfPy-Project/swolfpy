@@ -652,7 +652,7 @@ def POTW (liq_treatment_vol,liq_rem,input_to_reactor,Dig_to_Curing,FinalCompost,
     sludge_prod = liq_treatment_vol * CommonData.Leachate_treat['sludgef']['amount'] # Unit kg
     
     #Resouce use
-    add_LCI('Full_Total heavy duty truck tranport', AD_input.Digestate_treatment['ad_distPOTW']['amount'] * liq_treatment_vol * 1000 * AD_input.Dig_prop['digliqdens']['amount'] ,LCI)
+    add_LCI('Full_Total heavy duty truck transport', AD_input.Digestate_treatment['ad_distPOTW']['amount'] * liq_treatment_vol * 1000 * AD_input.Dig_prop['digliqdens']['amount'] ,LCI)
     add_LCI('Empty_Total heavy duty truck empty return', liq_treatment_vol * AD_input.Dig_prop['digliqdens']['amount'] / AD_input.Digestate_treatment['payload_POTW']['amount']\
             * AD_input.Digestate_treatment['ad_distPOTW']['amount'] * AD_input.Digestate_treatment['ad_erPOTW']['amount'] ,LCI)
     

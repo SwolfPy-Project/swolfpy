@@ -50,9 +50,11 @@ if __name__=='__main__':
     demo.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
 
 ### Save object    
-    file = open(Project_name,'wb')
-    pickle.dump(demo,file)
-    
+    import pickle  
+    file = open(Project_name, 'wb')
+    pickle.dump(demo, file)
+        
+
     
 ### Load object
     import pickle

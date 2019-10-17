@@ -236,6 +236,7 @@ class project():
         negative = []
         positive=[]
         dd.reverse()
+        lgnd = list()
         for x in range(len(dd)):
             if dd[x][0]<0:
                 negative.append(dd[x][0])
@@ -243,6 +244,7 @@ class project():
                     plt.barh("Activity",dd[x][0],height=0.1,left=0)
                 else:
                     plt.barh("Activity",dd[x][0],height=0.1,left=sum(negative[:-1]))
+                lgnd.append(dd[x][1])
         
         dd.reverse()
         for x in range(len(dd)):
@@ -252,8 +254,9 @@ class project():
                     plt.barh("Activity",dd[x][0],height=0.1,left=0)
                 else:
                     plt.barh("Activity",dd[x][0],height=0.1,left=sum(positive[:-1]))
+                lgnd.append(dd[x][1])
                     
-        plt.legend([x[1] for x in dd],loc=3)
+        plt.legend(lgnd,loc=3)
         plt.title('Top Activities Contribution, CutOff = 0.05,'+scenario_name)
         
 
