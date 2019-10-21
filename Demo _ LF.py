@@ -68,6 +68,11 @@ if __name__=='__main__':
 
 ### save results as Dataframe and pickle   
     AA=a.result_to_DF()
+	
+    demo.save(Project_name)	#saving project in a picle dump
+	
+### reloading file from pickle dump
+    load=pickle.load(open(Project_name, "rb"))
 
     
 
