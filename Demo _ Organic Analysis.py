@@ -49,10 +49,9 @@ if __name__=='__main__':
     
     demo.Do_LCA("scenario1",('SWOLF_IPCC','SWOLF'),1)
 
-### Save object    
-    import pickle  
-    file = open(Project_name, 'wb')
-    pickle.dump(demo, file)
+### Save object 
+    demo.save(Project_name)   
+
         
 
     
