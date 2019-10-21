@@ -259,14 +259,7 @@ class project():
         plt.legend(lgnd,loc=3)
         plt.title('Top Activities Contribution, CutOff = 0.05,'+scenario_name)
         
-
-                
-        
-
-        
-        
-
-      
-
-        
-    
+    def save(self,filename):
+        import pickle
+        pickle.dump(self, open(filename, "wb"))
+		
