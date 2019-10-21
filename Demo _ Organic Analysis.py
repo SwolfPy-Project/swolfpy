@@ -47,7 +47,7 @@ if __name__=='__main__':
     demo.process_start_scenario(scenario1,'scenario1')
     
     
-    demo.Do_LCA("scenario1",('IPCC 2007', 'climate change', 'GWP 100a'),1)
+    demo.Do_LCA("scenario1",('SWOLF_IPCC','SWOLF'),1)
 
 ### Save object    
     import pickle  
