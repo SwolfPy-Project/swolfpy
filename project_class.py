@@ -23,38 +23,12 @@ class project():
         projects.set_current(self.project_name)
         
         self.waste_treatment = {}
-        self.waste_treatment['Bottom_Ash']= self.find_destination('Bottom_Ash') 
-        self.waste_treatment['Fly_Ash']= self.find_destination('Fly_Ash')
-        self.waste_treatment['Separated_Organics']= self.find_destination('Separated_Organics')
-        self.waste_treatment['Other_Residual']= self.find_destination('Other_Residual')
-        self.waste_treatment['RDF']=self.find_destination('RDF')
-        self.waste_treatment['Wastewater']= self.find_destination('Wastewater')
-        self.waste_treatment['OCC']= self.find_destination('OCC')
-        self.waste_treatment['Mixed_Paper']= self.find_destination('Mixed_Paper')
-        self.waste_treatment['ONP']= self.find_destination('ONP')
-        self.waste_treatment['OFF']= self.find_destination('OFF')
-        self.waste_treatment['Fiber_Other']= self.find_destination('Fiber_Other')
-        self.waste_treatment['PET']= self.find_destination('PET')
-        self.waste_treatment['HDPE_Unsorted']= self.find_destination('HDPE_Unsorted')
-        self.waste_treatment['HDPE_P']= self.find_destination('HDPE_P')
-        self.waste_treatment['HDPE_T']= self.find_destination('HDPE_T')
-        self.waste_treatment['PVC']= self.find_destination('PVC')
-        self.waste_treatment['LDPE_Film']= self.find_destination('LDPE_Film')
-        self.waste_treatment['Polypropylene']= self.find_destination('Polypropylene')
-        self.waste_treatment['Polystyrene']= self.find_destination('Polystyrene')
-        self.waste_treatment['Plastic_Other']= self.find_destination('Plastic_Other')
-        self.waste_treatment[ 'Mixed_Plastic']= self.find_destination('Mixed_Plastic')
-        self.waste_treatment['Al']= self.find_destination('Al')
-        self.waste_treatment['Fe']= self.find_destination('Fe')
-        self.waste_treatment['Cu']= self.find_destination('Cu')
-        self.waste_treatment['Brown_glass']= self.find_destination('Brown_glass')
-        self.waste_treatment['Clear_glass']= self.find_destination('Clear_glass')
-        self.waste_treatment['Green_glass']= self.find_destination('Green_glass')
-        self.waste_treatment['Mixed_Glass']= self.find_destination('Mixed_Glass')
-        self.waste_treatment['MOC']= self.find_destination('MOC')
-        self.waste_treatment['RWC']= self.find_destination('RWC')
-        self.waste_treatment['SSRC']= self.find_destination('SSRC')
-        self.waste_treatment['MWC']= self.find_destination('MWC')
+        for i in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual','RDF','Wastewater','OCC','Mixed_Paper','ONP','OFF','Fiber_Other','PET',
+                 'HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film','Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic','Al','Fe','Cu','Brown_glass','Clear_glass',
+                 'Green_glass','Mixed_Glass','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
+            self.waste_treatment[i]= self.find_destination(i) 
+            
+    
         
         
         self.process_inputdata={}
