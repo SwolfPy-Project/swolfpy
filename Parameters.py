@@ -19,8 +19,8 @@ class Parameters():
         else:
             self.param_uncertainty_dict[key].append([process_model_to, 0.0, long_name])
             
-    def update_values (self, long_name, val, MC = None):
-        if MC:
+    def update_values (self, long_name, val, simulation = False):
+        if simulation:
             for items in self.param_uncertainty_dict_MC.values():
                 for list_item in items:
                     if list_item[2] == long_name:
@@ -102,10 +102,9 @@ class Parameters():
     def MC_calc(self):
         vals = self.rand.next()
         i = 0
-        sum = 0
         matrix = dict()
         for item in vals:
-            self.update_values(self.uncertainty_vals[i],item,1)
+            self.update_values(self.uncertainty_vals[i],item,simulation=True)
             i+=1
         
         i=0
@@ -116,12 +115,26 @@ class Parameters():
             param_keys.append(key)
             param_vals.append(self.get_param_MC_val(key))
             for item in self.params_dict[key]:
-                #if self.get_param_MC_val(key) != 0:
-                    matrix[item] = self.get_param_MC_val(key)
-        #for item in vals:
-        #    for item2 in self.params_dict[self.uncertainty_vals[i]]:
-        #        matrix[item2] = self.get_param_MC_val(self.uncertainty_vals[i])            
-        #    i+=1
+                matrix[item] = self.get_param_MC_val(key)
+
         return (matrix,tuple(zip(param_keys,param_vals)))
-            
-            
+        
+    def get_all_params(self):
+        return list(self.params_dict.keys())
+    
+    def get_matrix(self, vals):
+        self.setup_MC()
+        param_list=self.get_all_params()
+        
+        i = 0
+        matrix = dict()
+        for item in vals:
+            self.update_values(param_list[i],item,simulation=True)
+            i+=1
+        for key in self.params_dict.keys():
+            for item in self.params_dict[key]:
+                matrix[item] = self.get_param_MC_val(key)
+
+        return (matrix)
+        
+        
