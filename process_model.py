@@ -171,7 +171,7 @@ class Process_Model():
                 #if self.process_model_output ["Waste"][x][key] != 0:
                 if True:
                     if key in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual',
-                     'RDF','Al','Fe','Cu']:
+                     'RDF','Al','Fe','Cu','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
                         ex = {}                        # add exchange to activities
                         ex['amount'] = self.process_model_output ["Waste"][x][key]
                         ex['input'] = (self.process_name+'_product' , x+'_'+key)
@@ -184,6 +184,7 @@ class Process_Model():
                         self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['unit'] = 'Mg'
                         self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'] =[]
                         self.act_in_group.add((self.DB_waste_name,x+'_'+key))
+                        
                         if key in ['Bottom_Ash','Fly_Ash']:
                             for p in self.waste_treatment[key]:
                                 ex = {}                        # add exchange to activities
@@ -218,9 +219,22 @@ class Process_Model():
                                 else:
                                     self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((p,x),(self.process_name+'_product' , x+'_'+key)))								
                                 self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex)
-                            
-                                
-                    else:
+                                if 'LCI' in self.process_model_output.keys():
+                                    if p in self.process_model_output['LCI'][key].keys():
+                                        ex1 = {}                        # add exchange to activities
+                                        ex1['amount'] = 0
+                                        ex1['input'] = (self.process_name+'_product' ,key+'_'+'to'+'_'+p)
+                                        ex1['type'] = 'technosphere'
+                                        ex1['unit'] = 'Mg'
+                                        ex1['formula']= "frac_of_"+key+'_from_'+self.DB_name+'_to_'+p
+                                        self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((self.process_name+'_product' ,key+'_'+'to'+'_'+p),(self.process_name+'_product' , x+'_'+key)))
+                                        self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex1)
+            
+                    
+                    elif key in ['Wastewater','OCC','Mixed_Paper','ONP','OFF','Fiber_Other','PET',
+                                 'HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film','Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic','Brown_glass','Clear_glass',
+                                 'Green_glass','Mixed_Glass']:
+                    
                         ex = {}                        # add exchange to activities
                         ex['amount'] = self.process_model_output ["Waste"][x][key]
                         ex['input'] = (self.process_name+'_product' ,key)
@@ -233,6 +247,26 @@ class Process_Model():
                         self.db_waste_data[(self.DB_waste_name,key)]['unit'] = 'Mg'
                         self.db_waste_data[(self.DB_waste_name,key)]['exchanges'] =[]
                         self.act_in_group.add((self.DB_waste_name,key))
+                    
+                    else:
+                        pass
+                        
+            if 'LCI' in self.process_model_output.keys():
+                for y in  self.process_model_output ["LCI"].keys():
+                    for m in self.process_model_output ["LCI"][y].keys():
+                        self.db_waste_data[(self.DB_waste_name,y+'_'+'to'+'_'+m)] ={}    # add activity to Waste_database
+                        self.db_waste_data[(self.DB_waste_name,y+'_'+'to'+'_'+m)]['name'] = self.DB_waste_name+"_"+'LCI'+'_'+y+'to'+'_'+m
+                        self.db_waste_data[(self.DB_waste_name,y+'_'+'to'+'_'+m)]['unit'] = 'Mg'
+                        self.db_waste_data[(self.DB_waste_name,y+'_'+'to'+'_'+m)]['exchanges'] =[]
+                        self.act_in_group.add((self.DB_waste_name,y+'_'+'to'+'_'+m))
+                        for n in self.process_model_output ["LCI"][y][m].keys():
+                            ex = {}                        # add exchange to activities
+                            ex['amount'] = self.process_model_output ["LCI"][y][m][n]
+                            ex['input'] = n
+                            ex['type'] = 'technosphere'
+                            ex['unit'] = '_'
+                            self.db_waste_data[(self.DB_waste_name ,y+'_'+'to'+'_'+m)]['exchanges'].append(ex)
+                        
                         
 # =============================================================================
 #                         for p in self.waste_treatment[key]:
