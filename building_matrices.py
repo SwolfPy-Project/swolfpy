@@ -172,7 +172,7 @@ class ParallelData(LCA):
         if self.lcia:
             self.lcia_calculation()
 
-        return self.score
+        return self.score/10000000
     
     
     def create_funtion(self, count):
@@ -197,13 +197,13 @@ class ParallelData(LCA):
         
     def optimize_parameters(self, project):
         self.project = project
-        #x0 = [i['amount'] for i in self.project.parameters_list]
-        x0 = [0.3 for _ in self.project.parameters_list] #changing initial x0 to outside feasible region
+        x0 = [i['amount'] for i in self.project.parameters_list]
+        #x0 = [1 for _ in self.project.parameters_list] #changing initial x0 to outside feasible region
         bnds = tuple([(0,1) for _ in self.project.parameters_list])
         cons = self.create_constraints()
         
         res = minimize(self.objective_function,x0,method='SLSQP', bounds=bnds, constraints=cons)
-        return res.x
+        return res
 		
     
     

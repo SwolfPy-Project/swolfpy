@@ -11,7 +11,7 @@ from CommonData import *
 from stats_arrays import *
 
 class SF_Col:
-    def __init__(self,Collection_scheme,Distance,Treatment_processes=None,Waste_gen_comp=None,sector_population=None, name=None):
+    def __init__(self,Collection_scheme,Treatment_processes=None,Waste_gen_comp=None,sector_population=None, name=None):
 ### Importing the CommonData and Input data for SF_collection
         self.CommonData = CommonData()
         self.Input= SF_collection_Input()
@@ -311,8 +311,11 @@ class SF_Col:
                 self.col.loc[i,'diesel_rf'] = self.col['Fract_Dies'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  *((1-self.col['fDrd'][i])/self.col['MPG_urban'][i] + self.col['fDrd'][i]/self.col['MPG_highway'][i])
                 self.col.loc[i,'diesel_ud'] = self.col['Fract_Dies'][i] * self.col['UD'][i] /60 * self.col['GPH_idle_cv'][i]
                 self.col.loc[i,'diesel_fg'] = self.col['Fract_Dies'][i] * self.col['Dfg'][i] *((1-self.col['fDfg'][i])/self.col['MPG_urban'][i] + self.col['fDfg'][i]/self.col['MPG_highway'][i])
-
-        self.col['FuelD'] = self.col['diesel_gr'] + self.col['diesel_idl'] + self.col['diesel_col'] + self.col['diesel_rf'] + self.col['diesel_ud'] + self.col['diesel_fg']
+            
+            if self.col_proc[i]==0:
+                self.col.loc[i,'FuelD'] =0
+            else:
+                self.col.loc[i,'FuelD'] = self.col['diesel_gr'][i] + self.col['diesel_idl'][i] + self.col['diesel_col'][i] + self.col['diesel_rf'][i] + self.col['diesel_ud'][i] + self.col['diesel_fg'][i]
 ### Daily fuel usage - CNG - diesel gal equivalent
         for i in ['RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
             if self.col.loc[i,'MPG_all_CNG'] != 0:
@@ -341,8 +344,11 @@ class SF_Col:
                 self.col.loc[i,'CNG_rf'] = self.col['Fract_CNG'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  *((1-self.col['fDrd'][i])/self.col['MPG_urban_CNG'][i] + self.col['fDrd'][i]/self.col['MPG_hwy_CNG'][i])
                 self.col.loc[i,'CNG_ud'] = self.col['Fract_CNG'][i] * self.col['UD'][i] /60 * self.col['GPH_idle_CNG'][i]
                 self.col.loc[i,'CNG_fg'] = self.col['Fract_CNG'][i] * self.col['Dfg'][i] *((1-self.col['fDfg'][i])/self.col['MPG_urban_CNG'][i] + self.col['fDfg'][i]/self.col['MPG_hwy_CNG'][i])
-
-        self.col['FuelD_CNG'] = self.col['CNG_gr'] + self.col['CNG_idl'] + self.col['CNG_col'] + self.col['CNG_rf'] + self.col['CNG_ud'] + self.col['CNG_fg']
+            
+            if self.col_proc[i]==0:
+                self.col.loc[i,'FuelD_CNG'] = 0
+            else:
+                self.col.loc[i,'FuelD_CNG'] = self.col['CNG_gr'][i] + self.col['CNG_idl'][i] + self.col['CNG_col'][i] + self.col['CNG_rf'][i] + self.col['CNG_ud'][i] + self.col['CNG_fg'][i]
 
 
 ###ENERGY CONSUMPTION
@@ -381,6 +387,17 @@ class SF_Col:
 ###      OUTPUT
 # =============================================================================
 # =============================================================================
+                # Energy use is calculated for SSO and it is same with Dryres
+        self.col.loc['DryRes','FuelMg'] = self.col['FuelMg']['SSO']
+        self.col.loc['DryRes','FuelMg_CNG'] = self.col['FuelMg_CNG']['SSO']
+        self.col.loc['DryRes','ElecMg'] = self.col['ElecMg']['SSO']
+        
+        # Energy use is calculated for REC and it is same with WetRes
+        self.col.loc['WetRes','FuelMg'] = self.col['FuelMg']['REC']
+        self.col.loc['WetRes','FuelMg_CNG'] = self.col['FuelMg_CNG']['REC']
+        self.col.loc['WetRes','ElecMg'] = self.col['ElecMg']['REC']
+        
+        
         self.output = self.col[['TotalMass','FuelMg','FuelMg_CNG','ElecMg','FuelMg_dov']]
         self.output = self.output.fillna(0)
             
@@ -421,69 +438,3 @@ class SF_Col:
             for x in self.col_massflow.columns:
                 Waste[y][x]= self.col_massflow[x][y]
         return(self.collection)
-         
-
-
-
-
-
-# =============================================================================
-# Distance = {'Res':{'LF':20},
-#             'Rec':{'LF':20},
-#             'Organics':{'AD':20,'COMP':20}}
-# 
-# 
-# Collection_scheme = {'RWC':{'Contribution':0.2 , 
-#                             'separate_col':{'SSR':0,
-#                                             'DSR':0,
-#                                             'MSR':0,
-#                                             'MSRDO':0,
-#                                             'SSYW':0,
-#                                             'SSYWDO':0}},
-#                     'SSO_DryRes':{'Contribution':0.2 , 
-#                             'separate_col':{'SSR':0,
-#                                             'DSR':0,
-#                                             'MSR':0,
-#                                             'MSRDO':0,
-#                                             'SSYW':0,
-#                                             'SSYWDO':0}},
-#                     'REC_WetRes':{'Contribution':0 , 
-#                             'separate_col':{'SSR':0,
-#                                             'DSR':0,
-#                                             'MSR':0,
-#                                             'MSRDO':0,
-#                                             'SSYW':0,
-#                                             'SSYWDO':0}},                
-#                     'MRDO':{'Contribution':0.6, 
-#                             'separate_col':{'SSR':0,
-#                                             'DSR':0,
-#                                             'MSR':0,
-#                                             'MSRDO':0,
-#                                             'SSYW':0,
-#                                             'SSYWDO':0}}}
-# 
-# from AD import *
-# from Composting import *
-# from LF import *
-# Treatment_processes = {}
-# Treatment_processes['AD']={'input_type':['LV','SSYW','SSO','SSYWDO','Separated_Organics'],'distance':{'SF1':20},'model': AD()}
-# Treatment_processes['COMP']={'input_type':['LV','SSYW','SSO','SSYWDO','Separated_Organics'],'distance':{'SF1':100}, 'model': Comp()}
-# Treatment_processes['LF']={'input_type':['RWC','LV','DryRes','WetRes','MRDO','MSRDO','Bottom_Ash','Fly_Ash','Other_Residual'],'distance':{'SF1':20},'model': LF() }
-# 
-# 
-# A= SF_Col(Collection_scheme,Distance,Treatment_processes=Treatment_processes,name='SF1')
-# A.calc()
-# AAA= A.col_massflow
-# AAAA= A.output
-# AAAAA=A.report()
-# =============================================================================
-
-# =============================================================================
-# from time import time    
-# A= SF_Col(Collection_scheme,Distance)
-# B= time()
-# for i in range(1000):
-#     A.calc_composition()
-#     A.
-# print(time()-B)
-# =============================================================================

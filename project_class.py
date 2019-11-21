@@ -16,9 +16,14 @@ from Parameters import *
 
 
 class project():
-    def __init__ (self,project_name,Treatment_processes):
+    def __init__ (self,project_name,Treatment_processes,Collection_processes=None):
         self.project_name= project_name
         self.Treatment_processes = Treatment_processes
+        self.Collection_processes = Collection_processes
+        if self.Collection_processes:
+            for j in self.Collection_processes.keys():
+                self.Treatment_processes[j] = self.Collection_processes[j]
+    
         self.processes = [x for x in Treatment_processes.keys()]
         projects.set_current(self.project_name)
         
