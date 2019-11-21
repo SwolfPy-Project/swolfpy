@@ -143,7 +143,7 @@ class ParallelData(LCA):
                 self.bio_matrix[(biosphere_dict[i[2]], activities_dict[i[3]])] = i[6]
             else:
                 self.bio_matrix[(str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]])] = i[6]
-                print((str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]]))                
+                #print((str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]]))                
         
     def run(self, nproc, n):       
         with pool_adapter(mp.Pool(processes=nproc)) as pool:
@@ -197,11 +197,10 @@ class ParallelData(LCA):
         
     def optimize_parameters(self, project):
         self.project = project
-        x0 = [i['amount'] for i in self.project.parameters_list]
+        #x0 = [i['amount'] for i in self.project.parameters_list]
+        x0 = [0.3 for _ in self.project.parameters_list] #changing initial x0 to outside feasible region
         bnds = tuple([(0,1) for _ in self.project.parameters_list])
         cons = self.create_constraints()
-        
-        fun = lambda x: (x[0] - 1)**2 + (x[1] - 2.5)**2 - x[2] + x[3] - 2*x[4]*x[5] + 2*x[5] - x[6]
         
         res = minimize(self.objective_function,x0,method='SLSQP', bounds=bnds, constraints=cons)
         return res.x
