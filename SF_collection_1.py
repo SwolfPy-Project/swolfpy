@@ -254,26 +254,14 @@ class SF_Col:
                         
             #trips per day per vehicle (trip/day-vehicle)
             self.col.loc[i,'RD'] = (self.col['WV'][i]*60-(self.col['F1_'][i]+self.col['F2_'][i]+self.col['Tfg'][i]+self.col['Tgr'][i])+self.col['Trf'][i])/self.col['Tc'][i]
-
-
-
-
-
-#daily weight of refuse collected per vehicle (tons/day-vehicle)
-#number of collection stops per day (stops/vehicle-day) (1 stop per trip)
-
-
-
-
-
-
-
-
-
-
+            
+            #daily weight of refuse collected per vehicle (tons/day-vehicle)
+            self.col.loc[i,'RefD'] = self.col['Vt'][i]*self.col['Ut'][i]*self.col['d_msw'][i]*0.4536/1000*self.col['RD'][i]
+            #number of collection stops per day (stops/vehicle-day) (1 stop per trip)
+            self.col.loc[i,'SD'] = self.col['RD'][i]
 
 ### Daily collection vehicle activity times        
-        #loading time at collection stops (min/day-vehicle)
+        #loading time at collection stops (min/day-vehicle) & loading time at drop-off site (min/day-vehicle)
         self.col['LD'] = self.col['SD']*self.col['TL']
             
         #travel time between collection stops (min/day-vehicle)
@@ -284,6 +272,15 @@ class SF_Col:
         
         #unloading time at disposal facility (min/day-vehicle)
         self.col['UD'] = (self.col['RD']+0.5)*self.col['S']
+       
+        for i in ['MRDO','SSYWDO','MSRDO']:
+            self.col.loc[i,'Tb'] = 0
+            
+            #travel time between disposal facility and drop-off site (min/day-vehicle)
+            self.col.loc[i,'F_R'] = (2*self.col['RD'][i]-1)*self.col['Trf'][i]
+            
+            #unloading time at disposal facility (min/day-vehicle)
+            self.col.loc[i,'UD'] = self.col['RD'][i] *self.col['S'][i]                                                
 
 ### Daily fuel usage - Diesel
         for i in ['RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
@@ -293,7 +290,10 @@ class SF_Col:
                 #break time, if spent idling
                 self.col.loc[i,'diesel_idl'] = 0
                 #from first through last collection stop (gallons/day-vehicle)
-                self.col.loc[i,'diesel_col'] = self.col['Fract_Dies'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_all'][i]
+                if i in ['MRDO','SSYWDO','MSRDO']:
+                    self.col.loc[i,'diesel_col'] = 0
+                else:
+                    self.col.loc[i,'diesel_col'] = self.col['Fract_Dies'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_all'][i]
                 #between disposal facility and route (gallons/day-vehicle)
                 self.col.loc[i,'diesel_rf'] = self.col['Fract_Dies'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  /self.col['MPG_all'][i]
                 #unloading at disposal facility (gallons/day-vehicle)
@@ -303,7 +303,11 @@ class SF_Col:
             else:
                 self.col.loc[i,'diesel_gr'] = self.col['Fract_Dies'][i] * self.col['Dgr'][i]*((1-self.col['fDgr'][i])/self.col['MPG_urban'][i]+self.col['fDgr'][i]/self.col['MPG_highway'][i])
                 self.col.loc[i,'diesel_idl'] = self.col['Fract_Dies'][i] * (self.col['F1_'][i]*self.col['F1_idle'][i] + self.col['F2_'][i]*self.col['F2_idle'][i])/60 * self.col['GPH_idle_cv'][i]
-                self.col.loc[i,'diesel_col'] = self.col['Fract_Dies'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_collection'][i]
+                if i in ['MRDO','SSYWDO','MSRDO']:
+                    self.col.loc[i,'diesel_col'] = 0
+                else:
+                    self.col.loc[i,'diesel_col'] = self.col['Fract_Dies'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_collection'][i]
+                
                 self.col.loc[i,'diesel_rf'] = self.col['Fract_Dies'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  *((1-self.col['fDrd'][i])/self.col['MPG_urban'][i] + self.col['fDrd'][i]/self.col['MPG_highway'][i])
                 self.col.loc[i,'diesel_ud'] = self.col['Fract_Dies'][i] * self.col['UD'][i] /60 * self.col['GPH_idle_cv'][i]
                 self.col.loc[i,'diesel_fg'] = self.col['Fract_Dies'][i] * self.col['Dfg'][i] *((1-self.col['fDfg'][i])/self.col['MPG_urban'][i] + self.col['fDfg'][i]/self.col['MPG_highway'][i])
@@ -317,7 +321,10 @@ class SF_Col:
                 #break time, if spent idling
                 self.col.loc[i,'CNG_idl'] = 0
                 #from first through last collection stop (diesel gal equivalent/day-vehicle)
-                self.col.loc[i,'CNG_col'] = self.col['Fract_CNG'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_all_CNG'][i]
+                if i in ['MRDO','SSYWDO','MSRDO']:
+                    self.col.loc[i,'CNG_col'] = 0
+                else:
+                    self.col.loc[i,'CNG_col'] = self.col['Fract_CNG'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_all_CNG'][i]
                 #between disposal facility and route (diesel gal equivalent/day-vehicle)
                 self.col.loc[i,'CNG_rf'] = self.col['Fract_CNG'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  /self.col['MPG_all_CNG'][i]
                 #unloading at disposal facility (diesel gal equivalent/day-vehicle)
@@ -327,7 +334,10 @@ class SF_Col:
             else:
                 self.col.loc[i,'CNG_gr'] = self.col['Fract_CNG'][i] * self.col['Dgr'][i]*((1-self.col['fDgr'][i])/self.col['MPG_urban_CNG'][i]+self.col['fDgr'][i]/self.col['MPG_hwy_CNG'][i])
                 self.col.loc[i,'CNG_idl'] = self.col['Fract_CNG'][i] * (self.col['F1_'][i]*self.col['F1_idle'][i] + self.col['F2_'][i]*self.col['F2_idle'][i])/60 * self.col['GPH_idle_CNG'][i]
-                self.col.loc[i,'CNG_col'] = self.col['Fract_CNG'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_col_CNG'][i]
+                if i in ['MRDO','SSYWDO','MSRDO']:
+                    self.col.loc[i,'CNG_col'] = 0
+                else:
+                    self.col.loc[i,'CNG_col'] = self.col['Fract_CNG'][i] * self.col['Dbtw'][i] * self.col['SD'][i] /self.col['MPG_col_CNG'][i]
                 self.col.loc[i,'CNG_rf'] = self.col['Fract_CNG'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  *((1-self.col['fDrd'][i])/self.col['MPG_urban_CNG'][i] + self.col['fDrd'][i]/self.col['MPG_hwy_CNG'][i])
                 self.col.loc[i,'CNG_ud'] = self.col['Fract_CNG'][i] * self.col['UD'][i] /60 * self.col['GPH_idle_CNG'][i]
                 self.col.loc[i,'CNG_fg'] = self.col['Fract_CNG'][i] * self.col['Dfg'][i] *((1-self.col['fDfg'][i])/self.col['MPG_urban_CNG'][i] + self.col['fDfg'][i]/self.col['MPG_hwy_CNG'][i])
@@ -415,42 +425,46 @@ class SF_Col:
 
 
 
-Distance = {'Res':{'LF':20},
-            'Rec':{'LF':20},
-            'Organics':{'AD':20,'COMP':20}}
-
-
-Collection_scheme = {'RWC':{'Contribution':0.2 , 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}},
-                    'SSO_DryRes':{'Contribution':0.2 , 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}},
-                    'REC_WetRes':{'Contribution':0 , 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}},                
-                    'MRDO':{'Contribution':0.6, 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}}}
 
 
 # =============================================================================
+# Distance = {'Res':{'LF':20},
+#             'Rec':{'LF':20},
+#             'Organics':{'AD':20,'COMP':20}}
+# 
+# 
+# Collection_scheme = {'RWC':{'Contribution':0.2 , 
+#                             'separate_col':{'SSR':0,
+#                                             'DSR':0,
+#                                             'MSR':0,
+#                                             'MSRDO':0,
+#                                             'SSYW':0,
+#                                             'SSYWDO':0}},
+#                     'SSO_DryRes':{'Contribution':0.2 , 
+#                             'separate_col':{'SSR':0,
+#                                             'DSR':0,
+#                                             'MSR':0,
+#                                             'MSRDO':0,
+#                                             'SSYW':0,
+#                                             'SSYWDO':0}},
+#                     'REC_WetRes':{'Contribution':0 , 
+#                             'separate_col':{'SSR':0,
+#                                             'DSR':0,
+#                                             'MSR':0,
+#                                             'MSRDO':0,
+#                                             'SSYW':0,
+#                                             'SSYWDO':0}},                
+#                     'MRDO':{'Contribution':0.6, 
+#                             'separate_col':{'SSR':0,
+#                                             'DSR':0,
+#                                             'MSR':0,
+#                                             'MSRDO':0,
+#                                             'SSYW':0,
+#                                             'SSYWDO':0}}}
+# 
+# from AD import *
+# from Composting import *
+# from LF import *
 # Treatment_processes = {}
 # Treatment_processes['AD']={'input_type':['LV','SSYW','SSO','SSYWDO','Separated_Organics'],'distance':{'SF1':20},'model': AD()}
 # Treatment_processes['COMP']={'input_type':['LV','SSYW','SSO','SSYWDO','Separated_Organics'],'distance':{'SF1':100}, 'model': Comp()}

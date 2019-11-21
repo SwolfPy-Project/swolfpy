@@ -53,8 +53,12 @@ Treatment_processes['AD']={'input_type':['LV','SSYW','SSO','SSYWDO','Separated_O
 Treatment_processes['COMP']={'input_type':['LV','SSYW','SSO','SSYWDO','Separated_Organics'],'distance':{'SF1':100}, 'model': Comp()}
 Treatment_processes['LF']={'input_type':['RWC','LV','DryRes','WetRes','MRDO','MSRDO','Bottom_Ash','Fly_Ash','Other_Residual'],'distance':{'SF1':20},'model': LF() }
 
+Distance_SF1 = {'Res':{'LF':20},
+             'Rec':{'LF':20},
+             'Organics':{'AD':20,'COMP':20}}
+
 Collection_processes = {}
-Collection_processes['SF1']={'input_type':[],'model': SF_Col(Collection_scheme,Distance,Treatment_processes=Treatment_processes,name='SF1')}
+Collection_processes['SF1']={'input_type':[],'model': SF_Col(Collection_scheme,Distance_SF1,Treatment_processes=Treatment_processes,name='SF1')}
 
 for j in Collection_processes.keys():
     Treatment_processes[j] = Collection_processes[j]
@@ -87,12 +91,10 @@ gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 1},
  {'name': 'frac_of_MRDO_from_SF1_to_LF', 'amount': 1}]
 
 demo.update_parameters(gg)
-scenario1 = {"AD":{"Yard_Trimmings_Grass":1},"COMP":{"Yard_Trimmings_Grass":2,"Paper_Bags":2,"Mixed_Plastic":2}}
-demo.process_start_scenario(scenario1,'scenario1')
 
-
-demo.Do_LCA("scenario1",('SWOLF_IPCC','SWOLF'),1)
-
+scenario4 = {"SF1":{"Yard_Trimmings_Branches":1}}
+demo.process_start_scenario(scenario4,'scenario4')
+demo.Do_LCA("scenario4",('SWOLF_IPCC','SWOLF'),1)
 
 
         
