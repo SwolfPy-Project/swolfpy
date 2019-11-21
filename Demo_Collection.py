@@ -92,12 +92,18 @@ gg=[{'name': 'frac_of_Other_Residual_from_AD_to_LF', 'amount': 1},
 
 demo.update_parameters(gg)
 
-scenario4 = {"SF1":{"Yard_Trimmings_Branches":1}}
-demo.process_start_scenario(scenario4,'scenario4')
-demo.Do_LCA("scenario4",('SWOLF_IPCC','SWOLF'),1)
+scenario1 = {"SF1":{"Yard_Trimmings_Branches":1}}
+demo.process_start_scenario(scenario1,'scenario1')
+demo.Do_LCA("scenario1",('SWOLF_IPCC','SWOLF'),1)
 
 
-        
+functional_unit = {("waste","scenario1") : 1}
+method = [('SWOLF_IPCC','SWOLF')]
+
+opt = ParallelData (functional_unit, method, Project_name)
+res=opt.optimize_parameters(demo)
+print(opt.objective_function(res))
+print(res)
 
 
 
