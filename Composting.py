@@ -6,15 +6,16 @@ Created on Mon Jul  1 21:59:44 2019
 """
 import numpy as np
 import pandas as pd
+#from Composting_Input_script import *
 from Composting_Input import *
 from CommonData import *
 from stats_arrays import *
 from flow import *
 
 class Comp:
-    def __init__(self):
+    def __init__(self,input_data_path=None):
         self.CommonData = CommonData()
-        self.Comp_input= Composting_input()
+        self.Comp_input= Composting_input(input_data_path)
         ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
         self.Material_Properties.fillna(0,inplace=True)

@@ -6,15 +6,16 @@ Created on Wed Jul 17 16:35:15 2019
 """
 import numpy as np
 import pandas as pd
+#from AD_Input_script import *
 from AD_Input import *
 from CommonData import *
 from stats_arrays import *
 from flow import *
 
 class AD:
-    def __init__(self):
+    def __init__(self,input_data_path=None):
         self.CommonData = CommonData()
-        self.AD_input= AD_input()
+        self.AD_input= AD_input(input_data_path)
         ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
         self.Material_Properties.fillna(0,inplace=True)
@@ -54,7 +55,7 @@ class AD:
         self.to_reactor = add_water_AD(self.S1_unders,water_flow,self.Material_Properties[4:])
 
 ### Reactor                 
-        self.digestate = Reactor(self.to_reactor,self.CommonData,self.process_data[3:],self.AD_input,self.Material_Properties[4:],self.AD_input.emission_factor,self.LCI)
+        self.digestate = Reactor(self.to_reactor,self.CommonData,self.process_data[3:],self.AD_input,self.Material_Properties[4:],self.AD_input.emission_Engine,self.AD_input.emission_Flare,self.LCI)
 
 ### Dewatering    
         self.Dig_to_Curing_1,self.liq_rem,self.liq_treatment_vol = Dewater(self.digestate,self.CommonData,self.process_data[3:],self.AD_input,self.Material_Properties[4:],water_flow,self.Assumed_Comp,self.LCI)
