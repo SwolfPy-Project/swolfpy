@@ -385,7 +385,7 @@ def add_water_AD(input,water_flow,Material_Properties):
     return(product)
 
 ### AD Reactor
-def Reactor(input,CommonData,process_data,AD_input,Material_Properties,EmissionFactor,LCI):
+def Reactor(input,CommonData,process_data,AD_input,Material_Properties,EmissionFactor_Engine,EmissionFactor_Flare ,LCI):
     #Methane production
     CH4_prod_vol = input.data['sol_cont'] / 1000 * Material_Properties['Methane Yield'] * process_data['Percent of L0 reached']/100
     CH4_prod_mass_asC = CH4_prod_vol * CommonData.STP['m3CH4_to_kg']['amount']*CommonData.MW['C']['amount']/CommonData.MW['CH4']['amount']
@@ -394,19 +394,19 @@ def Reactor(input,CommonData,process_data,AD_input,Material_Properties,EmissionF
     CH4_fugitiv_mass_asC = CH4_prod_mass_asC * (1-AD_input.Biogas_gen['ad_collEff']['amount'])
     CH4_Energy_rec_asC = CH4_prod_mass_asC * AD_input.Biogas_gen['ad_collEff']['amount'] * (1-AD_input.Biogas_gen['ad_downTime']['amount'])
     CH4_Flare_asC = CH4_prod_mass_asC * AD_input.Biogas_gen['ad_collEff']['amount'] * AD_input.Biogas_gen['ad_downTime']['amount']
-    CH4_unburn_AsC = CH4_Energy_rec_asC * (1-EmissionFactor['Engine']['CH4_destruction']['amount']) + CH4_Flare_asC* (1-EmissionFactor['Flare']['CH4_destruction']['amount'])
-    CO2_from_CH4Comb = CH4_Energy_rec_asC * EmissionFactor['Engine']['CH4_destruction']['amount'] + CH4_Flare_asC* EmissionFactor['Flare']['CH4_destruction']['amount']
+    CH4_unburn_AsC = CH4_Energy_rec_asC * (1-EmissionFactor_Engine['CH4_destruction']['amount']) + CH4_Flare_asC* (1-EmissionFactor_Flare['CH4_destruction']['amount'])
+    CO2_from_CH4Comb = CH4_Energy_rec_asC * EmissionFactor_Engine['CH4_destruction']['amount'] + CH4_Flare_asC* EmissionFactor_Flare['CH4_destruction']['amount']
     
     #ENergy content
     CH4_Energy_EngCont = CH4_prod_vol * AD_input.Biogas_gen['ad_collEff']['amount'] * (1-AD_input.Biogas_gen['ad_downTime']['amount']) * AD_input.Biogas_gen['ad_ch4EngCont']['amount']
     CH4_Flare_EngCont = CH4_prod_vol * AD_input.Biogas_gen['ad_collEff']['amount'] * AD_input.Biogas_gen['ad_downTime']['amount'] * AD_input.Biogas_gen['ad_ch4EngCont']['amount']
     
     #Calculate emissions based on the energy content
-    CO_Comb = (CH4_Energy_EngCont * EmissionFactor['Engine']['CO']['amount'] + CH4_Flare_EngCont * EmissionFactor['Flare']['CO']['amount'])/1000000
-    NOx_Comb = (CH4_Energy_EngCont * EmissionFactor['Engine']['NO2']['amount'] + CH4_Flare_EngCont * EmissionFactor['Flare']['NO2']['amount'])/1000000
-    SO2_Comb = (CH4_Energy_EngCont * EmissionFactor['Engine']['SO2']['amount'] + CH4_Flare_EngCont * EmissionFactor['Flare']['SO2']['amount'])/1000000
-    NMVOCs_Comb = (CH4_Energy_EngCont * EmissionFactor['Engine']['NMVOC']['amount'] + CH4_Flare_EngCont * EmissionFactor['Flare']['NMVOC']['amount'])/1000000
-    PM2_5_Comb = (CH4_Energy_EngCont * EmissionFactor['Engine']['PM']['amount'] + CH4_Flare_EngCont * EmissionFactor['Flare']['PM']['amount'])/1000000
+    CO_Comb = (CH4_Energy_EngCont * EmissionFactor_Engine['CO']['amount'] + CH4_Flare_EngCont * EmissionFactor_Flare['CO']['amount'])/1000000
+    NOx_Comb = (CH4_Energy_EngCont * EmissionFactor_Engine['NO2']['amount'] + CH4_Flare_EngCont * EmissionFactor_Flare['NO2']['amount'])/1000000
+    SO2_Comb = (CH4_Energy_EngCont * EmissionFactor_Engine['SO2']['amount'] + CH4_Flare_EngCont * EmissionFactor_Flare['SO2']['amount'])/1000000
+    NMVOCs_Comb = (CH4_Energy_EngCont * EmissionFactor_Engine['NMVOC']['amount'] + CH4_Flare_EngCont * EmissionFactor_Flare['NMVOC']['amount'])/1000000
+    PM2_5_Comb = (CH4_Energy_EngCont * EmissionFactor_Engine['PM']['amount'] + CH4_Flare_EngCont * EmissionFactor_Flare['PM']['amount'])/1000000
     
     add_LCI('Fugitive (Leaked) Methane', CH4_fugitiv_mass_asC * CommonData.MW['CH4']['amount']/CommonData.MW['C']['amount'] ,LCI)
     add_LCI('Carbon dioxide, non-fossil from comubstion', CO2_from_CH4Comb * CommonData.MW['CO2']['amount']/CommonData.MW['C']['amount'] ,LCI)
