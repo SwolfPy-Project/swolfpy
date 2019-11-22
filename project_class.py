@@ -188,14 +188,14 @@ class project():
 
     def Do_LCA(self,scenario_name,impact_method,functioanl_unit):
         self.demand={(self.waste_BD.name,scenario_name):functioanl_unit}   
-        self.lca= LCA(self.demand,impact_method)
-        self.lca.lci()
-        self.lca.lcia()
-        print("lca socre= " , self.lca.score)
-        self.CA=ContributionAnalysis()
-        self.top_process= self.CA.annotated_top_processes(self.lca)    
+        lca= LCA(self.demand,impact_method)
+        lca.lci()
+        lca.lcia()
+        print("lca socre= " , lca.score)
+        CA=ContributionAnalysis()
+        top_process= CA.annotated_top_processes(lca)    
         cc=[]
-        for x in self.top_process:
+        for x in top_process:
             cc.append ([x[0],x[2]['name']])    
         cc.sort()
         
