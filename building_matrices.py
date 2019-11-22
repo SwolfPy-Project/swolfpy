@@ -175,12 +175,34 @@ class ParallelData(LCA):
         return self.score/10000000
     
     
-    def create_funtion(self, count):
+    def create_equality(self, count):
         local_count = self.running_count
         l = lambda x: sum([x[i] for i in range(local_count,local_count+count)]) -1 
         self.running_count+=count
         return l
-
+        
+    def create_inequality(self, key, val):
+        l = lambda x: val - self.get_mass_flow(key, x)
+        return l 
+    
+    def get_mass_flow(self, process_name, x):
+        self.objective_function(x)
+        
+        system=self.solve_linear_system()
+        flow_dict = dict()
+        mass_flow=0
+        j=0
+        
+        for i in self.activity_dict.keys():
+            if system[j]!=0:
+                flow_dict[i]=system[j]
+            j+=1
+            
+        for i in flow_dict.keys():
+            if process_name == i[0]:
+                mass_flow += flow_dict[i]
+                
+        return mass_flow
     
     def create_constraints(self):
         cons = list()
@@ -191,20 +213,30 @@ class ParallelData(LCA):
             group[key] = len(self.project.unified_params.param_uncertainty_dict[key])
 
         for vals in group.values():
-            cons.append({'type':'eq', 'fun':self.create_funtion(vals)})
-                
+            cons.append({'type':'eq', 'fun':self.create_equality(vals)})
+            
+        if self.mass_flows_constraints:
+            for key in self.mass_flows_constraints.keys():
+                cons.append({'type':'ineq', 'fun': self.create_inequality(key, self.mass_flows_constraints[key])})
+        
         return cons
         
-    def optimize_parameters(self, project):
+    def optimize_parameters(self, project, mass_flows_constraints=None):
+    
+        self.mass_flows_constraints=mass_flows_constraints    
         self.project = project
         x0 = [i['amount'] for i in self.project.parameters_list]
         #x0 = [1 for _ in self.project.parameters_list] #changing initial x0 to outside feasible region
         bnds = tuple([(0,1) for _ in self.project.parameters_list])
         cons = self.create_constraints()
         
-        res = minimize(self.objective_function,x0,method='SLSQP', bounds=bnds, constraints=cons)
-        return res
-		
+        res = minimize(self.objective_function, x0, method='SLSQP', bounds=bnds, constraints=cons)
+        if res.success:
+            return res
+        else:
+            print(res.message)
+            return res
+        
     
     
     def result_to_DF(self):
