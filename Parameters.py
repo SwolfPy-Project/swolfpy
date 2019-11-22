@@ -56,7 +56,7 @@ class Parameters():
             if sum != 1:
                 for i in item:
                     print ("%s : %f" % (i[2],i[1]))
-				raise ValueError("Sum of the parameters is not 1")
+                raise ValueError("Sum of the parameters is not 1")
                 sum = 0
                 flag = 0
                 break
