@@ -172,7 +172,7 @@ class ParallelData(LCA):
         if self.lcia:
             self.lcia_calculation()
 
-        return self.score/10000000
+        return self.score/10**self.magnitude
     
     
     def create_equality(self, count):
@@ -181,9 +181,13 @@ class ParallelData(LCA):
         self.running_count+=count
         return l
         
-    def create_inequality(self, key, val):
-        l = lambda x: val - self.get_mass_flow(key, x)
-        return l 
+    def create_inequality(self, key, val, mass_flow=None):
+        if mass_flow:
+            l = lambda x: val - self.get_mass_flow(key, x)
+            return l 
+        else:
+            l = lambda x: val - self.get_emission_amount(key, x)
+            return l
     
     def get_mass_flow(self, process_name, x):
         self.objective_function(x)
@@ -203,6 +207,27 @@ class ParallelData(LCA):
                 mass_flow += flow_dict[i]
                 
         return mass_flow
+        
+    def get_emission_amount(self, emission, x):
+        self.objective_function(x)
+        
+        lci_bio=self.biosphere_matrix*self.supply_array
+        emission_dict = dict()
+        emission_amount = 0
+        j =0
+        
+        for i in self.biosphere_dict.keys():
+            if lci_bio[j]!=0:
+                emission_dict[i]=lci_bio[j]
+            j+=1
+            
+        for i in emission_dict.keys():
+            if emission == i[1]:
+                emission_amount+=emission_dict[i]
+        
+        return emission_amount
+        
+        
     
     def create_constraints(self):
         cons = list()
@@ -217,25 +242,44 @@ class ParallelData(LCA):
             
         if self.mass_flows_constraints:
             for key in self.mass_flows_constraints.keys():
-                cons.append({'type':'ineq', 'fun': self.create_inequality(key, self.mass_flows_constraints[key])})
+                cons.append({'type':'ineq', 'fun': self.create_inequality(key, self.mass_flows_constraints[key], mass_flow=True)})
+        
+        if self.emissions_constraints:
+            for key in self.emissions_constraints.keys():
+                cons.append({'type':'ineq', 'fun': self.create_inequality(key, self.emissions_constraints[key])})
+                
         
         return cons
         
-    def optimize_parameters(self, project, mass_flows_constraints=None):
+    def optimize_parameters(self, project, mass_flows_constraints=None, emissions_constraints=None):
     
-        self.mass_flows_constraints=mass_flows_constraints    
+        self.mass_flows_constraints=mass_flows_constraints
+        self.emissions_constraints=emissions_constraints
         self.project = project
-        x0 = [i['amount'] for i in self.project.parameters_list]
+        self.magnitude = len(str(int(abs(self.score)))) 
+        
+        x0 = [i['amount'] for i in self.project.parameters_list] #initializing with the users initial solution
         #x0 = [1 for _ in self.project.parameters_list] #changing initial x0 to outside feasible region
         bnds = tuple([(0,1) for _ in self.project.parameters_list])
         cons = self.create_constraints()
         
         res = minimize(self.objective_function, x0, method='SLSQP', bounds=bnds, constraints=cons)
         if res.success:
+            self.success=True
+            self.optimized_x=list()
+            for i in range(len(self.project.parameters_list)):
+                self.optimized_x.append({'name':self.project.parameters_list[i]['name'],'amount':res.x[i]})
             return res
         else:
+            self.success=False
             print(res.message)
             return res
+            
+    def set_optimized_parameters_to_project(self):
+        assert hasattr(self, "project"), "Must run optimize_parameters first"
+        assert self.success, "Optimization has to be sucessful first"
+        
+        self.project.update_parameters(self.optimized_x)
         
     
     
