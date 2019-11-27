@@ -5,7 +5,6 @@ Created on Fri Nov 22 21:23:49 2019
 @author: msardar2
 """
 import numpy as np
-import numexpr as ne
 from copy import deepcopy
 
 def add_LCI(Name,Flow,LCI):
