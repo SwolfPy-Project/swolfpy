@@ -67,7 +67,8 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
                             
             for material,value in report_dict["Waste"].items():
                 for key2, value2 in value.items():
-                    if key2 in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual','RDF','Al','Fe','Cu']:
+                    if key2 in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual',
+                     'RDF','Al','Fe','Cu','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
                         key2 = (process_name + "_product", material + '_' + key2)
                     else:
                         key2 = (process_name + "_product", key2)
