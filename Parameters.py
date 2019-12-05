@@ -1,6 +1,12 @@
 from project_class import *
 from stats_arrays import *
 import copy
+import math
+
+
+def approx_eq(x, y):
+    tol = 1.0E-6
+    return abs(x - y) <= max(abs(x), abs(y)) * tol
 
 class Parameters():
     def __init__ (self):
@@ -53,7 +59,7 @@ class Parameters():
         for item in self.param_uncertainty_dict.values():
             for list_item in item:
                 sum += list_item[1]
-            if sum != 1:
+            if not approx_eq(sum, 1):
                 for i in item:
                     print ("%s : %f" % (i[2],i[1]))
                 raise ValueError("Sum of the parameters is not 1")
