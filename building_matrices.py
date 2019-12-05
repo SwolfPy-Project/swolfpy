@@ -201,10 +201,15 @@ class ParallelData(LCA):
             if system[j]!=0:
                 flow_dict[i]=system[j]
             j+=1
-            
-        for i in flow_dict.keys():
-            if process_name == i[0]:
-                mass_flow += flow_dict[i]
+        
+        if type(process_name) == tuple:
+            for i in flow_dict.keys():
+                if process_name == i:
+                    mass_flow += flow_dict[i]
+        else:
+            for i in flow_dict.keys():
+                if process_name == i[0]:
+                    mass_flow += flow_dict[i]
                 
         return mass_flow
         
@@ -267,6 +272,7 @@ class ParallelData(LCA):
         if res.success:
             self.success=True
             self.optimized_x=list()
+            res.x=res.x.round(decimals=3)
             for i in range(len(self.project.parameters_list)):
                 self.optimized_x.append({'name':self.project.parameters_list[i]['name'],'amount':res.x[i]})
             return res

@@ -12,7 +12,7 @@ Treatment_processes = {}
 
 Treatment_processes['LF']={'input_type':['RWC','LV','DryRes','WetRes','MRDO','MSRDO','Bottom_Ash','Fly_Ash','Other_Residual'],'distance':{'SF1':20},'model': LF() }
 Treatment_processes['WTE']={'input_type':['RWC','DryRes','WetRes','MRDO','Other_Residual'],'distance':{'SF1':20},'model': WTE()}
-
+Treatment_processes['WTE1']={'input_type':['RWC','DryRes','WetRes','MRDO','Other_Residual'],'distance':{'SF1':30},'model': WTE()}
 
 Collection_scheme_SF1 = {'RWC':{'Contribution':0.2 , 
                             'separate_col':{'SSR':0,
@@ -57,16 +57,23 @@ import_methods()
 
 flow_fractions=[{'name': 'frac_of_Bottom_Ash_from_WTE_to_LF', 'amount': 1},
  {'name': 'frac_of_Fly_Ash_from_WTE_to_LF', 'amount': 1},
+ {'name': 'frac_of_Bottom_Ash_from_WTE1_to_LF', 'amount': 1},
+ {'name': 'frac_of_Fly_Ash_from_WTE1_to_LF', 'amount': 1},
  {'name': 'frac_of_RWC_from_SF1_to_LF', 'amount': 0},
- {'name': 'frac_of_RWC_from_SF1_to_WTE', 'amount': 1},
+ {'name': 'frac_of_RWC_from_SF1_to_WTE', 'amount': 0.5},
+ {'name': 'frac_of_RWC_from_SF1_to_WTE1', 'amount': 0.5},
  {'name': 'frac_of_MSRDO_from_SF1_to_LF', 'amount': 1},
  {'name': 'frac_of_LV_from_SF1_to_LF', 'amount': 1},
  {'name': 'frac_of_DryRes_from_SF1_to_LF', 'amount': 0},
  {'name': 'frac_of_DryRes_from_SF1_to_WTE', 'amount': 1},
+ {'name': 'frac_of_DryRes_from_SF1_to_WTE1', 'amount': 0},
  {'name': 'frac_of_WetRes_from_SF1_to_LF', 'amount': 0},
  {'name': 'frac_of_WetRes_from_SF1_to_WTE', 'amount': 1},
+ {'name': 'frac_of_WetRes_from_SF1_to_WTE1', 'amount': 0},
  {'name': 'frac_of_MRDO_from_SF1_to_LF', 'amount': 0},
- {'name': 'frac_of_MRDO_from_SF1_to_WTE', 'amount': 1}]
+ {'name': 'frac_of_MRDO_from_SF1_to_WTE', 'amount': 1},
+ {'name': 'frac_of_MRDO_from_SF1_to_WTE1', 'amount': 0}]
+
  
 demo.update_parameters(flow_fractions)
 
@@ -83,7 +90,7 @@ from time import time
 B= time()
 from building_matrices import *
 opt = ParallelData (functional_unit, method, project_name)
-res=opt.optimize_parameters(demo, {'WTE':500}, {'77357947-ccc5-438e-9996-95e65e1e1bce':-100}) #'Nitrogen oxides' (kilogram, None, ('air', 'non-urban air or from high stacks')).
+res=opt.optimize_parameters(demo, {('WTE1', 'Yard_Trimmings_Branches'):40, 'WTE':120}, {'77357947-ccc5-438e-9996-95e65e1e1bce':-100}) #'Nitrogen oxides' (kilogram, None, ('air', 'non-urban air or from high stacks')).
 print(res)
 print('Time for optimizing the flows: ', (time()-B))
 
