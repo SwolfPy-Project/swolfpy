@@ -11,6 +11,7 @@ import os
 import pandas as pd
 from LF import *
 from scipy.optimize import minimize, rosen, rosen_der
+from random import random
 
     
 if sys.version_info < (3, 0):
@@ -282,6 +283,44 @@ class ParallelData(LCA):
             print(res.message)
             return res
             
+    def multi_start_optimization(self, project, mass_flows_constraints=None, emissions_constraints=None, max_iter=30):
+        
+        self.mass_flows_constraints=mass_flows_constraints
+        self.emissions_constraints=emissions_constraints
+        self.project = project
+        self.magnitude = len(str(int(abs(self.score)))) 
+        
+        global_min = 1E100
+        
+        
+        for _ in range(max_iter):
+        
+            x0 = [random() for i in self.project.parameters_list] #initializing with the users initial solution
+            bnds = tuple([(0,1) for _ in self.project.parameters_list])
+            cons = self.create_constraints()
+        
+            res = minimize(self.objective_function, x0, method='SLSQP', bounds=bnds, constraints=cons)
+            
+            if res.success:
+                if res.fun < global_min:
+                    res_global = res
+                    global_min = res.fun
+        
+            
+        if res_global.success:
+            self.success=True
+            self.optimized_x=list()
+            res_global.x=res_global.x.round(decimals=3)
+            for i in range(len(self.project.parameters_list)):
+                self.optimized_x.append({'name':self.project.parameters_list[i]['name'],'amount':res_global.x[i]})
+            return res_global
+        else:
+            self.success=False
+            print(res_global.message)
+            return res_global
+    
+    
+    
     def set_optimized_parameters_to_project(self):
         assert hasattr(self, "project"), "Must run optimize_parameters first"
         assert self.success, "Optimization has to be sucessful first"
