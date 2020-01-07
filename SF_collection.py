@@ -11,11 +11,22 @@ from CommonData import *
 from stats_arrays import *
 
 class SF_Col:
-    def __init__(self,Collection_scheme,Distance,Treatment_processes=None,Waste_gen_comp=None,sector_population=None):
+    def __init__(self,name,Collection_scheme,Treatment_processes=None,Distance=None,Waste_gen_comp=None,sector_population=None):
 ### Importing the CommonData and Input data for SF_collection
         self.CommonData = CommonData()
         self.Input= SF_collection_Input()
+        self.name = name
         
+        if Treatment_processes:
+            self.Treat_proc = Treatment_processes
+            if Distance:
+                self.Distance = Distance
+            else:
+                raise Exception('User should define both Distane and Treatment_processes together')
+        else:
+            self.Treat_proc =False
+            
+            
 ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
         self.Material_Properties.fillna(0,inplace=True)
@@ -129,7 +140,46 @@ class SF_Col:
                 self.col.loc[i,'den_c'] = sum((self.mass[i]+self.mass[j])*2.205/ vol)  # Unit lb/cyd
             else:
                 self.col.loc[i,'den_c'] = 0
+    
+
+    def find_destination(self,product,Treatment_processes):
+        destination={}
+        for P in Treatment_processes:
+            if product in Treatment_processes[P]['input_type']:
+                destination[P] = self.Distance.Distance[(self.name,P)]
+        return(destination)
+    
+    ### calculating LCI and cost for different locations
+    def calc_destin(self):
+        if self.Treat_proc:
+            self.dest = {}
+            self.result_destination={}
+            for i in ['RWC','SSR','DSR','MSR','MSRDO','LV','SSYW','SSYWDO','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
+                self.dest[i]= self.find_destination(i,self.Treat_proc)   
+                self.result_destination[i] = {}
         
+            # Number of times we need to run the collection
+            n_run= max([len(self.dest[i]) for i in self.dest.keys()])
+            
+    
+            for i in range(n_run):
+                for j in self.dest.keys():
+                    if len(self.dest[j]) > i:
+                        self.col['Drf'][j] =self.dest[j][list(self.dest[j].keys())[i]]
+                self.calc_lci()
+                for j in self.dest.keys():
+                    if len(self.dest[j]) > i:
+                        self.result_destination[j][list(self.dest[j].keys())[i]] ={}
+                        if self.output['FuelMg'][j] + self.output['FuelMg_dov'][j] !=0:
+                            self.result_destination[j][list(self.dest[j].keys())[i]][('Technosphere', 'Equipment_Diesel')]=self.output['FuelMg'][j] + self.output['FuelMg_dov'][j]
+                        if self.output['FuelMg_CNG'][j]!=0:
+                            self.result_destination[j][list(self.dest[j].keys())[i]][('Technosphere', 'Equipment_CNG')]=self.output['FuelMg_CNG'][j]
+                        if self.output['ElecMg'][j]!=0:
+                            self.result_destination[j][list(self.dest[j].keys())[i]][('Technosphere', 'Electricity_consumption')]=self.output['ElecMg'][j]
+        else:
+            self.calc_lci()
+            self.result_destination={}
+
         
     def calc_lci(self):
         #Selected compartment compaction density  (lb/yd3)
@@ -222,7 +272,7 @@ class SF_Col:
         
         #unloading time at disposal facility (min/day-vehicle)
         self.col['UD'] = (self.col['RD']+0.5)*self.col['S']
-        
+       
         for i in ['MRDO','SSYWDO','MSRDO']:
             self.col.loc[i,'Tb'] = 0
             
@@ -230,7 +280,7 @@ class SF_Col:
             self.col.loc[i,'F_R'] = (2*self.col['RD'][i]-1)*self.col['Trf'][i]
             
             #unloading time at disposal facility (min/day-vehicle)
-            self.col.loc[i,'UD'] = self.col['RD'][i] *self.col['S'][i]
+            self.col.loc[i,'UD'] = self.col['RD'][i] *self.col['S'][i]                                                
 
 ### Daily fuel usage - Diesel
         for i in ['RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
@@ -261,8 +311,11 @@ class SF_Col:
                 self.col.loc[i,'diesel_rf'] = self.col['Fract_Dies'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  *((1-self.col['fDrd'][i])/self.col['MPG_urban'][i] + self.col['fDrd'][i]/self.col['MPG_highway'][i])
                 self.col.loc[i,'diesel_ud'] = self.col['Fract_Dies'][i] * self.col['UD'][i] /60 * self.col['GPH_idle_cv'][i]
                 self.col.loc[i,'diesel_fg'] = self.col['Fract_Dies'][i] * self.col['Dfg'][i] *((1-self.col['fDfg'][i])/self.col['MPG_urban'][i] + self.col['fDfg'][i]/self.col['MPG_highway'][i])
-
-        self.col['FuelD'] = self.col['diesel_gr'] + self.col['diesel_idl'] + self.col['diesel_col'] + self.col['diesel_rf'] + self.col['diesel_ud'] + self.col['diesel_fg']
+            
+            if self.col_proc[i]==0:
+                self.col.loc[i,'FuelD'] =0
+            else:
+                self.col.loc[i,'FuelD'] = self.col['diesel_gr'][i] + self.col['diesel_idl'][i] + self.col['diesel_col'][i] + self.col['diesel_rf'][i] + self.col['diesel_ud'][i] + self.col['diesel_fg'][i]
 ### Daily fuel usage - CNG - diesel gal equivalent
         for i in ['RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
             if self.col.loc[i,'MPG_all_CNG'] != 0:
@@ -291,8 +344,11 @@ class SF_Col:
                 self.col.loc[i,'CNG_rf'] = self.col['Fract_CNG'][i] * self.col['F_R'][i]/60 * self.col['Vrf'][i]  *((1-self.col['fDrd'][i])/self.col['MPG_urban_CNG'][i] + self.col['fDrd'][i]/self.col['MPG_hwy_CNG'][i])
                 self.col.loc[i,'CNG_ud'] = self.col['Fract_CNG'][i] * self.col['UD'][i] /60 * self.col['GPH_idle_CNG'][i]
                 self.col.loc[i,'CNG_fg'] = self.col['Fract_CNG'][i] * self.col['Dfg'][i] *((1-self.col['fDfg'][i])/self.col['MPG_urban_CNG'][i] + self.col['fDfg'][i]/self.col['MPG_hwy_CNG'][i])
-
-        self.col['FuelD_CNG'] = self.col['CNG_gr'] + self.col['CNG_idl'] + self.col['CNG_col'] + self.col['CNG_rf'] + self.col['CNG_ud'] + self.col['CNG_fg']
+            
+            if self.col_proc[i]==0:
+                self.col.loc[i,'FuelD_CNG'] = 0
+            else:
+                self.col.loc[i,'FuelD_CNG'] = self.col['CNG_gr'][i] + self.col['CNG_idl'][i] + self.col['CNG_col'][i] + self.col['CNG_rf'][i] + self.col['CNG_ud'][i] + self.col['CNG_fg'][i]
 
 
 ###ENERGY CONSUMPTION
@@ -331,12 +387,24 @@ class SF_Col:
 ###      OUTPUT
 # =============================================================================
 # =============================================================================
+                # Energy use is calculated for SSO and it is same with Dryres
+        self.col.loc['DryRes','FuelMg'] = self.col['FuelMg']['SSO']
+        self.col.loc['DryRes','FuelMg_CNG'] = self.col['FuelMg_CNG']['SSO']
+        self.col.loc['DryRes','ElecMg'] = self.col['ElecMg']['SSO']
+        
+        # Energy use is calculated for REC and it is same with WetRes
+        self.col.loc['WetRes','FuelMg'] = self.col['FuelMg']['REC']
+        self.col.loc['WetRes','FuelMg_CNG'] = self.col['FuelMg_CNG']['REC']
+        self.col.loc['WetRes','ElecMg'] = self.col['ElecMg']['REC']
+        
+        
         self.output = self.col[['TotalMass','FuelMg','FuelMg_CNG','ElecMg','FuelMg_dov']]
+        self.output = self.output.fillna(0)
             
 
     def calc(self):
         self.calc_composition()
-        self.calc_lci()
+        self.calc_destin()
             
         
 ### setup for Monte Carlo simulation   
@@ -356,10 +424,11 @@ class SF_Col:
         Waste={}
         Technosphere={}
         Biosphere={}
-        self.collection["process name"] = 'col'
+        self.collection["process name"] = self.name 
         self.collection["Waste"] = Waste
         self.collection["Technosphere"] = Technosphere
         self.collection["Biosphere"] = Biosphere
+        self.collection['LCI'] = self.result_destination
         
         for x in [Waste,Technosphere, Biosphere]:
             for y in self.Index:
@@ -369,61 +438,3 @@ class SF_Col:
             for x in self.col_massflow.columns:
                 Waste[y][x]= self.col_massflow[x][y]
         return(self.collection)
-         
-
-
-
-Distance = {'Res':{'LF':20},
-            'Rec':{'LF':20},
-            'Organics':{'AD':20,'COMP':20}}
-
-
-Collection_scheme = {'RWC':{'Contribution':0.2 , 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}},
-                    'SSO_DryRes':{'Contribution':0.2 , 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}},
-                    'REC_WetRes':{'Contribution':0 , 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}},                
-                    'MRDO':{'Contribution':0.6, 
-                            'separate_col':{'SSR':0,
-                                            'DSR':0,
-                                            'MSR':0,
-                                            'MSRDO':0,
-                                            'SSYW':0,
-                                            'SSYWDO':0}}}
-
-
-
-                        
-                    
-A= SF_Col(Collection_scheme,Distance)
-A.calc()
-AAA= A.col_massflow
-AAAA= A.output
-AAAAA=A.report()
-BBBB= A.col
-
-# =============================================================================
-# from time import time    
-# A= SF_Col(Collection_scheme,Distance)
-# B= time()
-# for i in range(1000):
-#     A.calc_composition()
-#     A.
-# print(time()-B)
-# =============================================================================

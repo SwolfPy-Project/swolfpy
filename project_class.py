@@ -16,10 +16,11 @@ from Parameters import *
 
 
 class project():
-    def __init__ (self,project_name,Treatment_processes,Collection_processes=None):
+    def __init__ (self,project_name,Treatment_processes,Distance,Collection_processes=None):
         self.project_name= project_name
         self.Treatment_processes = Treatment_processes
         self.Collection_processes = Collection_processes
+        self.Distance = Distance
         if self.Collection_processes:
             for j in self.Collection_processes.keys():
                 self.Treatment_processes[j] = self.Collection_processes[j]
@@ -95,7 +96,7 @@ class project():
             
 
     def init_database(self,name,waste_treatment):
-        process = Process_Model(name,waste_treatment)
+        process = Process_Model(name,waste_treatment,self.Distance)
         process.init_DB(name)
     
     def write_project(self):
@@ -112,7 +113,7 @@ class project():
             self.parameters_list+=P
                             
     def import_database(self,name,waste_treatment,path = None):
-        self.process_model[name] = Process_Model(name,waste_treatment)
+        self.process_model[name] = Process_Model(name,waste_treatment,self.Distance)
         if path:
             self.process_inputdata[name] = self.process_model[name].read_output_from_SWOLF(path)
         else:
