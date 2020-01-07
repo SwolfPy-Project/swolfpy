@@ -144,11 +144,13 @@ class Comp:
         return(self.COMP)
 
 
-from time import time
-A=Comp()
-c= time()
-for i in range(100):
-    A.calc()
-    A.report()
-print(time()-c)
+# =============================================================================
+# from time import time
+# A=Comp()
+# c= time()
+# for i in range(100):
+#     A.calc()
+#     A.report()
+# print(time()-c)
+# =============================================================================
 
