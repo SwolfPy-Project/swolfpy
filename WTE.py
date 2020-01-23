@@ -116,7 +116,6 @@ class WTE:
         self.Combustion_Emission['Stack_Dioxins_Furans'] = self.WTE_input.Stack_Gas_Conc_Non_metal['Dioxins_Furans']['amount']/10**12 * self.Combustion_Emission['Flue_gas'].values
         
         ### Post_Combustion Solids
-        
         self.Post_Combustion_Solids = pd.DataFrame(index = self.Index)
         
         #'kg/kg ww'
@@ -212,9 +211,9 @@ class WTE:
             self.WTE_input.Material_Consumption['lime']['amount'] * self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] + \
             self.WTE_input.Material_Consumption['carbon']['amount'] * self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount']
             
-            Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck')]=self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount']  + \
+            Technosphere[y][('Technosphere', 'Empty_Return_Heavy_Duty_Diesel_Truck')]=(self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount']  + \
             self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount'] + \
-            self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount']
+            self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount'])/23   # 23 is the heavy duty truck payload
             
             Technosphere[y][('Technosphere', 'lime_hydrated_loose_weight_RoW_lime_production')] = self.APC_Consumption['lime'][y]
             
@@ -253,7 +252,7 @@ class WTE:
             self.Combustion_Emission=self.Combustion_Emission.rename(columns=bio_rename_dict)
             self.LCI_index = True
         
-        self.Biosphere = self.Combustion_Emission[bio_rename_dict.values()].transpose().to_dict()
+        self.Biosphere = (self.Combustion_Emission[bio_rename_dict.values()]*1000).transpose().to_dict()
         self.WTE["Biosphere"] = self.Biosphere
         return(self.WTE)
 
