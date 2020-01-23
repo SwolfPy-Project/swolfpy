@@ -6,8 +6,11 @@ Created on Mon Jan  6 14:50:00 2020
 """
 import pandas as pd
 class Distance():
-    def __init__(self,path):
-        self.data = pd.read_csv(path,index_col='Index')
+    def __init__(self,path=None,Data=None):
+        if path:
+            self.data = pd.read_csv(path,index_col='Index')
+        elif isinstance(Data,pd.DataFrame) :
+            self.data = Data
         self.Distance = {}
         for i in self.data.columns:
             for j in self.data.columns:
