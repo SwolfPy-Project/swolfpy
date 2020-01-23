@@ -6,7 +6,6 @@ Created on Wed Mar 13 21:42:51 2019
 """
 import pandas as pd
 import numpy as np
-from biosphere_key import *
 from brightway2 import *
 from Required_keys import *
 from Parameters import *
