@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="ICONS">
+    <file>PySWOLF_ICONS/ADD.png</file>
+    <file>PySWOLF_ICONS/Remove.png</file>
     <file>PySWOLF_ICONS/PySWOLF.ico</file>
+    <file>PySWOLF_ICONS/Next.png</file>
   </qresource>
 </RCC>

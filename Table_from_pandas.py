@@ -11,10 +11,10 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self._data = data
 
-    def rowCount(self, parent=None):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         return self._data.shape[0]
 
-    def columnCount(self, parent=None):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         return self._data.shape[1]
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
@@ -26,7 +26,8 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return self._data.columns[col]
-        return None
+        if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
+            return self._data.index[col]
 
 class Table_from_pandas_editable(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
@@ -51,7 +52,8 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return self._data.columns[col]
-        return None
+        if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
+            return self._data.index[col]
     
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if index.isValid() and role == QtCore.Qt.EditRole:
@@ -83,7 +85,7 @@ class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
             if role == QtCore.Qt.DisplayRole:
                 return str(self._data.iloc[index.row(), index.column()])
 
-            if role==QtCore.Qt.BackgroundColorRole and index.row()+1 >= index.column() and index.column()!=0:
+            if role==QtCore.Qt.BackgroundColorRole and index.row() >= index.column():
                 return QtGui.QBrush(QtCore.Qt.gray)
             
             if role == QtCore.Qt.EditRole:
@@ -93,7 +95,8 @@ class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return self._data.columns[col]
-        return None
+        if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
+            return self._data.index[col]
     
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if index.isValid() and role == QtCore.Qt.EditRole:
@@ -103,7 +106,7 @@ class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
         return False
 
     def flags(self, index):
-        if index.row()+1 >= index.column() and index.column() !=0:
+        if index.row() >= index.column():
              return QtCore.Qt.ItemIsEnabled
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable 
@@ -152,7 +155,8 @@ class Table_modeifed_collection_schm(QtCore.QAbstractTableModel):
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return self._data.columns[col]
-        return None
+        if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
+            return self._data.index[col]
     
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if index.isValid() and role == QtCore.Qt.EditRole:
