@@ -12,11 +12,14 @@ from CommonData import *
 from stats_arrays import *
 
 
-
 class WTE:
-    def __init__(self,input_data_path=None):
-        self.CommonData = CommonData()
-        self.WTE_input= WTE_input(input_data_path)
+    def __init__(self,input_data_path=None,CommonDataObjct=None):
+        if CommonDataObjct:
+            self.CommonData = CommonDataObjct
+        else:
+            self.CommonData = CommonData()
+            
+        self.InputData= WTE_input(input_data_path)
         ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
         self.Material_Properties.fillna(0,inplace=True)
@@ -49,13 +52,13 @@ class WTE:
                                                        self.Energy_Calculations['Energy_Loss_Due_to_Water'].values
 
         # 'kWh/kgww'
-        self.Energy_Calculations['Energy_Recovered_as_Electricity'] = self.Energy_Calculations['Total_Energy_Produced'].values * self.WTE_input.Elec_Prod_Eff['Net_Efficiency']['amount'] / 3.6
+        self.Energy_Calculations['Energy_Recovered_as_Electricity'] = self.Energy_Calculations['Total_Energy_Produced'].values * self.InputData.Elec_Prod_Eff['Net_Efficiency']['amount'] / 3.6
         
         # 'kWh/Mgww'
         self.Energy_Calculations['Net_Electricity_Use'] = self.Energy_Calculations['Energy_Recovered_as_Electricity'].values * (-1000)
 
         #'MJ/Mgww'
-        self.Energy_Calculations['Heat_Recovered'] = self.Energy_Calculations['Total_Energy_Produced'].values * 1000 * self.WTE_input.Elec_Prod_Eff['Heat_prod_Eff']['amount']
+        self.Energy_Calculations['Heat_Recovered'] = self.Energy_Calculations['Total_Energy_Produced'].values * 1000 * self.InputData.Elec_Prod_Eff['Heat_prod_Eff']['amount']
             
         ### Combustion Emission
         self.Combustion_Emission = pd.DataFrame(index = self.Index)
@@ -73,7 +76,7 @@ class WTE:
         key1={'As':'Arsenic','Ba':'Barium','Cd':'Cadmium','Cr':'Chromium','Cu':'Copper','Hg':'Mercury','Ni':'Nickel','Pb':'Lead','Sb':'Antimony','Se':'Selenium','Zn':'Zinc'}
         for m in key1.keys():
             # 'kg/kgww'
-            self.Combustion_Emission[m] = self.Material_Properties[key1[m]][4:].values / 100 * self.WTE_input.Stack_metal_emission[m]['amount'] * (1-self.Material_Properties['Moisture Content'][4:].values/100)
+            self.Combustion_Emission[m] = self.Material_Properties[key1[m]][4:].values / 100 * self.InputData.Stack_metal_emission[m]['amount'] * (1-self.Material_Properties['Moisture Content'][4:].values/100)
 
         
         ### mole content of input waste
@@ -107,13 +110,13 @@ class WTE:
               'Stack_Ammonia':('Ammonia',self.CommonData.MW['Ammonia']['amount']),'Stack_Hydrocarbons':('Hydrocarbons',self.CommonData.MW['Hydrocarbons']['amount'])}
         for m in key3.keys():
             #'kg/kg ww'
-            self.Combustion_Emission[m] = self.WTE_input.Stack_Gas_Conc_Non_metal[key3[m][0]]['amount']/10**6*key3[m][1]/1000 / (self.CommonData.STP['Density_Air']['amount'] / 1000) * self.Combustion_Emission['Flue_gas'].values
+            self.Combustion_Emission[m] = self.InputData.Stack_Gas_Conc_Non_metal[key3[m][0]]['amount']/10**6*key3[m][1]/1000 / (self.CommonData.STP['Density_Air']['amount'] / 1000) * self.Combustion_Emission['Flue_gas'].values
 
         #'kg/kg ww'
-        self.Combustion_Emission['Stack_PM'] = self.WTE_input.Stack_Gas_Conc_Non_metal['PM']['amount']/10**6 * self.Combustion_Emission['Flue_gas'].values
+        self.Combustion_Emission['Stack_PM'] = self.InputData.Stack_Gas_Conc_Non_metal['PM']['amount']/10**6 * self.Combustion_Emission['Flue_gas'].values
 
         #'kg/kg ww'
-        self.Combustion_Emission['Stack_Dioxins_Furans'] = self.WTE_input.Stack_Gas_Conc_Non_metal['Dioxins_Furans']['amount']/10**12 * self.Combustion_Emission['Flue_gas'].values
+        self.Combustion_Emission['Stack_Dioxins_Furans'] = self.InputData.Stack_Gas_Conc_Non_metal['Dioxins_Furans']['amount']/10**12 * self.Combustion_Emission['Flue_gas'].values
         
         ### Post_Combustion Solids
         self.Post_Combustion_Solids = pd.DataFrame(index = self.Index)
@@ -123,22 +126,22 @@ class WTE:
                                                                 self.Material_Properties['Volatile Solids'][4:].values*(1-self.process_data['Combustion Efficiency (% of VS)'][3:].values)
 
         #'kg/kg ww'
-        self.Post_Combustion_Solids['Bottom_Ash_with_Metals']= (1-self.WTE_input.Metals_Recovery['Fly_ash_frac']['amount'])* self.Post_Combustion_Solids['Total_Post_Combustion_Solids'].values
+        self.Post_Combustion_Solids['Bottom_Ash_with_Metals']= (1-self.InputData.Metals_Recovery['Fly_ash_frac']['amount'])* self.Post_Combustion_Solids['Total_Post_Combustion_Solids'].values
 
         # 'kg/kg ww'
-        self.Post_Combustion_Solids['Fly_Ash']= self.WTE_input.Metals_Recovery['Fly_ash_frac']['amount'] * self.Post_Combustion_Solids['Total_Post_Combustion_Solids'].values
+        self.Post_Combustion_Solids['Fly_Ash']= self.InputData.Metals_Recovery['Fly_ash_frac']['amount'] * self.Post_Combustion_Solids['Total_Post_Combustion_Solids'].values
         
         #'kg/kg ww'
-        self.Post_Combustion_Solids['Ferrous_Recovery']= self.Material_Properties['Iron'][4:].values/100 *(1-self.Material_Properties['Moisture Content'][4:].values/100) * self.WTE_input.Metals_Recovery['Fe_Rec_Rate']['amount'] \
+        self.Post_Combustion_Solids['Ferrous_Recovery']= self.Material_Properties['Iron'][4:].values/100 *(1-self.Material_Properties['Moisture Content'][4:].values/100) * self.InputData.Metals_Recovery['Fe_Rec_Rate']['amount'] \
                                                     * self.process_data['Fraction of Fe that is Recoverable'][3:].values *(1-self.process_data['Fraction of Recoverable Fe Oxidized During Combustion'][3:].values)
                                                     
         #'kg/kg ww'    
-        self.Post_Combustion_Solids['Aluminum_Recovery']= self.Material_Properties['Aluminum'][4:].values/100 *(1-self.Material_Properties['Moisture Content'][4:].values/100) * self.WTE_input.Metals_Recovery['Al_Rec_Rate']['amount'] \
+        self.Post_Combustion_Solids['Aluminum_Recovery']= self.Material_Properties['Aluminum'][4:].values/100 *(1-self.Material_Properties['Moisture Content'][4:].values/100) * self.InputData.Metals_Recovery['Al_Rec_Rate']['amount'] \
                                                     * self.process_data['Fraction of Al that is Recoverable'][3:].values *(1-self.process_data['Fraction of Recoverable Al Oxidized During Combustion'][3:].values)
                                                     
         
         #'kg/kg ww'
-        self.Post_Combustion_Solids['Copper_Recovery']= self.Material_Properties['Copper'][4:].values/100 *(1-self.Material_Properties['Moisture Content'][4:].values/100) * self.WTE_input.Metals_Recovery['Cu_Rec_Rate']['amount'] \
+        self.Post_Combustion_Solids['Copper_Recovery']= self.Material_Properties['Copper'][4:].values/100 *(1-self.Material_Properties['Moisture Content'][4:].values/100) * self.InputData.Metals_Recovery['Cu_Rec_Rate']['amount'] \
                                                     * self.process_data['Fraction of Cu that is Recoverable'][3:].values *(1-self.process_data['Fraction of Recoverable Cu Oxidized During Combustion'][3:].values)
 
             
@@ -151,26 +154,26 @@ class WTE:
                "Ni":'Nickel', "Pb":'Lead', "Sb":'Antimony', "Se":'Selenium', "Zn":'Zinc'}
         for m in key4.keys():
             #'kg/kg ww'
-            self.Post_Combustion_Solids['Fly_ash_'+m] = self.Material_Properties[key4[m]][4:].values/100 * (1-self.Material_Properties['Moisture Content'][4:].values/100) * self.WTE_input.Fly_Ash_metal_emission[m]['amount']
+            self.Post_Combustion_Solids['Fly_ash_'+m] = self.Material_Properties[key4[m]][4:].values/100 * (1-self.Material_Properties['Moisture Content'][4:].values/100) * self.InputData.Fly_Ash_metal_emission[m]['amount']
         
         for m in key4.keys():    
             #'kg/kg ww'
-            self.Post_Combustion_Solids['Bottom_ash_'+m] = self.Material_Properties[key4[m]][4:].values/100 * (1-self.Material_Properties['Moisture Content'][4:].values/100) * self.WTE_input.Bottom_Ash_metal_emission[m]['amount']
+            self.Post_Combustion_Solids['Bottom_ash_'+m] = self.Material_Properties[key4[m]][4:].values/100 * (1-self.Material_Properties['Moisture Content'][4:].values/100) * self.InputData.Bottom_Ash_metal_emission[m]['amount']
             
         ### APC_Consumption
         self.APC_Consumption = pd.DataFrame(index = self.Index)
         for x in ['lime','carbon','ammonia']:
             #'kg/Mg ww'
-            self.APC_Consumption[x] = self.WTE_input.Material_Consumption[x]['amount']*1000
+            self.APC_Consumption[x] = self.InputData.Material_Consumption[x]['amount']*1000
         		
 		
     def setup_MC(self,seed=None):
-        self.WTE_input.setup_MC(seed)
-        self.WTE_input.create_uncertainty_from_inputs("WTE",self.process_data,seed)
+        self.InputData.setup_MC(seed)
+        self.InputData.create_uncertainty_from_inputs("WTE",self.process_data,seed)
 		
     def MC_calc(self):      
-        input_list = self.WTE_input.gen_MC()
-        input_list2 = self.WTE_input.uncertainty_input_next()
+        input_list = self.InputData.gen_MC()
+        input_list2 = self.InputData.uncertainty_input_next()
         self.calc()
         return(input_list+input_list2)
 		
@@ -193,8 +196,8 @@ class WTE:
         for y in self.Index:
             Waste[y]['Bottom_Ash'] = self.Post_Combustion_Solids['Bottom_Ash_without_Metals'][y]
             
-            Waste[y]['Fly_Ash'] = self.Post_Combustion_Solids['Fly_Ash'][y] + self.WTE_input.Material_Consumption['ammonia']['amount'] +\
-            self.WTE_input.Material_Consumption['lime']['amount'] + self.WTE_input.Material_Consumption['carbon']['amount']
+            Waste[y]['Fly_Ash'] = self.Post_Combustion_Solids['Fly_Ash'][y] + self.InputData.Material_Consumption['ammonia']['amount'] +\
+            self.InputData.Material_Consumption['lime']['amount'] + self.InputData.Material_Consumption['carbon']['amount']
             
             Waste[y]['Al'] = self.Post_Combustion_Solids['Aluminum_Recovery'][y]
             
@@ -207,13 +210,13 @@ class WTE:
             
             Technosphere[y][('Technosphere', 'Heat_Steam')] = self.Energy_Calculations['Heat_Recovered'][y]
             
-            Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck')] = self.WTE_input.Material_Consumption['ammonia']['amount'] * self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] + \
-            self.WTE_input.Material_Consumption['lime']['amount'] * self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] + \
-            self.WTE_input.Material_Consumption['carbon']['amount'] * self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount']
+            Technosphere[y][('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck')] = self.InputData.Material_Consumption['ammonia']['amount'] * self.InputData.Material_Consumption['Distance_from_prod_fac']['amount'] + \
+            self.InputData.Material_Consumption['lime']['amount'] * self.InputData.Material_Consumption['Distance_from_prod_fac']['amount'] + \
+            self.InputData.Material_Consumption['carbon']['amount'] * self.InputData.Material_Consumption['Distance_from_prod_fac']['amount']
             
-            Technosphere[y][('Technosphere', 'Empty_Return_Heavy_Duty_Diesel_Truck')]=(self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount']  + \
-            self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount'] + \
-            self.WTE_input.Material_Consumption['Distance_from_prod_fac']['amount'] * self.WTE_input.Material_Consumption['Empty_Return_Truck']['amount'])/23   # 23 is the heavy duty truck payload
+            Technosphere[y][('Technosphere', 'Empty_Return_Heavy_Duty_Diesel_Truck')]=(self.InputData.Material_Consumption['Distance_from_prod_fac']['amount'] * self.InputData.Material_Consumption['Empty_Return_Truck']['amount']  + \
+            self.InputData.Material_Consumption['Distance_from_prod_fac']['amount'] * self.InputData.Material_Consumption['Empty_Return_Truck']['amount'] + \
+            self.InputData.Material_Consumption['Distance_from_prod_fac']['amount'] * self.InputData.Material_Consumption['Empty_Return_Truck']['amount'])/23   # 23 is the heavy duty truck payload
             
             Technosphere[y][('Technosphere', 'lime_hydrated_loose_weight_RoW_lime_production')] = self.APC_Consumption['lime'][y]
             

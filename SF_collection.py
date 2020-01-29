@@ -11,10 +11,14 @@ from CommonData import *
 from stats_arrays import *
 
 class SF_Col:
-    def __init__(self,name,Collection_scheme,Treatment_processes=None,Distance=None,Waste_gen_comp=None,sector_population=None):
+    def __init__(self,name,Collection_scheme,Treatment_processes=None,Distance=None,Waste_gen_comp=None,sector_population=None,CommonDataObjct=None):
 ### Importing the CommonData and Input data for SF_collection
-        self.CommonData = CommonData()
-        self.Input= SF_collection_Input()
+        if CommonDataObjct:
+            self.CommonData = CommonDataObjct
+        else:
+            self.CommonData = CommonData()
+
+        self.InputData= SF_collection_Input()
         self.name = name
         
         if Treatment_processes:
@@ -51,22 +55,22 @@ class SF_Col:
         self.col_schm = Collection_scheme
     def calc_composition(self):
         #Single Family Residential Waste Generation Rate (kg/household-week)
-        g_res = 7*self.Input.Col['res_per_dwel']['amount']*self.Input.Col['res_gen']['amount']
-        total_waste_gen = g_res * self.Input.Col['houses_res']['amount'] * 52 /1000
+        g_res = 7*self.InputData.Col['res_per_dwel']['amount']*self.InputData.Col['res_gen']['amount']
+        total_waste_gen = g_res * self.InputData.Col['houses_res']['amount'] * 52 /1000
 
         
         #Check for Leave Vaccum
         self.process_data['LV'] = 0
-        if self.Input.Col['Leaf_vacuum']['amount']==1:
-            LV_gen = self.process_data.loc['Yard_Trimmings_Leaves','Comp']*self.Input.Col['res_gen']['amount'] * 365
-            LV_col = self.Input.Col['Leaf_vacuum_amount']['amount']*1000/self.Input.Col['res_pop']['amount']
+        if self.InputData.Col['Leaf_vacuum']['amount']==1:
+            LV_gen = self.process_data.loc['Yard_Trimmings_Leaves','Comp']*self.InputData.Col['res_gen']['amount'] * 365
+            LV_col = self.InputData.Col['Leaf_vacuum_amount']['amount']*1000/self.InputData.Col['res_pop']['amount']
             self.process_data.loc['Yard_Trimmings_Leaves','LV'] = 1 if LV_gen <= LV_col else LV_col/LV_gen
             for j in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
                 self.col_schm[j]['separate_col']['LV']=1 
         else:
             for j in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
                 self.col_schm[j]['separate_col']['LV']=0
-        self.col.loc['LV','Fr'] = self.Input.Col['LV_serv_times']['amount']/self.Input.Col['LV_serv_pd']['amount']
+        self.col.loc['LV','Fr'] = self.InputData.Col['LV_serv_times']['amount']/self.InputData.Col['LV_serv_pd']['amount']
                 
 
         # Total fraction where this service is offered        
@@ -120,7 +124,7 @@ class SF_Col:
         #Annual Mass Flows (Mg/yr)
         self.col_massflow=pd.DataFrame(index =self.Index)
         for i in ['RWC','SSR','DSR','MSR','MSRDO','LV','SSYW','SSYWDO','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
-            self.col_massflow[i]=self.mass[i] * self.Input.Col['houses_res']['amount'] * 52/1000 * self.col_proc[i]
+            self.col_massflow[i]=self.mass[i] * self.InputData.Col['houses_res']['amount'] * 52/1000 * self.col_proc[i]
         
         #Check generated mass = Collected mass
         tol_mass=self.mass.sum(axis=0)
@@ -203,7 +207,7 @@ class SF_Col:
         for i,j in [('SSO','DryRes'),('REC','WetRes')]:
             self.col.loc[i,'mass'] = sum(self.mass[i] + self.mass[j])
         # Revising mass of LV collection - as it happens only in LV_serv_pd
-        self.col.loc['LV','mass'] = self.col.loc['LV','mass']*52/self.Input.Col['LV_serv_pd']['amount']
+        self.col.loc['LV','mass'] = self.col.loc['LV','mass']*52/self.InputData.Col['LV_serv_pd']['amount']
             
 
 ### COLLECTION COSTS         
@@ -244,7 +248,7 @@ class SF_Col:
 ### Calculations for collection vehicle activities  (Drop off)
         for i in ['MRDO','SSYWDO','MSRDO']:
             #volume of recyclables deposited at drop-off site per week (cy/week-house)
-            self.col.loc[i,'Ht'] = sum(self.mass[i])*self.Input.Col['houses_res']['amount']*self.col_proc[i]/0.4536 /self.col['d_msw'][i]
+            self.col.loc[i,'Ht'] = sum(self.mass[i])*self.InputData.Col['houses_res']['amount']*self.col_proc[i]/0.4536 /self.col['d_msw'][i]
             
             #collection vehicle trips per week (trips/week)
             self.col.loc[i,'DO_trip_week'] =  self.col['Ht'][i] / (self.col['Vt'][i]*self.col['Ut'][i])
@@ -409,11 +413,11 @@ class SF_Col:
         
 ### setup for Monte Carlo simulation   
     def setup_MC(self,seed=None):
-        self.Input.setup_MC(seed)
+        self.InputData.setup_MC(seed)
 
 ### Calculate based on the generated numbers   
     def MC_calc(self):      
-        input_list = self.Input.gen_MC()
+        input_list = self.InputData.gen_MC()
         self.calc()
         return(input_list)        
 

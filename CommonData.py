@@ -99,9 +99,8 @@ class CommonData(MC):
                     'co2bod':{"Name":"CO2 Biomass produced per BOD removed","amount":3.60,"unit":'kg CO2b/kg BOD',"Reference":'2'},
                     'elecBOD':{"Name":"Electricity used per mass of BOD removed","amount":0.99,"unit":'kWh/kg BOD removed',"Reference":'2'}
                     }
-
+        self.Input_list = {'Land_app':self.Land_app, 'WWT':self.WWT, 'Leachate_treat':self.Leachate_treat}
 ### Monte_carlo          
     def setup_MC(self,seed=None):
-        self.CommonData_Input_list = {'Land_app':self.Land_app, 'WWT':self.WWT, 'Leachate_treat':self.Leachate_treat}
-        super().__init__(self.CommonData_Input_list)
+        super().__init__(self.Input_list)
         super().setup_MC(seed)

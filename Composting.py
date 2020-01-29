@@ -14,9 +14,13 @@ from Composting_subprocess import *
 
 
 class Comp:
-    def __init__(self,input_data_path=None):
-        self.CommonData = CommonData()
-        self.Comp_input= Composting_input(input_data_path)
+    def __init__(self,input_data_path=None,CommonDataObjct=None):
+        if CommonDataObjct:
+            self.CommonData = CommonDataObjct
+        else:
+            self.CommonData = CommonData()
+
+        self.InputData= Composting_input(input_data_path)
         ### Read Material properties
         self.Material_Properties=pd.read_excel("Material properties.xlsx",index_col = 'Materials')
         self.Material_Properties.fillna(0,inplace=True)
@@ -31,7 +35,7 @@ class Comp:
                       'Anaerobic_Residual', 'Bottom_Ash', 'Fly_Ash', 'Diapers_and_sanitary_products', 'Waste_Fraction_47', 'Waste_Fraction_48',
                       'Waste_Fraction_49', 'Waste_Fraction_50', 'Waste_Fraction_51', 'Waste_Fraction_52', 'Waste_Fraction_53', 'Waste_Fraction_54',
                       'Waste_Fraction_55', 'Waste_Fraction_56', 'Waste_Fraction_57', 'Waste_Fraction_58', 'Waste_Fraction_59', 'Waste_Fraction_60']
-        self.Assumed_Comp = pd.Series(self.Comp_input.Assumed_Comp,index=self.Index)
+        self.Assumed_Comp = pd.Series(self.InputData.Assumed_Comp,index=self.Index)
         self.flow_init = flow(self.Material_Properties[4:])
 
     def calc(self):
@@ -41,36 +45,36 @@ class Comp:
         self.Input.init_flow(1000)
 
 ### Primary Pre_screen        
-        self.S1_unders,self.S1_overs=screen(self.Input,self.process_data['Percent screened out in primary pre-screening (shredded)'][3:].values/100, self.Material_Properties[4:],self.Comp_input.Screen,self.LCI,self.flow_init)
+        self.S1_unders,self.S1_overs=screen(self.Input,self.process_data['Percent screened out in primary pre-screening (shredded)'][3:].values/100, self.Material_Properties[4:],self.InputData.Screen,self.LCI,self.flow_init)
         
 ### Secondary Pre_screen         
-        self.S2_to_shredding,self.S2_residuls=screen(self.S1_overs,self.process_data['Percent screened out in secondary pre-screening (residual not sent to composting)'][3:].values/100, self.Material_Properties[4:],self.Comp_input.Screen,self.LCI,self.flow_init)
+        self.S2_to_shredding,self.S2_residuls=screen(self.S1_overs,self.process_data['Percent screened out in secondary pre-screening (residual not sent to composting)'][3:].values/100, self.Material_Properties[4:],self.InputData.Screen,self.LCI,self.flow_init)
 ### Shredding/Grinding of seconday screen's unders
-        self.shred = shredding(self.S2_to_shredding,self.Material_Properties[4:],self.Comp_input.Shredding,self.LCI,self.flow_init)
+        self.shred = shredding(self.S2_to_shredding,self.Material_Properties[4:],self.InputData.Shredding,self.LCI,self.flow_init)
 
 ### Mixing the shredded and screened materials
         self.mixed = mix(self.S1_unders,self.shred,self.Material_Properties[4:],self.flow_init)
 
 ### Adding Water
         self.mixed.update(self.Assumed_Comp)
-        self.water_added = 0 if self.mixed.moist_cont > self.Comp_input.Degradation_Parameters['initMC']['amount'] else \
-                               (self.Comp_input.Degradation_Parameters['initMC']['amount']* self.mixed.flow - self.mixed.water)/(1-self.Comp_input.Degradation_Parameters['initMC']['amount'])
+        self.water_added = 0 if self.mixed.moist_cont > self.InputData.Degradation_Parameters['initMC']['amount'] else \
+                               (self.InputData.Degradation_Parameters['initMC']['amount']* self.mixed.flow - self.mixed.water)/(1-self.InputData.Degradation_Parameters['initMC']['amount'])
         water_flow = self.water_added * self.mixed.data['sol_cont'].values/self.mixed.solid
         
     
         self.substrate_to_ac = add_water(self.mixed,water_flow,self.Material_Properties[4:],self.process_data[3:],self.flow_init)
     
 ### Active Composting
-        self.substrate_to_ps=ac_comp(self.substrate_to_ac,self.CommonData,self.process_data[3:],self.Comp_input,self.Comp_input.Degradation_Parameters,self.Comp_input.Biological_Degredation,self.Assumed_Comp,self.Material_Properties[4:],self.LCI,self.flow_init)
+        self.substrate_to_ps=ac_comp(self.substrate_to_ac,self.CommonData,self.process_data[3:],self.InputData,self.InputData.Degradation_Parameters,self.InputData.Biological_Degredation,self.Assumed_Comp,self.Material_Properties[4:],self.LCI,self.flow_init)
     
 ### Post screen
-        self.substrate_to_vac,self.ps_res=post_screen(self.substrate_to_ps,self.process_data['Percent post screened out'][3:].values/100, self.Material_Properties[4:],self.Comp_input.Screen,self.LCI,self.flow_init)
+        self.substrate_to_vac,self.ps_res=post_screen(self.substrate_to_ps,self.process_data['Percent post screened out'][3:].values/100, self.Material_Properties[4:],self.InputData.Screen,self.LCI,self.flow_init)
     
 ### Vacuum
-        self.substrate_to_cu,self.vac_res=vacuum(self.substrate_to_vac,self.process_data['Percent vacuumed out (vacprop)'][3:].values/100, self.Material_Properties[4:],self.Comp_input.Vaccum_sys,self.LCI,self.flow_init)
+        self.substrate_to_cu,self.vac_res=vacuum(self.substrate_to_vac,self.process_data['Percent vacuumed out (vacprop)'][3:].values/100, self.Material_Properties[4:],self.InputData.Vaccum_sys,self.LCI,self.flow_init)
     
 ### Curing
-        self.final_comp=curing(self.substrate_to_cu,self.CommonData,self.process_data[3:],self.Comp_input,self.Comp_input.Degradation_Parameters,self.Comp_input.Biological_Degredation,self.Assumed_Comp,self.Material_Properties[4:],self.LCI,self.flow_init)     
+        self.final_comp=curing(self.substrate_to_cu,self.CommonData,self.process_data[3:],self.InputData,self.InputData.Degradation_Parameters,self.InputData.Biological_Degredation,self.Assumed_Comp,self.Material_Properties[4:],self.LCI,self.flow_init)     
     
 ### Calculating the P and K in final compost
 # Assumption: composition of ps_res == composition of vac_res  == composition of mixed , while the composition has changed because of active composting and curing
@@ -78,22 +82,22 @@ class Comp:
         self.final_comp.data['K_cont']= (self.mixed.data['sol_cont'].values-self.ps_res.data['sol_cont'].values- self.vac_res.data['sol_cont'].values) * self.Material_Properties['Potassium Content'][4:].values/100
     
 ### Compost use
-        compost_use(self.final_comp,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.Comp_input.Biological_Degredation,self.Comp_input.Land_app,self.Comp_input.Fertilizer_offset,self.Comp_input,self.LCI)
+        compost_use(self.final_comp,self.CommonData,self.process_data[3:],self.Material_Properties[4:],self.InputData.Biological_Degredation,self.InputData.Land_app,self.InputData.Fertilizer_offset,self.InputData,self.LCI)
     
 ### office
-        Office_elec = ( self.Comp_input.Office['Mta']['amount'] * self.Comp_input.Office['Mea']['amount'] / 1000 ) /self.Comp_input.Op_Param['Taod']['amount'] 
+        Office_elec = ( self.InputData.Office['Mta']['amount'] * self.InputData.Office['Mea']['amount'] / 1000 ) /self.InputData.Op_Param['Taod']['amount'] 
         add_LCI(('Technosphere', 'Electricity_consumption'), Office_elec ,self.LCI)  
 
 ### Transportation
-        add_LCI('Medium-duty truck transportation to land application', self.final_comp.data['mass'].values * self.Comp_input.Land_app['distLand']['amount'] ,self.LCI)
-        add_LCI('Medium-duty empty return', self.final_comp.data['mass'].values/1000 / self.Comp_input.Land_app['land_payload']['amount']* self.Comp_input.Land_app['distLand']['amount'] ,self.LCI)
+        add_LCI('Medium-duty truck transportation to land application', self.final_comp.data['mass'].values * self.InputData.Land_app['distLand']['amount'] ,self.LCI)
+        add_LCI('Medium-duty empty return', self.final_comp.data['mass'].values/1000 / self.InputData.Land_app['land_payload']['amount']* self.InputData.Land_app['distLand']['amount'] ,self.LCI)
 
     def setup_MC(self,seed=None):
-        self.Comp_input.setup_MC(seed)
+        self.InputData.setup_MC(seed)
         #self.create_uncertainty_from_inputs()
     
     def MC_calc(self):      
-        input_list = self.Comp_input.gen_MC()
+        input_list = self.InputData.gen_MC()
         #self.uncertainty_input_next()
         self.calc()
         return(input_list)
