@@ -6,7 +6,7 @@ Created on Tue Aug 13 11:07:56 2019
 """
 import numpy as np
 import pandas as pd
-from LF_input import *
+from LF_Input import *
 from CommonData import *
 from stats_arrays import *
 import ast

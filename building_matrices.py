@@ -9,7 +9,6 @@ from brightway2 import LCA
 from bw2data import projects
 import os
 import pandas as pd
-from LF import *
 from scipy.optimize import minimize, rosen, rosen_der
 from random import random
 
@@ -63,8 +62,12 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
             for material,value in report_dict["Technosphere"].items():
                 for key2, value2 in value.items():
                     if not np.isnan(value2):
-                        if tech_matrix[((key2),(process_name, material))] != value2:
-                            tech_matrix[((key2),(process_name, material))] = value2 
+                        if ((key2),(process_name, material)) in tech_matrix.keys():
+                            if tech_matrix[((key2),(process_name, material))] != value2:
+                                tech_matrix[((key2),(process_name, material))] = value2 
+                        else:
+                            print('**Warning** Exchange {} is calculated but not exist in LCA technosphere'.format(((key2),(process_name, material))))
+                                
                             
             for material,value in report_dict["Waste"].items():
                 for key2, value2 in value.items():
@@ -157,8 +160,9 @@ class ParallelData(LCA):
                 ]
             )
         self.results = [x for lst in res for x in lst]
-    
-    
+        #res=worker((self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed, n//nproc))
+        #self.results = [x for lst in res for x in lst]
+        
     def objective_function(self, x):
         matrix=self.project.unified_params.get_matrix(x)
         for key, value in matrix.items():
@@ -342,17 +346,5 @@ class ParallelData(LCA):
     def save_results(self,name):
         self.result_to_DF().to_pickle(name)
     
-        #worker((self.project, self.functional_unit, self.method, self.parameters, self.process_models, self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed, n//nproc))
-if __name__=='__main__':
-    project = "Demo_LF"
-    projects.set_current(project)
-    db = Database("waste")
-    functional_unit = {db.get("scenario1") : 1}
-    method = [('SWOLF_IPCC','SWOLF')]
-    a = ParallelData(functional_unit, method, project, [LF()], ['LF'],seed = 1)
-    a.run(4,12)
-    print(a.result_to_DF())
-    
-     
   
 
