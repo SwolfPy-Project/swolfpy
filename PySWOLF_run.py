@@ -7,7 +7,7 @@ Created on Thu Jan  9 17:44:09 2020
 from PySide2 import QtCore, QtGui, QtWidgets
 from Table_from_pandas import *
 import os
-import PySWOLF_1
+import PySWOLF
 import sys
 from brightway2 import *
 import importlib  #to import moduls with string name
@@ -24,21 +24,21 @@ from copy import deepcopy
 import ast
 
 
-
-
-
-
-class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
+class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
     def __init__(self):
         super(MyQtApp,self).__init__()
         self.setupUi(self)
-        
-        self.PySWOLF.setCurrentWidget(self.Basic)
-        
-        self.icon = QtGui.QIcon()
-        self.icon.addPixmap(QtGui.QPixmap(":/ICONS/PySWOLF_ICONS/PySWOLF.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        
+        self.init_app()
+         
+
+# =============================================================================
+# =============================================================================
+    ### Init app
+# =============================================================================
+# =============================================================================
+    def init_app(self):
         ### Initial main window (set Disable and Enabled)
+        self.PySWOLF.setCurrentWidget(self.Basic)
         self.Start.setEnabled(True)
         self.PySWOLF.setCurrentWidget(self.Start)
         self.Basic.setDisabled(True)
@@ -53,6 +53,33 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Network.setDisabled(True)
         self.Distance_table.setDisabled(True)
         
+        
+        #Status: Is the tap initiated or not?!
+        self.app_init_status = False
+        self.ini_load_project_status = False
+        self.init_CreateScenario_status = False
+        self.LCA_tab_init_status = False
+        self.MC_tab_init_status = False
+    
+        
+        #init First paer
+        self.init_FirstPage()  
+        
+        #Icons
+        self.icon = QtGui.QIcon()
+        self.icon.addPixmap(QtGui.QPixmap(":/ICONS/PySWOLF_ICONS/PySWOLF.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        ### Menu
+        self.actionSave.triggered.connect(self.save)
+        ### Exit
+        self.actionExit.triggered.connect(sys.exit)
+
+# =============================================================================
+# =============================================================================
+    ### First Page
+# =============================================================================
+# =============================================================================
+    def init_FirstPage(self):
         ### Start tab
         #Radio bottoms
         self.Start_def_process.setChecked(True)
@@ -63,81 +90,109 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Start_new_project.clicked.connect(self.Start_new_project_func)
         self.Start_load_project.clicked.connect(self.Start_load_project_func)
         
-        #import process models
-        self.Importing_processes()
-        
-        
-        
-        
-        #Create treatment dict
-        self._Plist = ['...','LF','WTE','Composting','AD']
-        self.P_index = 1
-        # Add process and create dict
-        self.Add_process.clicked.connect(self.add_process_func(self.frame_Process_treatment,self.gridLayout_59))
-        self.Treat_process_next.clicked.connect(self.Treat_process_next_func)
-
-
-        
-        
-        
-        
     
-        
-        
-        #Import distance data
-        self.Create_Distance.clicked.connect(self.Create_Distance_Table)
-        
-        #Create system and write project
-        self.write_project.clicked.connect(self.write_project_func)
-        
-        #Load parameters
-        self.Load_params.clicked.connect(self.load_params_func)
-        
-        #Update the parameters
-        self.update_param.clicked.connect(self.update_network_parameters)
-        
-        #Create new scenario
-        self.Start_new_sen.clicked.connect(self.Create_scenario_func)
-        
-        #Load project tab
-        self.load_project_tab()
-        
-        ### Init progess Bar
-        self.progressBar_write_project.setMinimum(0)
-        self.progressBar_write_project.setMaximum(100)
-        self.progressBar_write_project.setValue(0)
-        
-        ### Menu
-        self.actionSave.triggered.connect(self.save)
-        ### Exit
-        self.actionExit.triggered.connect(sys.exit)
-        
-      
-    
-        
-# =============================================================================
-# =============================================================================
-    ### First Page
-# =============================================================================
-# =============================================================================
     @QtCore.Slot()  #Change tab: go to the process models or Define SWM system based on the user input
     def Start_new_project_func(self):
-        self._Collection_processes = {}
-        self._Treatment_processes = {}
-        if self.Start_def_process.isChecked():
-            self.Import_Process_models_func()
-            self.PySWOLF.setCurrentWidget(self.Define_SWM)
-            self.Define_SWM.setEnabled(True)
+        if not self.app_init_status:
+            self.app_init_status = True
+            #import process models
+            self.Importing_processes()
             
+            #init treatement processse tab
+            self.init_TreatmentProcesses()
+            
+            #init write project
+            self.init_write_project()
+            
+            self._Collection_processes = {}
+            self._Treatment_processes = {}
+            
+            if self.Start_def_process.isChecked():
+                self.Import_Process_models_func()
+                self.PySWOLF.setCurrentWidget(self.Define_SWM)
+                self.Define_SWM.setEnabled(True)
+                
+            else:
+                self.PySWOLF.setCurrentWidget(self.Basic)
+                self.Basic.setEnabled(True)
         else:
-            self.PySWOLF.setCurrentWidget(self.Basic)
-            self.Basic.setEnabled(True)
+            #Notift the user to restart program
+            self.msg_popup('PySWOLF Mode','Restart the PySWOLF to start new project','Warning')
+            
                            
     @QtCore.Slot()  #Change tab and import process models
     def Start_load_project_func(self):
-        self.PySWOLF.setCurrentWidget(self.Load_Project)
-        self.Load_Project.setEnabled(True)      
+        if not self.app_init_status:
+            self.app_init_status = True
+            #Load project tab
+            self.init_load_project_tab()
+            self.PySWOLF.setCurrentWidget(self.Load_Project)
+            self.Load_Project.setEnabled(True)      
+        else:
+            #Notift the user to restart program
+            self.msg_popup('PySWOLF Mode','Restart the PySWOLF to load project','Warning')
+            
+    
+# =============================================================================
+# =============================================================================
+    ### Load Project
+# =============================================================================
+# =============================================================================
+    def init_load_project_tab(self):
+        if not self.ini_load_project_status:
+            self.Br_Project_btm.clicked.connect(self.select_file(self.Project_address,"Pickle (*.pickle)"))
+            self.Load_Project_btm.clicked.connect(self.load_project_info)
+            self.ini_load_project_status = True
+    
+    @QtCore.Slot()
+    def load_project_info(self):
+        self.demo = pickle.load(open(self.Project_address.text(),"rb"))
+        self.load_P_name.setText(self.demo.project_name) 
+        self.P_Name = self.demo.project_name
+        projects.set_current(self.demo.project_name)
         
+        data = pd.DataFrame(columns=['Name','Type of input','model']) 
+        Name = []
+        Type_of_Input = []
+        Model=[]
+        for i in self.demo.Treatment_processes.keys():
+            Name.append(i)
+            Type_of_Input.append(self.demo.Treatment_processes[i]['input_type'])
+            Model.append(self.demo.Treatment_processes[i]['model'].__class__)
+        data['Name'] = Name
+        data['Type of input'] = Type_of_Input
+        data['model'] = Model
+        
+        data_table = Table_from_pandas(data)
+        self.load_treatment_info.setModel(data_table)
+        self.load_treatment_info.resizeColumnsToContents()
+
+        param_data=pd.DataFrame(self.demo.parameters_list)
+        param_data['Unit'] = 'fraction'
+        self.load_param_data = Table_from_pandas_editable(param_data)
+        self.load_Param_table.setModel(self.load_param_data)
+        self.load_Param_table.resizeColumnsToContents()
+        self.load_update_param.clicked.connect(self.load_update_network_parameters)
+        
+        self.Create_Scenario.setEnabled(True)
+        self.init_CreateScenario()
+        self.LCA_tab.setEnabled(True)
+        self.LCA_tab_init()
+        self.MC_tab_init()
+        
+        
+                
+    @QtCore.Slot()
+    def load_update_network_parameters(self):
+        new_param = deepcopy(self.demo.parameters_list)
+        i=0
+        for x in new_param:
+            x['amount'] = self.load_param_data._data['amount'][i]
+            i+=1
+        print("\n\n New parameters are : \n",new_param,"\n\n")
+        self.demo.update_parameters(new_param)
+        
+
         
 # =============================================================================
 # =============================================================================
@@ -288,8 +343,9 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
             self.PySWOLF.setCurrentWidget(self.Define_SWM)
             self.Define_SWM.setEnabled(True)
             self.Define_SWM_1.setCurrentWidget(self.Collection_process)
-            self.Collection.setCurrentWidget(self.Col1_tab)
+            #self.Collection.setCurrentWidget(self.Col1_tab)
             self.Collection_process.setEnabled(True)
+            #init collection
             self.init_collection()
         elif self.isCollection.clickedButton()==No:
             self.PySWOLF.setCurrentWidget(self.Define_SWM)
@@ -303,6 +359,184 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         if x.isChecked():
             List_of_input_type.append(x.text())
 
+# =============================================================================
+# =============================================================================
+    ### Collection
+# =============================================================================
+# =============================================================================
+    def init_collection(self):
+        self.col_index = 1
+        self._col_list = ['...','SF_Colllection','MF_Colllection','COM_Colllection']
+        self.Add_col.clicked.connect(self.Add_collection)
+        self.Create_Collection_process.clicked.connect(self.Create_collection_dict)
+    
+    
+    def Add_collection(self):
+        Tab = QtWidgets.QWidget()
+        Tab.setObjectName("Collection_process_{}".format(self.col_index))
+        #self.gridLayout_12 = QtWidgets.QGridLayout(Tab)
+        self.Collection.addTab(Tab,"Collection Process {}".format(self.col_index))
+    
+    
+        gridLayout = QtWidgets.QGridLayout(Tab)
+        gridLayout.setObjectName("main_layout_{}".format(self.col_index))
+        
+        Tab_gridLayout = QtWidgets.QGridLayout()
+        Tab_gridLayout.setObjectName("Tab_gridLayout_{}".format(self.col_index))
+        gridLayout.addLayout(Tab_gridLayout, 0, 0, 1, 1)
+        
+        # Frame1 for browsing the input
+        Frame1 = QtWidgets.QFrame(Tab)
+        #Frame1.setMinimumSize(QtCore.QSize(0, 0))
+        #Frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        #Frame1.setFrameShadow(QtWidgets.QFrame.Raised)
+        Frame1.setObjectName("Frame1_{}".format(self.col_index))
+        F1_layout = QtWidgets.QGridLayout(Frame1)
+        F1_layout.setObjectName("F1_layout_{}".format(self.col_index))
+        
+        
+        # For collection scheme table
+        Frame2 = QtWidgets.QFrame(Tab)
+        #Frame2.setMinimumSize(QtCore.QSize(0, 0))
+        #Frame2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        #Frame2.setFrameShadow(QtWidgets.QFrame.Raised)
+        Frame2.setObjectName("Frame2_{}".format(self.col_index))
+        F2_layout = QtWidgets.QGridLayout(Frame2)
+        F2_layout.setObjectName("F2_layout_{}".format(self.col_index))
+        
+        
+        Tab_gridLayout.addWidget(Frame1, 0, 0, 1, 1)
+        Tab_gridLayout.addWidget(Frame2, 1, 0, 1, 1)
+        
+        
+        # setup Frame1
+        label_1 = QtWidgets.QLabel(Frame1)
+        label_1.setObjectName("Lable_1_{}".format(self.col_index))
+        F1_layout.addWidget(label_1, 0, 0, 1, 1)
+        label_1.setText('Collection')
+        
+        label_2 = QtWidgets.QLabel(Frame1)
+        label_2.setObjectName("Lable_2_{}".format(self.col_index))
+        F1_layout.addWidget(label_2, 0, 1, 1, 1)
+        label_2.setText('Type')
+        
+        label_3 = QtWidgets.QLabel(Frame1)
+        label_3.setObjectName("Lable_3_{}".format(self.col_index))
+        F1_layout.addWidget(label_3, 0, 2, 1, 1)
+        label_3.setText('Name')
+        
+        label_4 = QtWidgets.QLabel(Frame1)
+        label_4.setObjectName("Lable_4_{}".format(self.col_index))
+        F1_layout.addWidget(label_4, 0, 3, 1, 1)
+        label_4.setText('Input Type')
+        
+        label_5 = QtWidgets.QLabel(Frame1)
+        label_5.setObjectName("Lable_5_{}".format(self.col_index))
+        F1_layout.addWidget(label_5, 0, 5, 1, 1)
+        label_5.setText('Address to Input File')
+        
+        label_6 = QtWidgets.QLabel(Frame1)
+        label_6.setObjectName("Lable_6_{}".format(self.col_index))
+        F1_layout.addWidget(label_6, 1, 0, 1, 1)
+        label_6.setText('Collection {}'.format(self.col_index))
+    
+        col = QtWidgets.QComboBox(Frame1)
+        col.setObjectName("Col_{}".format(self.col_index))
+        F1_layout.addWidget(col, 1, 1, 1, 1)
+        col.addItems(self._col_list)
+    
+        Col_name = QtWidgets.QLineEdit(Frame1)
+        Col_name.setObjectName("Col_name_{}".format(self.col_index))
+        F1_layout.addWidget(Col_name, 1, 2, 1, 1)
+        Col_name.setPlaceholderText('Collection (Sector) Name')
+        
+        #Create name for collection models
+        col.currentTextChanged.connect(self.set_col_name(Col_name,self.col_index))
+        
+        Col_def_input = QtWidgets.QCheckBox(Frame1)
+        Col_def_input.setObjectName("Col_def_input_{}".format(self.col_index))
+        F1_layout.addWidget(Col_def_input, 1, 3, 1, 1)
+        Col_def_input.setChecked(True)
+        Col_def_input.setText('Default')
+        
+        Col_Br = QtWidgets.QToolButton(Frame1)
+        Col_Br.setObjectName("Col_Br_{}".format(self.col_index))
+        F1_layout.addWidget(Col_Br, 1, 4, 1, 1)
+        Col_Br.setText('Browse')
+    
+        #Uncheck the defualt input
+        Col_Br.clicked.connect(lambda: Col_def_input.setChecked(False))
+        
+        Col_input_path = QtWidgets.QLineEdit(Frame1)
+        Col_input_path.setEnabled(True)
+        Col_input_path.setMinimumSize(QtCore.QSize(300, 0))
+        Col_input_path.setObjectName("Col_input_path_{}".format(self.col_index))
+        F1_layout.addWidget(Col_input_path, 1, 5, 1, 1)
+        Col_input_path.setPlaceholderText('Path to the input file')
+        
+        #Browse input and import the address to linedit
+        Col_Br.clicked.connect(self.select_file(Col_input_path,"CSV (*.csv)"))
+        
+        # setup Frame2
+        Sch_Col = QtWidgets.QTableView(Frame2)
+        Sch_Col.setObjectName("Sch_Col_{}".format(self.col_index))
+        F2_layout.addWidget(Sch_Col, 0, 0, 1, 1)
+        
+        #Collection scheme DataFrame
+        col_scheme_pd = pd.DataFrame(columns=['RWC','SSO_DryRes','REC_WetRes','MRDO'],
+                                     index=['Contribution','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO'])
+        #col_scheme_pd.loc['Contribution']=[0,0,0,0]
+        col_scheme_pd=col_scheme_pd.fillna(0)
+        col_scheme_pd_model = Table_from_pandas_editable(col_scheme_pd)
+        Sch_Col.setModel(col_scheme_pd_model)
+        Sch_Col.resizeColumnsToContents()
+        
+        spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        F2_layout.addItem(spacerItem_1, 0, 1, 1, 1)
+        spacerItem_2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        F2_layout.addItem(spacerItem_2, 1, 0, 1, 1)
+        
+        self.col_index+=1
+        
+    @QtCore.Slot()        
+    def Create_collection_dict(self):
+        for i in np.arange(1,self.col_index):
+            x= self.Collection.findChildren(QtWidgets.QComboBox,"Col_{}".format(i))[0].currentText()
+            y= self.Collection.findChildren(QtWidgets.QLineEdit,"Col_name_{}".format(i))[0].text()
+            z= self.Collection.findChildren(QtWidgets.QTableView,"Sch_Col_{}".format(i))[0].model()._data
+        
+            if x != '...':
+                self._Collection_processes[y]={}
+                self._Collection_processes[y]['input_type']=[]
+                self._Collection_processes[y]['model']=None
+                self._Collection_processes[y]['scheme'] = self.helper_DFtoDict(z)
+                
+      
+        self.Define_SWM_1.setCurrentWidget(self.Treatment_process)
+        self.Treatment_process.setEnabled(True)
+        print(self._Collection_processes)
+    
+    @staticmethod
+    def helper_DFtoDict(DF):
+        DF= DF.fillna(0)
+        Collection_scheme={}
+        for i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
+            Collection_scheme[i]={}
+            Collection_scheme[i]['Contribution']=DF[i]['Contribution']
+            Collection_scheme[i]['separate_col']={}
+            for j in ['SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']:
+                Collection_scheme[i]['separate_col'][j]=DF[i][j]
+        return(Collection_scheme)
+                            
+    @QtCore.Slot()    
+    def set_col_name(self,name_place,index):
+        def set_name_helper(name):
+            if name !='...':
+                full_name ='Col_'+str(index)
+            else:
+                full_name = ''
+            name_place.setText(full_name)
+        return(set_name_helper)
 
 
 
@@ -311,6 +545,21 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
     ### Treatment Processes
 # =============================================================================
 # =============================================================================    
+    def init_TreatmentProcesses(self):
+        #Create treatment dict
+        self._Plist = ['...','LF','WTE','Composting','AD']
+        self.P_index = 1
+        
+        # Add process and create dict
+        self.Add_process.clicked.connect(self.add_process_func(self.frame_Process_treatment,self.gridLayout_59))
+        
+        #Clear
+        self.Treat_process_Clear.clicked.connect(self.Treat_process_Clear_func)
+        
+        #Create Treatment Dictionary
+        self.Create_Treat_prc_dict.clicked.connect(self.Create_Treatment_process_dict)
+        
+        
     def add_process_func(self,frame,gridLayout):
         def add_process_helper():
             Process_Label = QtWidgets.QLabel(frame)
@@ -365,11 +614,7 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
             #Number of processes
             self.P_index +=1
             
-            #Create Treatment Dictionary
-            self.Create_Treat_prc_dict.clicked.connect(self.Create_Treatment_process_dict(Process,Process_Name,Process_path,Type_input,Process_Label))
             
-            #Clear
-            self.Treat_process_Clear.clicked.connect(self.Treat_process_Clear_func(Process,Process_Name,Process_path,Type_input,Process_Label))
         return(add_process_helper)
     
     @QtCore.Slot()    
@@ -383,16 +628,22 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         return(set_name_helper)
         
     @QtCore.Slot()
-    def Create_Treatment_process_dict(self,Process,Process_Name,Process_path,Type_input,Process_Label):
-        def Create_Treatment_process_dict_helper():
-            #Success font
-            font1 = QtGui.QFont()
-            font1.setBold(True)
-            font1.setStrikeOut(False)
-            #Error font
-            font2 = QtGui.QFont()
-            font2.setStrikeOut(True)
-            font2.setBold(False)
+    def Create_Treatment_process_dict(self):
+        #Success font
+        font1 = QtGui.QFont()
+        font1.setBold(True)
+        font1.setStrikeOut(False)
+        #Error font
+        font2 = QtGui.QFont()
+        font2.setStrikeOut(True)
+        font2.setBold(False)
+        
+        for Index in np.arange(1,self.P_index):
+            Process = self.frame_Process_treatment.findChildren(QtWidgets.QComboBox,"Process_"+str(Index))[0]
+            Process_Name = self.frame_Process_treatment.findChildren(QtWidgets.QLineEdit,"Process_Name_"+str(Index))[0]
+            Process_path = self.frame_Process_treatment.findChildren(QtWidgets.QLineEdit,"P_"+str(Index)+"_Process_path")[0]
+            Type_input = self.frame_Process_treatment.findChildren(QtWidgets.QCheckBox,"P_"+str(Index)+"_Type_input")[0]
+            Process_Label = self.frame_Process_treatment.findChildren(QtWidgets.QLabel,"Process_Label_"+str(Index))[0]
             
             if Process.currentText()== 'LF':
                 self._Treatment_processes[Process_Name.text()]={}
@@ -403,7 +654,7 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.LF_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-    
+        
             elif Process.currentText() == 'WTE':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
@@ -413,7 +664,7 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.WTE_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-    
+        
             elif Process.currentText() == 'AD':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
@@ -423,7 +674,7 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.AD_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-    
+        
             elif Process.currentText() == 'Composting':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
@@ -436,154 +687,41 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
             
             else:
                 Process_Label.setFont(font2)
-                
-            
-            
-            
-        return(Create_Treatment_process_dict_helper)
-          
-    @QtCore.Slot()
-    def Treat_process_next_func(self):        
+                       
         print(self._Treatment_processes)
         self.Define_SWM_1.setCurrentWidget(self.Network)
         self.Network.setEnabled(True)
 
 
     @QtCore.Slot()
-    def Treat_process_Clear_func(self,Process,Process_Name,Process_path,Type_input,Process_Label):
-        def Treat_process_Clear_func_helper():
-            Process.setCurrentIndex(0)
-            Process_Name.setText("")
-            Process_path.setText("")
-            Type_input.setChecked(True)
-            #Normal font
-            font = QtGui.QFont()
-            font.setBold(False)
-            font.setStrikeOut(False)
-            Process_Label.setFont(font)
-            if len(self._Treatment_processes)> 0:
-                self._Treatment_processes = {}
-        return(Treat_process_Clear_func_helper)
+    def Treat_process_Clear_func(self):
+        for x in self.frame_Process_treatment.findChildren(QtWidgets.QComboBox):
+            x.deleteLater()
+        for x in self.frame_Process_treatment.findChildren(QtWidgets.QLineEdit):
+            x.deleteLater()
+        for x in self.frame_Process_treatment.findChildren(QtWidgets.QCheckBox):
+            x.deleteLater()            
+        for x in self.frame_Process_treatment.findChildren(QtWidgets.QToolButton):
+            x.deleteLater()            
+        for x in self.frame_Process_treatment.findChildren(QtWidgets.QLabel):
+            if 'Process_Label_' in str(x.objectName()):
+                x.deleteLater() 
+        self.P_index = 1
+# =============================================================================
+#             Process.setCurrentIndex(0)
+#             Process_Name.setText("")
+#             Process_path.setText("")
+#             Type_input.setChecked(True)
+#             #Normal font
+#             font = QtGui.QFont()
+#             font.setBold(False)
+#             font.setStrikeOut(False)
+#             Process_Label.setFont(font)
+# =============================================================================
+        if len(self._Treatment_processes)> 0:
+            self._Treatment_processes = {}
             
             
-        
-            
-# =============================================================================
-# =============================================================================
-    ### General Functions
-# =============================================================================
-# =============================================================================
-    @QtCore.Slot()  # select file and read the name of it. Import the name to the LineEdit.
-    def select_file(self, LineEdit,Filter):
-        self.fileDialog = QtWidgets.QFileDialog()
-        def edit_line():
-            wdr_path = str(os.getcwd()).replace('\\','/')
-            file_name = str(self.fileDialog.getOpenFileName(filter=Filter)[0]).split('/')[-1]
-            LineEdit.setText(file_name)
-        return(edit_line)
-        
-    @QtCore.Slot()
-    def save(self):
-        file = open(self.P_Name+'.pickle', 'wb')
-        pickle.dump(self.demo, file)
-
-
-# =============================================================================
-# =============================================================================
-    ### Collection
-# =============================================================================
-# =============================================================================
-    def init_collection(self):
-        self._col_list = ['...','SF_Colllection','MF_Colllection','COM_Colllection']
-        self.Col.addItems(self._col_list)
-        self.Col_2.addItems(self._col_list)
-        self.Col_3.addItems(self._col_list)
-        self.Col_4.addItems(self._col_list)
-        self.Col_5.addItems(self._col_list)
-        self.Col.activated.connect(self.create_col_scheme(self.Sch_Col,self.Col))
-        self.Col_2.activated.connect(self.create_col_scheme(self.Sch_Col_2,self.Col_2))
-        self.Col_3.activated.connect(self.create_col_scheme(self.Sch_Col_3,self.Col_3))
-        self.Col_4.activated.connect(self.create_col_scheme(self.Sch_Col_4,self.Col_4))
-        self.Col_5.activated.connect(self.create_col_scheme(self.Sch_Col_5,self.Col_5))
-        
-        collection_1_scheme_pd = pd.DataFrame(columns=['Index','RWC','SSO_DryRes','REC_WetRes','MRDO'])
-        collection_1_scheme_pd['Index']=['Contribution','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']
-        collection_1_scheme_pd.iloc[0]=['Contribution',0,0,0,0]
-        self.collection_1_scheme_model = Table_modeifed_collection_schm(collection_1_scheme_pd)
-        self.Sch_Col.setModel(self.collection_1_scheme_model)
-        self.Sch_Col.resizeColumnsToContents()
-        self.Sch_Col.setDisabled(True)
-        
-        collection_2_scheme_pd = pd.DataFrame(columns=['Index','RWC','SSO_DryRes','REC_WetRes','MRDO'])
-        collection_2_scheme_pd['Index']=['Contribution','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']
-        collection_2_scheme_pd.iloc[0]=['Contribution',0,0,0,0]
-        self.collection_2_scheme_model = Table_modeifed_collection_schm(collection_2_scheme_pd)
-        self.Sch_Col_2.setModel(self.collection_2_scheme_model)
-        self.Sch_Col_2.resizeColumnsToContents()
-        self.Sch_Col_2.setDisabled(True)
-
-        collection_3_scheme_pd = pd.DataFrame(columns=['Index','RWC','SSO_DryRes','REC_WetRes','MRDO'])
-        collection_3_scheme_pd['Index']=['Contribution','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']
-        collection_3_scheme_pd.iloc[0]=['Contribution',0,0,0,0]
-        self.collection_3_scheme_model = Table_modeifed_collection_schm(collection_3_scheme_pd)
-        self.Sch_Col_3.setModel(self.collection_3_scheme_model)
-        self.Sch_Col_3.resizeColumnsToContents()
-        self.Sch_Col_3.setDisabled(True)
-
-        collection_4_scheme_pd = pd.DataFrame(columns=['Index','RWC','SSO_DryRes','REC_WetRes','MRDO'])
-        collection_4_scheme_pd['Index']=['Contribution','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']
-        collection_4_scheme_pd.iloc[0]=['Contribution',0,0,0,0]
-        self.collection_4_scheme_model = Table_modeifed_collection_schm(collection_4_scheme_pd)
-        self.Sch_Col_4.setModel(self.collection_4_scheme_model)
-        self.Sch_Col_4.resizeColumnsToContents()
-        self.Sch_Col_4.setDisabled(True)
-
-        collection_5_scheme_pd = pd.DataFrame(columns=['Index','RWC','SSO_DryRes','REC_WetRes','MRDO'])
-        collection_5_scheme_pd['Index']=['Contribution','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']
-        collection_5_scheme_pd.iloc[0]=['Contribution',0,0,0,0]
-        self.collection_5_scheme_model = Table_modeifed_collection_schm(collection_5_scheme_pd)
-        self.Sch_Col_5.setModel(self.collection_5_scheme_model)
-        self.Sch_Col_5.resizeColumnsToContents()
-        self.Sch_Col_5.setDisabled(True)        
-        
-        self.Create_Collection_process.clicked.connect(self.Create_collection_dict)
-        
-    @QtCore.Slot()        
-    def Create_collection_dict(self):
-        for x,y,z in [(self.Col.currentText(),self.Col_name.text(),self.collection_1_scheme_model._data),
-                        (self.Col_2.currentText(),self.Col_name_2.text(),self.collection_2_scheme_model._data),
-                        (self.Col_3.currentText(),self.Col_name_3.text(),self.collection_3_scheme_model._data),
-                        (self.Col_4.currentText(),self.Col_name_4.text(),self.collection_4_scheme_model._data),
-                        (self.Col_5.currentText(),self.Col_name_5.text(),self.collection_5_scheme_model._data)]:
-            if x == 'SF_Colllection':
-                self._Collection_processes[y]={}
-                self._Collection_processes[y]['input_type']=[]
-                self._Collection_processes[y]['model']=None
-      
-        self.Define_SWM_1.setCurrentWidget(self.Treatment_process)
-        self.Treatment_process.setEnabled(True)
-        print(self._Collection_processes)
-          
-    def helper_DFtoDict(self,DF):
-        DF= DF.replace(np.nan,0)
-        Collection_scheme={}
-        for i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
-            Collection_scheme[i]={}
-            Collection_scheme[i]['Contribution']=DF[i][0]
-            Collection_scheme[i]['separate_col']={}
-            for j in [1,2,3,4,5,6]:
-                Collection_scheme[i]['separate_col'][DF['Index'][j]]=DF[i][j]
-        return(Collection_scheme)
-                            
-    @QtCore.Slot()        
-    def create_col_scheme(self,table,col):
-        def helper_3():
-            if col.currentIndex()!=0:
-                table.setEnabled(True)
-            else:
-                table.setEnabled(False)
-        return(helper_3)
-    
 
 
 # =============================================================================
@@ -591,11 +729,31 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
     ### Write project
 # =============================================================================
 # =============================================================================
+    def init_write_project(self):
+        #Import distance data
+        self.Create_Distance.clicked.connect(self.Create_Distance_Table)
+        self.Distanc_unit.addItems(['km'])
+        
+        #Create system and write project
+        self.write_project.clicked.connect(self.write_project_func)
+        
+        #Load parameters
+        self.Load_params.clicked.connect(self.load_params_func)
+        
+        #Update the parameters
+        self.update_param.clicked.connect(self.update_network_parameters)
+        
+        ### Init progess Bar
+        self.progressBar_write_project.setMinimum(0)
+        self.progressBar_write_project.setMaximum(100)
+        self.progressBar_write_project.setValue(0)
+    
     @QtCore.Slot()
     def Create_Distance_Table(self):
         self.Distance_table.setEnabled(1)
         columns =  [x for x in self._Treatment_processes.keys()] + [x for x in self._Collection_processes.keys()]
-        Distance = pd.DataFrame(columns=columns,index=columns)        
+        Distance = pd.DataFrame(columns=columns,index=columns)
+        Distance=Distance.fillna('')
         self.Dis_data = Table_modeifed_distanceTable(Distance)
         self.Distance_table.setModel(self.Dis_data)
         self.Distance_table.resizeColumnsToContents()
@@ -609,19 +767,19 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         self.distance = Distance(Data=self.Dis_data._data)
         
         if len(self._Collection_processes)>0:
-            for x,y,m,z,k in [(self.Col.currentText(),self.Col_name.text(),self.Col_def_input.isChecked(),self.Col_input_path.text(),self.collection_1_scheme_model._data),
-                            (self.Col_2.currentText(),self.Col_name_2.text(),self.Col_def_input_2.isChecked(),self.Col_input_path_2.text(),self.collection_2_scheme_model._data),
-                            (self.Col_3.currentText(),self.Col_name_3.text(),self.Col_def_input_3.isChecked(),self.Col_input_path_3.text(),self.collection_3_scheme_model._data),
-                            (self.Col_4.currentText(),self.Col_name_4.text(),self.Col_def_input_4.isChecked(),self.Col_input_path_4.text(),self.collection_4_scheme_model._data),
-                            (self.Col_5.currentText(),self.Col_name_5.text(),self.Col_def_input_5.isChecked(),self.Col_input_path_5.text(),self.collection_5_scheme_model._data)]:
+            for i in np.arange(1,self.col_index):
+                x = self.Collection.findChildren(QtWidgets.QComboBox,"Col_{}".format(i))[0].currentText()
+                y = self.Collection.findChildren(QtWidgets.QLineEdit,"Col_name_{}".format(i))[0].text()
+                m = self.Collection.findChildren(QtWidgets.QLineEdit,"Col_input_path_{}".format(i))[0].text()
+                z = self.Collection.findChildren(QtWidgets.QCheckBox,"Col_def_input_{}".format(i))[0].isChecked()
                 if x == 'SF_Colllection':
-                    if m:
-                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self.helper_DFtoDict(k),self._Treatment_processes,Distance=self.distance)
+                    if z:
+                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance)
                     else:
-                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self.helper_DFtoDict(k),self._Treatment_processes,Distance=self.distance)
+                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance)
             
             print(self._Collection_processes)
-    
+
         self.demo = project(self.P_Name,self._Treatment_processes,self.distance,self._Collection_processes)
         self.demo.init_project('SWOLF_AccountMode_LCI DATA.csv')
         self.demo.write_project()
@@ -630,14 +788,10 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         self.progressBar_write_project.setValue(100)
         
         #Notift the user that the project has created successfully
-        self.project_is_written = QtWidgets.QMessageBox()
-        self.project_is_written.setIcon(self.project_is_written.Icon.Information)
-        self.project_is_written.setWindowTitle('PySWOLF')
-        self.project_is_written.setWindowIcon(self.icon)
-        self.project_is_written.setText('Project')
-        self.project_is_written.setInformativeText('Project has created successfully')
-        Ok=self.project_is_written.addButton(self.project_is_written.Ok)
-        self.project_is_written.exec()
+        self.msg_popup('Project','Project is created successfully','Information')
+
+        #init create scenario
+        self.init_CreateScenario()
         
 
     @QtCore.Slot()
@@ -669,34 +823,43 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
     ### Create Scenario
 # =============================================================================
 # =============================================================================
+    def init_CreateScenario(self):
+        if not self.init_CreateScenario_status:
+            #Create new scenario
+            self.Start_new_sen.clicked.connect(self.Create_scenario_func)
+            self.Process.currentIndexChanged.connect(self.load_Waste_fraction)
+            self.Add_act_to_scen.clicked.connect(self.add_act_to_scenario)
+            self.Clear_act.clicked.connect(self.delect_act_included)
+            self.Create_scenario.clicked.connect(self.create_new_scenario)
+            self.init_CreateScenario_status = True
+        
     @QtCore.Slot()
     def Create_scenario_func(self):
-        self._column_name_def_scenario = ['process','name','amount']
+        self._column_name_def_scenario = ['Process','Name','Amount','Unit']
+        self.Process.clear()
         self.Process.addItems(['...']+[x for x in self.demo.Treatment_processes.keys()])
         self.act_included = pd.DataFrame(columns=self._column_name_def_scenario)
-        self.j=0
-        self.Process.currentIndexChanged.connect(self.load_Waste_fraction)
-        self.Add_act_to_scen.clicked.connect(self.add_act_to_scenario)
-        self.Clear_act.clicked.connect(self.delect_act_included)
-        self.Create_scenario.clicked.connect(self.create_new_scenario)
+        self.delect_act_included()
             
     @QtCore.Slot(int)
     def load_Waste_fraction(self,i):
         if i ==0:
-            return(None)
+            self.process_waste=pd.DataFrame(columns=self._column_name_def_scenario)
         else:
             process=[x for x in self.demo.Treatment_processes.keys()][i-1]
-        self.process_waste=pd.DataFrame(columns=self._column_name_def_scenario)
-        self.process_waste['name'] = MSW_Fractions
-        self.process_waste['process'] = process
+            self.process_waste=pd.DataFrame(columns=self._column_name_def_scenario)
+            self.process_waste['Name'] = MSW_Fractions
+            self.process_waste['Process'] = process
+            self.process_waste['Amount'] = 0
+            self.process_waste['Unit'] = ''
         self.process_WF = Table_from_pandas_editable(self.process_waste)
         self.act_in_process_table.setModel(self.process_WF)
         self.act_in_process_table.resizeColumnsToContents()
      
     @QtCore.Slot()
     def add_act_to_scenario(self):
-        for i in range(len(self.process_WF._data['name'])):
-            if self.process_WF._data['amount'][i] != 0 and not np.isnan(self.process_WF._data['amount'][i]):
+        for i in range(len(self.process_WF._data['Name'])):
+            if self.process_WF._data['Amount'][i] != 0 and not np.isnan(self.process_WF._data['Amount'][i]):
                 self.act_included.loc[self.j]=self.process_WF._data.iloc[i]
                 self.j+=1
         self.Included_act_table.setEnabled(1)
@@ -712,18 +875,23 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Included_act_table.setModel(self.Inc_act_table)
         self.Included_act_table.resizeColumnsToContents()
         self.Included_act_table.setDisabled(1)
+        self.Name_new_scenario.setText('')
 
     @QtCore.Slot()
     def create_new_scenario(self):
         scenario = {}
-        for i in range(len(self.Inc_act_table._data['process'])):
-            if self.Inc_act_table._data['process'][i] not in scenario.keys():
-                scenario[self.Inc_act_table._data['process'][i]]={}
-                scenario[self.Inc_act_table._data['process'][i]][self.Inc_act_table._data['name'][i]]= float(self.Inc_act_table._data['amount'][i])
+        for i in range(len(self.Inc_act_table._data['Process'])):
+            if self.Inc_act_table._data['Process'][i] not in scenario.keys():
+                scenario[self.Inc_act_table._data['Process'][i]]={}
+                scenario[self.Inc_act_table._data['Process'][i]][self.Inc_act_table._data['Name'][i]]= float(self.Inc_act_table._data['Amount'][i])
             else:
-                scenario[self.Inc_act_table._data['process'][i]][self.Inc_act_table._data['name'][i]]= float(self.Inc_act_table._data['amount'][i])
+                scenario[self.Inc_act_table._data['Process'][i]][self.Inc_act_table._data['Name'][i]]= float(self.Inc_act_table._data['Amount'][i])
         print('\n \n \n new scenario \n',scenario,'\n\n\n')
         self.demo.process_start_scenario(scenario,self.Name_new_scenario.text())
+        
+        #Notift the user that the scenario has created successfully
+        self.msg_popup('Create Scenario','Scenario {} is created successfully'.format(self.Name_new_scenario.text()),'Information')
+
 
 # =============================================================================
 # =============================================================================
@@ -731,36 +899,44 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
 # =============================================================================
     def LCA_tab_init(self):
-        projects.set_current(self.demo.project_name)
-        self.DB_name_list = [x for x in databases]
-        self.DB_name_list.sort()
-        self.LCA_DataBase.setMaxVisibleItems(1000)
-        self.LCA_DataBase.addItems(['...']+self.DB_name_list)
-        self.LCA_DataBase.currentIndexChanged.connect(self.load_db)
-        list_methods = [str(x) for x in methods]
-        list_methods.sort()
-        self.LCA_method.addItems(['...']+list_methods)
-        self.LCA_Filter_impacts.clicked.connect(self.LCA_Filter)
-        self.LCA_Load_method.clicked.connect(self.LCA_Load_method_func)
-        self.LCA_bottom.clicked.connect(self.LCA_bottom_func)
+        if not self.LCA_tab_init_status:
+            self.LCA_tab_init_status = True
+            projects.set_current(self.demo.project_name)
+            self.DB_name_list = [x for x in databases]
+            self.DB_name_list.sort()
+            self.LCA_DataBase.setMaxVisibleItems(1000)
+            self.LCA_DataBase.clear()
+            self.LCA_DataBase.addItems(['...']+self.DB_name_list)
+            self.LCA_DataBase.currentIndexChanged.connect(self.load_db)
+            list_methods = [str(x) for x in methods]
+            list_methods.sort()
+            self.LCA_method.clear()
+            self.LCA_method.addItems(['...']+list_methods)
+            self.LCA_Filter_impacts.clicked.connect(self.LCA_Filter)
+            self.LCA_Load_method.clicked.connect(self.LCA_Load_method_func)
+            self.LCA_bottom.clicked.connect(self.LCA_bottom_func)
+            self.LCA_Top_activity.setDisabled(True)
+            self.LCA_Top_activity.clicked.connect(self.LCA_top_act_func)
+            self.LCA_Top_emssions.setDisabled(True)
+            self.LCA_Top_emssions.clicked.connect(self.LCA_top_emission_func)
         
     @QtCore.Slot(int)
     def load_db(self,i):
         if i ==0:
-            return(None)
+            self.LCA_activity.clear()
         else:
             db=Database(self.DB_name_list[i-1])
-        #acts = [x.as_dict()['name'] for x in db]
-        acts = [str(x.key[1]) for x in db]
-        acts.sort()
-        self.LCA_activity.clear()
-        self.LCA_activity.addItems(acts)
+            #acts = [x.as_dict()['name'] for x in db]
+            acts = [str(x.key[1]) for x in db]
+            acts.sort()
+            self.LCA_activity.clear()
+            self.LCA_activity.addItems(acts)
         
     @QtCore.Slot()
     def LCA_Filter(self):
-        self.LCA_method.clear()
         list_methods= [str(x) for x in methods if self.Filter_impact_keyword.text() in str(x)]
         list_methods.sort()
+        self.LCA_method.clear()
         self.LCA_method.addItems(['...']+list_methods)
     
     @QtCore.Slot()
@@ -782,10 +958,10 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_lca.lcia()
         self.LCA_score.setText(str(self.LCA_lca.score))
         self.LCA_Impact_unit_2.setText(self.lca_method.metadata['unit'])
-        self.LCA_Top_activity.clicked.connect(self.LCA_top_act_func)
+        self.LCA_Top_emssions.setEnabled(True)
+        self.LCA_Top_activity.setEnabled(True)
         if self.LCA_Top_activity.isChecked():
             self.LCA_top_act_func()
-        self.LCA_Top_emssions.clicked.connect(self.LCA_top_emission_func)
         if self.LCA_Top_emssions.isChecked():
             self.LCA_top_emission_func()
         
@@ -830,63 +1006,6 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_top_contribution.setModel(self.top_emission_table)
         self.LCA_top_contribution.resizeColumnsToContents()
     
-
-# =============================================================================
-# =============================================================================
-    ### Load Project
-# =============================================================================
-# =============================================================================
-    def load_project_tab(self):
-        self.Br_Project_btm.clicked.connect(self.select_file(self.Project_address,"Pickle (*.pickle)"))
-        self.Load_Project_btm.clicked.connect(self.load_project_info)
-    
-    @QtCore.Slot()
-    def load_project_info(self):
-        self.demo = pickle.load(open(self.Project_address.text(),"rb"))
-        self.load_P_name.setText(self.demo.project_name) 
-        self.P_Name = self.demo.project_name
-        projects.set_current(self.demo.project_name)
-        
-        data = pd.DataFrame(columns=['Name','Type of input','model']) 
-        Name = []
-        Type_of_Input = []
-        Model=[]
-        for i in self.demo.Treatment_processes.keys():
-            Name.append(i)
-            Type_of_Input.append(self.demo.Treatment_processes[i]['input_type'])
-            Model.append(self.demo.Treatment_processes[i]['model'])
-        data['Name'] = Name
-        data['Type of input'] = Type_of_Input
-        data['model'] = Model
-        
-        data_table = Table_from_pandas(data)
-        self.load_treatment_info.setModel(data_table)
-        self.load_treatment_info.resizeColumnsToContents()
-
-        param_data=pd.DataFrame(self.demo.parameters_list)
-        param_data['Unit'] = 'fraction'
-        self.load_param_data = Table_from_pandas_editable(param_data)
-        self.load_Param_table.setModel(self.load_param_data)
-        self.load_Param_table.resizeColumnsToContents()
-        self.load_update_param.clicked.connect(self.load_update_network_parameters)
-        
-        self.Create_Scenario.setEnabled(True)
-        self.LCA_tab.setEnabled(True)
-        self.LCA_tab_init()
-        self.MC_tab_init()
-        
-        
-                
-    @QtCore.Slot()
-    def load_update_network_parameters(self):
-        new_param = deepcopy(self.demo.parameters_list)
-        i=0
-        for x in new_param:
-            x['amount'] = self.load_param_data._data['amount'][i]
-            i+=1
-        print("\n\n New parameters are : \n",new_param,"\n\n")
-        self.demo.update_parameters(new_param)
-        
             
 # =============================================================================
 # =============================================================================
@@ -895,53 +1014,58 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================       
     @QtCore.Slot()
     def MC_tab_init(self):
-        self.MC_tab.setEnabled(True)
-        projects.set_current(self.demo.project_name)
-        self.DB_name_list = [x for x in databases]
-        self.DB_name_list.sort()
-        self.MC_FU_DB.addItems(['...']+self.DB_name_list)
-        self.MC_FU_DB.currentIndexChanged.connect(self.MC_load_db_func)
+        if not self.MC_tab_init_status:
+            self.MC_tab_init_status = True
+            self.MC_tab.setEnabled(True)
+            projects.set_current(self.demo.project_name)
+            self.DB_name_list = [x for x in databases]
+            self.DB_name_list.sort()
+            self.MC_FU_DB.clear()
+            self.MC_FU_DB.addItems(['...']+self.DB_name_list)
+            self.MC_FU_DB.currentIndexChanged.connect(self.MC_load_db_func)
+            
+            list_methods = [str(x) for x in methods]
+            list_methods.sort()
+            self.MC_method.setMaxVisibleItems(1000)
+            self.MC_method.clear()
+            self.MC_method.addItems(['...']+list_methods)
+            
+            self.MC_Filter_method.clicked.connect(self.MC_Filter_func)
+            self.MC_add_method.clicked.connect(self.MC_add_method_func)
+            
+            self.method_DF = pd.DataFrame(columns=['LCIA method','Unit'])
+            self.method_DF_index=0
+            
+            #SpinBox for number of cpu threads
+            self.MC_N_Thread.setMaximum(mp.cpu_count())
+            self.MC_N_Thread.setMinimum(1)
+            self.MC_N_Thread.stepBy(mp.cpu_count()-2)
+            
+            #SpinBox for number of runs
+            self.MC_N_runs.setMaximum(100000)
+            self.MC_N_runs.setMinimum(0)
+            self.MC_N_runs.stepBy(100)
+                    
+            self.MC_run.clicked.connect(self.MC_run_func)
+              
+            #List of models include collection, treatment and Common Data
+            keys = ['...']+[x for x in self.demo.Treatment_processes.keys()]
+            self.MC_Model.clear()
+            self.MC_Model.addItems(keys)
+            self.MC_Model_load.clicked.connect(self.MC_load_uncertain_func)
+            self.MC_uncertain_filter.clicked.connect(self.MC_load_uncertain_func)
         
-        list_methods = [str(x) for x in methods]
-        list_methods.sort()
-        self.MC_method.setMaxVisibleItems(1000)
-        self.MC_method.addItems(['...']+list_methods)
+            CheckBoxes = ['CommonData','Parameters']+[x for x in self.demo.Treatment_processes.keys()]
+            self.include_model_dict = dict(zip(CheckBoxes,[False for i in range(len(CheckBoxes))]))
+            for x in self.MC_included_models.findChildren(QtWidgets.QCheckBox):
+                x.deleteLater()
+            for x in self.include_model_dict:
+                self.create_check_box(x,self.MC_included_models,self.verticalLayout_3)
+            
+            
+            self.MC_show.clicked.connect(self.show_res_func)
+            self.MC_save.clicked.connect(self.MC_save_file())
         
-        self.MC_Filter_method.clicked.connect(self.MC_Filter_func)
-        self.MC_add_method.clicked.connect(self.MC_add_method_func)
-        
-        self.method_DF = pd.DataFrame(columns=['LCIA method','Unit'])
-        self.method_DF_index=0
-        
-        #SpinBox for number of cpu threads
-        self.MC_N_Thread.setMaximum(mp.cpu_count())
-        self.MC_N_Thread.setMinimum(1)
-        self.MC_N_Thread.stepBy(mp.cpu_count()-2)
-        
-        #SpinBox for number of runs
-        self.MC_N_runs.setMaximum(100000)
-        self.MC_N_runs.setMinimum(0)
-        self.MC_N_runs.stepBy(100)
-        
-
-
-
-        self.MC_run.clicked.connect(self.MC_run_func)
-        
-        
-        #List of models include collection, treatment and Common Data
-        keys = ['...']+[x for x in self.demo.Treatment_processes.keys()]+[x for x in self.demo.Collection_processes.keys()]
-        self.MC_Model.addItems(keys)
-        self.MC_Model_load.clicked.connect(self.MC_load_uncertain_func)
-        self.MC_uncertain_filter.clicked.connect(self.MC_load_uncertain_func)
-    
-    
-        CheckBoxes = ['CommonData','Parameters']+[x for x in self.demo.Treatment_processes.keys()]+[x for x in self.demo.Collection_processes.keys()]
-        self.include_model_dict = dict(zip(CheckBoxes,[False for i in range(len(CheckBoxes))]))
-        for x in self.include_model_dict:
-            self.create_check_box(x,self.MC_included_models,self.verticalLayout_3)
-        
-
     def create_check_box (self,Name,Frame,Layout):
         checkBox = QtWidgets.QCheckBox(Frame,Layout) 
         checkBox.setObjectName(Name)
@@ -959,19 +1083,19 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot(int)
     def MC_load_db_func(self,i):
         if i ==0:
-            return(None)
+            self.MC_FU_act.clear()
         else:
             db=Database(self.DB_name_list[i-1])
-        acts = [str(x.key[1]) for x in db]
-        acts.sort()
-        self.MC_FU_act.clear()
-        self.MC_FU_act.addItems(acts)
+            acts = [str(x.key[1]) for x in db]
+            acts.sort()
+            self.MC_FU_act.clear()
+            self.MC_FU_act.addItems(acts)
         
     @QtCore.Slot()
     def MC_Filter_func(self):
-        self.MC_method.clear()
         list_methods= [str(x) for x in methods if self.MC_Filter_keyword.text() in str(x)]
         list_methods.sort()
+        self.MC_method.clear()
         self.MC_method.addItems(['...']+list_methods)
     
     @QtCore.Slot()
@@ -987,9 +1111,6 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
     def MC_load_uncertain_func(self):
         if self.MC_Model.currentText() in self.demo.Treatment_processes.keys():
             self.uncertain_data = deepcopy(self.demo.Treatment_processes[self.MC_Model.currentText()]['model'].InputData.Data)
-        
-        elif self.MC_Model.currentText() in self.demo.Collection_processes.keys():
-            self.uncertain_data = deepcopy(self.demo.Collection_processes[self.MC_Model.currentText()]['model'].InputData.Data)
         
         
         if self.MC_uncertain_filter.isChecked():
@@ -1024,23 +1145,23 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         
         print("""
               
-#########    Setup Monte Carlo Simulatio    ############
-  
-    Functional Unit = {FU}
-  
-    Methods = {method}
-  
-    Number of threads = {Nthread}
-  
-    Number of runs = {nruns}
-  
-### Moldes included
-    
-  Names: {process_model_names}
-  
-  Models: {process_models}
-  
-#################################             
+                #########    Setup Monte Carlo Simulatio    ############
+                  
+                    Functional Unit = {FU}
+                  
+                    Methods = {method}
+                  
+                    Number of threads = {Nthread}
+                  
+                    Number of runs = {nruns}
+                  
+                ### Moldes included
+                    
+                  Names: {process_model_names}
+                  
+                  Models: {process_models}
+                  
+                #################################             
               """.format(FU=FU,method=method,Nthread=int(self.MC_N_Thread.text()),nruns=int(self.MC_N_runs.text()),
                           process_model_names=process_model_names,process_models=process_models))
         
@@ -1048,17 +1169,46 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         Monte_carlo = ParallelData(FU, method, project,process_models=process_models,process_model_names=process_model_names,seed = 1)
 
         Monte_carlo.run(int(self.MC_N_Thread.text()),int(self.MC_N_runs.text()))
-        self.resultssss = Monte_carlo.result_to_DF()
-        print(self.resultssss)
+        self.MC_results = Monte_carlo.result_to_DF()
+        print(self.MC_results)
+    
+    @QtCore.Slot()
+    def show_res_func(self):
+        Dialog = QtWidgets.QDialog()
+        Dialog.setObjectName("showRes_Dialog")
+        gridLayout = QtWidgets.QGridLayout(Dialog)
+        gridLayout.setObjectName("showRes_gridLayout")
+        frame = QtWidgets.QFrame(Dialog)
+        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        frame.setObjectName("showRes_frame")
+        gridLayout_2 = QtWidgets.QGridLayout(frame)
         
-
-
-
-
-
-
-
-
+        gridLayout_2.setObjectName("showRes_gridLayout_2")
+        MC_res_table = QtWidgets.QTableView(frame)
+        MC_res_table.setObjectName("Show_res_tableView")
+        gridLayout_2.addWidget(MC_res_table, 0, 0, 1, 1)
+        
+        self.MC_res_table_model = Table_from_pandas(self.MC_results)
+        MC_res_table.setModel(self.MC_res_table_model)
+        MC_res_table.resizeColumnsToContents()
+    
+        gridLayout.addWidget(frame, 0, 0, 1, 1)
+        Dialog.show()
+        Dialog.exec_()
+        
+        
+    @QtCore.Slot()  # select file and read the name of it. Import the name to the LineEdit.
+    def MC_save_file(self):
+        fileDialog = QtWidgets.QFileDialog()
+        def helper():
+            #wdr_path = str(os.getcwd()).replace('\\','/')
+            file_name = str(fileDialog.getSaveFileName(filter="CSV (*.csv)")[0])
+            self.MC_results.to_csv(file_name)
+            
+        return(helper)        
+        
+    
 # =============================================================================
 #     Index(['Category', 'Dictonary_Name', 'Parameter', 'Name', 'amount', 'unit',
 #        'uncertainty_type', 'loc', 'scale', 'shape', 'minimum', 'maximum',
@@ -1068,71 +1218,44 @@ class MyQtApp(PySWOLF_1.Ui_MainWindow, QtWidgets.QMainWindow):
         
 
         
-   
-
-           
-# =============================================================================
-#         self.db_activities=pd.DataFrame(columns=['name','unit','amount'])
-#         name=[]
-#         unit=[]
-#         for x in db:
-#             xdict = x.as_dict()
-#             name.append(xdict['name'])
-#             unit.append(xdict['unit'])
-#         self.db_activities['name']=name
-#         self.db_activities['unit']=unit
-#         self.db_act = Table_from_pandas_editable(self.db_activities)
-#         self.act_in_db_table.setModel(self.db_act)
-#         self.act_in_db_table.resizeColumnsToContents()        
-# =============================================================================
-        
             
-            
-            
-    
-       # self.demo.project_name
-        #self.demo.parameters_list
-        
-        qt_app.demo.Distance.Distance
-        qt_app.demo.processes
-        
-        
-        
-        
-         
-
 # =============================================================================
-#     @QtCore.Slot()
-#     def select_process(self,name):
-#         self.__Treatment_processes
-#         def sel_proces(index):
-#             print(index)
-#             print(process)
-#             print(self.moj)
-#             
-#             if index == 0:
-#                 process = False
-#             else:
-#                 #process = self._Plist[index]
-#                 process = 'dfhdh'
-#             print(process)
-#         return(sel_proces)
 # =============================================================================
-    
-    
-
-    
+    ### General Functions
+# =============================================================================
+# =============================================================================
+    @QtCore.Slot()  # select file and read the name of it. Import the name to the LineEdit.
+    def select_file(self, LineEdit,Filter):
+        fileDialog = QtWidgets.QFileDialog()
+        def edit_line():
+            file_name = str(fileDialog.getOpenFileName(filter=Filter)[0]).split('/')[-1]
+            LineEdit.setText(file_name)
+        return(edit_line)
+        
     @QtCore.Slot()
-    def mojtaba(self,x):
-        print(x)
-    
-    #@QtCore.Slot()
-    #def mojtaba1(self):
+    def save(self):
+        file = open(self.P_Name+'.pickle', 'wb')
+        pickle.dump(self.demo, file)
+
+    def msg_popup(self,Subject,Information,Type):
+        msg = QtWidgets.QMessageBox()
+        if Type =='Warning':
+            msg.setIcon(msg.Icon.Warning)
+        elif Type == 'Information':
+            msg.setIcon(msg.Icon.Information)
+        msg.setWindowTitle('PySWOLF')
+        msg.setWindowIcon(self.icon)
+        msg.setText(Subject)
+        msg.setInformativeText(Information)
+        Ok=msg.addButton(msg.Ok)
+        msg.exec()
 
 
-        
-
-
+# =============================================================================
+# =============================================================================
+    ### Run
+# =============================================================================
+# =============================================================================        
 if __name__ == '__main__':
     app = QtWidgets.QApplication()
     qt_app  = MyQtApp()

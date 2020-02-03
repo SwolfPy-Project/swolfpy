@@ -5,6 +5,7 @@ Created on Tue Jan 14 21:40:11 2020
 @author: msardar2
 """
 from PySide2 import QtWidgets, QtGui, QtCore
+import numpy as np
 
 class Table_from_pandas(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
@@ -25,7 +26,7 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
 
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-            return self._data.columns[col]
+            return str(self._data.columns[col])
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[col]
 

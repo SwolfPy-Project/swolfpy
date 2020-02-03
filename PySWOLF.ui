@@ -45,7 +45,7 @@
           </font>
          </property>
          <property name="currentIndex">
-          <number>6</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="Start">
           <attribute name="title">
@@ -143,6 +143,10 @@ p, li { white-space: pre-wrap; }
                 <property name="text">
                  <string>Load Project</string>
                 </property>
+                <property name="icon">
+                 <iconset resource="PyWOLF_Resource.qrc">
+                  <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
+                </property>
                </widget>
               </item>
              </layout>
@@ -228,15 +232,15 @@ p, li { white-space: pre-wrap; }
                  <bool>true</bool>
                 </property>
                 <property name="currentIndex">
-                 <number>10</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="Landfill">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>444</width>
-                   <height>400</height>
+                   <width>818</width>
+                   <height>431</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -2809,8 +2813,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>818</width>
-                   <height>431</height>
+                   <width>333</width>
+                   <height>90</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -2909,14 +2913,14 @@ p, li { white-space: pre-wrap; }
               <item row="0" column="0">
                <widget class="QToolBox" name="Define_SWM_1">
                 <property name="currentIndex">
-                 <number>2</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="Collection_process">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>855</width>
+                   <width>818</width>
                    <height>676</height>
                   </rect>
                  </property>
@@ -2924,799 +2928,38 @@ p, li { white-space: pre-wrap; }
                   <string>Collection Processes</string>
                  </attribute>
                  <layout class="QGridLayout" name="gridLayout_9">
-                  <item row="0" column="0" colspan="2">
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="Add_col">
+                    <property name="text">
+                     <string>Add Collection</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="PyWOLF_Resource.qrc">
+                      <normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <spacer name="horizontalSpacer_2">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>528</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item row="1" column="0" colspan="3">
                    <widget class="QTabWidget" name="Collection">
                     <property name="currentIndex">
-                     <number>0</number>
-                    </property>
-                    <widget class="QWidget" name="Col1_tab">
-                     <attribute name="title">
-                      <string>Collection process 1</string>
-                     </attribute>
-                     <layout class="QGridLayout" name="gridLayout_12">
-                      <item row="0" column="0">
-                       <layout class="QGridLayout" name="gridLayout_11">
-                        <item row="1" column="0">
-                         <widget class="QFrame" name="frame_4">
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>0</height>
-                           </size>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_8">
-                           <item row="1" column="2">
-                            <spacer name="horizontalSpacer">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="2" column="1">
-                            <spacer name="verticalSpacer_2">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QTableView" name="Sch_Col"/>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                        <item row="0" column="0">
-                         <widget class="QFrame" name="frame_5">
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_7">
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="label_9">
-                             <property name="text">
-                              <string>Collection</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLabel" name="label_11">
-                             <property name="text">
-                              <string>Type</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="label_8">
-                             <property name="text">
-                              <string>Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="3">
-                            <widget class="QLabel" name="label_10">
-                             <property name="text">
-                              <string>Input Type</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="5">
-                            <widget class="QLabel" name="label_7">
-                             <property name="text">
-                              <string>Address to input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="Col_Label">
-                             <property name="text">
-                              <string>Collection 1:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QComboBox" name="Col"/>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="QLineEdit" name="Col_name">
-                             <property name="placeholderText">
-                              <string>Collection (Sector) Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="3">
-                            <widget class="QCheckBox" name="Col_def_input">
-                             <property name="text">
-                              <string>Default</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="4">
-                            <widget class="QToolButton" name="Col_Br">
-                             <property name="text">
-                              <string>Browse</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="5">
-                            <widget class="QLineEdit" name="Col_input_path">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>300</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="placeholderText">
-                              <string>Path to userdefine input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Col2_tab">
-                     <attribute name="title">
-                      <string>Collection process 2</string>
-                     </attribute>
-                     <layout class="QGridLayout" name="gridLayout_20">
-                      <item row="0" column="0">
-                       <layout class="QGridLayout" name="gridLayout_13">
-                        <item row="1" column="0">
-                         <widget class="QFrame" name="frame_6">
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>0</height>
-                           </size>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_14">
-                           <item row="1" column="2">
-                            <spacer name="horizontalSpacer_2">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="2" column="1">
-                            <spacer name="verticalSpacer_3">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QTableView" name="Sch_Col_2"/>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                        <item row="0" column="0">
-                         <widget class="QFrame" name="frame_7">
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_15">
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="label_12">
-                             <property name="text">
-                              <string>Collection</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLabel" name="label_13">
-                             <property name="text">
-                              <string>Type</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="label_14">
-                             <property name="text">
-                              <string>Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="3">
-                            <widget class="QLabel" name="label_15">
-                             <property name="text">
-                              <string>Input Type</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="5">
-                            <widget class="QLabel" name="label_16">
-                             <property name="text">
-                              <string>Address to input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="Col_Label_2">
-                             <property name="text">
-                              <string>Collection 1:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QComboBox" name="Col_2"/>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="QLineEdit" name="Col_name_2">
-                             <property name="placeholderText">
-                              <string>Collection (Sector) Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="3">
-                            <widget class="QCheckBox" name="Col_def_input_2">
-                             <property name="text">
-                              <string>Default</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="4">
-                            <widget class="QToolButton" name="Col_Br_2">
-                             <property name="text">
-                              <string>Browse</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="5">
-                            <widget class="QLineEdit" name="Col_input_path_2">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>300</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="placeholderText">
-                              <string>Path to userdefine input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Col3_tab">
-                     <attribute name="title">
-                      <string>Collection process 3</string>
-                     </attribute>
-                     <layout class="QGridLayout" name="gridLayout_19">
-                      <item row="0" column="0">
-                       <layout class="QGridLayout" name="gridLayout_16">
-                        <item row="1" column="0">
-                         <widget class="QFrame" name="frame_8">
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>0</height>
-                           </size>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_17">
-                           <item row="1" column="2">
-                            <spacer name="horizontalSpacer_3">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="2" column="1">
-                            <spacer name="verticalSpacer_4">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QTableView" name="Sch_Col_3"/>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                        <item row="0" column="0">
-                         <widget class="QFrame" name="frame_9">
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_18">
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="label_17">
-                             <property name="text">
-                              <string>Collection</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLabel" name="label_18">
-                             <property name="text">
-                              <string>Type</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="label_19">
-                             <property name="text">
-                              <string>Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="3">
-                            <widget class="QLabel" name="label_20">
-                             <property name="text">
-                              <string>Input Type</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="5">
-                            <widget class="QLabel" name="label_21">
-                             <property name="text">
-                              <string>Address to input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="Col_Label_3">
-                             <property name="text">
-                              <string>Collection 1:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QComboBox" name="Col_3"/>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="QLineEdit" name="Col_name_3">
-                             <property name="placeholderText">
-                              <string>Collection (Sector) Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="3">
-                            <widget class="QCheckBox" name="Col_def_input_3">
-                             <property name="text">
-                              <string>Default</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="4">
-                            <widget class="QToolButton" name="Col_Br_3">
-                             <property name="text">
-                              <string>Browse</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="5">
-                            <widget class="QLineEdit" name="Col_input_path_3">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>300</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="placeholderText">
-                              <string>Path to userdefine input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Col4_tab">
-                     <attribute name="title">
-                      <string>Collection process 4</string>
-                     </attribute>
-                     <layout class="QGridLayout" name="gridLayout_85">
-                      <item row="0" column="0">
-                       <layout class="QGridLayout" name="gridLayout_82">
-                        <item row="1" column="0">
-                         <widget class="QFrame" name="frame_53">
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>0</height>
-                           </size>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_10">
-                           <item row="1" column="2">
-                            <spacer name="horizontalSpacer_27">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="2" column="1">
-                            <spacer name="verticalSpacer_29">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QTableView" name="Sch_Col_4"/>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                        <item row="0" column="0">
-                         <widget class="QFrame" name="frame_54">
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_84">
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="label_48">
-                             <property name="text">
-                              <string>Collection</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLabel" name="label_49">
-                             <property name="text">
-                              <string>Type</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="label_51">
-                             <property name="text">
-                              <string>Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="3">
-                            <widget class="QLabel" name="label_52">
-                             <property name="text">
-                              <string>Input Type</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="5">
-                            <widget class="QLabel" name="label_56">
-                             <property name="text">
-                              <string>Address to input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="Col_Label_4">
-                             <property name="text">
-                              <string>Collection 1:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QComboBox" name="Col_4"/>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="QLineEdit" name="Col_name_4">
-                             <property name="placeholderText">
-                              <string>Collection (Sector) Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="3">
-                            <widget class="QCheckBox" name="Col_def_input_4">
-                             <property name="text">
-                              <string>Default</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="4">
-                            <widget class="QToolButton" name="Col_Br_4">
-                             <property name="text">
-                              <string>Browse</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="5">
-                            <widget class="QLineEdit" name="Col_input_path_4">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>300</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="placeholderText">
-                              <string>Path to userdefine input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Col5_tab">
-                     <attribute name="title">
-                      <string>Collection process 5</string>
-                     </attribute>
-                     <layout class="QGridLayout" name="gridLayout_89">
-                      <item row="0" column="0">
-                       <layout class="QGridLayout" name="gridLayout_86">
-                        <item row="1" column="0">
-                         <widget class="QFrame" name="frame_55">
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>0</height>
-                           </size>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_87">
-                           <item row="1" column="2">
-                            <spacer name="horizontalSpacer_28">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="2" column="1">
-                            <spacer name="verticalSpacer_30">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QTableView" name="Sch_Col_5"/>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                        <item row="0" column="0">
-                         <widget class="QFrame" name="frame_56">
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_88">
-                           <item row="0" column="0">
-                            <widget class="QLabel" name="label_57">
-                             <property name="text">
-                              <string>Collection</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QLabel" name="label_58">
-                             <property name="text">
-                              <string>Type</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QLabel" name="label_59">
-                             <property name="text">
-                              <string>Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="3">
-                            <widget class="QLabel" name="label_60">
-                             <property name="text">
-                              <string>Input Type</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="5">
-                            <widget class="QLabel" name="label_61">
-                             <property name="text">
-                              <string>Address to input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="Col_Label_5">
-                             <property name="text">
-                              <string>Collection 1:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QComboBox" name="Col_5"/>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="QLineEdit" name="Col_name_5">
-                             <property name="placeholderText">
-                              <string>Collection (Sector) Name</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="3">
-                            <widget class="QCheckBox" name="Col_def_input_5">
-                             <property name="text">
-                              <string>Default</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="4">
-                            <widget class="QToolButton" name="Col_Br_5">
-                             <property name="text">
-                              <string>Browse</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="5">
-                            <widget class="QLineEdit" name="Col_input_path_5">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>300</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="placeholderText">
-                              <string>Path to userdefine input file</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                   </widget>
-                  </item>
-                  <item row="0" column="2" rowspan="4">
-                   <widget class="QFrame" name="frame_52">
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
+                     <number>-1</number>
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="0">
+                  <item row="2" column="0" colspan="2">
                    <spacer name="horizontalSpacer_26">
                     <property name="orientation">
                      <enum>Qt::Horizontal</enum>
@@ -3729,30 +2972,14 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </spacer>
                   </item>
-                  <item row="1" column="1">
+                  <item row="2" column="2">
                    <widget class="QPushButton" name="Create_Collection_process">
                     <property name="text">
                      <string>Create Collection processes</string>
                     </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0" colspan="2">
-                   <widget class="QFrame" name="frame_51">
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="0" colspan="2">
-                   <widget class="QFrame" name="frame_50">
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
+                    <property name="icon">
+                     <iconset resource="PyWOLF_Resource.qrc">
+                      <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
                     </property>
                    </widget>
                   </item>
@@ -3763,8 +2990,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>855</width>
-                   <height>676</height>
+                   <width>388</width>
+                   <height>137</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -3828,6 +3055,10 @@ p, li { white-space: pre-wrap; }
                        <property name="text">
                         <string>Clear</string>
                        </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Remove.png</normaloff>:/ICONS/PySWOLF_ICONS/Remove.png</iconset>
+                       </property>
                       </widget>
                      </item>
                      <item>
@@ -3841,16 +3072,9 @@ p, li { white-space: pre-wrap; }
                        <property name="text">
                         <string>Create Treatment Processes</string>
                        </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="Treat_process_next">
-                       <property name="text">
-                        <string>Next</string>
-                       </property>
                        <property name="icon">
                         <iconset resource="PyWOLF_Resource.qrc">
-                         <normaloff>:/ICONS/PySWOLF_ICONS/Next.png</normaloff>:/ICONS/PySWOLF_ICONS/Next.png</iconset>
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
                        </property>
                       </widget>
                      </item>
@@ -3934,8 +3158,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>818</width>
-                   <height>676</height>
+                   <width>311</width>
+                   <height>418</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -3951,7 +3175,7 @@ p, li { white-space: pre-wrap; }
                      <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_62">
-                     <item row="1" column="0">
+                     <item row="1" column="0" colspan="3">
                       <widget class="QPushButton" name="Create_Distance">
                        <property name="maximumSize">
                         <size>
@@ -3962,27 +3186,52 @@ p, li { white-space: pre-wrap; }
                        <property name="text">
                         <string>Create Distance Table</string>
                        </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
+                       </property>
                       </widget>
                      </item>
-                     <item row="3" column="2">
-                      <spacer name="horizontalSpacer_16">
+                     <item row="6" column="0" colspan="2">
+                      <widget class="QPushButton" name="Load_params">
+                       <property name="text">
+                        <string>Load Parameters</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="8" column="0" colspan="2">
+                      <widget class="QPushButton" name="update_param">
+                       <property name="maximumSize">
+                        <size>
+                         <width>200</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Update Parameters</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="3">
+                      <spacer name="horizontalSpacer_15">
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
                        </property>
                        <property name="sizeHint" stdset="0">
                         <size>
-                         <width>341</width>
+                         <width>40</width>
                          <height>20</height>
                         </size>
                        </property>
                       </spacer>
-                     </item>
-                     <item row="4" column="0">
-                      <widget class="QPushButton" name="Load_params">
-                       <property name="text">
-                        <string>Load Parameters</string>
-                       </property>
-                      </widget>
                      </item>
                      <item row="0" column="0" colspan="3">
                       <widget class="QFrame" name="frame_42">
@@ -4048,33 +3297,7 @@ p, li { white-space: pre-wrap; }
                        </layout>
                       </widget>
                      </item>
-                     <item row="6" column="0">
-                      <widget class="QPushButton" name="update_param">
-                       <property name="maximumSize">
-                        <size>
-                         <width>200</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Update Parameters</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QPushButton" name="write_project">
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Create System</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="0" colspan="3">
+                     <item row="7" column="0" colspan="3">
                       <widget class="QFrame" name="frame_38">
                        <property name="frameShape">
                         <enum>QFrame::StyledPanel</enum>
@@ -4096,7 +3319,50 @@ p, li { white-space: pre-wrap; }
                        </layout>
                       </widget>
                      </item>
-                     <item row="2" column="0" colspan="3">
+                     <item row="5" column="3">
+                      <spacer name="horizontalSpacer_16">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>341</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_70">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Distance Unit:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="0" colspan="2">
+                      <widget class="QPushButton" name="write_project">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Create System</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="0" colspan="3">
                       <widget class="QFrame" name="frame_37">
                        <property name="frameShape">
                         <enum>QFrame::StyledPanel</enum>
@@ -4124,25 +3390,15 @@ p, li { white-space: pre-wrap; }
                        </layout>
                       </widget>
                      </item>
-                     <item row="4" column="2">
-                      <spacer name="horizontalSpacer_15">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item row="3" column="1">
+                     <item row="5" column="2">
                       <widget class="QProgressBar" name="progressBar_write_project">
                        <property name="value">
                         <number>24</number>
                        </property>
                       </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QComboBox" name="Distanc_unit"/>
                      </item>
                     </layout>
                    </widget>
@@ -4191,6 +3447,10 @@ p, li { white-space: pre-wrap; }
                <widget class="QPushButton" name="Load_Project_btm">
                 <property name="text">
                  <string>Load</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="PyWOLF_Resource.qrc">
+                  <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
                 </property>
                </widget>
               </item>
@@ -4259,6 +3519,10 @@ p, li { white-space: pre-wrap; }
                    <property name="text">
                     <string>Update Parameters</string>
                    </property>
+                   <property name="icon">
+                    <iconset resource="PyWOLF_Resource.qrc">
+                     <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+                   </property>
                   </widget>
                  </item>
                  <item row="1" column="1">
@@ -4320,6 +3584,10 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="text">
                  <string>Create Scenario</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="PyWOLF_Resource.qrc">
+                  <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
                 </property>
                </widget>
               </item>
@@ -4534,6 +3802,10 @@ p, li { white-space: pre-wrap; }
                       <property name="text">
                        <string>Filter</string>
                       </property>
+                      <property name="icon">
+                       <iconset resource="PyWOLF_Resource.qrc">
+                        <normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</iconset>
+                      </property>
                      </widget>
                     </item>
                     <item row="0" column="3">
@@ -4563,6 +3835,10 @@ p, li { white-space: pre-wrap; }
                      <widget class="QPushButton" name="LCA_Load_method">
                       <property name="text">
                        <string>Load</string>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="PyWOLF_Resource.qrc">
+                        <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
                       </property>
                      </widget>
                     </item>
@@ -4764,7 +4040,7 @@ p, li { white-space: pre-wrap; }
                       <x>0</x>
                       <y>0</y>
                       <width>278</width>
-                      <height>228</height>
+                      <height>162</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -4776,6 +4052,10 @@ p, li { white-space: pre-wrap; }
                    <property name="text">
                     <string>Run</string>
                    </property>
+                   <property name="icon">
+                    <iconset resource="PyWOLF_Resource.qrc">
+                     <normaloff>:/ICONS/PySWOLF_ICONS/run.png</normaloff>:/ICONS/PySWOLF_ICONS/run.png</iconset>
+                   </property>
                   </widget>
                  </item>
                  <item row="7" column="0">
@@ -4783,12 +4063,20 @@ p, li { white-space: pre-wrap; }
                    <property name="text">
                     <string>Show Results</string>
                    </property>
+                   <property name="icon">
+                    <iconset resource="PyWOLF_Resource.qrc">
+                     <normaloff>:/ICONS/PySWOLF_ICONS/show.png</normaloff>:/ICONS/PySWOLF_ICONS/show.png</iconset>
+                   </property>
                   </widget>
                  </item>
                  <item row="8" column="0">
                   <widget class="QPushButton" name="MC_save">
                    <property name="text">
                     <string>Save results</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="PyWOLF_Resource.qrc">
+                     <normaloff>:/ICONS/PySWOLF_ICONS/save.png</normaloff>:/ICONS/PySWOLF_ICONS/save.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -4826,7 +4114,7 @@ p, li { white-space: pre-wrap; }
               <item row="1" column="0" colspan="2">
                <widget class="QCheckBox" name="MC_uncertain_filter">
                 <property name="text">
-                 <string>Only show uncertain variables</string>
+                 <string>Only show input variables with defined uncertainty</string>
                 </property>
                </widget>
               </item>
@@ -4842,6 +4130,10 @@ p, li { white-space: pre-wrap; }
                 <property name="text">
                  <string>Update</string>
                 </property>
+                <property name="icon">
+                 <iconset resource="PyWOLF_Resource.qrc">
+                  <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+                </property>
                </widget>
               </item>
               <item row="2" column="0" colspan="4">
@@ -4852,6 +4144,10 @@ p, li { white-space: pre-wrap; }
                 <property name="text">
                  <string>Clear</string>
                 </property>
+                <property name="icon">
+                 <iconset resource="PyWOLF_Resource.qrc">
+                  <normaloff>:/ICONS/PySWOLF_ICONS/Remove.png</normaloff>:/ICONS/PySWOLF_ICONS/Remove.png</iconset>
+                </property>
                </widget>
               </item>
               <item row="0" column="1">
@@ -4861,6 +4157,10 @@ p, li { white-space: pre-wrap; }
                <widget class="QPushButton" name="MC_Model_load">
                 <property name="text">
                  <string>Load</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="PyWOLF_Resource.qrc">
+                  <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
                 </property>
                </widget>
               </item>
@@ -5025,6 +4325,10 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="text">
                     <string>Filter</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="PyWOLF_Resource.qrc">
+                     <normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</iconset>
                    </property>
                   </widget>
                  </item>

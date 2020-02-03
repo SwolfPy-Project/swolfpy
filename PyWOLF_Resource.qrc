@@ -1,8 +1,18 @@
 <RCC>
   <qresource prefix="ICONS">
+    <file>PySWOLF_ICONS/save.png</file>
+    <file>PySWOLF_ICONS/show.png</file>
     <file>PySWOLF_ICONS/ADD.png</file>
     <file>PySWOLF_ICONS/Remove.png</file>
     <file>PySWOLF_ICONS/PySWOLF.ico</file>
     <file>PySWOLF_ICONS/Next.png</file>
+    <file>PySWOLF_ICONS/Create.png</file>
+    <file>PySWOLF_ICONS/Create_2.png</file>
+    <file>PySWOLF_ICONS/Filter.png</file>
+    <file>PySWOLF_ICONS/Load.png</file>
+    <file>PySWOLF_ICONS/open.png</file>
+    <file>PySWOLF_ICONS/run.png</file>
+    <file>PySWOLF_ICONS/Update.png</file>
+    <file>PySWOLF_ICONS/UpdateDB.png</file>
   </qresource>
 </RCC>
