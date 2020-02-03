@@ -15,9 +15,9 @@ class Distance():
         for i in self.data.columns:
             for j in self.data.columns:
                 if (j,i) not in self.Distance.keys():
-                    if not pd.isna(self.data[i][j]):
+                    if not pd.isna(self.data[i][j]) and self.data[i][j]!='':
                         self.Distance[(i,j)] = self.data[i][j]
                         self.Distance[(j,i)] = self.data[i][j]
-                        if not pd.isna(self.data[j][i]) and self.data[j][i]!=self.data[i][j]:
+                        if not pd.isna(self.data[j][i]) and self.data[j][i]!='' and self.data[j][i]!=self.data[i][j]:
                             raise Exception(f'Distance from {i} to {j} is not equal to distance from {j} to {i}')
                             
