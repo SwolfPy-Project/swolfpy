@@ -80,6 +80,11 @@ class project():
                     ex['unit'] = 'kg'
                     self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'].append(ex)
                 i+=1
+        print("""
+####
+++++++  Writing the {}
+        """.format(self.technosphere_db_name))
+        
         self.technosphere_db = Database(self.technosphere_db_name)
         self.technosphere_db.write(self.technosphere_data)
         
@@ -120,6 +125,7 @@ class project():
             self.Treatment_processes[name]['model'].calc()
             self.process_inputdata[name] = self.Treatment_processes[name]['model'].report()
             self.process_model[name].process_model_output = self.Treatment_processes[name]['model'].report()
+        
         (P,G)=self.process_model[name].Write_DB(name)
         return((P,G))
     
@@ -131,6 +137,9 @@ class project():
         
     def group_exchanges(self):
         for j in self.processes:
+            print("""
+                  Grouping the exchanges with parameters in Database {}
+                  """.format(j))
             if len(self.act_include_param[j]) > 0:
                 for r in self.act_include_param[j]:
                     parameters.add_exchanges_to_group(j,r)

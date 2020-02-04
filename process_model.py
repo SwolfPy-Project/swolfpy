@@ -146,6 +146,12 @@ class Process_Model():
             self.db_data[(self.DB_name,x)]['name'] = self.DB_name+"_"+x
             self.db_data[(self.DB_name,x)]['unit'] = 'Mg'
             self.db_data[(self.DB_name,x)]['exchanges'] =[]
+        
+        print("""
+####
+++++++ Initializing the {}        
+        """.format(self.DB_name))
+        
         db = Database(self.DB_name)
         db.write(self.db_data)
         
@@ -319,7 +325,16 @@ class Process_Model():
                     self.db_data[(self.DB_name,x)]['exchanges'].append(ex)
                     
 
+        print("""
+####        
+++++++ Writing the {}   
+        """.format(self.DB_waste_name))
         self.database_Waste.write(self.db_waste_data)
+        
+        print("""
+####        
+++++++ Writing the {}       
+        """.format(self.DB_name))
         db = Database(self.DB_name)
         db.write(self.db_data)
         self.uncertain_parameters.set_params_dict(self.params_dict)
