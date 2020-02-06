@@ -10,6 +10,7 @@ import os
 import PySWOLF
 import sys
 from brightway2 import *
+from bw2analyzer import ContributionAnalysis
 import importlib  #to import moduls with string name
 import pandas as pd
 from Distance import *
@@ -22,7 +23,7 @@ import numpy as np
 import pickle
 from copy import deepcopy
 import ast
-
+from time import time
 
 class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
     def __init__(self):
@@ -60,6 +61,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.init_CreateScenario_status = False
         self.LCA_tab_init_status = False
         self.MC_tab_init_status = False
+        self.Opt_tab_init_status = False
     
         
         #init First paer
@@ -179,6 +181,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_tab.setEnabled(True)
         self.LCA_tab_init()
         self.MC_tab_init()
+        self.Opt_tab_init()
         
         
                 
@@ -376,6 +379,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         Tab.setObjectName("Collection_process_{}".format(self.col_index))
         #self.gridLayout_12 = QtWidgets.QGridLayout(Tab)
         self.Collection.addTab(Tab,"Collection Process {}".format(self.col_index))
+        self.Collection.setCurrentWidget(Tab)
     
     
         gridLayout = QtWidgets.QGridLayout(Tab)
@@ -753,6 +757,12 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Distance_table.setEnabled(1)
         columns =  [x for x in self._Treatment_processes.keys()] + [x for x in self._Collection_processes.keys()]
         Distance = pd.DataFrame(columns=columns,index=columns)
+        for i in range(len(columns)):
+            j=i
+            while j+1 < len(columns):
+                Distance[columns[j+1]][columns[i]] = 20
+                j+=1
+                
         Distance=Distance.fillna('')
         self.Dis_data = Table_modeifed_distanceTable(Distance)
         self.Distance_table.setModel(self.Dis_data)
@@ -790,8 +800,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         #Notift the user that the project has created successfully
         self.msg_popup('Project','Project is created successfully','Information')
 
-        #init create scenario
-        self.init_CreateScenario()
+
         
 
     @QtCore.Slot()
@@ -816,6 +825,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_tab.setEnabled(True)
         self.LCA_tab_init()
         self.MC_tab_init()
+        #init create scenario
+        self.init_CreateScenario()
+        self.Opt_tab_init()
 
 
 # =============================================================================
@@ -907,38 +919,22 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.LCA_DataBase.setMaxVisibleItems(1000)
             self.LCA_DataBase.clear()
             self.LCA_DataBase.addItems(['...']+self.DB_name_list)
-            self.LCA_DataBase.currentIndexChanged.connect(self.load_db)
+            self.LCA_DataBase.currentIndexChanged.connect(self.load_db_func(self.LCA_activity))
             list_methods = [str(x) for x in methods]
             list_methods.sort()
             self.LCA_method.clear()
             self.LCA_method.addItems(['...']+list_methods)
-            self.LCA_Filter_impacts.clicked.connect(self.LCA_Filter)
+            self.LCA_Filter_impacts.clicked.connect(self.Filter_Method_func(self.Filter_impact_keyword,self.LCA_method))
             self.LCA_Load_method.clicked.connect(self.LCA_Load_method_func)
             self.LCA_bottom.clicked.connect(self.LCA_bottom_func)
+            self.LCA_CutOffType.addItems(['percent','number'])
+            self.LCA_CutOffType.currentTextChanged.connect(self.CutOff_setting)
+            self.LCA_CutOffType.setDisabled(True)
+            self.LCA_CutOff.setDisabled(True)
             self.LCA_Top_activity.setDisabled(True)
-            self.LCA_Top_activity.clicked.connect(self.LCA_top_act_func)
             self.LCA_Top_emssions.setDisabled(True)
-            self.LCA_Top_emssions.clicked.connect(self.LCA_top_emission_func)
+            self.LCA_updat_contribution.clicked.connect(self.update_contribution)
         
-    @QtCore.Slot(int)
-    def load_db(self,i):
-        if i ==0:
-            self.LCA_activity.clear()
-        else:
-            db=Database(self.DB_name_list[i-1])
-            #acts = [x.as_dict()['name'] for x in db]
-            acts = [str(x.key[1]) for x in db]
-            acts.sort()
-            self.LCA_activity.clear()
-            self.LCA_activity.addItems(acts)
-        
-    @QtCore.Slot()
-    def LCA_Filter(self):
-        list_methods= [str(x) for x in methods if self.Filter_impact_keyword.text() in str(x)]
-        list_methods.sort()
-        self.LCA_method.clear()
-        self.LCA_method.addItems(['...']+list_methods)
-    
     @QtCore.Slot()
     def LCA_Load_method_func(self):
         self.lca_method = Method(ast.literal_eval(self.LCA_method.currentText()))
@@ -960,24 +956,67 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_Impact_unit_2.setText(self.lca_method.metadata['unit'])
         self.LCA_Top_emssions.setEnabled(True)
         self.LCA_Top_activity.setEnabled(True)
+        self.LCA_CutOffType.setEnabled(True)
+        self.LCA_CutOff.setEnabled(True)
+        self.CutOff_setting(self.LCA_CutOffType.currentText())
+
+
+    @QtCore.Slot(str)
+    def CutOff_setting(self,Type):
+        if Type == 'percent':
+            self.LCA_CutOff.setMaximum=1
+            self.LCA_CutOff.setMinimum=0
+            self.LCA_CutOff.setValue(0.05)
+            
+        elif Type == 'number':
+            self.LCA_CutOff.setMaximum=100
+            self.LCA_CutOff.setMinimum=1
+            self.LCA_CutOff.setValue(10.00)
+    
+    @QtCore.Slot()
+    def update_contribution(self):
         if self.LCA_Top_activity.isChecked():
             self.LCA_top_act_func()
-        if self.LCA_Top_emssions.isChecked():
+        elif self.LCA_Top_emssions.isChecked():
             self.LCA_top_emission_func()
-        
+     
     @QtCore.Slot()
     def LCA_top_act_func(self):
-        top_act_data=self.LCA_lca.top_activities()
+        limit_type = self.LCA_CutOffType.currentText()
+        if self.LCA_CutOffType.currentText()=='number':
+            limit = round(float(self.LCA_CutOff.value()))
+        else:
+            limit = 35
+        lca=self.LCA_lca
+        top_act_data= ContributionAnalysis().annotated_top_processes(lca,limit= limit,limit_type ='number')
+        
         Activity=[]
         Flow_unit=[]
-        for x in top_act_data:
-            Activity.append(x[2].key)
-            Flow_unit.append(x[2].as_dict()['unit'])
-        top_act_DF = pd.DataFrame(columns=['Activity','Flow','Flow Unit','Contribution','Unit'])
-        top_act_DF['Activity']=Activity
-        top_act_DF['Flow']=[x[1] for x in top_act_data]
-        top_act_DF['Flow Unit']=Flow_unit
-        top_act_DF['Contribution']=[x[0] for x in top_act_data]
+        if limit_type == 'number':
+            for x in top_act_data:
+                Activity.append(x[2].key)
+                Flow_unit.append(x[2].as_dict()['unit'])
+            top_act_DF = pd.DataFrame(columns=['Activity','Flow','Flow Unit','Contribution','Unit'])
+            top_act_DF['Activity']=Activity
+            top_act_DF['Flow']=[x[1] for x in top_act_data]
+            top_act_DF['Flow Unit']=Flow_unit
+            top_act_DF['Contribution']=[x[0] for x in top_act_data]
+        
+        elif limit_type == 'percent':
+            flow=[]
+            contribution=[]
+            for x in top_act_data:
+                if abs(x[0]) >=  float(self.LCA_CutOff.value()) * abs(self.LCA_lca.score):
+                    Activity.append(x[2].key)
+                    Flow_unit.append(x[2].as_dict()['unit'])
+                    flow.append(x[1])
+                    contribution.append(x[0])
+            top_act_DF = pd.DataFrame(columns=['Activity','Flow','Flow Unit','Contribution','Unit'])
+            top_act_DF['Activity']=Activity
+            top_act_DF['Flow']=flow
+            top_act_DF['Flow Unit']=Flow_unit
+            top_act_DF['Contribution']=contribution
+        
         top_act_DF['Unit']=self.lca_method.metadata['unit']
         self.top_act_table = Table_from_pandas(top_act_DF)
         self.LCA_top_contribution.setModel(self.top_act_table)
@@ -985,23 +1024,48 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         
     @QtCore.Slot()
     def LCA_top_emission_func(self):
-        top_emission_data=self.LCA_lca.top_emissions()
+        limit_type = self.LCA_CutOffType.currentText()
+        if self.LCA_CutOffType.currentText()=='number':
+            limit = round(float(self.LCA_CutOff.value()))
+        else:
+            limit = 35
+        lca=self.LCA_lca
+        top_emission_data=ContributionAnalysis().annotated_top_emissions(lca,limit= limit,limit_type ='number')
         Emission=[]
         Compartment=[]
         Flow_unit=[]
-        for x in top_emission_data:
-            Emission.append(x[2].as_dict()['name'])
-            Compartment.append(x[2].as_dict()['categories'])
-            Flow_unit.append(x[2].as_dict()['unit'])
+        if self.LCA_CutOffType.currentText()=='number':
+            for x in top_emission_data:
+                Emission.append(x[2].as_dict()['name'])
+                Compartment.append(x[2].as_dict()['categories'])
+                Flow_unit.append(x[2].as_dict()['unit'])
+                
+            top_emission_DF = pd.DataFrame(columns=['Emission','Compartment','Flow','Flow Unit','Contribution','Unit'])
+            top_emission_DF['Emission']=Emission
+            top_emission_DF['Compartment']=Compartment
+            top_emission_DF['Flow']=[x[1] for x in top_emission_data]
+            top_emission_DF['Flow Unit']=Flow_unit
+            top_emission_DF['Contribution']=[x[0] for x in top_emission_data]
+            top_emission_DF['Unit']=self.lca_method.metadata['unit']
             
-        top_emission_DF = pd.DataFrame(columns=['Emission','Compartment','Flow','Flow Unit','Contribution','Unit'])
-        top_emission_DF['Emission']=Emission
-        top_emission_DF['Compartment']=Compartment
-        top_emission_DF['Flow']=[x[1] for x in top_emission_data]
-        top_emission_DF['Flow Unit']=Flow_unit
-        top_emission_DF['Contribution']=[x[0] for x in top_emission_data]
-        top_emission_DF['Unit']=self.lca_method.metadata['unit']
-        
+        elif self.LCA_CutOffType.currentText()=='percent':
+            flow=[]
+            contribution=[]
+            for x in top_emission_data:
+                if abs(x[0]) >=  float(self.LCA_CutOff.value()) * abs(self.LCA_lca.score):
+                    Emission.append(x[2].as_dict()['name'])
+                    Compartment.append(x[2].as_dict()['categories'])
+                    Flow_unit.append(x[2].as_dict()['unit'])
+                    flow.append(x[1])
+                    contribution.append(x[0])
+            top_emission_DF = pd.DataFrame(columns=['Emission','Compartment','Flow','Flow Unit','Contribution','Unit'])
+            top_emission_DF['Emission']=Emission
+            top_emission_DF['Compartment']=Compartment
+            top_emission_DF['Flow']=flow
+            top_emission_DF['Flow Unit']=Flow_unit
+            top_emission_DF['Contribution']=contribution
+            top_emission_DF['Unit']=self.lca_method.metadata['unit']
+            
         self.top_emission_table = Table_from_pandas(top_emission_DF)
         self.LCA_top_contribution.setModel(self.top_emission_table)
         self.LCA_top_contribution.resizeColumnsToContents()
@@ -1022,7 +1086,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.DB_name_list.sort()
             self.MC_FU_DB.clear()
             self.MC_FU_DB.addItems(['...']+self.DB_name_list)
-            self.MC_FU_DB.currentIndexChanged.connect(self.MC_load_db_func)
+            self.MC_FU_DB.currentIndexChanged.connect(self.load_db_func(self.MC_FU_act))
             
             list_methods = [str(x) for x in methods]
             list_methods.sort()
@@ -1030,7 +1094,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_method.clear()
             self.MC_method.addItems(['...']+list_methods)
             
-            self.MC_Filter_method.clicked.connect(self.MC_Filter_func)
+            self.MC_Filter_method.clicked.connect(self.Filter_Method_func(self.MC_Filter_keyword,self.MC_method))
             self.MC_add_method.clicked.connect(self.MC_add_method_func)
             
             self.method_DF = pd.DataFrame(columns=['LCIA method','Unit'])
@@ -1078,25 +1142,6 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         def update_include_act_helper():
             self.include_model_dict[Model]= not self.include_model_dict[Model]
         return(update_include_act_helper)
-    
-    
-    @QtCore.Slot(int)
-    def MC_load_db_func(self,i):
-        if i ==0:
-            self.MC_FU_act.clear()
-        else:
-            db=Database(self.DB_name_list[i-1])
-            acts = [str(x.key[1]) for x in db]
-            acts.sort()
-            self.MC_FU_act.clear()
-            self.MC_FU_act.addItems(acts)
-        
-    @QtCore.Slot()
-    def MC_Filter_func(self):
-        list_methods= [str(x) for x in methods if self.MC_Filter_keyword.text() in str(x)]
-        list_methods.sort()
-        self.MC_method.clear()
-        self.MC_method.addItems(['...']+list_methods)
     
     @QtCore.Slot()
     def MC_add_method_func(self):
@@ -1165,12 +1210,17 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
               """.format(FU=FU,method=method,Nthread=int(self.MC_N_Thread.text()),nruns=int(self.MC_N_runs.text()),
                           process_model_names=process_model_names,process_models=process_models))
         
-        
+        Time_start = time()
         Monte_carlo = ParallelData(FU, method, project,process_models=process_models,process_model_names=process_model_names,seed = 1)
 
         Monte_carlo.run(int(self.MC_N_Thread.text()),int(self.MC_N_runs.text()))
         self.MC_results = Monte_carlo.result_to_DF()
-        print(self.MC_results)
+        Time_finish = time()
+        Total_time = round(Time_finish - Time_start)
+        print("Total time for Monte Carlo simulation: {} seconds".format(Total_time))
+        self.msg_popup('Monte Carlo simulation Result','Simulation is done succesfully. \n Total time: {} seconds'.format(Total_time),'Information')
+        
+        
     
     @QtCore.Slot()
     def show_res_func(self):
@@ -1217,8 +1267,179 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
         
 
+
+# =============================================================================
+# =============================================================================
+    ### Optimization
+# =============================================================================
+# =============================================================================    
+    @QtCore.Slot()
+    def Opt_tab_init(self):
+        if not self.Opt_tab_init_status:
+            self.Opt_tab_init_status = True
+            self.Opt_tab.setEnabled(True)
+            
+            self.Const_DF = pd.DataFrame(columns=['flow','limit'])
+            self.Const_DF_index=0
+            self.mass_flows_constraints={}
+            self.emissions_constraints={}
+            
+            #Functional Unit
+            projects.set_current(self.demo.project_name)
+            self.DB_name_list = [x for x in databases]
+            self.DB_name_list.sort()
+            self.Opt_FU_DB.clear()
+            self.Opt_FU_DB.addItems(['...']+self.DB_name_list)
+            self.Opt_FU_DB.currentIndexChanged.connect(self.load_db_func(self.Opt_FU_act))
+            
+            #Objective Impact
+            list_methods = [str(x) for x in methods]
+            list_methods.sort()
+            self.Opt_method.setMaxVisibleItems(1000)
+            self.Opt_method.clear()
+            self.Opt_method.addItems(['...']+list_methods)
+            self.Opt_Filter_method.clicked.connect(self.Filter_Method_func(self.Opt_Filter_keyword,self.Opt_method))
+            
+            #Constraint on Total Mass to Process
+            self.Opt_Const1_process.clear()
+            self.Opt_Const1_process.addItems(['...']+self.DB_name_list)
+            self.Opt_add_Const1.clicked.connect(self.Opt_add_const1)
+            
+            #Constraint on Waste to Process
+            self.Opt_Const2_process.clear()
+            self.Opt_Const2_process.addItems(['...']+self.DB_name_list)
+            self.Opt_Const2_process.currentIndexChanged.connect(self.load_db_func(self.Opt_Const2_flow))
+            self.Opt_add_Const2.clicked.connect(self.Opt_add_const2)
+            
+            #Constraints on Emissions
+            bio_db = Database('biosphere3')
+            self.bio_dict={}
+            for x in bio_db:
+                self.bio_dict[str(x)]=x.as_dict()['code']
+            self.Opt_Const3_flow.clear()
+            self.Opt_Const3_flow.setMaxVisibleItems(5000)
+            keys=list(self.bio_dict.keys())
+            keys.sort()
+            self.Opt_Const3_flow.addItems(['...']+keys)
+            self.Opt_add_Const3.clicked.connect(self.Opt_add_const3)
+            
+            self.Opt_optimize.clicked.connect(self.Opt_minimize_func)
+            
+            self.Opt_update_param.clicked.connect(self.Opt_update_network_parameters)
         
             
+     
+        
+    @QtCore.Slot()
+    def Opt_Filter_func(self):
+        list_methods= [str(x) for x in methods if self.Opt_Filter_keyword.text() in str(x)]
+        list_methods.sort()
+        self.Opt_method.clear()
+        self.Opt_method.addItems(['...']+list_methods)        
+        
+        
+    @QtCore.Slot()
+    def Opt_add_const1(self):
+        if self.Opt_Const1_process.currentText() != "...":
+            self.Const_DF.loc[self.Const_DF_index]=[self.Opt_Const1_process.currentText(),float(self.Opt_Const1_val.text())]
+            self.Const_DF_index +=1
+            self.Opt_Const_table_update()
+            self.mass_flows_constraints[self.Opt_Const1_process.currentText()]= float(self.Opt_Const1_val.text())
+        
+    
+    @QtCore.Slot()
+    def Opt_add_const2(self):
+        if self.Opt_Const2_process.currentText() != "...":
+            self.Const_DF.loc[self.Const_DF_index]=[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText()),self.Opt_Const2_val.text()]
+            self.Const_DF_index +=1
+            self.Opt_Const_table_update()
+            self.mass_flows_constraints[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText())]= float(self.Opt_Const2_val.text())
+
+        
+    @QtCore.Slot()
+    def Opt_add_const3(self):
+        if self.Opt_Const3_flow.currentText() != "...":
+            self.Const_DF.loc[self.Const_DF_index]=[self.Opt_Const3_flow.currentText(),self.Opt_Const3_val.text()]
+            self.Const_DF_index +=1
+            self.Opt_Const_table_update()
+            self.emissions_constraints[self.bio_dict[self.Opt_Const3_flow.currentText()]]= float(self.Opt_Const3_val.text())
+    
+    @QtCore.Slot()
+    def Opt_Const_table_update(self):
+        self.Opt_Const_table_model = Table_from_pandas(self.Const_DF)
+        self.Opt_Const_table.setModel(self.Opt_Const_table_model)
+        self.Opt_Const_table.resizeColumnsToContents()
+
+
+    @QtCore.Slot()
+    def Opt_minimize_func(self):
+        functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):float(self.Opt_MC_FU_amount.text())}
+        method = [ast.literal_eval( self.Opt_method.currentText())]
+        project_name = self.demo.project_name
+        Time_start = time()
+        print("""
+        Optimization setting:
+        
+        project_name = {}
+        
+        functional_unit = {}
+        
+        method = {}
+        
+        mass_flows_constraints = {}
+        
+        emissions_constraints = {}
+        
+        """.format(project_name,functional_unit,method,self.mass_flows_constraints,self.emissions_constraints))
+        
+        if len(self.mass_flows_constraints)>0:
+            mass_flows_constraints =self.mass_flows_constraints
+        else:
+            mass_flows_constraints = None
+        
+        if len(self.emissions_constraints)>0:
+            emissions_constraints =self.emissions_constraints
+        else:
+            emissions_constraints = None
+        
+        opt = ParallelData(functional_unit, method, project_name) 
+        results = opt.optimize_parameters(self.demo, mass_flows_constraints=mass_flows_constraints, emissions_constraints=emissions_constraints)
+        print(results)
+        Time_finish = time()
+        Total_time = round(Time_finish - Time_start)
+        
+        print("Total time for optimization: {} seconds".format(Total_time))
+        
+        if results.success:
+            self.msg_popup('Optimization Result',results.message+'\n Total time: {} seconds'.format(Total_time),'Information')
+            obj = results.fun*10**opt.magnitude
+            self.Opt_score.setText(str(obj))
+            unit =Method(method[0]).metadata['unit'] 
+            self.Opt_unit.setText(unit)
+            
+            param_data=pd.DataFrame(opt.optimized_x)
+            param_data['Unit'] = 'fraction'
+            Opt_Param_table_model = Table_from_pandas_editable(param_data)
+            self.Opt_Param_table.setModel(Opt_Param_table_model)
+            self.Opt_Param_table.resizeColumnsToContents()
+        else:
+            self.msg_popup('Optimization Result',results.message,'Warning')
+            
+    @QtCore.Slot()
+    def Opt_update_network_parameters(self):
+        new_param = deepcopy(self.demo.parameters_list)
+        i=0
+        for x in new_param:
+            x['amount'] = self.Opt_Param_table.model()._data['amount'][i]
+            i+=1
+        print("\n\n New parameters are : \n",new_param,"\n\n")
+        self.demo.update_parameters(new_param)   
+        
+        
+                
+        
+        
+        
 # =============================================================================
 # =============================================================================
     ### General Functions
@@ -1249,6 +1470,30 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         msg.setInformativeText(Information)
         Ok=msg.addButton(msg.Ok)
         msg.exec()
+
+
+    @QtCore.Slot(int)
+    def load_db_func(self,act_ComboBox):
+        def load_db_func(i):
+            if i ==0:
+                act_ComboBox.clear()
+            else:
+                db=Database(self.DB_name_list[i-1])
+                acts = [str(x.key[1]) for x in db]
+                acts.sort()
+                act_ComboBox.clear()
+                act_ComboBox.addItems(acts)  
+        return(load_db_func)
+
+    @QtCore.Slot()
+    def Filter_Method_func(self,keyWord_lineEdit,Method_ComboBox):
+        def Filter_Method_func_helper():
+            list_methods= [str(x) for x in methods if keyWord_lineEdit.text() in str(x)]
+            list_methods.sort()
+            Method_ComboBox.clear()
+            Method_ComboBox.addItems(['...']+list_methods)  
+        return(Filter_Method_func_helper)
+
 
 
 # =============================================================================
