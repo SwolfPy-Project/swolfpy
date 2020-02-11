@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>900</width>
-    <height>900</height>
+    <height>1021</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,8 +24,8 @@
     <normaloff>:/ICONS/PySWOLF_ICONS/PySWOLF.ico</normaloff>:/ICONS/PySWOLF_ICONS/PySWOLF.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_4">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_84">
+    <item row="0" column="0">
      <widget class="QFrame" name="frame">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -34,7 +34,7 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
+       <item row="0" column="0">
         <widget class="QTabWidget" name="PySWOLF">
          <property name="enabled">
           <bool>true</bool>
@@ -240,7 +240,7 @@ p, li { white-space: pre-wrap; }
                    <x>0</x>
                    <y>0</y>
                    <width>818</width>
-                   <height>431</height>
+                   <height>441</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -2921,7 +2921,7 @@ p, li { white-space: pre-wrap; }
                    <x>0</x>
                    <y>0</y>
                    <width>818</width>
-                   <height>676</height>
+                   <height>686</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -2990,8 +2990,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>818</width>
-                   <height>676</height>
+                   <width>388</width>
+                   <height>137</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -3158,8 +3158,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>818</width>
-                   <height>676</height>
+                   <width>764</width>
+                   <height>418</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -3344,6 +3344,7 @@ p, li { white-space: pre-wrap; }
                         <font>
                          <weight>75</weight>
                          <bold>true</bold>
+                         <kerning>true</kerning>
                         </font>
                        </property>
                        <property name="text">
@@ -3721,358 +3722,580 @@ p, li { white-space: pre-wrap; }
           </attribute>
           <layout class="QGridLayout" name="gridLayout_70">
            <item row="0" column="0">
-            <widget class="QFrame" name="frame_41">
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+            <widget class="QTabWidget" name="LCA_subTab">
+             <property name="currentIndex">
+              <number>3</number>
              </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_66">
-              <item row="0" column="0">
-               <widget class="QFrame" name="frame_44">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_64">
-                 <item row="0" column="0" colspan="2">
-                  <widget class="QFrame" name="frame_45">
-                   <property name="frameShape">
-                    <enum>QFrame::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_67">
-                    <item row="2" column="0">
-                     <widget class="QLabel" name="label_44">
-                      <property name="text">
-                       <string>Amount:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QLineEdit" name="LCA_Func_unit"/>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QLabel" name="label_43">
-                      <property name="text">
-                       <string>Activity:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QComboBox" name="LCA_DataBase"/>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QComboBox" name="LCA_activity">
-                      <property name="minimumSize">
-                       <size>
-                        <width>250</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_42">
-                      <property name="text">
-                       <string>Database:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="2">
-                     <spacer name="horizontalSpacer_22">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>40</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item row="3" column="0">
-                  <widget class="QPushButton" name="LCA_bottom">
-                   <property name="minimumSize">
-                    <size>
-                     <width>150</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>LCA</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0" rowspan="2" colspan="2">
-                  <widget class="QFrame" name="frame_43">
-                   <property name="frameShape">
-                    <enum>QFrame::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_68">
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_41">
-                      <property name="text">
-                       <string>LCIA method:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QLineEdit" name="Filter_impact_keyword">
-                      <property name="placeholderText">
-                       <string>Filter by search</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="2">
-                     <widget class="QPushButton" name="LCA_Filter_impacts">
-                      <property name="text">
-                       <string>Filter</string>
-                      </property>
-                      <property name="icon">
-                       <iconset resource="PyWOLF_Resource.qrc">
-                        <normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="3">
-                     <spacer name="horizontalSpacer_21">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>322</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                    <item row="1" column="0" colspan="2">
-                     <widget class="QComboBox" name="LCA_method">
-                      <property name="minimumSize">
-                       <size>
-                        <width>350</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="2">
-                     <widget class="QPushButton" name="LCA_Load_method">
-                      <property name="text">
-                       <string>Load</string>
-                      </property>
-                      <property name="icon">
-                       <iconset resource="PyWOLF_Resource.qrc">
-                        <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="3">
-                     <spacer name="horizontalSpacer_14">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>322</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                    <item row="2" column="0">
-                     <widget class="QLabel" name="label_47">
-                      <property name="text">
-                       <string>Unit:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QLabel" name="LCA_Impact_unit">
-                      <property name="text">
-                       <string>...</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="3" column="0">
-                     <widget class="QLabel" name="label_46">
-                      <property name="text">
-                       <string>Number of CFs:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="3" column="1">
-                     <widget class="QLabel" name="LCA_Num_cfs">
-                      <property name="text">
-                       <string>....</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="0" colspan="2">
-                     <widget class="QLabel" name="label_45">
-                      <property name="text">
-                       <string>Characterization factors in method:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="5" column="0" colspan="4">
-                     <widget class="QTableView" name="LCA_CFs_table"/>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item row="4" column="0" colspan="2">
-                  <widget class="QFrame" name="frame_46">
-                   <property name="frameShape">
-                    <enum>QFrame::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_65">
-                    <item row="0" column="0">
-                     <widget class="QGroupBox" name="groupBox_6">
-                      <property name="title">
-                       <string>LCA Results</string>
-                      </property>
-                      <layout class="QGridLayout" name="gridLayout_69">
-                       <item row="0" column="2">
-                        <widget class="QLabel" name="LCA_Impact_unit_2">
-                         <property name="minimumSize">
-                          <size>
-                           <width>100</width>
-                           <height>0</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string>...</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="4">
-                        <spacer name="horizontalSpacer">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item row="0" column="0">
-                        <widget class="QLabel" name="label_50">
-                         <property name="minimumSize">
-                          <size>
-                           <width>100</width>
-                           <height>0</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string>Impact:</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="1">
-                        <widget class="QComboBox" name="LCA_CutOffType"/>
-                       </item>
-                       <item row="0" column="1">
-                        <widget class="QLabel" name="LCA_score">
-                         <property name="minimumSize">
-                          <size>
-                           <width>100</width>
-                           <height>0</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string>...</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="2">
-                        <widget class="QDoubleSpinBox" name="LCA_CutOff"/>
-                       </item>
-                       <item row="7" column="0" colspan="5">
-                        <widget class="QTableView" name="LCA_top_contribution"/>
-                       </item>
-                       <item row="2" column="2">
-                        <widget class="QRadioButton" name="LCA_Top_emssions">
-                         <property name="text">
-                          <string>Top Emissions</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="1">
-                        <widget class="QRadioButton" name="LCA_Top_activity">
-                         <property name="text">
-                          <string>Top Activities</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="0">
-                        <widget class="QLabel" name="label_8">
-                         <property name="text">
-                          <string>Results:</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="0">
-                        <widget class="QLabel" name="label_7">
-                         <property name="text">
-                          <string>CutOff:</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="3">
-                        <widget class="QPushButton" name="LCA_updat_contribution">
-                         <property name="text">
-                          <string>Update</string>
-                         </property>
-                         <property name="icon">
-                          <iconset resource="PyWOLF_Resource.qrc">
-                           <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item row="3" column="1">
-                  <spacer name="horizontalSpacer_29">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
+             <widget class="QWidget" name="LCA_setup_tab">
+              <attribute name="title">
+               <string>Setup LCA</string>
+              </attribute>
+              <layout class="QGridLayout" name="gridLayout_17">
+               <item row="0" column="0">
+                <widget class="QFrame" name="frame_44">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_19">
+                  <item row="0" column="0" colspan="3">
+                   <widget class="QGroupBox" name="groupBox_24">
+                    <property name="title">
+                     <string>Functional Unit</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_18">
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_49">
+                       <property name="text">
+                        <string>Activity:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2" rowspan="2">
+                      <widget class="QPushButton" name="LCA_AddAct">
+                       <property name="text">
+                        <string>Add activity to LCA</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="0">
+                      <widget class="QLabel" name="label_12">
+                       <property name="text">
+                        <string>Activities:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_48">
+                       <property name="text">
+                        <string>Amount:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QLineEdit" name="LCA_Func_unit"/>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_51">
+                       <property name="text">
+                        <string>Database:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1" colspan="2">
+                      <widget class="QComboBox" name="LCA_DataBase"/>
+                     </item>
+                     <item row="1" column="1" colspan="2">
+                      <widget class="QComboBox" name="LCA_activity">
+                       <property name="minimumSize">
+                        <size>
+                         <width>250</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1" colspan="2">
+                      <widget class="QTableView" name="LCA_ActTable">
+                       <property name="minimumSize">
+                        <size>
+                         <width>400</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="0" column="3" colspan="2">
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>92</width>
+                      <height>306</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item row="1" column="0" colspan="4">
+                   <widget class="QGroupBox" name="groupBox_25">
+                    <property name="title">
+                     <string>Impact Assessment Categories</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_20">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_52">
+                       <property name="text">
+                        <string>LCIA method:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLineEdit" name="Filter_impact_keyword">
+                       <property name="placeholderText">
+                        <string>Filter by search</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="QPushButton" name="LCA_Filter_impacts">
+                       <property name="text">
+                        <string>Filter</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</normaloff>:/ICONS/PySWOLF_ICONS/Filter.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="3" colspan="2">
+                      <spacer name="horizontalSpacer_34">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>334</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_8">
+                       <property name="text">
+                        <string>TextLabel</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1" colspan="2">
+                      <widget class="QComboBox" name="LCA_method">
+                       <property name="minimumSize">
+                        <size>
+                         <width>350</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <widget class="QPushButton" name="LCA_View_method">
+                       <property name="text">
+                        <string>View</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/show.png</normaloff>:/ICONS/PySWOLF_ICONS/show.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="4">
+                      <widget class="QPushButton" name="LCA_AddImpact">
+                       <property name="text">
+                        <string>Add method to LCA</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_7">
+                       <property name="text">
+                        <string>Impacts:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1" colspan="4">
+                      <widget class="QTableView" name="LCA_Impact_table"/>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="1" column="4">
+                   <spacer name="horizontalSpacer_14">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item row="2" column="0">
+                   <spacer name="horizontalSpacer_37">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>554</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QPushButton" name="LCA_ClearSetup">
+                    <property name="text">
+                     <string>Clear</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="2">
+                   <widget class="QPushButton" name="LCA_CreateLCA">
+                    <property name="minimumSize">
+                     <size>
+                      <width>150</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>LCA</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="LCA_Results_tab">
+              <attribute name="title">
+               <string>LCA Results</string>
+              </attribute>
+              <layout class="QGridLayout" name="gridLayout_66">
+               <item row="0" column="0">
+                <widget class="QFrame" name="frame_4">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_65">
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_13">
+                    <property name="text">
+                     <string>Environmmental Impact: </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QComboBox" name="LCA_Results_ImpactFig">
+                    <property name="minimumSize">
+                     <size>
+                      <width>450</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="2">
+                   <spacer name="horizontalSpacer_21">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item row="0" column="0" colspan="3">
+                   <widget class="QTableView" name="LCA_Results_Table"/>
+                  </item>
+                  <item row="2" column="0" colspan="3">
+                   <widget class="QWidget" name="LCA_Results_fig" native="true">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>360</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="LCA_Contribution_tab">
+              <attribute name="title">
+               <string>Contribution Analysis</string>
+              </attribute>
+              <layout class="QGridLayout" name="gridLayout_64">
+               <item row="0" column="0">
+                <widget class="QGroupBox" name="groupBox_26">
+                 <property name="title">
+                  <string>Contribution analysis</string>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_68">
+                  <item row="0" column="0">
+                   <widget class="QGroupBox" name="groupBox_23">
+                    <property name="title">
+                     <string>Setting</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_60">
+                     <item row="2" column="6">
+                      <spacer name="horizontalSpacer_22">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>252</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="2" column="5">
+                      <widget class="QPushButton" name="LCA_Contr_updat">
+                       <property name="text">
+                        <string>Update</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1" colspan="3">
+                      <widget class="QComboBox" name="LCA_Contr_Method"/>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_60">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Functional Unit:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QComboBox" name="LCA_Contr_CutOffType"/>
+                     </item>
+                     <item row="2" column="3">
+                      <widget class="QRadioButton" name="LCA_Contr__Top_act">
+                       <property name="text">
+                        <string>Top Activities</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="QDoubleSpinBox" name="LCA_Contr_CutOff">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1" colspan="3">
+                      <widget class="QComboBox" name="LCA_Contr_FU"/>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_61">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Environmental Impact:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_11">
+                       <property name="text">
+                        <string>CutOff:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="4">
+                      <widget class="QRadioButton" name="LCA_Contr_Top_emis">
+                       <property name="text">
+                        <string>Top Emissions</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QGroupBox" name="groupBox_6">
+                    <property name="title">
+                     <string>Contribution Results</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_67">
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_59">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Impact:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLineEdit" name="LCA_Contr_score"/>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="QLineEdit" name="LCA_Contr_unit"/>
+                     </item>
+                     <item row="0" column="3">
+                      <spacer name="horizontalSpacer_29">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="1" column="0" colspan="4">
+                      <widget class="QTableView" name="LCA_contribution_Table">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>50</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="LCA_LCI_tab">
+              <attribute name="title">
+               <string>Life Cycle Inventory</string>
+              </attribute>
+              <layout class="QGridLayout" name="gridLayout_82">
+               <item row="0" column="0">
+                <widget class="QFrame" name="frame_5">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_86">
+                  <item row="1" column="0">
+                   <widget class="QGroupBox" name="groupBox_28">
+                    <property name="title">
+                     <string>Life Cycle Inventory</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_85">
+                     <item row="0" column="0" colspan="2">
+                      <widget class="QTableView" name="LCA_LCI_Table">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>50</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QGroupBox" name="groupBox_27">
+                    <property name="title">
+                     <string>Setting</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_69">
+                     <item row="1" column="2">
+                      <widget class="QPushButton" name="LCA_LCI_updat">
+                       <property name="text">
+                        <string>Update</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QComboBox" name="LCA_LCI_FU">
+                       <property name="minimumSize">
+                        <size>
+                         <width>250</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_80">
+                       <property name="minimumSize">
+                        <size>
+                         <width>100</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Functional Unit:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <spacer name="horizontalSpacer_33">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </widget>
            </item>
           </layout>
@@ -4206,6 +4429,7 @@ p, li { white-space: pre-wrap; }
               <font>
                <weight>50</weight>
                <bold>false</bold>
+               <kerning>true</kerning>
               </font>
              </property>
              <property name="title">
@@ -4589,6 +4813,84 @@ p, li { white-space: pre-wrap; }
              </layout>
             </widget>
            </item>
+           <item row="2" column="0">
+            <widget class="QGroupBox" name="groupBox_21">
+             <property name="minimumSize">
+              <size>
+               <width>500</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <kerning>true</kerning>
+              </font>
+             </property>
+             <property name="title">
+              <string>Results</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_13">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="Opt_optimize">
+                <property name="font">
+                 <font>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                  <kerning>true</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Minimize</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label_9">
+                <property name="text">
+                 <string>Results:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLineEdit" name="Opt_score"/>
+              </item>
+              <item row="0" column="3">
+               <widget class="QLineEdit" name="Opt_unit"/>
+              </item>
+              <item row="1" column="0" colspan="4">
+               <widget class="QTableView" name="Opt_Param_table">
+                <property name="font">
+                 <font>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                  <kerning>true</kerning>
+                 </font>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="3">
+               <widget class="QPushButton" name="Opt_update_param">
+                <property name="font">
+                 <font>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                  <kerning>true</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Update project parameters</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="PyWOLF_Resource.qrc">
+                  <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
            <item row="0" column="1">
             <widget class="QGroupBox" name="groupBox_16">
              <property name="font">
@@ -4674,14 +4976,35 @@ p, li { white-space: pre-wrap; }
               <font>
                <weight>75</weight>
                <bold>true</bold>
+               <kerning>true</kerning>
               </font>
              </property>
              <property name="title">
               <string>Constraints</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_14">
-              <item row="2" column="0">
-               <widget class="QGroupBox" name="groupBox_19">
+              <item row="3" column="0">
+               <widget class="QGroupBox" name="groupBox_22">
+                <property name="title">
+                 <string>Table of Constraints</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_11">
+                 <item row="0" column="0">
+                  <widget class="QTableView" name="Opt_Const_table">
+                   <property name="font">
+                    <font>
+                     <weight>50</weight>
+                     <bold>false</bold>
+                     <kerning>true</kerning>
+                    </font>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QGroupBox" name="groupBox_18">
                 <property name="font">
                  <font>
                   <weight>75</weight>
@@ -4690,27 +5013,11 @@ p, li { white-space: pre-wrap; }
                  </font>
                 </property>
                 <property name="title">
-                 <string>Constraints on Emissions</string>
+                 <string>Constraint on Waste to Process</string>
                 </property>
-                <layout class="QGridLayout" name="gridLayout_10">
-                 <item row="0" column="3">
-                  <widget class="QLineEdit" name="Opt_Const3_val">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <weight>50</weight>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                  </widget>
-                 </item>
+                <layout class="QGridLayout" name="gridLayout_8">
                  <item row="0" column="0">
-                  <widget class="QLabel" name="label_81">
+                  <widget class="QLabel" name="label_77">
                    <property name="font">
                     <font>
                      <weight>50</weight>
@@ -4719,12 +5026,73 @@ p, li { white-space: pre-wrap; }
                     </font>
                    </property>
                    <property name="text">
-                    <string>Emission:</string>
+                    <string>Process:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="Opt_Const2_process">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>50</weight>
+                     <bold>false</bold>
+                     <kerning>true</kerning>
+                    </font>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="2">
-                  <widget class="QLabel" name="label_82">
+                  <widget class="QLabel" name="label_79">
+                   <property name="font">
+                    <font>
+                     <weight>50</weight>
+                     <bold>false</bold>
+                     <kerning>true</kerning>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Waste Fraction:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3" colspan="2">
+                  <widget class="QComboBox" name="Opt_Const2_flow">
+                   <property name="minimumSize">
+                    <size>
+                     <width>300</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>50</weight>
+                     <bold>false</bold>
+                     <kerning>true</kerning>
+                    </font>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="5">
+                  <spacer name="horizontalSpacer_27">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>193</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_78">
                    <property name="font">
                     <font>
                      <weight>50</weight>
@@ -4737,37 +5105,25 @@ p, li { white-space: pre-wrap; }
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1">
-                  <widget class="QComboBox" name="Opt_Const3_flow">
-                   <property name="minimumSize">
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="Opt_Const2_val">
+                   <property name="maximumSize">
                     <size>
-                     <width>350</width>
-                     <height>0</height>
+                     <width>200</width>
+                     <height>16777215</height>
                     </size>
                    </property>
                    <property name="font">
                     <font>
                      <weight>50</weight>
                      <bold>false</bold>
+                     <kerning>true</kerning>
                     </font>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="5">
-                  <spacer name="horizontalSpacer_28">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="4">
-                  <widget class="QPushButton" name="Opt_add_Const3">
+                 <item row="1" column="2" colspan="2">
+                  <widget class="QPushButton" name="Opt_add_Const2">
                    <property name="font">
                     <font>
                      <weight>50</weight>
@@ -4784,24 +5140,18 @@ p, li { white-space: pre-wrap; }
                    </property>
                   </widget>
                  </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QGroupBox" name="groupBox_22">
-                <property name="title">
-                 <string>Table of Constraints</string>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_11">
-                 <item row="0" column="0">
-                  <widget class="QTableView" name="Opt_Const_table">
-                   <property name="font">
-                    <font>
-                     <weight>50</weight>
-                     <bold>false</bold>
-                    </font>
+                 <item row="1" column="4">
+                  <spacer name="horizontalSpacer_30">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
                    </property>
-                  </widget>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>291</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                 </layout>
                </widget>
@@ -4849,6 +5199,7 @@ p, li { white-space: pre-wrap; }
                     <font>
                      <weight>50</weight>
                      <bold>false</bold>
+                     <kerning>true</kerning>
                     </font>
                    </property>
                   </widget>
@@ -4859,6 +5210,7 @@ p, li { white-space: pre-wrap; }
                     <font>
                      <weight>50</weight>
                      <bold>false</bold>
+                     <kerning>true</kerning>
                     </font>
                    </property>
                   </widget>
@@ -4907,8 +5259,8 @@ p, li { white-space: pre-wrap; }
                 </layout>
                </widget>
               </item>
-              <item row="1" column="0">
-               <widget class="QGroupBox" name="groupBox_18">
+              <item row="2" column="0">
+               <widget class="QGroupBox" name="groupBox_19">
                 <property name="font">
                  <font>
                   <weight>75</weight>
@@ -4917,11 +5269,28 @@ p, li { white-space: pre-wrap; }
                  </font>
                 </property>
                 <property name="title">
-                 <string>Constraint on Waste to Process</string>
+                 <string>Constraints on Emissions</string>
                 </property>
-                <layout class="QGridLayout" name="gridLayout_8">
+                <layout class="QGridLayout" name="gridLayout_10">
+                 <item row="0" column="3">
+                  <widget class="QLineEdit" name="Opt_Const3_val">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>50</weight>
+                     <bold>false</bold>
+                     <kerning>true</kerning>
+                    </font>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="0" column="0">
-                  <widget class="QLabel" name="label_77">
+                  <widget class="QLabel" name="label_81">
                    <property name="font">
                     <font>
                      <weight>50</weight>
@@ -4930,71 +5299,12 @@ p, li { white-space: pre-wrap; }
                     </font>
                    </property>
                    <property name="text">
-                    <string>Process:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QComboBox" name="Opt_Const2_process">
-                   <property name="minimumSize">
-                    <size>
-                     <width>100</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <weight>50</weight>
-                     <bold>false</bold>
-                    </font>
+                    <string>Emission:</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="2">
-                  <widget class="QLabel" name="label_79">
-                   <property name="font">
-                    <font>
-                     <weight>50</weight>
-                     <bold>false</bold>
-                     <kerning>true</kerning>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Waste Fraction:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="3" colspan="2">
-                  <widget class="QComboBox" name="Opt_Const2_flow">
-                   <property name="minimumSize">
-                    <size>
-                     <width>300</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <weight>50</weight>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="5">
-                  <spacer name="horizontalSpacer_27">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>193</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_78">
+                  <widget class="QLabel" name="label_82">
                    <property name="font">
                     <font>
                      <weight>50</weight>
@@ -5007,24 +5317,38 @@ p, li { white-space: pre-wrap; }
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="1">
-                  <widget class="QLineEdit" name="Opt_Const2_val">
-                   <property name="maximumSize">
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="Opt_Const3_flow">
+                   <property name="minimumSize">
                     <size>
-                     <width>200</width>
-                     <height>16777215</height>
+                     <width>350</width>
+                     <height>0</height>
                     </size>
                    </property>
                    <property name="font">
                     <font>
                      <weight>50</weight>
                      <bold>false</bold>
+                     <kerning>true</kerning>
                     </font>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="2" colspan="2">
-                  <widget class="QPushButton" name="Opt_add_Const2">
+                 <item row="0" column="5">
+                  <spacer name="horizontalSpacer_28">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QPushButton" name="Opt_add_Const3">
                    <property name="font">
                     <font>
                      <weight>50</weight>
@@ -5041,94 +5365,7 @@ p, li { white-space: pre-wrap; }
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="4">
-                  <spacer name="horizontalSpacer_30">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>291</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
                 </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QGroupBox" name="groupBox_21">
-             <property name="minimumSize">
-              <size>
-               <width>500</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="title">
-              <string>Results</string>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_13">
-              <item row="0" column="0">
-               <widget class="QPushButton" name="Opt_optimize">
-                <property name="font">
-                 <font>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Minimize</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="label_9">
-                <property name="text">
-                 <string>Results:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QLineEdit" name="Opt_score"/>
-              </item>
-              <item row="0" column="3">
-               <widget class="QLineEdit" name="Opt_unit"/>
-              </item>
-              <item row="1" column="0" colspan="4">
-               <widget class="QTableView" name="Opt_Param_table">
-                <property name="font">
-                 <font>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="3">
-               <widget class="QPushButton" name="Opt_update_param">
-                <property name="font">
-                 <font>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Update project parameters</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="PyWOLF_Resource.qrc">
-                  <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
-                </property>
                </widget>
               </item>
              </layout>
@@ -5136,6 +5373,13 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </widget>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTextBrowser" name="Terminal">
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
       </layout>

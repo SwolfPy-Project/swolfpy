@@ -24,14 +24,63 @@ import pickle
 from copy import deepcopy
 import ast
 from time import time
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+
+
+
+class EmittingStream(QtCore.QObject):
+    textWritten = QtCore.Signal(str)
+    def write(self, text):
+        self.textWritten.emit(str(text))
+    
+    def writelines(self, texts):
+        for text in texts:
+            self.textWritten.emit(str(text))
+    
+
+    
 
 class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
     def __init__(self):
         super(MyQtApp,self).__init__()
         self.setupUi(self)
         self.init_app()
-         
+        self.cursor = self.Terminal.textCursor()
+        self.cursor.movePosition(QtGui.QTextCursor.Start)
+        
+        #Emitting_stream=  EmittingStream()
+        #sys.stdout.write = Emitting_stream.write
+        #sys.stdout.writelines = Emitting_stream.writelines
+        #sys.stderr.write = Emitting_stream.write
+        #sys.stderr.writelines = Emitting_stream.writelines
+        #Emitting_stream.textWritten.connect(self.onUpdateText)
 
+        
+# =============================================================================
+#     def helprrrr(self):
+#         self.cursor.movePosition(QtGui.QTextCursor.StartOfLine)
+#         self.cursor.select(QtGui.QTextCursor.LineUnderCursor)
+#         self.cursor.removeSelectedText()
+#         self.cursor.movePosition(QtGui.QTextCursor.End)
+# =============================================================================
+    
+
+    
+    def onUpdateText(self, text):
+        self.cursor.insertText(text)
+        self.Terminal.setTextCursor(self.cursor)
+        self.Terminal.ensureCursorVisible()   
+        self.cursor.movePosition(QtGui.QTextCursor.End)
+        
+        
+    
+        
+        
+         
+#%% Init app
 # =============================================================================
 # =============================================================================
     ### Init app
@@ -62,6 +111,12 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_tab_init_status = False
         self.MC_tab_init_status = False
         self.Opt_tab_init_status = False
+        self.LCAResults_tab_init_status = False
+        self.LCA_Contribution_tab_init_status = False
+        self.LCA_LCI_tab_init_status = False
+        
+        
+        
     
         
         #init First paer
@@ -76,9 +131,11 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         ### Exit
         self.actionExit.triggered.connect(sys.exit)
 
+
+#%% First Page
 # =============================================================================
 # =============================================================================
-    ### First Page
+    # First Page
 # =============================================================================
 # =============================================================================
     def init_FirstPage(self):
@@ -134,7 +191,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             #Notift the user to restart program
             self.msg_popup('PySWOLF Mode','Restart the PySWOLF to load project','Warning')
             
-    
+
+#%% Load Project   
 # =============================================================================
 # =============================================================================
     ### Load Project
@@ -196,7 +254,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.demo.update_parameters(new_param)
         
 
-        
+#%% Import processes           
 # =============================================================================
 # =============================================================================
     ### Import processes
@@ -362,6 +420,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         if x.isChecked():
             List_of_input_type.append(x.text())
 
+
+#%% Collection 
 # =============================================================================
 # =============================================================================
     ### Collection
@@ -378,7 +438,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         Tab = QtWidgets.QWidget()
         Tab.setObjectName("Collection_process_{}".format(self.col_index))
         #self.gridLayout_12 = QtWidgets.QGridLayout(Tab)
-        self.Collection.addTab(Tab,"Collection Process {}".format(self.col_index))
+        self.Collection.addTab(Tab,"Sector {}".format(self.col_index))
         self.Collection.setCurrentWidget(Tab)
     
     
@@ -544,6 +604,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
 
 
 
+#%% Treatment Processes
 # =============================================================================
 # =============================================================================
     ### Treatment Processes
@@ -727,7 +788,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             
             
 
-
+#%% Write project
 # =============================================================================
 # =============================================================================
     ### Write project
@@ -829,7 +890,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.init_CreateScenario()
         self.Opt_tab_init()
 
-
+#%% Create Scenario
 # =============================================================================
 # =============================================================================
     ### Create Scenario
@@ -905,89 +966,289 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.msg_popup('Create Scenario','Scenario {} is created successfully'.format(self.Name_new_scenario.text()),'Information')
 
 
+#%% LCA
 # =============================================================================
 # =============================================================================
-    ### LCA
+    ### LCA setup
 # =============================================================================
 # =============================================================================
     def LCA_tab_init(self):
         if not self.LCA_tab_init_status:
             self.LCA_tab_init_status = True
             projects.set_current(self.demo.project_name)
+            self.LCA_subTab.setCurrentWidget(self.LCA_setup_tab)
+            self.LCA_Results_tab.setEnabled(False)
+            self.LCA_Contribution_tab.setEnabled(False)
+            self.LCA_LCI_tab.setEnabled(False)
+            
+            # Functional unit
             self.DB_name_list = [x for x in databases]
             self.DB_name_list.sort()
-            self.LCA_DataBase.setMaxVisibleItems(1000)
+            self.LCA_DataBase.setMaxVisibleItems(100)
             self.LCA_DataBase.clear()
             self.LCA_DataBase.addItems(['...']+self.DB_name_list)
             self.LCA_DataBase.currentIndexChanged.connect(self.load_db_func(self.LCA_activity))
+            self.LCA_acts_index=0
+            self.LCA_List_of_functional_units=[]
+            self.LCA_acts_DF = pd.DataFrame(columns=['Key','Name','Amount','Unit'])
+            self.LCA_AddAct.clicked.connect(self.LCA_AddAct_Func)
+            
+            # Impact methods
             list_methods = [str(x) for x in methods]
             list_methods.sort()
             self.LCA_method.clear()
+            self.LCA_method.setMaxVisibleItems(1000)
             self.LCA_method.addItems(['...']+list_methods)
             self.LCA_Filter_impacts.clicked.connect(self.Filter_Method_func(self.Filter_impact_keyword,self.LCA_method))
-            self.LCA_Load_method.clicked.connect(self.LCA_Load_method_func)
-            self.LCA_bottom.clicked.connect(self.LCA_bottom_func)
-            self.LCA_CutOffType.addItems(['percent','number'])
-            self.LCA_CutOffType.currentTextChanged.connect(self.CutOff_setting)
-            self.LCA_CutOffType.setDisabled(True)
-            self.LCA_CutOff.setDisabled(True)
-            self.LCA_Top_activity.setDisabled(True)
-            self.LCA_Top_emssions.setDisabled(True)
-            self.LCA_updat_contribution.clicked.connect(self.update_contribution)
+            self.LCA_View_method.clicked.connect(self.LCA_View_method_Func)
+            
+            self.LCA_impacts_index=0
+            self.LCA_List_of_Impacts=[]
+            self.LCA_impacts_DF = pd.DataFrame(columns=['Imapct Category','Unit'])
+            self.LCA_AddImpact.clicked.connect(self.LCA_AddImpact_Func)
+            
+            #Clear setup
+            self.LCA_ClearSetup.clicked.connect(self.LCA_ClearSetup_Func)
+            
+            
+            #LCA Calculation setup
+            self.LCA_CreateLCA.clicked.connect(self.LCA_CreateLCA_Func)
+        
+    
+    @QtCore.Slot()
+    def LCA_AddAct_Func(self):
+        #Updating the pandas DataFrame
+        act=get_activity((self.LCA_DataBase.currentText(),self.LCA_activity.currentText()))
+        Key = act.key
+        Name = act.as_dict()['name']
+        Amount = float(self.LCA_Func_unit.text())
+        Unit = act.as_dict()['unit']
+        self.LCA_acts_DF.loc[self.LCA_acts_index]=[Key,Name,Amount,Unit]
+        self.LCA_acts_index+=1
+        
+        #Updating the QTableView (self.LCA_ActTable)
+        LCA_ActTable_model = Table_from_pandas(self.LCA_acts_DF)
+        self.LCA_ActTable.setModel(LCA_ActTable_model)
+        self.LCA_ActTable.resizeColumnsToContents()
+        
+        #Updating the list of functional units
+        self.LCA_List_of_functional_units.append({Key:Amount})
+        
         
     @QtCore.Slot()
-    def LCA_Load_method_func(self):
-        self.lca_method = Method(ast.literal_eval(self.LCA_method.currentText()))
-        self.LCA_Impact_unit.setText(self.lca_method.metadata['unit'])
-        self.LCA_Num_cfs.setText(str(self.lca_method.metadata['num_cfs']))
-        CFS_data = pd.DataFrame(self.lca_method.load(),columns=['Key','Factor'])
-        CFS_data.insert(loc=1, column='Name', value=[get_activity(x) for x in CFS_data['Key']])
-        self.CFS_table = Table_from_pandas(CFS_data)
-        self.LCA_CFs_table.setModel(self.CFS_table)
-        self.LCA_CFs_table.resizeColumnsToContents()
+    def LCA_View_method_Func(self):
+        if self.LCA_method.currentText() !='...':
+            #Create Dialog
+            Dialog = QtWidgets.QDialog()
+            Dialog.setObjectName("showMethod_Dialog")
+            gridLayout = QtWidgets.QGridLayout(Dialog)
+            gridLayout.setObjectName("showMethod_gridLayout")
+            frame = QtWidgets.QFrame(Dialog)
+            frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+            frame.setFrameShadow(QtWidgets.QFrame.Raised)
+            frame.setObjectName("showMethod_frame")
+            gridLayout_2 = QtWidgets.QGridLayout(frame)
+            gridLayout_2.setObjectName("showMethod_gridLayout_2")
+            
+            #Create QtableView
+            Method_table = QtWidgets.QTableView(frame)
+            Method_table.setObjectName("Show_Method_tableView")
+            gridLayout_2.addWidget(Method_table, 0, 0, 1, 1)
+            gridLayout.addWidget(frame, 0, 0, 1, 1)
+            
+            #Create Dataframe for Characterization factors
+            lca_method = Method(ast.literal_eval(self.LCA_method.currentText()))
+            CFS_data = pd.DataFrame(lca_method.load(),columns=['Key','Factor'])
+            CFS_data['Unit'] = lca_method.metadata['unit']
+            CFS_data.insert(loc=1, column='Name', value=[get_activity(x) for x in CFS_data['Key']])
+            
+            #Setup the QTableView                
+            Method_table_model = Table_from_pandas(CFS_data)
+            Method_table.setModel(Method_table_model)
+            Method_table.resizeColumnsToContents()
+        
+            #Show Dialog    
+            Dialog.show()
+            Dialog.exec_()
+        
 
     @QtCore.Slot()
-    def LCA_bottom_func(self):
-        Demand = {(self.LCA_DataBase.currentText(),self.LCA_activity.currentText()):ast.literal_eval(self.LCA_Func_unit.text())}
-        self.LCA_lca=LCA(Demand,self.lca_method.name)
-        self.LCA_lca.lci()
-        self.LCA_lca.lcia()
-        self.LCA_score.setText(str(self.LCA_lca.score))
-        self.LCA_Impact_unit_2.setText(self.lca_method.metadata['unit'])
-        self.LCA_Top_emssions.setEnabled(True)
-        self.LCA_Top_activity.setEnabled(True)
-        self.LCA_CutOffType.setEnabled(True)
-        self.LCA_CutOff.setEnabled(True)
-        self.CutOff_setting(self.LCA_CutOffType.currentText())
+    def LCA_AddImpact_Func(self):
+        lca_method = Method(ast.literal_eval(self.LCA_method.currentText()))
+        #Updating the pandas DataFrame
+        Impact = lca_method.name
+        Unit = lca_method.metadata['unit']
+        self.LCA_impacts_DF.loc[self.LCA_impacts_index]=[Impact,Unit]
+        self.LCA_impacts_index+=1
+        
+        #Updating the QTableView (self.LCA_Impact_table)
+        LCA_Impact_table_model = Table_from_pandas(self.LCA_impacts_DF)
+        self.LCA_Impact_table.setModel(LCA_Impact_table_model)
+        self.LCA_Impact_table.resizeColumnsToContents()
+        
+        #Updating the list of impacts
+        self.LCA_List_of_Impacts.append(Impact)
+        
+    @QtCore.Slot()
+    def LCA_CreateLCA_Func(self):
+        if len(self.LCA_List_of_functional_units)>0 and len(self.LCA_List_of_Impacts)>0:
+            calculation_setups['LCA'] = {'inv':self.LCA_List_of_functional_units, 'ia':self.LCA_List_of_Impacts}
+            self.MultiLca = MultiLCA('LCA')
+            print(self.MultiLca.results)
+            
+            #Init results tabs
+            self.LCAResults_tab_init()
+            self.LCA_Results_ImpactFig.clear()
+            self.LCA_Results_ImpactFig.addItems([str(x) for x in self.LCA_List_of_Impacts])
+            self.LCA_Contribution_tab_init()
+            self.LCA_LCI_tab_init()
 
 
+    @QtCore.Slot()
+    def LCA_ClearSetup_Func(self):
+        #Activity
+        if self.LCA_acts_index >0:
+            self.LCA_acts_index=0
+            self.LCA_List_of_functional_units=[]
+            self.LCA_acts_DF = pd.DataFrame(columns=['Key','Name','Amount','Unit'])
+            self.LCA_ActTable.model()._data = self.LCA_acts_DF
+            self.LCA_ActTable.resizeColumnsToContents()
+        
+        #Impacts
+        if self.LCA_impacts_index >0:
+            self.LCA_impacts_index=0
+            self.LCA_List_of_Impacts=[]
+            self.LCA_impacts_DF = pd.DataFrame(columns=['Imapct Category','Unit'])
+            self.LCA_Impact_table.model()._data = self.LCA_impacts_DF
+            self.LCA_Impact_table.resizeColumnsToContents()
+
+# =============================================================================
+# =============================================================================
+    ### LCA Results
+# =============================================================================
+# =============================================================================
+    def LCAResults_tab_init(self):
+        if not self.LCAResults_tab_init_status:
+            self.LCAResults_tab_init_status =True
+            self.LCA_Results_tab.setEnabled(True)
+            self.LCA_Contribution_tab.setEnabled(True)
+            self.LCA_LCI_tab.setEnabled(True)
+            self.LCA_subTab.setCurrentWidget(self.LCA_Results_tab)
+            
+            #Figure initialization
+            self.fig = Figure(figsize=(4, 5), dpi=65, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+            self.canvas = FigureCanvas(self.fig)
+            self.toolbar = NavigationToolbar(self.canvas, self)
+            lay = QtWidgets.QVBoxLayout(self.LCA_Results_fig)
+            lay.addWidget(self.toolbar)
+            lay.addWidget(self.canvas)
+            self.ax = self.fig.add_subplot(111)
+            
+            #Connect figure input
+            self.LCA_Results_ImpactFig.currentIndexChanged.connect(self.LCA_Results_ImpactFig_func)
+        
+        #updating the results table
+        data=self.MultiLca.results
+        index=[str(x) for x in list(self.MultiLca.all.keys())]
+        columns=[str(x) for x in self.LCA_List_of_Impacts]
+        results = pd.DataFrame(data,columns=columns,index=index)
+        LCA_Results_Table_model = Table_from_pandas(results)
+        self.LCA_Results_Table.setModel(LCA_Results_Table_model)
+        self.LCA_Results_Table.resizeColumnsToContents()
+        
+
+    @QtCore.Slot(str)
+    def LCA_Results_ImpactFig_func(self,impact_index):
+        if impact_index >= 0:
+            names = [str(x) for x in list(self.MultiLca.all.keys())]
+            values =  list((self.MultiLca.results[:,impact_index]))
+            self.ax.clear()
+            self.ax.barh(names,values,height=0.3)
+            
+            #set lables
+            self.ax.set_title(str(self.LCA_List_of_Impacts[impact_index]), fontsize=20)
+            self.ax.set_xlabel(self.LCA_impacts_DF['Unit'][impact_index], fontsize=14)
+            self.ax.set_ylabel('Scenarios', fontsize=14)
+            self.ax.tick_params(axis='both', which='major', labelsize=14)
+            self.ax.tick_params(axis='both', which='minor', labelsize=10)
+            
+            #set margins
+            self.canvas.draw()
+            self.fig.set_tight_layout(True)
+            
+# =============================================================================
+# =============================================================================
+    ### LCA Contribution analysis
+# =============================================================================
+# =============================================================================            
+    def LCA_Contribution_tab_init(self):
+        #Functionl unit
+        FU=[]
+        for x in self.MultiLca.all.keys():
+            FU.append(str(x))
+        self.LCA_Contr_FU.clear()
+        
+        #Impact category
+        self.LCA_Contr_FU.addItems(FU)
+        self.LCA_Contr_Method.clear()
+        self.LCA_Contr_Method.addItems([str(x) for x in self.MultiLca.methods])
+        
+        if not self.LCA_Contribution_tab_init_status: 
+            self.LCA_Contribution_tab_init_status = True
+            #CutOff type
+            self.LCA_Contr_CutOffType.addItems(['percent','number'])
+            self.LCA_Contr_CutOffType.currentTextChanged.connect(self.CutOff_setting)
+            self.LCA_Contr_updat.clicked.connect(self.update_contribution)
+            self.LCA_Contr__Top_act.setChecked(True)
+            self.CutOff_setting('percent')
+            self.LCA_Contr__Top_act.clicked.connect(lambda: self.LCA_Contr_Top_emis.setChecked(not(self.LCA_Contr__Top_act.isChecked())))
+            self.LCA_Contr_Top_emis.clicked.connect(lambda: self.LCA_Contr__Top_act.setChecked(not(self.LCA_Contr_Top_emis.isChecked())))
+            
+    
     @QtCore.Slot(str)
     def CutOff_setting(self,Type):
         if Type == 'percent':
-            self.LCA_CutOff.setMaximum=1
-            self.LCA_CutOff.setMinimum=0
-            self.LCA_CutOff.setValue(0.05)
+            self.LCA_Contr_CutOff.setMaximum=1
+            self.LCA_Contr_CutOff.setMinimum=0
+            self.LCA_Contr_CutOff.setValue(0.05)
+            self.LCA_Contr_CutOff.setSingleStep(0.01)
             
         elif Type == 'number':
-            self.LCA_CutOff.setMaximum=100
-            self.LCA_CutOff.setMinimum=1
-            self.LCA_CutOff.setValue(10.00)
+            self.LCA_Contr_CutOff.setMaximum=100
+            self.LCA_Contr_CutOff.setMinimum=1
+            self.LCA_Contr_CutOff.setValue(10.00)
+            self.LCA_Contr_CutOff.setSingleStep(1)
     
     @QtCore.Slot()
     def update_contribution(self):
-        if self.LCA_Top_activity.isChecked():
+        #Create LCA object
+        FU = self.MultiLca.func_units[self.LCA_Contr_FU.currentIndex()]
+        impact = self.MultiLca.methods[self.LCA_Contr_Method.currentIndex()]
+        self.LCA_Contr_lca=LCA(FU,impact) 
+        self.LCA_Contr_lca.lci()
+        self.LCA_Contr_lca.lcia()
+        
+        #set impact score and unit
+        self.LCA_Contr_score.setText(str(self.LCA_Contr_lca.score))
+        self.LCA_Contr_unit.setText(Method(impact).metadata['unit'])
+        
+        #Call contribution analysis functions
+        if self.LCA_Contr__Top_act.isChecked():
             self.LCA_top_act_func()
-        elif self.LCA_Top_emssions.isChecked():
+        elif self.LCA_Contr_Top_emis.isChecked():
             self.LCA_top_emission_func()
-     
+        
+    
+    # Contribution analysis , Report the top activities in DF format
     @QtCore.Slot()
     def LCA_top_act_func(self):
-        limit_type = self.LCA_CutOffType.currentText()
-        if self.LCA_CutOffType.currentText()=='number':
-            limit = round(float(self.LCA_CutOff.value()))
+        limit_type = self.LCA_Contr_CutOffType.currentText()
+        if self.LCA_Contr_CutOffType.currentText()=='number':
+            limit = round(float(self.LCA_Contr_CutOff.value()))
         else:
             limit = 35
-        lca=self.LCA_lca
+        
+        lca=self.LCA_Contr_lca
         top_act_data= ContributionAnalysis().annotated_top_processes(lca,limit= limit,limit_type ='number')
         
         Activity=[]
@@ -1006,7 +1267,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             flow=[]
             contribution=[]
             for x in top_act_data:
-                if abs(x[0]) >=  float(self.LCA_CutOff.value()) * abs(self.LCA_lca.score):
+                if abs(x[0]) >=  float(self.LCA_Contr_CutOff.value()) * abs(self.LCA_Contr_lca.score):
                     Activity.append(x[2].key)
                     Flow_unit.append(x[2].as_dict()['unit'])
                     flow.append(x[1])
@@ -1017,24 +1278,45 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             top_act_DF['Flow Unit']=Flow_unit
             top_act_DF['Contribution']=contribution
         
-        top_act_DF['Unit']=self.lca_method.metadata['unit']
-        self.top_act_table = Table_from_pandas(top_act_DF)
-        self.LCA_top_contribution.setModel(self.top_act_table)
-        self.LCA_top_contribution.resizeColumnsToContents()
+        top_act_DF['Unit']=self.LCA_Contr_unit.text()
+        LCA_contribution_Table_model = Table_from_pandas(top_act_DF)
+        self.LCA_contribution_Table.setModel(LCA_contribution_Table_model)
+        self.LCA_contribution_Table.resizeColumnsToContents()
         
+        #Creating the DataFrame for top activities
+        columns=[]
+        for x in top_act_DF['Activity']:
+            columns.append(get_activity(x).as_dict()['name'])
+        index = [self.LCA_Contr_FU.currentText()]
+        data = [[x for x in top_act_DF['Contribution'].values]]
+        plot_DF = pd.DataFrame(data,columns=columns,index=index)
+        
+        #ploting the DataFrame
+        Contr_fig,sub_Contr_fig = plt.subplots(nrows=1,ncols=1)
+        sub_Contr_fig=plot_DF.plot(kind='bar',stacked='True', ax=sub_Contr_fig)
+        
+        #set lables
+        sub_Contr_fig.set_title('Contribution to '+str(self.LCA_Contr_lca.method), fontsize=16)
+        sub_Contr_fig.set_ylabel(self.LCA_Contr_unit.text(), fontsize=14)
+        sub_Contr_fig.tick_params(axis='both', which='major', labelsize=14,rotation='auto')
+        sub_Contr_fig.tick_params(axis='both', which='minor', labelsize=10,rotation='auto')
+        Contr_fig.set_tight_layout(True)
+            
+    # Contribution analysis , Report the top emissions in DF format
     @QtCore.Slot()
     def LCA_top_emission_func(self):
-        limit_type = self.LCA_CutOffType.currentText()
-        if self.LCA_CutOffType.currentText()=='number':
-            limit = round(float(self.LCA_CutOff.value()))
+        limit_type = self.LCA_Contr_CutOffType.currentText()
+        if self.LCA_Contr_CutOffType.currentText()=='number':
+            limit = round(float(self.LCA_Contr_CutOff.value()))
         else:
             limit = 35
-        lca=self.LCA_lca
+        
+        lca=self.LCA_Contr_lca
         top_emission_data=ContributionAnalysis().annotated_top_emissions(lca,limit= limit,limit_type ='number')
         Emission=[]
         Compartment=[]
         Flow_unit=[]
-        if self.LCA_CutOffType.currentText()=='number':
+        if self.LCA_Contr_CutOffType.currentText()=='number':
             for x in top_emission_data:
                 Emission.append(x[2].as_dict()['name'])
                 Compartment.append(x[2].as_dict()['categories'])
@@ -1046,13 +1328,13 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             top_emission_DF['Flow']=[x[1] for x in top_emission_data]
             top_emission_DF['Flow Unit']=Flow_unit
             top_emission_DF['Contribution']=[x[0] for x in top_emission_data]
-            top_emission_DF['Unit']=self.lca_method.metadata['unit']
+            top_emission_DF['Unit']=self.LCA_Contr_unit.text()
             
-        elif self.LCA_CutOffType.currentText()=='percent':
+        elif self.LCA_Contr_CutOffType.currentText()=='percent':
             flow=[]
             contribution=[]
             for x in top_emission_data:
-                if abs(x[0]) >=  float(self.LCA_CutOff.value()) * abs(self.LCA_lca.score):
+                if abs(x[0]) >=  float(self.LCA_Contr_CutOff.value()) * abs(self.LCA_Contr_lca.score):
                     Emission.append(x[2].as_dict()['name'])
                     Compartment.append(x[2].as_dict()['categories'])
                     Flow_unit.append(x[2].as_dict()['unit'])
@@ -1064,13 +1346,77 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             top_emission_DF['Flow']=flow
             top_emission_DF['Flow Unit']=Flow_unit
             top_emission_DF['Contribution']=contribution
-            top_emission_DF['Unit']=self.lca_method.metadata['unit']
+            top_emission_DF['Unit']=self.LCA_Contr_unit.text()
             
-        self.top_emission_table = Table_from_pandas(top_emission_DF)
-        self.LCA_top_contribution.setModel(self.top_emission_table)
-        self.LCA_top_contribution.resizeColumnsToContents()
+        LCA_contribution_Table_model = Table_from_pandas(top_emission_DF)
+        self.LCA_contribution_Table.setModel(LCA_contribution_Table_model)
+        self.LCA_contribution_Table.resizeColumnsToContents()
+
+        #Creating the DataFrame for top emissions
+        columns=[]
+        for x,y in top_emission_DF[['Emission','Compartment']].values:
+            columns.append(str(x)+' '+str(y))
+        index = [self.LCA_Contr_FU.currentText()]
+        data = [[x for x in top_emission_DF['Contribution'].values]]
+        plot_DF = pd.DataFrame(data,columns=columns,index=index)
+        
+        #ploting the DataFrame
+        Contr_fig,sub_Contr_fig = plt.subplots(nrows=1,ncols=1)
+        sub_Contr_fig=plot_DF.plot(kind='bar',stacked='True', ax=sub_Contr_fig)
+        
+        #set lables
+        sub_Contr_fig.set_title('Contribution to '+str(self.LCA_Contr_lca.method), fontsize=16)
+        sub_Contr_fig.set_ylabel(self.LCA_Contr_unit.text(), fontsize=14)
+        sub_Contr_fig.tick_params(axis='both', which='major', labelsize=14,rotation='auto')
+        sub_Contr_fig.tick_params(axis='both', which='minor', labelsize=10,rotation='auto')
+        Contr_fig.set_tight_layout(True)
+
+
+# =============================================================================
+# =============================================================================
+    ### LCA LCI
+# =============================================================================
+# =============================================================================
+    def LCA_LCI_tab_init(self):
+        if not self.LCA_LCI_tab_init_status:
+            self.LCA_LCI_tab_init_status =True
+            self.LCA_LCI_updat.clicked.connect(self.LCA_LCI_updat_func)
+        
+        #Functionl unit
+        FU=[]
+        for x in self.MultiLca.all.keys():
+            FU.append(str(x))
+        self.LCA_LCI_FU.clear()
+        self.LCA_LCI_FU.addItems(FU)
     
-            
+    #Update the Life Cycle inventory in table
+    @QtCore.Slot()
+    def LCA_LCI_updat_func(self):
+        act= ast.literal_eval(self.LCA_LCI_FU.currentText())
+        lca=LCA({act:1})
+        lca.lci()
+        _,_,bio_rev = lca.reverse_dict()
+        Inventory = lca.biosphere_matrix * lca.supply_array
+        Inventory_DF = pd.DataFrame(Inventory,columns=['amount'])
+        key,name,compartment,unit = [],[],[],[]
+        for i in range(len(Inventory_DF)):
+            flow = get_activity(bio_rev[i])
+            flow = flow.as_dict()
+            key.append(flow['code'])
+            name.append(flow['name'])
+            compartment.append(flow['categories'])
+            unit.append(flow['unit'])
+        Inventory_DF.insert(0,'key',key)
+        Inventory_DF.insert(1,'name',name)
+        Inventory_DF.insert(2,'compartment',compartment)
+        Inventory_DF.insert(4,'unit',unit)
+        
+        #setup the TableView for inventory
+        LCA_LCI_Table_model = Table_from_pandas(Inventory_DF .sort_values('name'))
+        self.LCA_LCI_Table.setModel(LCA_LCI_Table_model)
+        self.LCA_LCI_Table.resizeColumnsToContents()
+        
+#%% Monte-Carlo Simulation            
 # =============================================================================
 # =============================================================================
     ### Monte-Carlo Simulation
@@ -1267,7 +1613,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
         
 
-
+#%% Optimization  
 # =============================================================================
 # =============================================================================
     ### Optimization
@@ -1439,7 +1785,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
                 
         
         
-        
+#%% General Functions          
 # =============================================================================
 # =============================================================================
     ### General Functions
@@ -1495,7 +1841,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         return(Filter_Method_func_helper)
 
 
-
+#%% Run
 # =============================================================================
 # =============================================================================
     ### Run
