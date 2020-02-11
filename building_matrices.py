@@ -39,10 +39,10 @@ def worker(args):
     lca = LCA(functional_unit, method[0])
     lca.lci()
     lca.lcia()
-    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models=process_models, process_model_names=process_model_names, parameters=parameters, common_data=common_data) for x in range(n)]
+    return [parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models=process_models, process_model_names=process_model_names, parameters=parameters, common_data=common_data, index =x) for x in range(n)]
 
 
-def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models = None, process_model_names = None, parameters = None, common_data = None):
+def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix, process_models = None, process_model_names = None, parameters = None, common_data = None, index =None):
     uncertain_inputs = list()
     
     if process_models:
@@ -112,7 +112,7 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
             lca.lcia_calculation()
             lca_results[method[i]]=lca.score
         lca.switch_method(method[0])
-    
+    print(os.getpid(),index)
     return(os.getpid(),lca_results,uncertain_inputs,report_dict)
     
   
@@ -133,7 +133,14 @@ class ParallelData(LCA):
         self.seed = seed
         
         
+        
         activities_dict = dict(zip(self.activity_dict.values(),self.activity_dict.keys()))
+        """
+        tech_matrix is dictionary include all the exhange as tuple (product,Feed) key and amount as value
+        {(('LF', 'Aerobic_Residual'), ('SF1_product', 'Aerobic_Residual_MRDO')):0.8288506683507344}
+        
+        So we can update the tech_params by the keys
+        """
         self.tech_matrix = dict()
         for i in self.tech_params:
             self.tech_matrix[(activities_dict[i[2]], activities_dict[i[3]])] = i[6]
@@ -141,7 +148,12 @@ class ParallelData(LCA):
         
         biosphere_dict = dict(zip(self.biosphere_dict.values(),self.biosphere_dict.keys()))
         self.bio_matrix = dict()
-        biosphere_dict_names = dict()
+        """
+        bio_matrix is dictionary include all the exhange as tuple (product,Feed) key and amount as value
+        {(('biosphere3', '0015ec22-72cb-4af1-8c7b-0ba0d041553c'), ('Technosphere', 'Boiler_Diesel')):6.12e-15}
+        
+        So we can update the bio_params by the keys
+        """
         
         for i in self.bio_params:
             if (biosphere_dict[i[2]], activities_dict[i[3]]) not in self.bio_matrix.keys():
