@@ -298,7 +298,7 @@ class Process_Model():
                     self.db_waste_data[(self.DB_waste_name,p+'_'+'to'+'_'+q)]['exchanges'] =[]
                     #Adding the exchanges for transport between the process models
                     ex = {}                        
-                    ex['amount'] = 1000   # unit converion Mg to kg
+                    ex['amount'] = 1000 * self.Distance.Distance[(p,q)]    # unit converion Mg to kg
                     ex['input'] = ('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck')
                     ex['type'] = 'technosphere'
                     ex['unit'] = 'Mg'
