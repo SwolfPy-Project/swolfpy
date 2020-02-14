@@ -6,7 +6,11 @@ Created on Tue Jan 14 21:40:11 2020
 """
 from PySide2 import QtWidgets, QtGui, QtCore
 import numpy as np
+import io
+import csv
 
+
+#%% Table: View Pandas Data Frame
 class Table_from_pandas(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -29,7 +33,23 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
             return str(self._data.columns[col])
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[col]
+    
+    def sort(self, col, order):
+        self.layoutAboutToBeChanged.emit()
+        """sort table by given column number column"""
+        if order == QtCore.Qt.AscendingOrder:
+            self._data = self._data.sort_values(self._data.columns[col],ascending=True)
+        elif order == QtCore.Qt.DescendingOrder:
+            self._data = self._data.sort_values(self._data.columns[col],ascending=False)
+        """
+        If the structure of the underlying data changes, the model can emit layoutChanged() to
+        indicate to any attached views that they should redisplay any items shown, taking the
+        new structure into account.
+        """
+        self.layoutChanged.emit()
 
+
+#%% Table: View and edit Pandas Data Frame
 class Table_from_pandas_editable(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -64,12 +84,23 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
         return False
 
     def flags(self, index):
-        return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable  
+        return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable
 
+    def sort(self, col, order):
+        self.layoutAboutToBeChanged.emit()
+        """sort table by given column number column"""
+        if order == QtCore.Qt.AscendingOrder:
+            self._data = self._data.sort_values(self._data.columns[col],ascending=True)
+        elif order == QtCore.Qt.DescendingOrder:
+            self._data = self._data.sort_values(self._data.columns[col],ascending=False)
+        """
+        If the structure of the underlying data changes, the model can emit layoutChanged() to
+        indicate to any attached views that they should redisplay any items shown, taking the
+        new structure into account.
+        """
+        self.layoutChanged.emit()
 
-
-
-
+#%% Table: Distance Table
 class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -110,13 +141,9 @@ class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
         if index.row() >= index.column():
              return QtCore.Qt.ItemIsEnabled
         else:
-            return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable 
-            
+            return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable           
         
-
-
-
-
+#%% Table: Collection scheme table
 class Table_modeifed_collection_schm(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)

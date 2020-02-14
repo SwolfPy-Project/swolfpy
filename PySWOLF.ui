@@ -45,7 +45,7 @@
           </font>
          </property>
          <property name="currentIndex">
-          <number>5</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="Start">
           <attribute name="title">
@@ -2612,8 +2612,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>100</width>
-                   <height>30</height>
+                   <width>98</width>
+                   <height>28</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -2625,8 +2625,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>100</width>
-                   <height>30</height>
+                   <width>98</width>
+                   <height>28</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -2638,8 +2638,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>100</width>
-                   <height>30</height>
+                   <width>98</width>
+                   <height>28</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -3724,7 +3724,7 @@ p, li { white-space: pre-wrap; }
            <item row="0" column="0">
             <widget class="QTabWidget" name="LCA_subTab">
              <property name="currentIndex">
-              <number>3</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="LCA_setup_tab">
               <attribute name="title">

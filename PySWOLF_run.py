@@ -51,12 +51,12 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.cursor = self.Terminal.textCursor()
         self.cursor.movePosition(QtGui.QTextCursor.Start)
         
-        #Emitting_stream=  EmittingStream()
-        #sys.stdout.write = Emitting_stream.write
-        #sys.stdout.writelines = Emitting_stream.writelines
-        #sys.stderr.write = Emitting_stream.write
-        #sys.stderr.writelines = Emitting_stream.writelines
-        #Emitting_stream.textWritten.connect(self.onUpdateText)
+        Emitting_stream=  EmittingStream()
+        sys.stdout.write = Emitting_stream.write
+        sys.stdout.writelines = Emitting_stream.writelines
+        sys.stderr.write = Emitting_stream.write
+        sys.stderr.writelines = Emitting_stream.writelines
+        Emitting_stream.textWritten.connect(self.onUpdateText)
 
         
 # =============================================================================
@@ -75,7 +75,16 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Terminal.ensureCursorVisible()   
         self.cursor.movePosition(QtGui.QTextCursor.End)
         
-        
+
+# =============================================================================
+# PySide2.QtCore.QObject.eventFilter(watched, event)
+# Filters events if this object has been installed as an event filter for the watched object.
+# In your reimplementation of this function, if you want to filter the event out, i.e. stop it being
+# handled further, return true; otherwise return false.
+# Notice in the code blow that unhandled events are passed to the base class’s function,
+# since the base class might have reimplemented for its own internal purposes
+# =============================================================================
+
     
         
         
@@ -203,6 +212,13 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Br_Project_btm.clicked.connect(self.select_file(self.Project_address,"Pickle (*.pickle)"))
             self.Load_Project_btm.clicked.connect(self.load_project_info)
             self.ini_load_project_status = True
+            
+            #QTableView
+            self.load_treatment_info.installEventFilter(self)
+            self.load_treatment_info.setSortingEnabled(True)
+            self.load_Param_table.installEventFilter(self)
+            self.load_Param_table.setSortingEnabled(True)
+        
     
     @QtCore.Slot()
     def load_project_info(self):
@@ -227,13 +243,14 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.load_treatment_info.setModel(data_table)
         self.load_treatment_info.resizeColumnsToContents()
 
+        
         param_data=pd.DataFrame(self.demo.parameters_list)
         param_data['Unit'] = 'fraction'
         self.load_param_data = Table_from_pandas_editable(param_data)
         self.load_Param_table.setModel(self.load_param_data)
         self.load_Param_table.resizeColumnsToContents()
-        self.load_update_param.clicked.connect(self.load_update_network_parameters)
         
+        self.load_update_param.clicked.connect(self.load_update_network_parameters)
         self.Create_Scenario.setEnabled(True)
         self.init_CreateScenario()
         self.LCA_tab.setEnabled(True)
@@ -554,6 +571,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         col_scheme_pd_model = Table_from_pandas_editable(col_scheme_pd)
         Sch_Col.setModel(col_scheme_pd_model)
         Sch_Col.resizeColumnsToContents()
+        Sch_Col.installEventFilter(self)
+
         
         spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         F2_layout.addItem(spacerItem_1, 0, 1, 1, 1)
@@ -812,6 +831,11 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.progressBar_write_project.setMinimum(0)
         self.progressBar_write_project.setMaximum(100)
         self.progressBar_write_project.setValue(0)
+        
+        #QTableView
+        self.Distance_table.installEventFilter(self)
+        self.Param_table.installEventFilter(self)
+        self.Param_table.setSortingEnabled(True) 
     
     @QtCore.Slot()
     def Create_Distance_Table(self):
@@ -828,8 +852,6 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Dis_data = Table_modeifed_distanceTable(Distance)
         self.Distance_table.setModel(self.Dis_data)
         self.Distance_table.resizeColumnsToContents()
-
-
         
     @QtCore.Slot()
     def write_project_func(self):
@@ -861,16 +883,13 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         #Notift the user that the project has created successfully
         self.msg_popup('Project','Project is created successfully','Information')
 
-
-        
-
     @QtCore.Slot()
     def load_params_func(self):
         param_data=pd.DataFrame(self.demo.parameters_list)
         param_data['Unit'] = 'fraction'
         self.param_data = Table_from_pandas_editable(param_data)
         self.Param_table.setModel(self.param_data)
-        self.Param_table.resizeColumnsToContents()
+        self.Param_table.resizeColumnsToContents()       
         
     @QtCore.Slot()
     def update_network_parameters(self):
@@ -905,6 +924,12 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Clear_act.clicked.connect(self.delect_act_included)
             self.Create_scenario.clicked.connect(self.create_new_scenario)
             self.init_CreateScenario_status = True
+            
+            #QTableView
+            self.act_in_process_table.installEventFilter(self)
+            self.act_in_process_table.setSortingEnabled(True)
+            self.Included_act_table.installEventFilter(self)
+            self.Included_act_table.setSortingEnabled(True)
         
     @QtCore.Slot()
     def Create_scenario_func(self):
@@ -928,6 +953,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.process_WF = Table_from_pandas_editable(self.process_waste)
         self.act_in_process_table.setModel(self.process_WF)
         self.act_in_process_table.resizeColumnsToContents()
+
+        
      
     @QtCore.Slot()
     def add_act_to_scenario(self):
@@ -939,6 +966,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Inc_act_table = Table_from_pandas(self.act_included)
         self.Included_act_table.setModel(self.Inc_act_table)
         self.Included_act_table.resizeColumnsToContents()
+
         
     @QtCore.Slot()
     def delect_act_included(self):
@@ -1013,8 +1041,13 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             
             #LCA Calculation setup
             self.LCA_CreateLCA.clicked.connect(self.LCA_CreateLCA_Func)
+            
+            #QTableView
+            self.LCA_ActTable.installEventFilter(self)
+            self.LCA_ActTable.setSortingEnabled(True)
+            self.LCA_Impact_table.installEventFilter(self)
+            self.LCA_Impact_table.setSortingEnabled(True)
         
-    
     @QtCore.Slot()
     def LCA_AddAct_Func(self):
         #Updating the pandas DataFrame
@@ -1030,7 +1063,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         LCA_ActTable_model = Table_from_pandas(self.LCA_acts_DF)
         self.LCA_ActTable.setModel(LCA_ActTable_model)
         self.LCA_ActTable.resizeColumnsToContents()
-        
+
         #Updating the list of functional units
         self.LCA_List_of_functional_units.append({Key:Amount})
         
@@ -1066,7 +1099,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             Method_table_model = Table_from_pandas(CFS_data)
             Method_table.setModel(Method_table_model)
             Method_table.resizeColumnsToContents()
-        
+            Method_table.installEventFilter(self)
+            Method_table.setSortingEnabled(True)
+            
             #Show Dialog    
             Dialog.show()
             Dialog.exec_()
@@ -1085,7 +1120,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         LCA_Impact_table_model = Table_from_pandas(self.LCA_impacts_DF)
         self.LCA_Impact_table.setModel(LCA_Impact_table_model)
         self.LCA_Impact_table.resizeColumnsToContents()
-        
+
         #Updating the list of impacts
         self.LCA_List_of_Impacts.append(Impact)
         
@@ -1146,6 +1181,10 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             
             #Connect figure input
             self.LCA_Results_ImpactFig.currentIndexChanged.connect(self.LCA_Results_ImpactFig_func)
+            
+            #QTableView
+            self.LCA_Results_Table.installEventFilter(self)
+            self.LCA_Results_Table.setSortingEnabled(True)
         
         #updating the results table
         data=self.MultiLca.results
@@ -1155,6 +1194,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         LCA_Results_Table_model = Table_from_pandas(results)
         self.LCA_Results_Table.setModel(LCA_Results_Table_model)
         self.LCA_Results_Table.resizeColumnsToContents()
+
         
 
     @QtCore.Slot(str)
@@ -1203,6 +1243,10 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.CutOff_setting('percent')
             self.LCA_Contr__Top_act.clicked.connect(lambda: self.LCA_Contr_Top_emis.setChecked(not(self.LCA_Contr__Top_act.isChecked())))
             self.LCA_Contr_Top_emis.clicked.connect(lambda: self.LCA_Contr__Top_act.setChecked(not(self.LCA_Contr_Top_emis.isChecked())))
+            
+            #QTableView
+            self.LCA_contribution_Table.installEventFilter(self)
+            self.LCA_contribution_Table.setSortingEnabled(True)
             
     
     @QtCore.Slot(str)
@@ -1282,6 +1326,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         LCA_contribution_Table_model = Table_from_pandas(top_act_DF)
         self.LCA_contribution_Table.setModel(LCA_contribution_Table_model)
         self.LCA_contribution_Table.resizeColumnsToContents()
+
         
         #Creating the DataFrame for top activities
         columns=[]
@@ -1352,6 +1397,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_contribution_Table.setModel(LCA_contribution_Table_model)
         self.LCA_contribution_Table.resizeColumnsToContents()
 
+
         #Creating the DataFrame for top emissions
         columns=[]
         for x,y in top_emission_DF[['Emission','Compartment']].values:
@@ -1381,6 +1427,10 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         if not self.LCA_LCI_tab_init_status:
             self.LCA_LCI_tab_init_status =True
             self.LCA_LCI_updat.clicked.connect(self.LCA_LCI_updat_func)
+            
+            #TableView
+            self.LCA_LCI_Table.installEventFilter(self)
+            self.LCA_LCI_Table.setSortingEnabled(True)
         
         #Functionl unit
         FU=[]
@@ -1415,6 +1465,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         LCA_LCI_Table_model = Table_from_pandas(Inventory_DF .sort_values('name'))
         self.LCA_LCI_Table.setModel(LCA_LCI_Table_model)
         self.LCA_LCI_Table.resizeColumnsToContents()
+
+        
         
 #%% Monte-Carlo Simulation            
 # =============================================================================
@@ -1472,9 +1524,14 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             for x in self.include_model_dict:
                 self.create_check_box(x,self.MC_included_models,self.verticalLayout_3)
             
-            
             self.MC_show.clicked.connect(self.show_res_func)
             self.MC_save.clicked.connect(self.MC_save_file())
+            
+            #TableView
+            self.MC_method_table.installEventFilter(self)
+            self.MC_method_table.setSortingEnabled(True)
+            self.MC_Uncertain_table.installEventFilter(self)
+            self.MC_Uncertain_table.setSortingEnabled(True)
         
     def create_check_box (self,Name,Frame,Layout):
         checkBox = QtWidgets.QCheckBox(Frame,Layout) 
@@ -1496,7 +1553,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.method_DF_index+=1
         self.MC_method_table_model = Table_from_pandas(self.method_DF)
         self.MC_method_table.setModel(self.MC_method_table_model)
-        self.MC_method_table.resizeColumnsToContents()        
+        self.MC_method_table.resizeColumnsToContents()
+        
          
     @QtCore.Slot()
     def MC_load_uncertain_func(self):
@@ -1585,9 +1643,11 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         MC_res_table.setObjectName("Show_res_tableView")
         gridLayout_2.addWidget(MC_res_table, 0, 0, 1, 1)
         
-        self.MC_res_table_model = Table_from_pandas(self.MC_results)
-        MC_res_table.setModel(self.MC_res_table_model)
+        MC_res_table_model = Table_from_pandas(self.MC_results)
+        MC_res_table.setModel(MC_res_table_model)
         MC_res_table.resizeColumnsToContents()
+        MC_res_table.installEventFilter(self)
+        MC_res_table.setSortingEnabled(True)
     
         gridLayout.addWidget(frame, 0, 0, 1, 1)
         Dialog.show()
@@ -1672,6 +1732,12 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Opt_optimize.clicked.connect(self.Opt_minimize_func)
             
             self.Opt_update_param.clicked.connect(self.Opt_update_network_parameters)
+            
+            #QTableView
+            self.Opt_Const_table.installEventFilter(self)
+            self.Opt_Const_table.setSortingEnabled(True)
+            self.Opt_Param_table.installEventFilter(self)
+            self.Opt_Param_table.setSortingEnabled(True)
         
             
      
@@ -1791,6 +1857,64 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
     ### General Functions
 # =============================================================================
 # =============================================================================
+    def eventFilter(self, obj, event):
+        if isinstance(obj,QtWidgets.QTableView):
+            if event.type() == QtCore.QEvent.KeyPress and event.matches(QtGui.QKeySequence.Copy):
+                self.copySelection(obj)
+                return True
+            elif event.type() == QtCore.QEvent.KeyPress and event.matches(QtGui.QKeySequence.Paste):
+                self.pasteSelection(obj)
+                return True
+            else:
+                return False
+        else:
+            # pass the event on to the parent class
+            return super(MyQtApp,self).eventFilter(obj, event)
+
+    # Copy function for QTabelView
+    def copySelection(self,obj):
+        selection = obj.selectedIndexes()
+        if selection:
+            rows = sorted(index.row() for index in selection)
+            columns = sorted(index.column() for index in selection)
+            rowcount = rows[-1] - rows[0] + 1
+            colcount = columns[-1] - columns[0] + 1
+            table = [[''] * colcount for _ in range(rowcount)]
+            for index in selection:
+                row = index.row() - rows[0]
+                column = index.column() - columns[0]
+                table[row][column] = index.data()
+            stream = io.StringIO()
+            csv.writer(stream, delimiter='\t').writerows(table)
+            QtWidgets.qApp.clipboard().setText(stream.getvalue())
+    
+    # Paste function for QTabelView
+    def pasteSelection(self,obj):
+        model = obj.model()
+        if hasattr(model,'setData'):
+            selection = obj.selectedIndexes()
+            if selection:
+                buffer = QtWidgets.qApp.clipboard().text() 
+                rows = sorted(index.row() for index in selection)
+                columns = sorted(index.column() for index in selection)
+                reader = csv.reader(io.StringIO(buffer), delimiter='\t')
+                #if the user select only one cell for the location
+                if len(rows) == 1 and len(columns) == 1:
+                    for i, line in enumerate(reader):
+                        for j, cell in enumerate(line):
+                            #check that the index is availble in the table
+                            if (rows[0]+i) < model.rowCount() and (columns[0]+j) < model.columnCount():     
+                                model.setData(model.index(rows[0]+i,columns[0]+j), cell)
+                else:
+                    arr = [ [ cell for cell in row ] for row in reader]
+                    for index in selection:
+                        row = index.row() - rows[0]
+                        column = index.column() - columns[0]
+                        model.setData(model.index(index.row(), index.column()), arr[row][column])
+        else:
+            print('Warning: The table is not editable!')
+
+
     @QtCore.Slot()  # select file and read the name of it. Import the name to the LineEdit.
     def select_file(self, LineEdit,Filter):
         fileDialog = QtWidgets.QFileDialog()
