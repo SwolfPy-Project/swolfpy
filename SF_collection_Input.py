@@ -25,6 +25,14 @@ class SF_collection_Input(MC):
             else:
                 exec("self.%s[self.Data.Parameter[i]] = dict(zip(self.keys,self.Data.loc[i,'Name':]))" % self.Data.Dictonary_Name[i])
 
+
+### Update_Input
+    def Update_input(self,NewData):
+        for i in NewData.index:
+            exec("self.%s[NewData.Parameter[i]] = dict(zip(self.keys,NewData.loc[i,'Name':]))" %NewData.Dictonary_Name[i])
+            self.Data.loc[i]=NewData.loc[i]
+
+
 ### Monte_carlo          
     def setup_MC(self,seed=None):
         super().__init__(self.Input_list)
