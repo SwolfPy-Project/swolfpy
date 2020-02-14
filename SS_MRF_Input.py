@@ -39,6 +39,14 @@ class SS_MRF_input(MC):
                              0.000001,0.4,0.000001,5.0,7.1,5.3,0.000001,0.3,0.6,1.5,0.000001,0.000001,0.000001,0.000001,0.000001,
                              0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,
                              0.000001,0.000001,0.000001,0.000001]  
+
+### Update_Input
+    def Update_input(self,NewData):
+        for i in NewData.index:
+            exec("self.%s[NewData.Parameter[i]] = dict(zip(self.keys,NewData.loc[i,'Name':]))" %NewData.Dictonary_Name[i])
+            self.Data.loc[i]=NewData.loc[i]
+
+
 ### Monte_carlo          
     def setup_MC(self,seed=None):
         super().__init__(self.Input_list)

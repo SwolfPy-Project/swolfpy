@@ -39,6 +39,13 @@ class Composting_input(MC):
                              0.0005,0.0006,0.0000,0.0000,0.0001,0.0077,0.0033,0.0022,0.0000,0.0000,0.0000,0.0102,0.0000,0.0000,
                              0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000]
 
+### Update_Input
+    def Update_input(self,NewData):
+        for i in NewData.index:
+            exec("self.%s[NewData.Parameter[i]] = dict(zip(self.keys,NewData.loc[i,'Name':]))" %NewData.Dictonary_Name[i])
+            self.Data.loc[i]=NewData.loc[i]
+
+
 
 ### Monte_carlo          
     def setup_MC(self,seed=None):

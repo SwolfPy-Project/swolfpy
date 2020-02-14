@@ -41,6 +41,14 @@ class AD_input(MC):
                              0.0009484357,0.0012118900,0.0000264482,0.0000264482,0.0001317272,0.0143846079,0.0061648320,
                              0.0041098880,0.0000264482,0.0000264482,0.0000264482,0.0190635573,0.0,0.0,0.0,0.0,0.0,0.0,
                              0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]  
+
+### Update_Input
+    def Update_input(self,NewData):
+        for i in NewData.index:
+            exec("self.%s[NewData.Parameter[i]] = dict(zip(self.keys,NewData.loc[i,'Name':]))" %NewData.Dictonary_Name[i])
+            self.Data.loc[i]=NewData.loc[i]
+
+
 ### Monte_carlo          
     def setup_MC(self,seed=None):
         super().__init__(self.Input_list)
