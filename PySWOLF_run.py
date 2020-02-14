@@ -1511,11 +1511,13 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_run.clicked.connect(self.MC_run_func)
               
             #List of models include collection, treatment and Common Data
-            keys = ['...']+[x for x in self.demo.Treatment_processes.keys()]
+            keys = [x for x in self.demo.Treatment_processes.keys()]
             self.MC_Model.clear()
             self.MC_Model.addItems(keys)
-            self.MC_Model_load.clicked.connect(self.MC_load_uncertain_func)
-            self.MC_uncertain_filter.clicked.connect(self.MC_load_uncertain_func)
+            self.MC_Model.currentTextChanged.connect(self.MC_load_uncertain_func)
+            self.MC_load_uncertain_func(self.MC_Model.currentText())
+            self.MC_uncertain_filter.clicked.connect(self.MC_uncertain_filter_func)
+            self.MC_uncertain_update.clicked.connect(self.MC_uncertain_update_func)
         
             CheckBoxes = ['CommonData','Parameters']+[x for x in self.demo.Treatment_processes.keys()]
             self.include_model_dict = dict(zip(CheckBoxes,[False for i in range(len(CheckBoxes))]))
@@ -1555,20 +1557,26 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.MC_method_table.setModel(self.MC_method_table_model)
         self.MC_method_table.resizeColumnsToContents()
         
-         
+    @QtCore.Slot(str)
+    def MC_load_uncertain_func(self,process_name):
+        if process_name in self.demo.Treatment_processes.keys():
+            self.uncertain_data = deepcopy(self.demo.Treatment_processes[process_name]['model'].InputData.Data)
+        self.MC_uncertain_filter_func()
+
     @QtCore.Slot()
-    def MC_load_uncertain_func(self):
-        if self.MC_Model.currentText() in self.demo.Treatment_processes.keys():
-            self.uncertain_data = deepcopy(self.demo.Treatment_processes[self.MC_Model.currentText()]['model'].InputData.Data)
-        
-        
+    def MC_uncertain_filter_func(self):
         if self.MC_uncertain_filter.isChecked():
             MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data[:][self.uncertain_data['uncertainty_type']>1])
         else:
             MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data)
         self.MC_Uncertain_table.setModel(MC_Uncertain_model)
         self.MC_Uncertain_table.resizeColumnsToContents()            
-            
+
+    @QtCore.Slot()
+    def MC_uncertain_update_func(self):
+        self.demo.Treatment_processes[self.MC_Model.currentText()]['model'].InputData.Update_input(self.MC_Uncertain_table.model()._data)
+        self.msg_popup('Update input data','Input Data is successfully updated','Information')
+        
     @QtCore.Slot()
     def MC_run_func(self):
         projects.set_current(self.demo.project_name)
@@ -1623,7 +1631,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         Total_time = round(Time_finish - Time_start)
         print("Total time for Monte Carlo simulation: {} seconds".format(Total_time))
         self.msg_popup('Monte Carlo simulation Result','Simulation is done succesfully. \n Total time: {} seconds'.format(Total_time),'Information')
-        
+        self.show_res_func()
         
     
     @QtCore.Slot()
@@ -1927,7 +1935,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
     def save(self):
         file = open(self.P_Name+'.pickle', 'wb')
         pickle.dump(self.demo, file)
-
+        
     def msg_popup(self,Subject,Information,Type):
         msg = QtWidgets.QMessageBox()
         if Type =='Warning':
