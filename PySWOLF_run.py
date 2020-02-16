@@ -289,6 +289,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.helper(self.IT_Default_4,self.IT_UserDefine_4,self.IT_BR_4,self.IT_FName_4)
         # Single Stream Material Facility (SS_MRF)
         self.helper(self.IT_Default_5,self.IT_UserDefine_5,self.IT_BR_5,self.IT_FName_5)
+        # CommonData
+        self.helper(self.IT_Default_6,self.IT_UserDefine_6,self.IT_BR_6,self.IT_FName_6)
+        
         
         # Single Family Collection (SF_Collection)
         self.helper(self.IT_Default_col,self.IT_UserDefine_col,self.IT_BR_col,self.IT_FName_col)
@@ -339,7 +342,13 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()  #Change tab and import process models
     def Import_Process_models_func(self): 
-        global LF, WTE, AD, COMP, SF_Col
+        global LF, WTE, AD, COMP, SF_Col, CommonData
+        
+        #Import CommonData
+        if self.IT_Default_6.isChecked():
+            CommonData=importlib.import_module('CommonData')
+        elif self.IT_UserDefine_6.isChecked():
+            CommonData=importlib.import_module(self.IT_FName_6.text()[:-3])
         
         #Import LF
         if self.IT_Default.isChecked():
@@ -722,6 +731,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         font2.setStrikeOut(True)
         font2.setBold(False)
         
+        self.CommonData = CommonData.CommonData()
+        
         for Index in np.arange(1,self.P_index):
             Process = self.frame_Process_treatment.findChildren(QtWidgets.QComboBox,"Process_"+str(Index))[0]
             Process_Name = self.frame_Process_treatment.findChildren(QtWidgets.QLineEdit,"Process_Name_"+str(Index))[0]
@@ -732,9 +743,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             if Process.currentText()== 'LF':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = LF.LF(input_data_path=Process_path.text())
+                    self._Treatment_processes[Process_Name.text()]['model'] = LF.LF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = LF.LF()
+                    self._Treatment_processes[Process_Name.text()]['model'] = LF.LF(CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.LF_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -742,9 +753,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'WTE':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = WTE.WTE(input_data_path=Process_path.text())
+                    self._Treatment_processes[Process_Name.text()]['model'] = WTE.WTE(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = WTE.WTE()
+                    self._Treatment_processes[Process_Name.text()]['model'] = WTE.WTE(CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.WTE_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -752,9 +763,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'AD':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = AD.AD(input_data_path=Process_path.text())
+                    self._Treatment_processes[Process_Name.text()]['model'] = AD.AD(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = AD.AD()
+                    self._Treatment_processes[Process_Name.text()]['model'] = AD.AD(CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.AD_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -762,9 +773,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'Composting':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = COMP.Comp(input_data_path=Process_path.text())
+                    self._Treatment_processes[Process_Name.text()]['model'] = COMP.Comp(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = COMP.Comp()
+                    self._Treatment_processes[Process_Name.text()]['model'] = COMP.Comp(CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.COMP_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -867,13 +878,14 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
                 z = self.Collection.findChildren(QtWidgets.QCheckBox,"Col_def_input_{}".format(i))[0].isChecked()
                 if x == 'SF_Colllection':
                     if z:
-                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance)
+                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData)
                     else:
-                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance)
+                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData)
             
             print(self._Collection_processes)
 
         self.demo = project(self.P_Name,self._Treatment_processes,self.distance,self._Collection_processes)
+        self.demo.store_CommonData(self.CommonData)
         self.demo.init_project('SWOLF_AccountMode_LCI DATA.csv')
         self.demo.write_project()
         self.progressBar_write_project.setValue(30)
@@ -924,12 +936,15 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Clear_act.clicked.connect(self.delect_act_included)
             self.Create_scenario.clicked.connect(self.create_new_scenario)
             self.init_CreateScenario_status = True
+            self.Included_act_table.setDisabled(True)
             
             #QTableView
             self.act_in_process_table.installEventFilter(self)
             self.act_in_process_table.setSortingEnabled(True)
             self.Included_act_table.installEventFilter(self)
             self.Included_act_table.setSortingEnabled(True)
+            
+            
         
     @QtCore.Slot()
     def Create_scenario_func(self):
@@ -962,7 +977,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             if self.process_WF._data['Amount'][i] != 0 and not np.isnan(self.process_WF._data['Amount'][i]):
                 self.act_included.loc[self.j]=self.process_WF._data.iloc[i]
                 self.j+=1
-        self.Included_act_table.setEnabled(1)
+        self.Included_act_table.setEnabled(True)
         self.Inc_act_table = Table_from_pandas(self.act_included)
         self.Included_act_table.setModel(self.Inc_act_table)
         self.Included_act_table.resizeColumnsToContents()
@@ -1479,6 +1494,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         if not self.MC_tab_init_status:
             self.MC_tab_init_status = True
             self.MC_tab.setEnabled(True)
+            self.MC_setting.setCurrentWidget(self.Normal)
             projects.set_current(self.demo.project_name)
             self.DB_name_list = [x for x in databases]
             self.DB_name_list.sort()
@@ -1511,7 +1527,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_run.clicked.connect(self.MC_run_func)
               
             #List of models include collection, treatment and Common Data
-            keys = [x for x in self.demo.Treatment_processes.keys()]
+            keys = ['CommonData']+[x for x in self.demo.Treatment_processes.keys()]
             self.MC_Model.clear()
             self.MC_Model.addItems(keys)
             self.MC_Model.currentTextChanged.connect(self.MC_load_uncertain_func)
@@ -1561,6 +1577,8 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
     def MC_load_uncertain_func(self,process_name):
         if process_name in self.demo.Treatment_processes.keys():
             self.uncertain_data = deepcopy(self.demo.Treatment_processes[process_name]['model'].InputData.Data)
+        elif process_name == 'CommonData':
+            self.uncertain_data = deepcopy(self.demo.CommonData.Data)
         self.MC_uncertain_filter_func()
 
     @QtCore.Slot()
@@ -1574,8 +1592,12 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()
     def MC_uncertain_update_func(self):
-        self.demo.Treatment_processes[self.MC_Model.currentText()]['model'].InputData.Update_input(self.MC_Uncertain_table.model()._data)
+        if self.MC_Model.currentText() in self.demo.Treatment_processes.keys():
+            self.demo.Treatment_processes[self.MC_Model.currentText()]['model'].InputData.Update_input(self.MC_Uncertain_table.model()._data)
+        elif self.MC_Model.currentText() == 'CommonData':
+            self.demo.CommonData.Update_input(self.MC_Uncertain_table.model()._data)
         self.msg_popup('Update input data','Input Data is successfully updated','Information')
+        self.MC_load_uncertain_func(self.MC_Model.currentText())
         
     @QtCore.Slot()
     def MC_run_func(self):
@@ -1589,16 +1611,25 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         Treatment_processes = deepcopy(self.demo.Treatment_processes)
         Collection_processe = deepcopy(self.demo.Collection_processes)
         
+        CommonData = None
+        IsCommonData = 'Not included'
         for x in self.include_model_dict:
             if self.include_model_dict[x]:
                 if x in Treatment_processes.keys():
                     process_models.append(Treatment_processes[x]['model'])
                     process_model_names.append(x)
                 
-                if x in Collection_processe.keys():
+                elif x in Collection_processe.keys():
                     process_models.append(Collection_processe[x]['model'])
                     process_model_names.append(x)
-            
+                elif x == 'CommonData':
+                    CommonData = self.demo.CommonData
+                    IsCommonData = 'Included'
+        
+        # Selecting the seed
+        seed = None
+        if len(self.MC_seed.text())>0:
+            seed = int(self.MC_seed.text())
         
         print("""
               
@@ -1618,12 +1649,14 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
                   
                   Models: {process_models}
                   
+                  CommonData: {Yes_No}
+                  
                 #################################             
               """.format(FU=FU,method=method,Nthread=int(self.MC_N_Thread.text()),nruns=int(self.MC_N_runs.text()),
-                          process_model_names=process_model_names,process_models=process_models))
+                          process_model_names=process_model_names,process_models=process_models,Yes_No = IsCommonData))
         
         Time_start = time()
-        Monte_carlo = ParallelData(FU, method, project,process_models=process_models,process_model_names=process_model_names,seed = 1)
+        Monte_carlo = ParallelData(FU, method, project,process_models=process_models,process_model_names=process_model_names,common_data = CommonData,seed = seed)
 
         Monte_carlo.run(int(self.MC_N_Thread.text()),int(self.MC_N_runs.text()))
         self.MC_results = Monte_carlo.result_to_DF()

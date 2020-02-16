@@ -39,7 +39,10 @@ class project():
         
         self.process_inputdata={}
         self.process_model={}
-    
+
+    def store_CommonData(self,CommonData):
+        self.CommonData =  CommonData   
+
     def find_destination(self,product):
         destination=[]
         for P in self.Treatment_processes:
