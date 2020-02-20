@@ -14,7 +14,7 @@ class SS_MRF_input(MC):
         if input_data_path:
             self.input_data_path = input_data_path
         else:
-            self.input_data_path = 'AD_Input.csv'
+            self.input_data_path = 'SS_MRF_Input.csv'
             
         self.Data=pd.read_csv(self.input_data_path,dtype={'amount':float,'uncertainty_type':float,'loc':float,
                                                       'scale':float,'shape':float,'minimum':float,'maximum':float})
