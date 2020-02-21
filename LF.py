@@ -40,11 +40,13 @@ class LF:
         self.n = self.InputData.LF_gas['optime']['amount']+1
         self.timescale = 101
 
-    def add_LCI(self,Name,Flow,LCI):
-        if Name in LCI.columns:
-            LCI[Name] += Flow
-        else:
-            LCI[Name] = Flow
+# =============================================================================
+#     def add_LCI(self,Name,Flow,LCI):
+#         if Name in LCI.columns:
+#             LCI[Name] += Flow
+#         else:
+#             LCI[Name] = Flow
+# =============================================================================
 
 
 # =============================================================================
@@ -99,7 +101,8 @@ class LF:
 # =============================================================================
 
     def Cal_LFG(self):
-        self.LCI = pd.DataFrame(index = self.Index) # LCI
+        #self.LCI = pd.DataFrame(index = self.Index) # LCI
+        self.LCI = LCI(self.Index)
         self.param2=pd.DataFrame(index = self.Index) # LFG generation parameter
         self.LFG = pd.DataFrame(index = self.Index)
 
@@ -130,7 +133,7 @@ class LF:
 ### Blower electricity use
         self.LFG['Blower electricity use']=(self.LFG['Total Methane collected'].values/self.InputData.LF_gas['blwrPRRm3']['amount']) * (self.InputData.LF_gas['blwrPerLoad']['amount'] /100) * (100/self.InputData.LF_gas['blwrEff']['amount']) * 24 * 356.25
         #Adding Blower electricity use to LCI
-        self.add_LCI('Electricity_consumption',self.LFG['Blower electricity use'].values,self.LCI)
+        self.LCI.add('Electricity_consumption',self.LFG['Blower electricity use'].values)
 
 ### Methane combustion for Energy         
         def comb_frac(j):
@@ -151,7 +154,7 @@ class LF:
 ### Electricity generated
         self.LFG['Electricity generated'] = self.LFG['Total Methane combusted'].values * self.InputData.LFG_Comb['convEff']['amount']*self.CommonData.LHV['CH4']['amount'] /3.6
         #Adding the generated electricity to LCI
-        self.add_LCI('Electricity_production' ,self.LFG['Electricity generated'].values,self.LCI)
+        self.LCI.add('Electricity_production' ,self.LFG['Electricity generated'].values)
     
 ### Methane Sent to Flare  (Includes downtime but not methane destruction efficiency)        
         self.LFG['Total Methane flared']= self.LFG['Total Methane collected'].values-self.LFG['Total Methane combusted'].values
@@ -299,7 +302,7 @@ class LF:
         self.Leachate_elec = self.lcht_Alloc['BOD5, Biological Oxygen Demand']*BOD_elec + Pump_elec
 
         #Adding Blower electricity use to LCI
-        self.add_LCI('Electricity_consumption',self.Leachate_elec.values,self.LCI)
+        self.LCI.add('Electricity_consumption',self.Leachate_elec.values)
 
 ### List of metals in Leachate
         self.metals = ['Arsenic, ion','Barium','Cadmium, ion','Chromium, ion','Lead','Mercury','Selenium','Silver, ion']
@@ -322,7 +325,7 @@ class LF:
                                                 self.sludge['sludge generated from metals removal'].values+self.sludge['sludge generated from suspended solids removal'].values
                                                 
         self.sludge['Medium-Heavy Duty Transportation'] = self.sludge['total sludge generated'].values/1000 * self.InputData.Leachate['dis_POTW']['amount']                            
-        self.add_LCI('Internal_Process_Transportation_Medium_Duty_Diesel_Truck',self.sludge['Medium-Heavy Duty Transportation'].values*1000,self.LCI)
+        self.LCI.add('Internal_Process_Transportation_Medium_Duty_Diesel_Truck',self.sludge['Medium-Heavy Duty Transportation'].values*1000)
             
 # =============================================================================
 #
@@ -357,49 +360,49 @@ class LF:
 ### Electricity Use        
         #Building electricity use
         bld_elec = 0.596  #kWh/Mg
-        self.add_LCI('Electricity_consumption',bld_elec,self.LCI)
+        self.LCI.add('Electricity_consumption',bld_elec)
 ### Fuel
         #Diesel	
         dies_pc=2.342866	#L/Mg
-        self.add_LCI('Equipment_Diesel',dies_pc,self.LCI)
+        self.LCI.add('Equipment_Diesel',dies_pc)
         #Gasoline
         gaso_pc=0.000616	#L/Mg
-        self.add_LCI('Equipment_Gasoline',gaso_pc,self.LCI)
+        self.LCI.add('Equipment_Gasoline',gaso_pc)
 ### Transportation
         #Heavy duty truck transportation required
         HD_trans = 0.1409593	#Mg-km/Mg
-        self.add_LCI('Internal_Process_Transportation_Heavy_Duty_Diesel_Truck',HD_trans*1000,self.LCI)
+        self.LCI.add('Internal_Process_Transportation_Heavy_Duty_Diesel_Truck',HD_trans*1000)
         #Medium duty transportation required
         MD_trans = 	2.1137375	#Mg-km/Mg
-        self.add_LCI('Internal_Process_Transportation_Medium_Duty_Diesel_Truck',MD_trans*1000,self.LCI)
+        self.LCI.add('Internal_Process_Transportation_Medium_Duty_Diesel_Truck',MD_trans*1000)
 #Heavy duty truck transportation required
         HD_trans_empty  = 4.02741E-03	#Mg-km/Mg
-        self.add_LCI('Empty_Return_Heavy_Duty_Diesel_Truck',HD_trans_empty*1000,self.LCI)
+        self.LCI.add('Empty_Return_Heavy_Duty_Diesel_Truck',HD_trans_empty*1000)
         #Medium duty transportation required
         MD_trans_empty = 8.80724E-02	#Mg-km/Mg
-        self.add_LCI('Empty_Return_Medium_Duty_Diesel_Truck',MD_trans_empty*1000,self.LCI)
+        self.LCI.add('Empty_Return_Medium_Duty_Diesel_Truck',MD_trans_empty*1000)
 ### Material Use
         #HDPE liner	
         op_HDPE_Liner = 4.69579E-03  #kg/Mg
-        self.add_LCI('HDPE_Liner',op_HDPE_Liner,self.LCI)
+        self.LCI.add('HDPE_Liner',op_HDPE_Liner)
         #HDPE cover	
         cl_HDPE_Liner=1.15879E-01 #kg/Mg
-        self.add_LCI('HDPE_Liner',cl_HDPE_Liner,self.LCI)
+        self.LCI.add('HDPE_Liner',cl_HDPE_Liner)
         #Geotextile
         cl_GeoTxt=1.14786E-02 #kg/Mg
-        self.add_LCI('Geotextile',cl_GeoTxt,self.LCI)
+        self.LCI.add('Geotextile',cl_GeoTxt)
         #HDPE pipe	
         cl_HDPE_Pipe=1.3349E-03 #m/Mg
-        self.add_LCI('HDPE_Pipe',cl_HDPE_Pipe,self.LCI)
+        self.LCI.add('HDPE_Pipe',cl_HDPE_Pipe)
         #PVC pipe	
         cl_PVC_Pipe=2.5680E-04	#m/Mg
-        self.add_LCI('PVC_Pipe',cl_PVC_Pipe,self.LCI)
+        self.LCI.add('PVC_Pipe',cl_PVC_Pipe)
         #HDPE cover	
         pc_HDPE_Liner=3.8626E-04 #kg/Mg
-        self.add_LCI('HDPE_Liner',pc_HDPE_Liner,self.LCI)
+        self.LCI.add('HDPE_Liner',pc_HDPE_Liner)
         #Geotextile	
         pc_GeoTxt=3.8262E-05 #kg/Mg
-        self.add_LCI('Geotextile',pc_GeoTxt,self.LCI)
+        self.LCI.add('Geotextile',pc_GeoTxt)
 
 
         self.key4 = {'Electricity_production':('Technosphere', 'Electricity_production'),     
@@ -435,11 +438,12 @@ class LF:
             for y in self.Index:
                 x[y]={}
               
-### Output Biosphere Database        
+### Output Biosphere Database
+        LCI_DF = self.LCI.report()       
         for y in self.Index:
             # Technosphere
             for x in self.key4:
-                Technosphere[y][self.key4[x]]= self.LCI[x][y]
+                Technosphere[y][self.key4[x]]= LCI_DF[x][y]
 
         self.bio_rename_dict = dict(self.key1, **self.key2)
         self.bio_rename_dict = dict(self.bio_rename_dict , **self.key3)
@@ -472,6 +476,32 @@ class LF:
         input_list = self.InputData.gen_MC()
         self.calc()
         return(input_list)
+
+
+### LCI class
+class LCI():
+    """
+    This class store the LCI data in numpy.ndarray instead of pandas for speedup.
+    Report function create pandas DataFrame and return it
+    Column names are stored in self.ColDict
+    """
+    def __init__(self,Index):
+        self.Index = Index
+        self.LCI = np.zeros((len(Index),20))
+        self.ColDict={}
+        self.ColNumber=0
+    
+    def add(self,name,flow):
+        if name not in self.ColDict:
+            self.ColDict[name]=self.ColNumber
+            self.ColNumber+=1
+        self.LCI[:,self.ColDict[name]]+=flow
+    
+    def report(self):
+        return(pd.DataFrame(self.LCI[:,:len(self.ColDict)],columns=list(self.ColDict.keys()),index=self.Index))
+
+    def report_T(self):
+        return(pd.DataFrame(self.LCI[:,:len(self.ColDict)].transpose(),index=list(self.ColDict.keys()),columns=self.Index))
 
 
 # =============================================================================
