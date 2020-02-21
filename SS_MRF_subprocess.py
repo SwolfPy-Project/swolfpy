@@ -6,6 +6,7 @@ Created on Tue Jan  7 11:12:21 2020
 """
 import pandas as pd
 import numpy as np
+from copy import deepcopy
 
 class LCI():
     """
@@ -15,24 +16,27 @@ class LCI():
     """
     def __init__(self,Index):
         self.Index = Index
-        self.LCI = np.zeros((len(Index),10))
+        self.LCI = np.zeros((len(Index),20))
         self.ColDict={}
         self.ColNumber=0
+    
     def add(self,name,flow):
         if name not in self.ColDict:
             self.ColDict[name]=self.ColNumber
             self.ColNumber+=1
         self.LCI[:,self.ColDict[name]]+=flow
-    def report(self,InputMass):
-        for j in range(len(self.ColDict)):
-            self.LCI[:,j]=self.LCI[:,j]/InputMass
-        return(pd.DataFrame(self.LCI[:,:len(self.ColDict)],columns=list(self.ColDict.keys()),index=self.Index))
     
-def add_LCI(Name,Flow,LCI):
-    if Name in LCI.columns:
-        LCI[Name] = Flow + LCI[Name].values
-    else:
-        LCI[Name] = Flow
+    def report(self,InputMass):
+        LCI_normal = deepcopy(self.LCI)
+        for j in range(len(self.ColDict)):
+            LCI_normal[:,j]=self.LCI[:,j]/InputMass
+        return(pd.DataFrame(LCI_normal[:,:len(self.ColDict)],columns=list(self.ColDict.keys()),index=self.Index))
+
+    def report_T(self,InputMass):
+        LCI_normal = deepcopy(self.LCI)
+        for j in range(len(self.ColDict)):
+            LCI_normal[:,j]=self.LCI[:,j]/InputMass
+        return(pd.DataFrame(LCI_normal[:,:len(self.ColDict)].transpose(),index=list(self.ColDict.keys()),columns=self.Index))
 
 ### Resource use calculation for equipments
 def calc_resource(total_throughput,remaining,removed,Eq,LCI):
@@ -40,13 +44,6 @@ def calc_resource(total_throughput,remaining,removed,Eq,LCI):
     #Elec use = (motor_size*Frac_motor)/(max_input*frac_input)  --> unit: kW/Mg
     elec = Eq['motor']['amount'] * Eq['frac_motor']['amount']/ \
                 (Eq['Max_input']['amount']*Eq['frac_MaxInput']['amount'])
-    
-    
-    Assumed_Comp = [0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.9,0.000001,19.5,17.8,0.000001,0.6,
-                             0.000001,0.000001,0.000001,29.7,2.7,1.1,0.000001,2.1,0.6,0.000001,0.000001,0.6,1.5,1.2,0.4,0.7,0.2,
-                             0.000001,0.4,0.000001,5.0,7.1,5.3,0.000001,0.3,0.6,1.5,0.000001,0.000001,0.000001,0.000001,0.000001,
-                             0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,
-                             0.000001,0.000001,0.000001,0.000001]  
     
     if Eq['Calc_base']['amount']==0: # 0: calculation based on the removed mass
         Aloc = (removed/sum(removed) if sum(removed)>0 else 0)
@@ -65,8 +62,6 @@ def calc_resource(total_throughput,remaining,removed,Eq,LCI):
     LCI.add(('Technosphere', 'Electricity_consumption'),elec_use)
     LCI.add(('Technosphere', 'Equipment_Diesel'),dsl_use)
     LCI.add(('Technosphere', 'Equipment_LPG'),LPG_use)
-    
-    
 
 ### Drum Feeder
 def Drum_Feeder(Input,InputData,LCI):
@@ -217,22 +212,40 @@ def MS2_DS3(Input,sep_eff,InputData,LCI):
         Eq=InputData.Eq_MS2_DS3
         #Resource use calculation
         calc_resource(Input,remained,removed,Eq,LCI)
-    
     return(remained,removed)
 
-
 ### ### Baler_1Way: product is baled OCC and mixed fiber
-def Baler_1Way(Input,InputData,LCI):
+def Baler_1Way(OCC,Non_OCC_Fiber,InputData,LCI):
     #Mass Calculation
-    baled =Input
+    baled =OCC+Non_OCC_Fiber
     
     #Equipment input
     Eq=InputData.Eq_Baler_1Way
     #Resource use calculation
     calc_resource(baled,baled,baled,Eq,LCI)
     
+    #Wire use calculation
+    #Bale volume
+    Volumne=Eq['Bale_Width']['amount']*Eq['Bale_Length']['amount']*Eq['Bale_Height']['amount']
+    #Bale Wire Length
+    Wire_len = Eq['Straps_Per_Bale']['amount']*2*(Eq['Bale_Height']['amount']+Eq['Bale_Width']['amount'])
+    #Wire use
+    Wire_use = (OCC/InputData.Rec_BaleDens['OCC']['amount']+Non_OCC_Fiber/InputData.Rec_BaleDens['Non_OCC_Fiber']['amount'])\
+                /Volumne*Wire_len/InputData.Baler_Wire['Len_to_Mass']['amount']
+    
+    #Wire Transportation
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck'),Wire_use*InputData.Baler_Wire['Trans_HDDT']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Medium_Duty_Diesel_Truck'),Wire_use*InputData.Baler_Wire['Trans_MDDT']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Barge'),Wire_use*InputData.Baler_Wire['Trans_Barge']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Cargo_Ship'),Wire_use*InputData.Baler_Wire['Trans_CargoShip']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Rail'),Wire_use*InputData.Baler_Wire['Trans_Rail']['amount'])
+        
+    #Wire cost
+    Wire_cost = Wire_use * InputData.Baler_Wire['Price']['amount']
+    
+    #Add Wire use to LCI
+    LCI.add(('Technosphere', 'Wire'),Wire_use)
     return(baled)
-
 
 
 ### Glass Breaker Screen
@@ -517,6 +530,35 @@ def Baler_2Way(Input,InputData,LCI):
     #Resource use calculation
     calc_resource(baled,baled,baled,Eq,LCI)
     
+    #Density
+    Density = np.ones(60)*10**12 #using big density for non-recycab
+    Density[[28,29,30,32]] = InputData.Rec_BaleDens['Aluminous']['amount']
+    Density[[26,27,31]] = InputData.Rec_BaleDens['Ferrous']['amount']
+    Density[[18,19]] = InputData.Rec_BaleDens['HDPE']['amount']
+    Density[20] = InputData.Rec_BaleDens['PET']['amount']
+    Density[24] = InputData.Rec_BaleDens['Film']['amount']
+    
+    #Wire use calculation
+    #Bale volume
+    Volumne=Eq['Bale_Width']['amount']*Eq['Bale_Length']['amount']*Eq['Bale_Height']['amount']
+    #Bale Wire Length
+    Wire_len = Eq['Straps_Per_Bale']['amount']*2*(Eq['Bale_Height']['amount']+Eq['Bale_Width']['amount'])
+    #Wire use
+    Wire_use= (Input/Density)/Volumne*Wire_len/InputData.Baler_Wire['Len_to_Mass']['amount']
+                
+    #Wire cost
+    Wire_cost = Wire_use * InputData.Baler_Wire['Price']['amount']
+    
+    #Add Wire use to LCI
+    LCI.add(('Technosphere', 'Wire'),Wire_use)
+    
+    #Wire Transportation
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck'),Wire_use*InputData.Baler_Wire['Trans_HDDT']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Medium_Duty_Diesel_Truck'),Wire_use*InputData.Baler_Wire['Trans_MDDT']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Barge'),Wire_use*InputData.Baler_Wire['Trans_Barge']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Cargo_Ship'),Wire_use*InputData.Baler_Wire['Trans_CargoShip']['amount'])
+    LCI.add(('Technosphere', 'Internal_Process_Transportation_Rail'),Wire_use*InputData.Baler_Wire['Trans_Rail']['amount'])
+    
     return(baled)
 
 ### Rolling_Stock
@@ -577,15 +619,12 @@ def Mixed_paper_separation(Input,InputData):
     return(Mixed_Paper,ONP,OFF,Fiber_Other)
 
 
+### General Electricity
+def Electricity(Input,InputData,LCI):
+    #calculate electricity use in office and floor area
+    elec_office = Input * InputData.Electricity['Area_rate']['amount']*InputData.Electricity['Frac_office']['amount']*InputData.Electricity['Elec_office']['amount']
+    elec_floor = Input * InputData.Electricity['Area_rate']['amount']*(1-InputData.Electricity['Frac_office']['amount'])*InputData.Electricity['Elec_floor']['amount']
+    LCI.add(('Technosphere', 'Electricity_consumption'),elec_office+elec_floor)
   
-# =============================================================================
-# A=flow()
-# 
-# from time import time
-# B = time()
-# for i in range(4000):
-#     A=flow()
-#     #C =deepcopy(A)
-# print(time()-B)
-# =============================================================================
+
 
