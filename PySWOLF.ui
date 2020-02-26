@@ -52,7 +52,7 @@
           </font>
          </property>
          <property name="currentIndex">
-          <number>4</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="Start">
           <attribute name="title">
@@ -65,7 +65,7 @@
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:20pt; font-weight:600; color:#aa0000;&quot;&gt;Python Solid Waste Optimization Life-cycle Framework&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; color:#aa0000;&quot;&gt;Developed at North Carolina State University&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/ICONS/PySWOLF_ICONS/PySWOLF.ico&quot; /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -244,7 +244,7 @@ p, li { white-space: pre-wrap; }
                    <x>0</x>
                    <y>0</y>
                    <width>1349</width>
-                   <height>668</height>
+                   <height>721</height>
                   </rect>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_22">
@@ -254,9 +254,17 @@ p, li { white-space: pre-wrap; }
                      <bool>true</bool>
                     </property>
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>5</number>
                     </property>
                     <widget class="QWidget" name="CommonData">
+                     <property name="geometry">
+                      <rect>
+                       <x>0</x>
+                       <y>0</y>
+                       <width>1331</width>
+                       <height>379</height>
+                      </rect>
+                     </property>
                      <attribute name="label">
                       <string>Common Data</string>
                      </attribute>
@@ -334,8 +342,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1305</width>
-                       <height>406</height>
+                       <width>444</width>
+                       <height>400</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -809,7 +817,7 @@ p, li { white-space: pre-wrap; }
                        <x>0</x>
                        <y>0</y>
                        <width>444</width>
-                       <height>406</height>
+                       <height>400</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -1286,7 +1294,7 @@ p, li { white-space: pre-wrap; }
                        <x>0</x>
                        <y>0</y>
                        <width>444</width>
-                       <height>406</height>
+                       <height>400</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -1760,7 +1768,7 @@ p, li { white-space: pre-wrap; }
                        <x>0</x>
                        <y>0</y>
                        <width>444</width>
-                       <height>406</height>
+                       <height>400</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -2233,8 +2241,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>444</width>
-                       <height>406</height>
+                       <width>1314</width>
+                       <height>400</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -2707,8 +2715,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>100</width>
-                       <height>30</height>
+                       <width>98</width>
+                       <height>28</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -2720,8 +2728,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>100</width>
-                       <height>30</height>
+                       <width>98</width>
+                       <height>28</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -2733,8 +2741,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>100</width>
-                       <height>30</height>
+                       <width>98</width>
+                       <height>28</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -2746,8 +2754,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>432</width>
-                       <height>96</height>
+                       <width>333</width>
+                       <height>90</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -2827,8 +2835,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>432</width>
-                       <height>96</height>
+                       <width>333</width>
+                       <height>90</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -2908,8 +2916,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>432</width>
-                       <height>96</height>
+                       <width>333</width>
+                       <height>90</height>
                       </rect>
                      </property>
                      <attribute name="label">
@@ -3019,8 +3027,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1351</width>
-                   <height>608</height>
+                   <width>272</width>
+                   <height>84</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -3089,8 +3097,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>455</width>
-                   <height>164</height>
+                   <width>388</width>
+                   <height>137</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -3258,7 +3266,7 @@ p, li { white-space: pre-wrap; }
                    <x>0</x>
                    <y>0</y>
                    <width>1351</width>
-                   <height>608</height>
+                   <height>671</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -4530,7 +4538,7 @@ p, li { white-space: pre-wrap; }
                    <x>0</x>
                    <y>0</y>
                    <width>662</width>
-                   <height>286</height>
+                   <height>320</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -4590,7 +4598,7 @@ p, li { white-space: pre-wrap; }
                        <x>0</x>
                        <y>0</y>
                        <width>642</width>
-                       <height>209</height>
+                       <height>255</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -4604,8 +4612,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>662</width>
-                   <height>286</height>
+                   <width>178</width>
+                   <height>70</height>
                   </rect>
                  </property>
                  <attribute name="label">
@@ -5576,7 +5584,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1433</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

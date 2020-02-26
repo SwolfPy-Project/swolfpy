@@ -330,6 +330,10 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.IT_SSYWDO_4.setChecked(True)
         self.IT_Separated_Organics_4.setChecked(True)
         
+        #Defualt SS_MRF input Type
+        self.IT_SSR_5.setChecked(True)
+
+        
         #Connect the PushButton [ImportProcessModels]
         self.ImportProcessModels.clicked.connect(self.Import_Process_models_func)
         
@@ -342,7 +346,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()  #Change tab and import process models
     def Import_Process_models_func(self): 
-        global LF, WTE, AD, COMP, SF_Col, CommonData
+        global LF, WTE, AD, COMP, SF_Col, SS_MRF, CommonData
         
         #Import CommonData
         if self.IT_Default_6.isChecked():
@@ -373,6 +377,12 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             COMP=importlib.import_module('Composting')
         elif self.IT_UserDefine_4.isChecked():
             COMP=importlib.import_module(self.IT_FName_4.text()[:-3])
+
+        #Import SS_MRF
+        if self.IT_Default_5.isChecked():
+            SS_MRF=importlib.import_module('SS_MRF')
+        elif self.IT_UserDefine_5.isChecked():
+            SS_MRF=importlib.import_module(self.IT_FName_5.text()[:-3])
 
         #Import SF_Collection
         if self.IT_Default_col.isChecked():
@@ -415,6 +425,15 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
                   self.IT_Polystyrene_4,self.IT_Plastic_Other_4,self.IT_Mixed_Plastic_4,self.IT_Brown_glass_4,self.IT_Clear_glass_4,
                   self.IT_Green_glass_4,self.IT_Mixed_Glass_4,self.IT_PVC_4,self.IT_LDPE_Film_4,self.IT_Polypropylene_4]:
             self.helper_1(x,self.COMP_input_type)
+
+        self.SS_MRF_input_type = []
+        for x in [self.IT_RWC_5,self.IT_SSO_5,self.IT_DryRes_5,self.IT_REC_5,self.IT_WetRes_5,self.IT_MRDO_5,self.IT_SSR_5,
+                  self.IT_DSR_5,self.IT_MSR_5,self.IT_MSRDO_5,self.IT_SSYW_5,self.IT_SSYWDO_5,self.IT_Bottom_Ash_5,self.IT_Fly_Ash_5,
+                  self.IT_Other_Residual_5,self.IT_Separated_Organics_5,self.IT_OCC_5,self.IT_Mixed_Paper_5,self.IT_ONP_5,
+                  self.IT_OFF_5,self.IT_Fiber_Other_5,self.IT_PET_5,self.IT_HDPE_Unsorted_5,self.IT_HDPE_P_5,self.IT_HDPE_T_5,
+                  self.IT_Polystyrene_5,self.IT_Plastic_Other_5,self.IT_Mixed_Plastic_5,self.IT_Brown_glass_5,self.IT_Clear_glass_5,
+                  self.IT_Green_glass_5,self.IT_Mixed_Glass_5,self.IT_PVC_5,self.IT_LDPE_Film_5,self.IT_Polypropylene_5]:
+            self.helper_1(x,self.SS_MRF_input_type)
 
         #Does include collection
         self.isCollection = QtWidgets.QMessageBox()
@@ -640,7 +659,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================    
     def init_TreatmentProcesses(self):
         #Create treatment dict
-        self._Plist = ['...','LF','WTE','Composting','AD']
+        self._Plist = ['...','LF','WTE','Composting','AD','SS_MRF']
         self.P_index = 1
         
         # Add process and create dict
@@ -777,6 +796,16 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
                 else:
                     self._Treatment_processes[Process_Name.text()]['model'] = COMP.Comp(CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.COMP_input_type
+                Process_Label.setFont(font1)
+                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
+
+            elif Process.currentText() == 'SS_MRF':
+                self._Treatment_processes[Process_Name.text()]={}
+                if Type_input.isChecked():
+                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF.SS_MRF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                else:
+                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF.SS_MRF(CommonDataObjct=self.CommonData)
+                self._Treatment_processes[Process_Name.text()]['input_type']=self.SS_MRF_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
             
