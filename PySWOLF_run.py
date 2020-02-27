@@ -663,7 +663,7 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.P_index = 1
         
         # Add process and create dict
-        self.Add_process.clicked.connect(self.add_process_func(self.frame_Process_treatment,self.gridLayout_59))
+        self.Add_process.clicked.connect(self.add_process_func(self.frame_Process_treatment,self.gridLayout_101))
         
         #Clear
         self.Treat_process_Clear.clicked.connect(self.Treat_process_Clear_func)
@@ -1755,10 +1755,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Opt_tab_init_status = True
             self.Opt_tab.setEnabled(True)
             
-            self.Const_DF = pd.DataFrame(columns=['flow','limit'])
+            self.Const_DF = pd.DataFrame(columns=['flow','inequality','limit'])
             self.Const_DF_index=0
-            self.mass_flows_constraints={}
-            self.emissions_constraints={}
+            self.constraints={}
             
             #Functional Unit
             projects.set_current(self.demo.project_name)
@@ -1779,12 +1778,16 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             #Constraint on Total Mass to Process
             self.Opt_Const1_process.clear()
             self.Opt_Const1_process.addItems(['...']+self.DB_name_list)
+            self.Opt_Const1_Inequality.clear()
+            self.Opt_Const1_Inequality.addItems(['<=','>='])
             self.Opt_add_Const1.clicked.connect(self.Opt_add_const1)
             
             #Constraint on Waste to Process
             self.Opt_Const2_process.clear()
             self.Opt_Const2_process.addItems(['...']+self.DB_name_list)
             self.Opt_Const2_process.currentIndexChanged.connect(self.load_db_func(self.Opt_Const2_flow))
+            self.Opt_Const2_Inequality.clear()
+            self.Opt_Const2_Inequality.addItems(['<=','>='])
             self.Opt_add_Const2.clicked.connect(self.Opt_add_const2)
             
             #Constraints on Emissions
@@ -1799,6 +1802,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Opt_Const3_flow.addItems(['...']+keys)
             self.Opt_add_Const3.clicked.connect(self.Opt_add_const3)
             
+            self.Opt_Const3_Inequality.clear()
+            self.Opt_Const3_Inequality.addItems(['<=','>='])
+            
             self.Opt_optimize.clicked.connect(self.Opt_minimize_func)
             
             self.Opt_update_param.clicked.connect(self.Opt_update_network_parameters)
@@ -1808,8 +1814,9 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Opt_Const_table.setSortingEnabled(True)
             self.Opt_Param_table.installEventFilter(self)
             self.Opt_Param_table.setSortingEnabled(True)
-        
             
+            #Remove Constraints
+            self.Opt_ClearConstr.clicked.connect(self.Opt_ClearConstr_func)
      
         
     @QtCore.Slot()
@@ -1823,28 +1830,33 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot()
     def Opt_add_const1(self):
         if self.Opt_Const1_process.currentText() != "...":
-            self.Const_DF.loc[self.Const_DF_index]=[self.Opt_Const1_process.currentText(),float(self.Opt_Const1_val.text())]
+            self.Const_DF.loc[self.Const_DF_index]=[self.Opt_Const1_process.currentText(),self.Opt_Const1_Inequality.currentText(),float(self.Opt_Const1_val.text())]
             self.Const_DF_index +=1
             self.Opt_Const_table_update()
-            self.mass_flows_constraints[self.Opt_Const1_process.currentText()]= float(self.Opt_Const1_val.text())
+            self.constraints[self.Opt_Const1_process.currentText()]= {'limit':float(self.Opt_Const1_val.text()),
+                                                                     'KeyType':'Process',
+                                                                     'ConstType':self.Opt_Const1_Inequality.currentText()}
         
     
     @QtCore.Slot()
     def Opt_add_const2(self):
         if self.Opt_Const2_process.currentText() != "...":
-            self.Const_DF.loc[self.Const_DF_index]=[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText()),self.Opt_Const2_val.text()]
+            self.Const_DF.loc[self.Const_DF_index]=[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText()),self.Opt_Const2_Inequality.currentText(),self.Opt_Const2_val.text()]
             self.Const_DF_index +=1
             self.Opt_Const_table_update()
-            self.mass_flows_constraints[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText())]= float(self.Opt_Const2_val.text())
-
+            self.mass_flows_constraints[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText())]= {'limit':float(self.Opt_Const2_val.text()),
+                                                                                                                      'KeyType':'WasteToProcess',
+                                                                                                                      'ConstType':self.Opt_Const2_Inequality.currentText()}
         
     @QtCore.Slot()
     def Opt_add_const3(self):
         if self.Opt_Const3_flow.currentText() != "...":
-            self.Const_DF.loc[self.Const_DF_index]=[self.Opt_Const3_flow.currentText(),self.Opt_Const3_val.text()]
+            self.Const_DF.loc[self.Const_DF_index]=[self.Opt_Const3_flow.currentText(),self.Opt_Const3_Inequality.currentText(),self.Opt_Const3_val.text()]
             self.Const_DF_index +=1
             self.Opt_Const_table_update()
-            self.emissions_constraints[self.bio_dict[self.Opt_Const3_flow.currentText()]]= float(self.Opt_Const3_val.text())
+            self.emissions_constraints[self.bio_dict[self.Opt_Const3_flow.currentText()]]= {'limit':float(self.Opt_Const3_val.text()),
+                                                                                            'KeyType':'Emission',
+                                                                                            'ConstType':self.Opt_Const3_Inequality.currentText()}                                                     
     
     @QtCore.Slot()
     def Opt_Const_table_update(self):
@@ -1868,24 +1880,18 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         
         method = {}
         
-        mass_flows_constraints = {}
+        constraints = {}
         
-        emissions_constraints = {}
+        """.format(project_name,functional_unit,method,self.constraints))
         
-        """.format(project_name,functional_unit,method,self.mass_flows_constraints,self.emissions_constraints))
-        
-        if len(self.mass_flows_constraints)>0:
-            mass_flows_constraints =self.mass_flows_constraints
+        if len(self.constraints)>0:
+            constraints =self.constraints
         else:
-            mass_flows_constraints = None
+            constraints = None
         
-        if len(self.emissions_constraints)>0:
-            emissions_constraints =self.emissions_constraints
-        else:
-            emissions_constraints = None
         
         opt = ParallelData(functional_unit, method, project_name) 
-        results = opt.optimize_parameters(self.demo, mass_flows_constraints=mass_flows_constraints, emissions_constraints=emissions_constraints)
+        results = opt.optimize_parameters(self.demo, constraints=constraints)
         print(results)
         Time_finish = time()
         Total_time = round(Time_finish - Time_start)
@@ -1918,7 +1924,14 @@ class MyQtApp(PySWOLF.Ui_MainWindow, QtWidgets.QMainWindow):
         self.demo.update_parameters(new_param)   
         
         
-                
+    @QtCore.Slot()
+    def Opt_ClearConstr_func(self):
+        self.Const_DF = pd.DataFrame(columns=['flow','inequality','limit'])
+        self.Const_DF_index=0
+        self.Opt_Const_table_update()
+        self.constraints={}
+        
+                     
         
         
 #%% General Functions          
