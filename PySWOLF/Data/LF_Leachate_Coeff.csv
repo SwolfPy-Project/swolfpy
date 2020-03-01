@@ -1,0 +1,23 @@
+Emission,Surface_water,Ground_water,Concentrations (kg/L),Removal Efficiency (%)
+"BOD5, Biological Oxygen Demand","('biosphere3', '70d467b6-115e-43c5-add2-441de9411348')","('biosphere3', '57c27ba7-a61a-4932-8cd5-095c88ff0245')",,92.1
+"COD, Chemical Oxygen Demand","('biosphere3', 'fc0b5c85-3b49-42c2-a3fd-db7e57b696e3')","('biosphere3', 'be10dd54-eb4d-48ae-9e14-7d79ce8b170d')",,80
+"Ammonium, ion","('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')","('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')",0.000342682,21.6
+"Arsenic, ion","('biosphere3', '8c8ffaa5-84ed-4668-ba7d-80fd0f47013f')","('biosphere3', '1f607ae2-b42d-4411-90b8-e9bbac66a554')",3.00E-08,85
+Barium,"('biosphere3', '2c872773-0a29-4831-93b9-d49b116fa7d5')","('biosphere3', 'd68f41b3-6887-49a8-8efa-96812f8ec9f6')",8.51E-07,85
+"Cadmium, ion","('biosphere3', 'af83b42f-a4e6-4457-be74-46a87798f82a')","('biosphere3', '3937f5a5-b4a4-434d-9fc3-1d29064fc3f8')",6.95E-09,85
+"Chromium, ion","('biosphere3', 'e34d3da4-a3d5-41be-84b5-458afe32c990')","('biosphere3', '1c87de06-e58f-4684-a54c-d29f1a251a87')",8.51E-08,85
+Lead,"('biosphere3', 'b3ebdcc3-c588-4997-95d2-9785b26b34e1')","('biosphere3', 'c864aa15-0abc-41ad-9889-348106e485d8')",1.32E-08,85
+Mercury,"('biosphere3', '66bfb434-78ab-4183-b1a7-7f87d08974fa')","('biosphere3', 'e1aa92d7-9297-452e-ade0-e5e2acc52ad7')",4.19E-10,85
+Phosphate,"('biosphere3', '1727b41d-377e-43cd-bc01-9eaba946eccb')","('biosphere3', '329fc7d8-4011-4327-84e4-34ff76f0e42d')",9.99E-06,21.6
+Selenium,"('biosphere3', '544dbea9-1d18-44ff-b92b-7866e3baa6dd')","('biosphere3', '1be475e0-ccef-4145-98e0-0d47c570a71b')",9.71E-09,85
+"Silver, ion","('biosphere3', 'af9793ba-25a1-4928-a14a-4bcf7d5bd3f7')","('biosphere3', '71cfe87c-ab80-421e-adba-afb7d5bd0861')",6.59E-08,85
+"Suspended solids, unspecified","('biosphere3', '3844f446-ded5-4727-8421-17a00ef4eba7')","('biosphere3', '51c35cf0-3417-4d42-936f-9a6fd7a2638a')",5.69E-05,96
+Benzene,"('biosphere3', 'a1891db2-db98-45fc-ae0e-b3d3c17850c5')","('biosphere3', 'bbd89c3f-b232-49aa-8ce7-45758afe4479')",7.00E-09,0
+Chloroform,"('biosphere3', 'ec2c6f72-1ca3-428b-90e5-e9feb4b58381')","('biosphere3', 'cbe3d924-dd94-4208-bdbc-9aed29bbc770')",1.00E-08,0
+"Ethylene dichloride ('Ethane, 1,2-dichloro-')","('biosphere3', '250dd08a-ee61-4a2b-86f8-b21e9ebe6ed9')","('biosphere3', '12c12a5e-847f-4a94-be3b-21f14ff429fe')",1.50E-09,0
+"Trichloroethene (Ethene, trichloro-)","('biosphere3', 'c4bc70e8-d445-4ca4-bc89-fc93819791e3')","('biosphere3', '014bd81b-88c7-4a81-b872-201dcbfb8bbf')",8.00E-09,0
+"Tetrachloroethene ('Ethene, tetrachloro-')","('biosphere3', 'a74ded48-233e-4bd2-9406-a36d8e623489')",0,9.70E-09,0
+"Vinyl chloride  ('Ethene, chloro-')","('biosphere3', 'cfe43cd8-3356-4d29-bb02-5b9c9ede0aec')","('biosphere3', '3bd4b93d-298c-4e3f-88bb-864569350e60')",1.00E-08,0
+Toluene,"('biosphere3', 'bb33742a-c5d5-4607-805f-13e4d3a155fd')","('biosphere3', 'e5d0d6ea-c681-4080-ab05-5d9522c79bd1')",1.60E-07,0
+Xylene,"('biosphere3', '29190509-6cc8-47e1-bc99-5ff994e39b74')","('biosphere3', '0e6cf9f9-44ff-4395-ad3b-36109a32e6eb')",5.60E-08,0
+"Benzene, ethyl-","('biosphere3', '4abbbc48-a8d0-4c3a-9dea-4e67f1505230')","('biosphere3', '1f455f6d-473e-4a50-af39-26dde8cd6479')",1.81E-08,0

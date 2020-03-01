@@ -1,0 +1,50 @@
+Biosphere_key,Exchange,Subcompartment,CAS_Number,Reference,MW,Concentration_ppmv,Destruction_Eff_Vent,Destruction_Eff_Flare,Destruction_Eff_Gas_Turbine,Destruction_Eff_Boiler_Steam_Turbine,Destruction_Eff_ICE,Destruction_Eff_User_Defined
+"('biosphere3', '8cbaa905-41b0-4327-8403-bf1c8eb25429')",1-Pentene,urban air close to ground,000109-67-1,"From AP-42, Table 2.4-1",70.13,0.22,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'd5649872-502b-4d23-b882-26d74a9fc4b4')",2-Methyl pentane,urban air close to ground,000096-14-0,"From AP-42, Table 2.4-1",86.18,0.74,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '79a87f98-0b00-4e7e-86f8-70667307f696')",2-Methyl-2-butene,urban air close to ground,000513-35-9,"From AP-42, Table 2.4-1",70.13,0.303,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'cbf58f64-9286-406f-8dcb-ef1d81eec980')",2-Propanol,urban air close to ground,000067-63-0,"From AP-42, Table 2.4-1",60.1,1.8,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '9fbec2f4-6b42-4e63-9573-14e04befe20f')",4-Methyl-2-pentanone,urban air close to ground,000108-10-1,"From AP-42, Table 2.4-1",100.16,0.883,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'e3e8f6a2-c45e-4685-9859-698b2eadaf5b')",Acetaldehyde,unspecified,000075-07-0,"From AP-42, Table 2.4-1",44.05,0.0774,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'f3d5fd96-8805-4d3d-867a-5df27975b07f')",Acetone,unspecified,000067-64-1,"From AP-42, Table 2.4-1",58.08,6.7,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'f7553ef8-e4f3-4b9c-98be-81fa36315648')",Acetonitrile,non-urban air or from high stacks,000075-05-8,"From AP-42, Table 2.4-1",41.05,0.556,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '28999907-a8a7-45b3-857e-836495ca2aa0')",Benzene,unspecified,000071-43-2,"From AP-42, Table 2.4-1",78.11,2.4,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '88ef28f1-cfd5-44a0-ac34-01acf2db84a0')","Benzene, ethyl-",unspecified,000100-41-4,"From AP-42, Table 2.4-1",106.17,4.86,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '5064da53-d4ec-44ee-ba23-b20a4f8c4964')",Butadiene,unspecified,000106-99-0,"From AP-42, Table 2.4-1",54.09,0.166,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '982b0510-96ac-4bcb-a758-e98006b95f4d')",Butane,unspecified,000106-97-8,"From AP-42, Table 2.4-1",58.12,6.22,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'd94a5a1a-bc06-48fd-b6d9-7477ea65cacd')",Carbon disulfide,unspecified,000075-15-0,"From AP-42, Table 2.4-1",76.14,0.147,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '2cb2333c-1599-46cf-8435-3dffce627524')","Carbon monoxide, non-fossil",unspecified,000630-08-0,"From AP-42, Table 2.4-1",28.01,24.4,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '476ff60f-c2a2-43d6-bbe7-b4c4eea6960a')",Carbonyl sulfide,unspecified,000463-58-1,"From AP-42, Table 2.4-1",60.08,0.122,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'a192f5ac-fb5d-4e14-ac11-3c38283da9d0')",Cumene,unspecified,000098-82-8,"From AP-42, Table 2.4-1",120.19,0.43,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '5512f026-b3a9-419a-b787-c0be0b39be1c')",Cyclohexane,urban air close to ground,000110-82-7,"From AP-42, Table 2.4-1",84.16,1.01,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '8e30c990-5ed4-4f94-9d0e-2f5e4ff1a1f9')",Ethane,unspecified,000074-84-0,"From AP-42, Table 2.4-1",30.07,9.05,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'ce6294f5-2ed7-46ee-a967-33e265e34455')","Ethane, 1,1,1-trichloro-, HCFC-140",unspecified,000071-55-6,"From AP-42, Table 2.4-1",133.4,0.243,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'cacfd448-6c2d-4061-9363-fd506b979f25')","Ethane, 1,1,2-trichloro-1,2,2-trifluoro-, CFC-113",unspecified,000076-13-1,"From AP-42, Table 2.4-1",187.37,0.0672,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '03758df7-503a-400e-bc7b-ec05825761a5')","Ethane, 1,2-dichloro-",unspecified,000107-06-2,"From AP-42, Table 2.4-1",98.96,0.159,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '1584734d-c5c8-42a5-aa51-0f6a92a9cc0d')","Ethane, 1,2-dichloro-1,1,2,2-tetrafluoro-, CFC-114",non-urban air or from high stacks,000076-14-2,"From AP-42, Table 2.4-1",170.92,0.106,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'd3f5d0b9-0155-4800-9dbb-b0583948c8c6')",Ethanol,unspecified,000064-17-5,"From AP-42, Table 2.4-1",46.07,0.23,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '2a51889e-9264-45df-9753-64c25a755d9e')","Ethene, chloro-",unspecified,000075-01-4,"From AP-42, Table 2.4-1",62.5,1.42,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '9bc66656-9f37-44bc-ae0b-5d5243b8137e')","Ethene, tetrachloro-",unspecified,000127-18-4,"From AP-42, Table 2.4-1",165.83,2.03,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '41cce80a-82c1-4caa-b6ef-718ec4b83fd6')",Ethyl acetate,urban air close to ground,000141-78-6,"From AP-42, Table 2.4-1",88.11,1.88,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'a861cfae-a310-4e9d-b9eb-5d555c9a684c')",Formaldehyde,unspecified,000050-00-0,"From AP-42, Table 2.4-1",30.03,0.0117,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'f4bb66f1-c78c-409f-8368-85c1205a3573')",Heptane,urban air close to ground,000142-82-5,"From AP-42, Table 2.4-1",100.2,1.34,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '6b248529-b754-4be7-8b1a-91b9756fc2bc')",Hexane,unspecified,000110-54-3,"From AP-42, Table 2.4-1",86.18,3.1,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '20d4d821-f4f7-4017-8810-f822fcdf619e')",Hydrogen sulfide,unspecified,007783-06-4,"From AP-42, Table 2.4-1",34.08,32,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '0c209634-80bb-4909-8442-3189b7cb01d7')",Isoprene,unspecified,000078-79-5,"From AP-42, Table 2.4-1",68.12,0.0165,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '71234253-b3a7-4dfe-b166-a484ad15bee7')",Mercury,unspecified,007439-97-6,"From AP-42, Table 2.4-1",200.59,0.000122,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '8c283de2-50d3-40c8-8bff-1e172c3398f8')","Methane, bromo-, Halon 1001",unspecified,000074-83-9,"From AP-42, Table 2.4-1",94.94,0.021,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '56b7d3b6-83d7-42b0-a65b-5ad23e29db47')","Methane, chlorodifluoro-, HCFC-22",non-urban air or from high stacks,000075-45-6,"From AP-42, Table 2.4-1",86.47,0.796,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'd4b61c6c-a620-4a91-afc6-ca87ef97b55a')","Methane, dichloro-, HCC-30",non-urban air or from high stacks,000075-09-2,"From AP-42, Table 2.4-1",84.93,6.15,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'c0e8ec60-a5ae-432e-97a5-cf76b6247a00')","Methane, dichlorodifluoro-, CFC-12",unspecified,000075-71-8,"From AP-42, Table 2.4-1",120.91,1.18,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'ed63abd0-7cc6-4825-8759-b367e560fe95')","Methane, monochloro-, R-40",non-urban air or from high stacks,000074-87-3,"From AP-42, Table 2.4-1",50.49,0.244,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '86d12e70-0c64-4ecf-ba52-114fa0c5d402')","Methane, tetrachloro-, R-10",unspecified,000056-23-5,"From AP-42, Table 2.4-1",153.82,0.00798,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '33681770-a0e1-4ce8-93c3-941fd607fa5f')","Methane, tetrafluoro-, R-14",unspecified,000075-73-0,"From AP-42, Table 2.4-1",88,0.151,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '26b5c174-e20e-430a-a4b1-44de4af8b40f')",Methyl ethyl ketone,urban air close to ground,000078-93-3,"From AP-42, Table 2.4-1",72.11,4.01,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'f3f34697-7231-4575-aaf5-e35b972d329a')",Monochloroethane,urban air close to ground,000075-00-3,"From AP-42, Table 2.4-1",64.51,3.95,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'd3260d0e-8203-4cbb-a45a-6a13131a5108')","NMVOC, non-methane volatile organic compounds, unspecified origin",unspecified,NMVOC,"From AP-42, Table 2.4-1",86.18,838,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '516606eb-99f6-4e8c-b99a-6b439aaed48c')",Pentane,unspecified,000109-66-0,"From AP-42, Table 2.4-1",72.15,4.46,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '3a6c936c-0276-4f11-9d98-1bd011387a6e')",Propane,unspecified,000074-98-6,"From AP-42, Table 2.4-1",44.1,15.5,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '64165202-4870-47d0-8602-b85e5d672865')",Propene,unspecified,000115-07-1,"From AP-42, Table 2.4-1",42.08,3.32,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '9cec94a2-e7fe-43f4-82f4-293c477f86dc')",Styrene,unspecified,000100-42-5,"From AP-42, Table 2.4-1",104.15,0.411,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', 'a793710a-1990-4e65-a95e-cfbbc5332355')",t-Butyl methyl ether,urban air close to ground,001634-04-4,"From AP-42, Table 2.4-1",88.15,0.118,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '3b1ecf8e-1d2c-4330-81da-a79f9068976d')",Toluene,unspecified,000108-88-3,"From AP-42, Table 2.4-1",92.14,29.5,0,97.7,94.4,98.6,97.2,99
+"('biosphere3', '5c234628-ab1e-4284-ae2b-f1c2f6883f71')",Xylene,unspecified,001330-20-7,"From AP-42, Table 2.4-1",106.17,9.23,0,97.7,94.4,98.6,97.2,99

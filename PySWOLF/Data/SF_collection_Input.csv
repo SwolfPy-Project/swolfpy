@@ -1,0 +1,9 @@
+Category,Dictonary_Name,Parameter,Name,amount,unit,uncertainty_type,loc,scale,shape,minimum,maximum,Reference,Comment
+SF_Collection,Col,res_pop,Single-Family Population,100000,People,,,,,,,,
+SF_Collection,Col,res_per_dwel,Residents per house,2.69,people/house,,,,,,,,
+SF_Collection,Col,res_gen,Residential Generation rate,1.3608,kg/person-day,,,,,,,,
+SF_Collection,Col,houses_res,Houses in sector,37174.72119,houses/sector,,,,,,,,
+SF_Collection,Col,Leaf_vacuum,vehicles equipped with leaf vacuums used to collect leaves during one a particular season?,0,0/1,,,,,,,,
+SF_Collection,Col,Leaf_vacuum_amount,amount of leaves collected by leaf vacuum per year?,500,Mg/year,,,,,,,,
+SF_Collection,Col,LV_serv_pd,"Length of leaf vacuum service period (S.P), weeks",12,weeks,,,,,,,,
+SF_Collection,Col,LV_serv_times,How many times each stop is serviced/S.P.,4,time/stop,,,,,,,,
