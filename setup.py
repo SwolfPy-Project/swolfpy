@@ -10,7 +10,12 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = []
+requirements = [
+"brightway2",
+"jupyter",
+"PySide2",
+"pandas"
+]
 
 setup_requirements = [ ]
 
@@ -66,6 +71,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='',
-    version='0.1.3',
+    version='0.1.6',
     zip_safe=False,
 )
