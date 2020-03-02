@@ -16,7 +16,8 @@ PySWOLF
 
 
 
-Life cycle assessment and optimization framework for solid waste management systems
+Python Solid Waste Optimization Life-cycle Framework (PySWOLF)
+
 
 
 * Free software: BSD license
@@ -26,7 +27,11 @@ Life cycle assessment and optimization framework for solid waste management syst
 Features
 --------
 
-* TODO
+* Life cycle assessment of Municipal Solid Waste (MSW) systems. Process models include Landfill, Waste-to-Energy (WTE), Composting, Anaerobic Digestion (AD), Single Stream Material Recovery Facility (MRF), and Collection.
+* Monte Carlo simulation
+* Optimization
+
+
 
 Credits
 -------

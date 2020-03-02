@@ -70,7 +70,7 @@ setup(
     data_files = files,
     test_suite='tests',
     tests_require=test_requirements,
-    url='',
-    version='0.1.6',
+    url='https://bitbucket.org/pyswolf/pyswolf',
+    version='0.1.7',
     zip_safe=False,
 )
