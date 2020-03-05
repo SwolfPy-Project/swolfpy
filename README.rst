@@ -37,16 +37,39 @@ Installation
 --------
 1- Download and install miniconda from:  https://docs.conda.io/en/latest/miniconda.html
 
-2- Update conda in anaconda prompt::
+2- Update conda in a terminal window or anaconda prompt::
 
         conda update conda
+
 3- Add conda channels::
 
         conda config --append channels conda-forge
         conda config --append channels cmutel
-        conda config --append channels bsteubing
         conda config --append channels haasad
-        conda config --append channels pascallesage
+
+4- Create a new environment for PySWOLF::
+
+        conda create --name PySWOLF python=3.7
+
+5- Activate the environment::
+
+        conda activate PySWOLF
+
+6- Install PySWOLF in the environment::
+
+        pip install PySWOLF
+
+7- Open python to tun PySWOLF::
+
+        ipython
+
+8- Run PySWOLF::
+
+        from PySWOLF import *
+        PySWOLF()
+
+
+
 
 
 
