@@ -375,11 +375,11 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         AD=AD   
         #Import COMP
         if self.IT_Default_4.isChecked():
-            import PySWOLF.ProcessModels.Composting as Comp
+            import PySWOLF.ProcessModels.Composting as COMP
         elif self.IT_UserDefine_4.isChecked():
             #COMP=importlib.import_module(self.IT_FName_4.text()[:-3])
-            import PySWOLF.ProcessModels.Composting as Comp
-        Comp=Comp
+            import PySWOLF.ProcessModels.Composting as COMP
+        COMP=COMP
         #Import SS_MRF
         if self.IT_Default_5.isChecked():
             import PySWOLF.ProcessModels.SS_MRF as SS_MRF
