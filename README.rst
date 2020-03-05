@@ -37,11 +37,18 @@ Installation
 --------
 1- Download and install miniconda from:  https://docs.conda.io/en/latest/miniconda.html
 
-2- Update conda in anaconda prompt:
+2- Update conda in anaconda prompt::
+
+        conda update conda
+3- Add conda channels::
 
 ```
-conda update conda
-```
+        conda config --append channels conda-forge
+        conda config --append channels cmutel
+        conda config --append channels bsteubing
+        conda config --append channels haasad
+        conda config --append channels pascallesage
+```        
 
 
 
