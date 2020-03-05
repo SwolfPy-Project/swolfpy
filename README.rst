@@ -6,9 +6,6 @@ Python Solid Waste Optimization Life-cycle Framework(PySWOLF)
 .. image:: https://img.shields.io/pypi/v/pyswolf.svg
         :target: https://pypi.python.org/pypi/pyswolf
 
-.. image:: https://img.shields.io/travis/hexmsm/pyswolf.svg
-        :target: https://travis-ci.com/hexmsm/pyswolf
-
 .. image:: https://readthedocs.org/projects/pyswolf/badge/?version=latest
         :target: https://pyswolf.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
