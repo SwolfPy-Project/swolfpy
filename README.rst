@@ -32,7 +32,6 @@ Features
 * Optimization
 
 
-
 Installation
 --------
 1- Download and install miniconda from:  https://docs.conda.io/en/latest/miniconda.html
@@ -63,18 +62,10 @@ Installation
 
         ipython
 
-8- Run PySWOLF::
+8- Run PySWOLF in python::
 
         from PySWOLF import *
         PySWOLF()
-
-
-
-
-
-
-
-
 
 
 Credits
