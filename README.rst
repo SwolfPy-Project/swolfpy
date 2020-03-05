@@ -19,6 +19,7 @@ Python Solid Waste Optimization Life-cycle Framework(PySWOLF)
 * Documentation: https://pyswolf.readthedocs.io.
 * Other links: 
         https://go.ncsu.edu/pyswolf
+
         https://jwlevis.wixsite.com/swolf
 
 
