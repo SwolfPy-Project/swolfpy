@@ -42,13 +42,13 @@ Installation
         conda update conda
 3- Add conda channels::
 
-```
         conda config --append channels conda-forge
         conda config --append channels cmutel
         conda config --append channels bsteubing
         conda config --append channels haasad
         conda config --append channels pascallesage
-```        
+
+
 
 
 
