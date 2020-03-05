@@ -1,5 +1,5 @@
 =======
-PySWOLF
+Python Solid Waste Optimization Life-cycle Framework(PySWOLF)
 =======
 
 
@@ -15,13 +15,11 @@ PySWOLF
 
 
 
-
-Python Solid Waste Optimization Life-cycle Framework (PySWOLF)
-
-
-
 * Free software: BSD license
 * Documentation: https://pyswolf.readthedocs.io.
+* Other links: 
+        https://go.ncsu.edu/pyswolf
+        https://jwlevis.wixsite.com/swolf
 
 
 Features
