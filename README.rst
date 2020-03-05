@@ -33,6 +33,20 @@ Features
 
 
 
+Installation
+--------
+1- Download and install miniconda from:  https://docs.conda.io/en/latest/miniconda.html
+
+2- Update conda in anaconda prompt:
+
+```
+conda update conda
+```
+
+
+
+
+
 Credits
 -------
 
