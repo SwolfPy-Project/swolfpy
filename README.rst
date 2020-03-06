@@ -1,8 +1,8 @@
+.. General
 =============================================================
 Python Solid Waste Optimization Life-cycle Framework(PySWOLF)
 =============================================================
 
-.. General
 .. image:: https://img.shields.io/pypi/v/pyswolf.svg
         :target: https://pypi.python.org/pypi/pyswolf
 
