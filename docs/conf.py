@@ -40,7 +40,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 
 #autodoc_mock_imports = ["PySWOLF",'pandas','pd','Distance','PySWOLF.Distance','Brightway2','LCA','PySWOLF.UI.PySWOLF_run', 'PySide2','PySide2.QtGui', #'PySide2.QtCore', 'PySide2.QtWidgets']
 
-autodoc_mock_imports = ['pandas','Brightway2','LCA','PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']
+autodoc_mock_imports = ['pandas','brightway2','LCA','PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
