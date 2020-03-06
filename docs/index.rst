@@ -8,7 +8,6 @@ Welcome to PySWOLF's documentation!
    readme
    installation
    usage
-   modules
    contributing
    authors
    history
