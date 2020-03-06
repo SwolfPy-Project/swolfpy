@@ -28,6 +28,7 @@ Features
 * Optimization
 
 
+.. Installation
 Installation
 ------------
 1- Download and install miniconda from:  https://docs.conda.io/en/latest/miniconda.html
@@ -63,7 +64,7 @@ Installation
         from PySWOLF import *
         PySWOLF()
 
-
+.. endInstallation
 Credits
 -------
 
