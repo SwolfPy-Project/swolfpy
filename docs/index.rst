@@ -12,6 +12,7 @@ Welcome to PySWOLF's documentation!
    contributing
    authors
    history
+   doc_pyswolf
 
 Indices and tables
 ==================
