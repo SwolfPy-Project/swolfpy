@@ -33,7 +33,7 @@ Installation
 ------------
 1- Download and install miniconda from:  https://docs.conda.io/en/latest/miniconda.html
 
-2- Update conda in a terminal window or anaconda prompt::
+2- Update conda in a terminal window or anaconda prompt:: console
 
         conda update conda
 
@@ -59,7 +59,8 @@ Installation
 
         ipython
 
-8- Run PySWOLF in python:: python
+8- Run PySWOLF in python
+.. code-block:: python
 
         from PySWOLF import *
         PySWOLF()
