@@ -12,5 +12,4 @@ ParallelData
 --------------
 
 .. autoclass:: PySWOLF.building_matrices.ParallelData
-    :members:
 
