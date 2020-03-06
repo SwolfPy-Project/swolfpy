@@ -2,6 +2,7 @@
 Usage
 =====
 
-To use PySWOLF in a project::
+To use PySWOLF, open python and run the code below::
 
-    import pyswolf
+    from PySWOLF import *
+    PySWOLF()
