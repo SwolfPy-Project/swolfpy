@@ -63,6 +63,10 @@ Installation
         from PySWOLF import *
         PySWOLF()
 
+.. code-block:: python
+
+        from PySWOLF import *
+        PySWOLF()
 
 Credits
 -------
