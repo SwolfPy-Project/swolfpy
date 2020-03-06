@@ -13,5 +13,4 @@ ParallelData
 
 .. autoclass:: PySWOLF.building_matrices.ParallelData
 
-.. autofunction:: PySWOLF.building_matrices.ParallelData.__init__
-
+test testtttt
