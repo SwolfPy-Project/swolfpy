@@ -17,13 +17,11 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
-
-autodoc_mock_imports["pandas"]
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
-import PySWOLF
+#import PySWOLF
 
 # -- General configuration ---------------------------------------------
 
