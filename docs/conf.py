@@ -19,7 +19,7 @@
 #
 
 
-autodoc_mock_imports = ["PySWOLF",'Pandas','Distance']
+autodoc_mock_imports = ["PySWOLF",'Pandas','Distance','pd']
 
 import os
 import sys
