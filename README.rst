@@ -63,11 +63,6 @@ Installation
         from PySWOLF import *
         PySWOLF()
 
-.. code-block:: python
-        :linenos:
-
-        from PySWOLF import *
-        PySWOLF()
 
 Credits
 -------
