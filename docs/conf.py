@@ -19,7 +19,7 @@
 #
 
 
-autodoc_mock_imports = ["PySWOLF",'Pandas','Distance','pd']
+autodoc_mock_imports = ["PySWOLF",'Pandas','Distance', 'PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']
 
 import os
 import sys
