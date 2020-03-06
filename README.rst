@@ -37,29 +37,29 @@ Installation
 
         conda update conda
 
-3- Add conda channels::
+3- Add conda channels:: console
 
         conda config --append channels conda-forge
         conda config --append channels cmutel
         conda config --append channels haasad
 
-4- Create a new environment for PySWOLF::
+4- Create a new environment for PySWOLF:: console
 
         conda create --name PySWOLF python=3.7
 
-5- Activate the environment::
+5- Activate the environment:: console
 
         conda activate PySWOLF
 
-6- Install PySWOLF in the environment::
+6- Install PySWOLF in the environment:: console
 
         pip install PySWOLF
 
-7- Open python to tun PySWOLF::
+7- Open python to tun PySWOLF:: console
 
         ipython
 
-8- Run PySWOLF in python::
+8- Run PySWOLF in python:: python
 
         from PySWOLF import *
         PySWOLF()
