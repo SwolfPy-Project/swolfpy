@@ -18,7 +18,7 @@
 # absolute, like shown here.
 #
 
-autodoc_mock_imports = ["PySWOLF",'MyQtApp']
+autodoc_mock_imports = ["PySWOLF",'Pandas']
 
 import os
 import sys
