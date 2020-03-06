@@ -18,13 +18,15 @@
 # absolute, like shown here.
 #
 
-autodoc_mock_imports = ["PySWOLF",'Pandas']
+
 
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 import PySWOLF
+
+autodoc_mock_imports = ["PySWOLF",'Pandas','Distance']
 
 # -- General configuration ---------------------------------------------
 
