@@ -40,9 +40,8 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 
 autodoc_mock_imports = ['matplotlib','scipy','bw2analyzer','stats_arrays','pandas','brightway2','bw2data','numpy','LCA','PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']
 autodoc_default_options = {
-    'members': 'var1, var2',
-    'member-order': 'bysource',  # the other options are : 'alphabetical', 'groupwise'
     'special-members': '__init__',  #members that __special__
+    'member-order': 'bysource',  # the other options are : 'alphabetical', 'groupwise'
     'undoc-members': True,
     'exclude-members': '__weakref__'
 }
