@@ -11,7 +11,7 @@ Distance
 
 
 
-.. _project_class
+.. _project_class:
 
 Project Class
 =============
@@ -21,7 +21,7 @@ Project Class
 
 
 
-.. _process_model
+.. _process_model:
 
 Process Model
 =============
@@ -30,7 +30,7 @@ Process Model
    :members:
 
 
-.. _MC
+.. _MC:
 
 Monte Carlo
 ===========
