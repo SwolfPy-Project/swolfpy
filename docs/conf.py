@@ -22,7 +22,8 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../PySWOLF'))
+import importlib
+
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -40,7 +41,15 @@ sys.path.insert(0, os.path.abspath('..'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 
-autodoc_mock_imports = ['matplotlib','scipy','bw2analyzer','stats_arrays','pandas','brightway2','bw2data','numpy','LCA','PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']
+autodoc_mock_imports = []
+for mod in ['matplotlib','scipy','bw2analyzer','stats_arrays','pandas','brightway2','bw2data','numpy','LCA','PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']:
+    try:
+        importlib.import_module(mod)
+    except ImportError:
+        autodoc_mock_imports.append(mod)
+        
+print('autodoc_mock_imports: {}'.format(autodoc_mock_imports))
+
 autodoc_default_options = {
     'special-members': '__init__',  #members that __special__
     'member-order': 'bysource',  # the other options are : 'alphabetical', 'groupwise'
