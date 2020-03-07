@@ -42,7 +42,10 @@ sys.path.insert(0, os.path.abspath('..'))
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 
 autodoc_mock_imports = []
-for mod in ['PySWOLF','matplotlib','scipy','bw2analyzer','stats_arrays','pandas','brightway2','bw2data','numpy','LCA','PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']:
+for mod in ['PySWOLF','PySWOLF.MC','PySWOLF.project','PySWOLF.process_model',/
+            'matplotlib','scipy','pandas','numpy',/
+            'bw2analyzer','stats_arrays','brightway2','bw2data',/
+            'PySide2','PySide2.QtGui', 'PySide2.QtCore', 'PySide2.QtWidgets']:
     try:
         importlib.import_module(mod)
     except ImportError:
