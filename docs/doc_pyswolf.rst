@@ -1,16 +1,13 @@
 Building Matrices
 *****************
 
-.. _Building_Matrices:
+.. _Distance:
 
-Building_Matrices
-=================
+Distance
+========
 
-svsrhrfhbsr
+.. autoclass:: PySWOLF.Distance.Distance
+   :members:
 
-ParallelData
-------------
 
-.. autoclass:: PySWOLF.building_matrices.ParallelData
 
-test testtttt
