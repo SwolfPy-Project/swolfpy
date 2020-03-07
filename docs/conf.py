@@ -55,12 +55,12 @@ print('autodoc_mock_imports: {}'.format(autodoc_mock_imports))
 
 autodoc_default_options = {
     'special-members': '__init__',  #members that __special__
-    'member-order': 'bysource',  # the other options are : 'alphabetical', 'groupwise'
+    'member-order': 'bysource',  
     'undoc-members': True,
     'exclude-members': '__weakref__'
 }
 
-autodoc_member_order = 'bysource'
+#autodoc_member_order = 'bysource'  # the other options are : 'alphabetical', 'groupwise'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
