@@ -36,3 +36,12 @@ class Distance():
                         if not pd.isna(self.data[j][i]) and self.data[j][i]!='' and self.data[j][i]!=self.data[i][j]:
                             raise Exception(f'Distance from {i} to {j} is not equal to distance from {j} to {i}')
                             
+        """
+        tets
+        """
+    """
+    test indent
+    """
+"""
+test double intent
+"""

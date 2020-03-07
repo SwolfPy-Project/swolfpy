@@ -60,7 +60,7 @@ autodoc_default_options = {
     'exclude-members': '__weakref__'
 }
 
-#autodoc_member_order = 'bysource'  # the other options are : 'alphabetical', 'groupwise'
+autodoc_member_order = 'bysource'  # the other options are : 'alphabetical', 'groupwise'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
