@@ -8,8 +8,7 @@ Distance
 
 .. autoclass:: PySWOLF.Distance.Distance
    :members:
-   :private-members:
-   :special-members:
+   :private-members: __init__
 
 
 
