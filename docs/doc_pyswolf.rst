@@ -10,5 +10,18 @@ Distance
    :members:
    :special-members: __init__
 
+.. _MC
+
+Monte Carlo
+===========
+
+.. autoclass:: PySWOLF.MC.MC
+   :members:
+   :special-members: __init__ 
+
+
+
+
+
 
 
