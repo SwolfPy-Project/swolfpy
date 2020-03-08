@@ -1,5 +1,5 @@
-Code Document
-*************
+PySWOLF Code Document
+*********************
 
 .. _Distance:
 
@@ -30,6 +30,17 @@ Process Model
    :members:
 
 
+
+.. _parameters:
+
+Parameters
+==========
+
+.. autoclass:: PySWOLF.Parameters.Parameters
+   :members:
+
+
+
 .. _MC:
 
 Monte Carlo
@@ -37,6 +48,7 @@ Monte Carlo
 
 .. autoclass:: PySWOLF.MC.MC
    :members:
+
 
 
 
