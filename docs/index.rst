@@ -7,11 +7,13 @@ Welcome to PySWOLF's documentation!
 
    readme
    installation
-   usage
+   Getting_started
+   doc_pyswolf
+   doc_processmodels
    contributing
    authors
    history
-   doc_pyswolf
+   
 
 Indices and tables
 ==================

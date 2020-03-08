@@ -1,6 +1,6 @@
-=====
-Usage
-=====
+===============
+Getting Started
+===============
 
 To use PySWOLF, open python and run the code below::
 
