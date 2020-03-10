@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 from .Required_keys import *
 from brightway2 import *
+from pathlib import Path
 
 class ProcessModelOutput():
     def __init__(self):
@@ -19,7 +20,7 @@ class ProcessModelOutput():
         return x
     
     def read_output_from_SWOLF (self, process_name, filepath):  #excel file
-        if 'xlsx' in filepath:
+        if 'xlsx' in str(filepath):
             outputdata = pd.ExcelFile(filepath)
             data = outputdata.parse(header=None)
         else:
@@ -51,7 +52,8 @@ class ProcessModelOutput():
         for x in waste_fractions[1:]:
             VV[x] = {}
             for y in TT:
-                VV[x][y] = float(self.check_nan(waste[y][x]))
+                if float(self.check_nan(waste[y][x])) !=0:
+                    VV[x][y] = float(self.check_nan(waste[y][x]))
         waste=VV
         
         # revising the technosphere dictionary. technosphere[key1][key2] , key1: waste fraction , key2: technosphere stream
@@ -83,7 +85,8 @@ class ProcessModelOutput():
         for x in waste_fractions[1:]:
             VV[x] = {}
             for y in CC:
-                VV[x][y] = float(self.check_nan(technosphere[y][x]))
+                if float(self.check_nan(technosphere[y][x])) != 0:
+                    VV[x][y] = float(self.check_nan(technosphere[y][x]))
         technosphere=VV
         
         # revising the biosphere. biosphere[key1][key2] , key1: stream, key2: waste fraction
@@ -100,7 +103,9 @@ class ProcessModelOutput():
             pp=72
             nn=1
             for oo in biosphere_keys.values():
-                biosphere[z][oo[0]]=float(self.check_nan(biosphere[z].pop(pp)))
+                value = float(self.check_nan(biosphere[z].pop(pp)))
+                if value !=0:
+                    biosphere[z][oo[0]]=value
                 pp += 1   
         
         
