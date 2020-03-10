@@ -7,6 +7,8 @@ Created on Thu Jan  9 17:44:09 2020
 from PySide2 import QtCore, QtGui, QtWidgets
 from .Table_from_pandas import Table_from_pandas,Table_from_pandas_editable,Table_modeifed_distanceTable,Table_modeifed_collection_schm
 import os
+import io
+import csv
 from . import PySWOLF_ui
 import sys
 from brightway2 import *
@@ -29,6 +31,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 
+
 class EmittingStream(QtCore.QObject):
     textWritten = QtCore.Signal(str)
     def write(self, text):
@@ -49,12 +52,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.cursor = self.Terminal.textCursor()
         self.cursor.movePosition(QtGui.QTextCursor.Start)
         
-        #Emitting_stream=  EmittingStream()
-        #sys.stdout.write = Emitting_stream.write
-        #sys.stdout.writelines = Emitting_stream.writelines
-        #sys.stderr.write = Emitting_stream.write
-        #sys.stderr.writelines = Emitting_stream.writelines
-        #Emitting_stream.textWritten.connect(self.onUpdateText)
+        Emitting_stream=  EmittingStream()
+        sys.stdout.write = Emitting_stream.write
+        sys.stdout.writelines = Emitting_stream.writelines
+        sys.stderr.write = Emitting_stream.write
+        sys.stderr.writelines = Emitting_stream.writelines
+        Emitting_stream.textWritten.connect(self.onUpdateText)
 
 # =============================================================================
 #     def helprrrr(self):
@@ -1848,7 +1851,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Const_DF.loc[self.Const_DF_index]=[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText()),self.Opt_Const2_Inequality.currentText(),self.Opt_Const2_val.text()]
             self.Const_DF_index +=1
             self.Opt_Const_table_update()
-            self.mass_flows_constraints[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText())]= {'limit':float(self.Opt_Const2_val.text()),
+            self.constraints[(self.Opt_Const2_process.currentText(),self.Opt_Const2_flow.currentText())]= {'limit':float(self.Opt_Const2_val.text()),
                                                                                                                       'KeyType':'WasteToProcess',
                                                                                                                       'ConstType':self.Opt_Const2_Inequality.currentText()}
         
@@ -1858,7 +1861,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Const_DF.loc[self.Const_DF_index]=[self.Opt_Const3_flow.currentText(),self.Opt_Const3_Inequality.currentText(),self.Opt_Const3_val.text()]
             self.Const_DF_index +=1
             self.Opt_Const_table_update()
-            self.emissions_constraints[self.bio_dict[self.Opt_Const3_flow.currentText()]]= {'limit':float(self.Opt_Const3_val.text()),
+            self.constraints[self.bio_dict[self.Opt_Const3_flow.currentText()]]= {'limit':float(self.Opt_Const3_val.text()),
                                                                                             'KeyType':'Emission',
                                                                                             'ConstType':self.Opt_Const3_Inequality.currentText()}                                                     
     

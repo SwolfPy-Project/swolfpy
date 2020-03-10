@@ -49,7 +49,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="Start">
            <attribute name="title">
@@ -2730,8 +2730,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>98</width>
-                        <height>28</height>
+                        <width>100</width>
+                        <height>30</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -2743,8 +2743,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>98</width>
-                        <height>28</height>
+                        <width>100</width>
+                        <height>30</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -2756,8 +2756,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>98</width>
-                        <height>28</height>
+                        <width>100</width>
+                        <height>30</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -3056,7 +3056,7 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="Collection_process">
                       <property name="geometry">
@@ -3133,8 +3133,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>388</width>
-                        <height>137</height>
+                        <width>1085</width>
+                        <height>802</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -3301,8 +3301,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>664</width>
-                        <height>676</height>
+                        <width>1085</width>
+                        <height>802</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -3317,65 +3317,7 @@ p, li { white-space: pre-wrap; }
                          <property name="frameShadow">
                           <enum>QFrame::Raised</enum>
                          </property>
-                         <layout class="QGridLayout" name="gridLayout_103">
-                          <item row="1" column="0" colspan="3">
-                           <widget class="QPushButton" name="Create_Distance">
-                            <property name="maximumSize">
-                             <size>
-                              <width>200</width>
-                              <height>16777215</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Create Distance Table</string>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="PyWOLF_Resource.qrc">
-                              <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="6" column="0" colspan="2">
-                           <widget class="QPushButton" name="Load_params">
-                            <property name="text">
-                             <string>Load Parameters</string>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="PyWOLF_Resource.qrc">
-                              <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="8" column="0" colspan="2">
-                           <widget class="QPushButton" name="update_param">
-                            <property name="maximumSize">
-                             <size>
-                              <width>200</width>
-                              <height>16777215</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Update Parameters</string>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="PyWOLF_Resource.qrc">
-                              <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="6" column="3">
-                           <spacer name="horizontalSpacer_41">
-                            <property name="orientation">
-                             <enum>Qt::Horizontal</enum>
-                            </property>
-                            <property name="sizeHint" stdset="0">
-                             <size>
-                              <width>40</width>
-                              <height>20</height>
-                             </size>
-                            </property>
-                           </spacer>
-                          </item>
+                         <layout class="QGridLayout" name="gridLayout_53">
                           <item row="0" column="0" colspan="3">
                            <widget class="QFrame" name="frame_45">
                             <property name="frameShape">
@@ -3440,48 +3382,24 @@ p, li { white-space: pre-wrap; }
                             </layout>
                            </widget>
                           </item>
-                          <item row="7" column="0" colspan="3">
-                           <widget class="QFrame" name="frame_46">
-                            <property name="frameShape">
-                             <enum>QFrame::StyledPanel</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Raised</enum>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_4">
-                             <item>
-                              <widget class="QTableView" name="Param_table">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>600</width>
-                                 <height>200</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>600</width>
-                                 <height>16777215</height>
-                                </size>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item row="5" column="3">
-                           <spacer name="horizontalSpacer_43">
-                            <property name="orientation">
-                             <enum>Qt::Horizontal</enum>
-                            </property>
-                            <property name="sizeHint" stdset="0">
+                          <item row="1" column="0" colspan="2">
+                           <widget class="QPushButton" name="Create_Distance">
+                            <property name="maximumSize">
                              <size>
-                              <width>341</width>
-                              <height>20</height>
+                              <width>200</width>
+                              <height>16777215</height>
                              </size>
                             </property>
-                           </spacer>
+                            <property name="text">
+                             <string>Create Distance Table</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="PyWOLF_Resource.qrc">
+                              <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
+                            </property>
+                           </widget>
                           </item>
-                          <item row="3" column="0">
+                          <item row="2" column="0">
                            <widget class="QLabel" name="label_85">
                             <property name="font">
                              <font>
@@ -3495,24 +3413,10 @@ p, li { white-space: pre-wrap; }
                             </property>
                            </widget>
                           </item>
-                          <item row="5" column="0" colspan="2">
-                           <widget class="QPushButton" name="write_project">
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777215</width>
-                              <height>16777215</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Create System</string>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="PyWOLF_Resource.qrc">
-                              <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
-                            </property>
-                           </widget>
+                          <item row="2" column="1">
+                           <widget class="QComboBox" name="Distanc_unit"/>
                           </item>
-                          <item row="4" column="0" colspan="3">
+                          <item row="3" column="0" colspan="3">
                            <widget class="QFrame" name="frame_50">
                             <property name="frameShape">
                              <enum>QFrame::StyledPanel</enum>
@@ -3531,13 +3435,13 @@ p, li { white-space: pre-wrap; }
                                </property>
                                <property name="minimumSize">
                                 <size>
-                                 <width>0</width>
+                                 <width>600</width>
                                  <height>200</height>
                                 </size>
                                </property>
                                <property name="maximumSize">
                                 <size>
-                                 <width>600</width>
+                                 <width>16777215</width>
                                  <height>16777215</height>
                                 </size>
                                </property>
@@ -3546,15 +3450,98 @@ p, li { white-space: pre-wrap; }
                             </layout>
                            </widget>
                           </item>
-                          <item row="5" column="2">
+                          <item row="4" column="0" colspan="2">
+                           <widget class="QPushButton" name="write_project">
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Create System</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="PyWOLF_Resource.qrc">
+                              <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="4" column="2">
                            <widget class="QProgressBar" name="progressBar_write_project">
                             <property name="value">
                              <number>24</number>
                             </property>
                            </widget>
                           </item>
-                          <item row="3" column="1">
-                           <widget class="QComboBox" name="Distanc_unit"/>
+                          <item row="4" column="3" colspan="2">
+                           <spacer name="horizontalSpacer_43">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>341</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item row="5" column="0" colspan="2">
+                           <widget class="QPushButton" name="Load_params">
+                            <property name="text">
+                             <string>Load Parameters</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="PyWOLF_Resource.qrc">
+                              <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="6" column="0" colspan="4">
+                           <widget class="QFrame" name="frame_46">
+                            <property name="frameShape">
+                             <enum>QFrame::StyledPanel</enum>
+                            </property>
+                            <property name="frameShadow">
+                             <enum>QFrame::Raised</enum>
+                            </property>
+                            <layout class="QVBoxLayout" name="verticalLayout_4">
+                             <item>
+                              <widget class="QTableView" name="Param_table">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>800</width>
+                                 <height>200</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>16777215</width>
+                                 <height>16777215</height>
+                                </size>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item row="7" column="0" colspan="2">
+                           <widget class="QPushButton" name="update_param">
+                            <property name="maximumSize">
+                             <size>
+                              <width>200</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Update Parameters</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="PyWOLF_Resource.qrc">
+                              <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+                            </property>
+                           </widget>
                           </item>
                          </layout>
                         </widget>
@@ -5929,32 +5916,18 @@ p, li { white-space: pre-wrap; }
                       <string>Constraint on Waste to Process</string>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_8">
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label_77">
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Process:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="QComboBox" name="Opt_Const2_process">
+                      <item row="0" column="7">
+                       <widget class="QLineEdit" name="Opt_Const2_val">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
                         </property>
-                        <property name="minimumSize">
+                        <property name="maximumSize">
                          <size>
-                          <width>100</width>
-                          <height>0</height>
+                          <width>16777215</width>
+                          <height>16777215</height>
                          </size>
                         </property>
                         <property name="font">
@@ -5963,57 +5936,6 @@ p, li { white-space: pre-wrap; }
                           <bold>false</bold>
                           <kerning>true</kerning>
                          </font>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="2">
-                       <widget class="QLabel" name="label_79">
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Waste Fraction:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="3">
-                       <widget class="QComboBox" name="Opt_Const2_flow">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>300</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="4">
-                       <widget class="QLabel" name="label_87">
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Inequality:</string>
                         </property>
                        </widget>
                       </item>
@@ -6040,8 +5962,21 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="6">
-                       <widget class="QLabel" name="label_78">
+                      <item row="0" column="10">
+                       <spacer name="horizontalSpacer_27">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>193</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item row="0" column="2">
+                       <widget class="QLabel" name="label_79">
                         <property name="font">
                          <font>
                           <weight>50</weight>
@@ -6050,24 +5985,12 @@ p, li { white-space: pre-wrap; }
                          </font>
                         </property>
                         <property name="text">
-                         <string>Limit:</string>
+                         <string>Waste Fraction:</string>
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="7">
-                       <widget class="QLineEdit" name="Opt_Const2_val">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_77">
                         <property name="font">
                          <font>
                           <weight>50</weight>
@@ -6075,9 +5998,12 @@ p, li { white-space: pre-wrap; }
                           <kerning>true</kerning>
                          </font>
                         </property>
+                        <property name="text">
+                         <string>Process:</string>
+                        </property>
                        </widget>
                       </item>
-                      <item row="0" column="8">
+                      <item row="0" column="9">
                        <widget class="QPushButton" name="Opt_add_Const2">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -6101,18 +6027,92 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="9">
-                       <spacer name="horizontalSpacer_27">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
+                      <item row="0" column="6">
+                       <widget class="QLabel" name="label_78">
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
                         </property>
-                        <property name="sizeHint" stdset="0">
+                        <property name="text">
+                         <string>Limit:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="4">
+                       <widget class="QLabel" name="label_87">
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Inequality:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QComboBox" name="Opt_Const2_process">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
                          <size>
-                          <width>193</width>
-                          <height>20</height>
+                          <width>100</width>
+                          <height>0</height>
                          </size>
                         </property>
-                       </spacer>
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="3">
+                       <widget class="QComboBox" name="Opt_Const2_flow">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>300</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="8">
+                       <widget class="QLabel" name="label_2">
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Unit: Mg</string>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
@@ -6130,43 +6130,6 @@ p, li { white-space: pre-wrap; }
                       <string>Constraints on Emissions</string>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_10">
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label_81">
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Emission:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="QComboBox" name="Opt_Const3_flow">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>350</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="2">
                        <widget class="QLabel" name="label_88">
                         <property name="font">
@@ -6181,6 +6144,44 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
+                      <item row="0" column="7">
+                       <widget class="QPushButton" name="Opt_add_Const3">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Add</string>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="PyWOLF_Resource.qrc">
+                          <normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</iconset>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_81">
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Emission:</string>
+                        </property>
+                       </widget>
+                      </item>
                       <item row="0" column="3">
                        <widget class="QComboBox" name="Opt_Const3_Inequality">
                         <property name="sizePolicy">
@@ -6192,6 +6193,42 @@ p, li { white-space: pre-wrap; }
                         <property name="minimumSize">
                          <size>
                           <width>0</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="8">
+                       <spacer name="horizontalSpacer_28">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QComboBox" name="Opt_Const3_flow">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>350</width>
                           <height>0</height>
                          </size>
                         </property>
@@ -6242,7 +6279,67 @@ p, li { white-space: pre-wrap; }
                        </widget>
                       </item>
                       <item row="0" column="6">
-                       <widget class="QPushButton" name="Opt_add_Const3">
+                       <widget class="QLabel" name="label_3">
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Unit: kg</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QGroupBox" name="groupBox_17">
+                     <property name="font">
+                      <font>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                       <kerning>true</kerning>
+                      </font>
+                     </property>
+                     <property name="title">
+                      <string>Constraint on Total Mass to Process</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_12">
+                      <item row="0" column="5">
+                       <widget class="QLineEdit" name="Opt_Const1_val">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="4">
+                       <widget class="QLabel" name="label_76">
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Limit:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="7">
+                       <widget class="QPushButton" name="Opt_add_Const1">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                           <horstretch>0</horstretch>
@@ -6265,35 +6362,16 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="7">
-                       <spacer name="horizontalSpacer_28">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
+                      <item row="0" column="3">
+                       <widget class="QComboBox" name="Opt_Const1_Inequality">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
                         </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
+                       </widget>
                       </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item row="0" column="0">
-                    <widget class="QGroupBox" name="groupBox_17">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                       <kerning>true</kerning>
-                      </font>
-                     </property>
-                     <property name="title">
-                      <string>Constraint on Total Mass to Process</string>
-                     </property>
-                     <layout class="QGridLayout" name="gridLayout_12">
                       <item row="0" column="0">
                        <widget class="QLabel" name="label_75">
                         <property name="font">
@@ -6307,6 +6385,33 @@ p, li { white-space: pre-wrap; }
                          <string>Process:</string>
                         </property>
                        </widget>
+                      </item>
+                      <item row="0" column="2">
+                       <widget class="QLabel" name="label_86">
+                        <property name="font">
+                         <font>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                          <kerning>true</kerning>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Inequality:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="8">
+                       <spacer name="horizontalSpacer_3">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
                       </item>
                       <item row="0" column="1">
                        <widget class="QComboBox" name="Opt_Const1_process">
@@ -6331,97 +6436,18 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="2">
-                       <widget class="QLabel" name="label_86">
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Inequality:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="3">
-                       <widget class="QComboBox" name="Opt_Const1_Inequality">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="4">
-                       <widget class="QLabel" name="label_76">
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Limit:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="5">
-                       <widget class="QLineEdit" name="Opt_Const1_val">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                          <kerning>true</kerning>
-                         </font>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="6">
-                       <widget class="QPushButton" name="Opt_add_Const1">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
+                       <widget class="QLabel" name="label">
                         <property name="font">
                          <font>
                           <weight>50</weight>
                           <bold>false</bold>
-                          <kerning>true</kerning>
                          </font>
                         </property>
                         <property name="text">
-                         <string>Add</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="PyWOLF_Resource.qrc">
-                          <normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</iconset>
+                         <string>Unit: Mg</string>
                         </property>
                        </widget>
-                      </item>
-                      <item row="0" column="7">
-                       <spacer name="horizontalSpacer_3">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
                       </item>
                      </layout>
                     </widget>
