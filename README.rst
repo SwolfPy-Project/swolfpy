@@ -1,4 +1,5 @@
 .. General
+
 =============================================================
 Python Solid Waste Optimization Life-cycle Framework(PySWOLF)
 =============================================================
@@ -29,6 +30,7 @@ Features
 
 
 .. Installation
+
 Installation
 ------------
 1- Download and install miniconda from:  https://docs.conda.io/en/latest/miniconda.html
@@ -65,6 +67,7 @@ Installation
         PySWOLF()
 
 .. endInstallation
+
 Credits
 -------
 
