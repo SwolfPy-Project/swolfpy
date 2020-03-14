@@ -1,4 +1,4 @@
-PySWOLF Code Document
+swolfpy Code Document
 *********************
 
 .. _Distance:
@@ -6,7 +6,7 @@ PySWOLF Code Document
 Distance
 ========
 
-.. autoclass:: PySWOLF.Distance.Distance
+.. autoclass:: swolfpy.Distance.Distance
    :members:
 
 
@@ -16,7 +16,7 @@ Distance
 Project Class
 =============
 
-.. autoclass:: PySWOLF.project_class.project
+.. autoclass:: swolfpy.project_class.project
    :members:
 
 
@@ -26,7 +26,7 @@ Project Class
 Process Model
 =============
 
-.. autoclass:: PySWOLF.process_model.Process_Model
+.. autoclass:: swolfpy.process_model.Process_Model
    :members:
 
 
@@ -36,7 +36,7 @@ Process Model
 Parameters
 ==========
 
-.. autoclass:: PySWOLF.Parameters.Parameters
+.. autoclass:: swolfpy.Parameters.Parameters
    :members:
 
 
@@ -46,7 +46,7 @@ Parameters
 Monte Carlo
 ===========
 
-.. autoclass:: PySWOLF.MC.MC
+.. autoclass:: swolfpy.MC.MC
    :members:
 
 

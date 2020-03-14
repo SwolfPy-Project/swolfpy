@@ -1,7 +1,7 @@
 .. General
 
 ================================================================
-Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
+Solid Waste Optimization Life-cycle Framework in Python(swolfpy)
 ================================================================
 
 .. image:: https://img.shields.io/pypi/v/swolfpy.svg
@@ -57,7 +57,7 @@ Installation
 
         pip install swolfpy
 
-7- Open python to tun swolfpy::
+7- Open python to run swolfpy::
 
         ipython
 

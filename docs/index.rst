@@ -1,4 +1,4 @@
-Welcome to PySWOLF's documentation!
+Welcome to swolfpy's documentation!
 ======================================
 
 .. toctree::
@@ -8,7 +8,7 @@ Welcome to PySWOLF's documentation!
    readme
    installation
    Getting_started
-   doc_pyswolf
+   doc_swolfpy
    doc_processmodels
    contributing
    authors

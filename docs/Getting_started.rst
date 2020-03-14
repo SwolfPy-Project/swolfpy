@@ -2,11 +2,20 @@
 Getting Started
 ===============
 
-To use PySWOLF, open python and run the code below::
+To use swolfpy, do the following steps:
 
-    from PySWOLF import *
-    PySWOLF()
+1- Activate the environment::
 
+        conda activate swolfpy
+
+2- Open python to run swolfpy::
+
+        ipython
+
+3- Run swolfpy in python::
+
+        from swolfpy import *
+        swolfpy()
 
 .. image:: /Images/Tab_Start.png
    :scale: 60 %
