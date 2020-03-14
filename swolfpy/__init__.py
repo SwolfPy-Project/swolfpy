@@ -12,7 +12,7 @@ __all__ = [
     'import_methods',
     'ParallelData',
     'MyQtApp',
-    'PySWOLF'
+    'swolfpy'
 ]
 
 
@@ -23,7 +23,7 @@ from .building_matrices import ParallelData
 from .UI.PySWOLF_run import MyQtApp
 from PySide2 import QtCore, QtGui, QtWidgets
 
-class PySWOLF():
+class swolfpy():
     def __init__(self):
         self.app = QtWidgets.QApplication()
         self.qt_app  = MyQtApp()

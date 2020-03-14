@@ -17,7 +17,7 @@ You can contribute in many ways:
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://bitbucket.org/pyswolf/pyswolf/issues
+Report bugs at https://bitbucket.org/swolfpy/swolfpy/issues
 
 If you are reporting a bug, please include:
 
@@ -47,7 +47,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://bitbucket.org/pyswolf/pyswolf/issues
+The best way to send feedback is to file an issue at https://bitbucket.org/swolfpy/swolfpy/issues
 
 If you are proposing a feature:
 

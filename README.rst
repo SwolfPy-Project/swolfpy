@@ -1,22 +1,22 @@
 .. General
 
-=============================================================
-Python Solid Waste Optimization Life-cycle Framework(PySWOLF)
-=============================================================
+================================================================
+Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
+================================================================
 
-.. image:: https://img.shields.io/pypi/v/pyswolf.svg
-        :target: https://pypi.python.org/pypi/pyswolf
+.. image:: https://img.shields.io/pypi/v/swolfpy.svg
+        :target: https://pypi.python.org/pypi/swolfpy
 
-.. image:: https://readthedocs.org/projects/pyswolf/badge/?version=latest
-        :target: https://pyswolf.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/swolfpy/badge/?version=latest
+        :target: https://swolfpy.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
 
-* Free software: BSD license
-* Documentation: https://pyswolf.readthedocs.io.
+* Free software: GNU GENERAL PUBLIC LICENSE V2
+* Documentation: https://swolfpy.readthedocs.io.
 * Other links: 
-        https://go.ncsu.edu/pyswolf
+        https://go.ncsu.edu/swolfpy
 
         https://jwlevis.wixsite.com/swolf
 
@@ -47,24 +47,24 @@ Installation
 
 4- Create a new environment for PySWOLF::
 
-        conda create --name PySWOLF python=3.7
+        conda create --name swolfpy python=3.7
 
 5- Activate the environment::
 
-        conda activate PySWOLF
+        conda activate swolfpy
 
 6- Install PySWOLF in the environment::
 
-        pip install PySWOLF
+        pip install swolfpy
 
-7- Open python to tun PySWOLF::
+7- Open python to tun swolfpy::
 
         ipython
 
-8- Run PySWOLF in python::
+8- Run swolfpy in python::
 
-        from PySWOLF import *
-        PySWOLF()
+        from swolfpy import *
+        swolfpy()
 
 .. endInstallation
 
