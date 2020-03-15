@@ -21,7 +21,7 @@ class Distance():
 
         :Example:
         
-        >>> from PySWOLF.Distance import Distance
+        >>> from swolfpy.Distance import Distance
         >>> import pandas as pd
         >>> Processes = ['LF','WTE','AD']
         >>> Data = pd.DataFrame([[None,20,30],[None,None,10],[None,None,None]],index=Processes,columns=Processes)
