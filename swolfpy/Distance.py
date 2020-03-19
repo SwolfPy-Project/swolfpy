@@ -12,7 +12,7 @@ class Distance():
 
     """
     def __init__(self,path=None,Data=None):
-        """Create Distance class.            
+        """Create Distance object.            
 
         :param path: Path to the *csv* file
         :type path: str, optional

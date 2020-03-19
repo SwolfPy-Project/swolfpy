@@ -13,10 +13,59 @@ from .Required_keys import *
 import copy
 from bw2analyzer import ContributionAnalysis
 from .Parameters import *
-
+from pathlib import Path
 
 class project():
+    """
+    Project class creates a new project in Birghtway2.
+    """
     def __init__ (self,project_name,Treatment_processes,Distance,Collection_processes=None):
+        """Create project object.            
+
+        :param project_name: Name for the project
+        :type project_name: str
+        
+        :param Treatment_processes: Dictionary for treatment processes include their input type and model.
+        :type Treatment_processes: dict
+        
+        :param Distance: Distance object.
+        :type Distance: class: `swolfpy.Distance.Distance`
+        
+        
+        :param Collection_processes: Dictionary for collection processes include their input type and model. Input type for the collection process is empty list ``[]`` as they don't accept waste from other processes.
+        :type Collection_processes: dict, optional
+        
+        .. note:: Treatment processes and distance between them are required for creating a project. Collection processes are not need unless they are included in the system boundary.
+        
+        :Example:
+        
+        >>> # Treatment_processes:
+        >>> # Include LF and WTE
+        >>> from swolfpy.ProcessModels import LF
+        >>> from swolfpy.ProcessModels import WTE
+        >>> Treatment_processes = {}
+        >>> Treatment_processes['LF']={'input_type':['RWC','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF.LF()}
+        >>> Treatment_processes['WTE']={'input_type':['RWC','Other_Residual'],'model': WTE.WTE()}
+        >>> # Distance            
+        >>> from swolfpy.Distance import Distance
+        >>> import pandas as pd
+        >>> Processes = ['LF','WTE','SF_COl']
+        >>> Data = pd.DataFrame([[None,20,20],[None,None,20],[None,None,None]],index=Processes,columns=Processes)
+        >>> distance = Distance(Data=Data)
+        >>> # Collection_processes:
+        >>> # Ony include one single family sector wih residual waste collection
+        >>> from swolfpy.ProcessModels import SF_collection
+        >>> Collection_processes = {}
+        >>> Collection_scheme_SF_COL={'RWC':{'Contribution':1,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
+        >>> 'SSO_DryRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
+        >>> 'REC_WetRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
+        >>> 'MRDO':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}}} 
+        >>> Collection_processes['SF_COl']={'input_type':[],'model': SF_collection.SF_Col('SF_COl',Collection_scheme_SF_COL,Treatment_processes=Treatment_processes,Distance=distance)}      
+        >>> # project
+        >>> from swolfpy import project_class
+        >>> demo = project_class.project('demo',Treatment_processes,distance,Collection_processes)
+        
+        """
         self.project_name= project_name
         self.Treatment_processes = Treatment_processes
         self.Collection_processes = Collection_processes
@@ -34,38 +83,72 @@ class project():
                  'Green_glass','Mixed_Glass','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
             self.waste_treatment[i]= self.find_destination(i) 
             
-    
-        
-        
         self.process_inputdata={}
         self.process_model={}
 
     def store_CommonData(self,CommonData):
+        """
+        Store the Common Data in the project.
+        
+        :param CommonData: CommonData object
+        :type CommonData: class: `swolfpy.ProcessMoldes.CommonData`
+        
+        """
         self.CommonData =  CommonData   
 
     def find_destination(self,product):
+        """
+        Find the processes that can treat the `product`. This function check the `input_type` in the `Treatment_processes` dictionary.
+        
+        :param product: Waste product e.g., RWC, Fly_Ash, Separated_Organics, Other_Residual
+        :type product: str
+        
+        :return: A list of the discovered processes in the `Treatment_processes` dictionary that can treat the `product`
+        :rtype: list
+        
+        """
         destination=[]
         for P in self.Treatment_processes:
             if product in self.Treatment_processes[P]['input_type']:
                 destination.append(P)
         return(destination)
    
-    
-    def check_nan(self,x):  # replace zeros when there is no data ("nan")
+    # replace zeros when there is no data ("nan")
+    def check_nan(self,x):  
+        """
+        Check the `x` and return `0` if `x` is `nan`.
+        
+        """
         if str(x) == "nan":
             return 0
         return x
     
     
-    def init_project(self,path):
+    def init_project(self,path=None):
+        """
+        This function initialize a `project` in Brightway2 by creating the `biosphere3` database and importing the impact assesment methods.
+        Note: If the `project` already exists, it will delete all the databases except 'biosphere3'. `Technosphere` database is written from the 
+        `SWOLF_AccountMode_LCI DATA.csv` in the `Data` folder unless user select new file with it's `path`.
+        
+        This function create an empty database for each process as a placeholder, so the model can browse these databases in 
+        the next step (writing project) and create exchanges between them.
+        
+        :param path: Path to the `csv` file that includes the LCI data for technosphere flows
+        :type path: str, optional 
+        
+        """
         bw2setup()
         self.technosphere_data ={}
         self.technosphere_db_name='Technosphere'
         if self.technosphere_db_name in databases:
             del databases[self.technosphere_db_name]   
         
-        self.technosphere_path = path
-        outputdata1 = pd.read_csv(path)
+        if path:
+            self.technosphere_path = path
+        else:
+            self.technosphere_path = str(Path(__file__).parent)+'/Data/SWOLF_AccountMode_LCI DATA.csv'
+        outputdata1 = pd.read_csv(self.technosphere_path)
+        
         # activities
         names = [x for x in outputdata1.columns][3:]
         for x in names:
@@ -133,12 +216,31 @@ class project():
         return((P,G))
     
     def report_parameters(self):
+        """
+        Reports the `parameters` in dictionary format.
+        
+        :return: dictionary include the processes as key and parameters in each process as values.
+        :rtype: dict
+        
+        """
         return(self.parameters)
     
     def report_parameters_list(self):
+        """
+        Reports the `parameters` in list format.        
+
+        :return: List of `parameters` (waste fractions) in the project
+        :rtype: list
+        
+        """
         return(self.parameters_list)
         
     def group_exchanges(self):
+        """
+        Create a group for each `parameter` and add the exchanges that include this `parameter` to this group. As a results, model know to 
+        update the values in those exchanges when the `parameter` is updated.
+        
+        """
         for j in self.processes:
             print("""
                   Grouping the exchanges with parameters in Database {}
@@ -162,6 +264,15 @@ class project():
         		
                     
     def update_parameters(self,new_param_data):
+        """
+        Update the `parameters` and their related exchanges based on the `new_param_data`.
+        
+        :param new_param_data: List of `parameters` (waste fractions) in the project with new values
+        :type new_param_data: list
+        
+        .. note:: `parameters` are waste fractions which show what fraction of waste from one source go to different destinations, so sum of parameters from each source should be 1. (0<= `parameters` <=1)
+        
+        """
         self.create_unified_params()
         self.new_param_data=new_param_data
 		
@@ -185,8 +296,6 @@ class project():
                 for k in self.parameters_list:
                     if k['name'] == j['name']:
                         self.unified_params.update_values(k['name'],k['amount'])
-		
-			
 		
                 
     def process_start_scenario(self,input_dict,scenario_name):

@@ -185,7 +185,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.Basic.setEnabled(True)
         else:
             #Notift the user to restart program
-            self.msg_popup('PySWOLF Mode','Restart the PySWOLF to start new project','Warning')
+            self.msg_popup('swolfpy Mode','Restart the swolfpy to start new project','Warning')
             
                            
     @QtCore.Slot()  #Change tab and import process models
@@ -198,7 +198,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Load_Project.setEnabled(True)      
         else:
             #Notift the user to restart program
-            self.msg_popup('PySWOLF Mode','Restart the PySWOLF to load project','Warning')
+            self.msg_popup('swolfpy Mode','Restart the swolfpy to load project','Warning')
             
 
 #%% Load Project   
@@ -350,52 +350,52 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
         #Import CommonData
         if self.IT_Default_6.isChecked():
-            import PySWOLF.ProcessModels.CommonData as CommonData
+            import swolfpy.ProcessModels.CommonData as CommonData
         elif self.IT_UserDefine_6.isChecked():
             #CommonData=importlib.import_module(self.IT_FName_6.text()[:-3])
-            import PySWOLF.ProcessModels.CommonData as CommonData
+            import swolfpy.ProcessModels.CommonData as CommonData
         CommonData=CommonData
         #Import LF
         if self.IT_Default.isChecked():
-            import PySWOLF.ProcessModels.LF as LF
+            import swolfpy.ProcessModels.LF as LF
         elif self.IT_UserDefine.isChecked():
             #LF=importlib.import_module(self.IT_FName.text()[:-3])
-            import PySWOLF.ProcessModels.LF as LF
+            import swolfpy.ProcessModels.LF as LF
         LF=LF
         #Import WTE
         if self.IT_Default_2.isChecked():
-            import PySWOLF.ProcessModels.WTE as WTE
+            import swolfpy.ProcessModels.WTE as WTE
         elif self.IT_UserDefine_2.isChecked():
             #WTE=importlib.import_module(self.IT_FName_2.text()[:-3])
-            import PySWOLF.ProcessModels.WTE as WTE
+            import swolfpy.ProcessModels.WTE as WTE
         WTE=WTE
         #Import AD
         if self.IT_Default_3.isChecked():
-            import PySWOLF.ProcessModels.AD as AD
+            import swolfpy.ProcessModels.AD as AD
         elif self.IT_UserDefine_3.isChecked():
             #AD=importlib.import_module(self.IT_FName_3.text()[:-3])
-            import PySWOLF.ProcessModels.AD as AD
+            import swolfpy.ProcessModels.AD as AD
         AD=AD   
         #Import COMP
         if self.IT_Default_4.isChecked():
-            import PySWOLF.ProcessModels.Composting as COMP
+            import swolfpy.ProcessModels.Composting as COMP
         elif self.IT_UserDefine_4.isChecked():
             #COMP=importlib.import_module(self.IT_FName_4.text()[:-3])
-            import PySWOLF.ProcessModels.Composting as COMP
+            import swolfpy.ProcessModels.Composting as COMP
         COMP=COMP
         #Import SS_MRF
         if self.IT_Default_5.isChecked():
-            import PySWOLF.ProcessModels.SS_MRF as SS_MRF
+            import swolfpy.ProcessModels.SS_MRF as SS_MRF
         elif self.IT_UserDefine_5.isChecked():
             #SS_MRF=importlib.import_module(self.IT_FName_5.text()[:-3])
-            import PySWOLF.ProcessModels.SS_MRF as SS_MRF
+            import swolfpy.ProcessModels.SS_MRF as SS_MRF
         SS_MRF=SS_MRF    
         #Import SF_Collection
         if self.IT_Default_col.isChecked():
-            import PySWOLF.ProcessModels.SF_collection as SF_Col
+            import swolfpy.ProcessModels.SF_collection as SF_Col
         elif self.IT_UserDefine_col.isChecked():
             #SF_Col=importlib.import_module(self.IT_FName_col.text()[:-3])
-            import PySWOLF.ProcessModels.SF_collection as SF_Col
+            import swolfpy.ProcessModels.SF_collection as SF_Col
         SF_Col=SF_Col    
         self.LF_input_type = []
         for x in [self.IT_RWC,self.IT_SSO,self.IT_DryRes,self.IT_REC,self.IT_WetRes,self.IT_MRDO,self.IT_SSR,
@@ -445,7 +445,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #Does include collection
         self.isCollection = QtWidgets.QMessageBox()
         self.isCollection.setIcon(self.isCollection.Icon.Question)
-        self.isCollection.setWindowTitle('PySWOLF')
+        self.isCollection.setWindowTitle('swolfpy')
         self.isCollection.setWindowIcon(self.icon)
         self.isCollection.setText('System Boundary')
         self.isCollection.setInformativeText('Is the model include collection process?')
@@ -2025,7 +2025,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             msg.setIcon(msg.Icon.Warning)
         elif Type == 'Information':
             msg.setIcon(msg.Icon.Information)
-        msg.setWindowTitle('PySWOLF')
+        msg.setWindowTitle('swolfpy')
         msg.setWindowIcon(self.icon)
         msg.setText(Subject)
         msg.setInformativeText(Information)

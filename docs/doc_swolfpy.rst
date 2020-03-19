@@ -43,16 +43,31 @@ Parameters
 
 .. _MC:
 
-Monte Carlo
-===========
+Monte Carlo (random number generation)
+======================================
 
 .. autoclass:: swolfpy.MC.MC
    :members:
 
 
+.. _parallel_mc:
+
+Parallel Monte Carlo
+====================
+
+.. autofunction:: swolfpy.building_matrices.worker
+.. autofunction:: swolfpy.building_matrices.parallel_mc
 
 
+.. _ParallelData:
+
+Parallel Calculation and Optimization
+=====================================
+
+.. autoclass:: swolfpy.building_matrices.ParallelData
+   :members:
 
 
+   
 
 

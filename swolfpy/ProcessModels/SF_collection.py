@@ -27,7 +27,7 @@ class SF_Col:
             if Distance:
                 self.Distance = Distance
             else:
-                raise Exception('User should define both Distane and Treatment_processes together')
+                raise Exception('User should define both Distance and Treatment_processes together')
         else:
             self.Treat_proc =False
             

@@ -121,10 +121,6 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
 #%% Monte Carlo simulation
 
 class ParallelData(LCA):
-    """ththrtht
-    test documentation
-    
-    """
     def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, common_data = None, parameters = None,seed = None):
         super(ParallelData, self).__init__(functional_unit, method[0])
         self.lci()
