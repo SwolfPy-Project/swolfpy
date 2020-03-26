@@ -52,12 +52,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.cursor = self.Terminal.textCursor()
         self.cursor.movePosition(QtGui.QTextCursor.Start)
         
-        Emitting_stream=  EmittingStream()
-        sys.stdout.write = Emitting_stream.write
-        sys.stdout.writelines = Emitting_stream.writelines
-        sys.stderr.write = Emitting_stream.write
-        sys.stderr.writelines = Emitting_stream.writelines
-        Emitting_stream.textWritten.connect(self.onUpdateText)
+        #Emitting_stream=  EmittingStream()
+        #sys.stdout.write = Emitting_stream.write
+        #sys.stdout.writelines = Emitting_stream.writelines
+        #sys.stderr.write = Emitting_stream.write
+        #sys.stderr.writelines = Emitting_stream.writelines
+        #Emitting_stream.textWritten.connect(self.onUpdateText)
 
 # =============================================================================
 #     def helprrrr(self):
@@ -278,7 +278,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
 # =============================================================================           
     def Importing_processes(self):
-        self.init_process_toolbox.setCurrentWidget(self.Landfill)
+        self.init_process_toolbox.setCurrentWidget(self.CommonData)
+        # CommonData
+        self.helper(self.IT_Default_0,self.IT_UserDefine_0,self.IT_BR_0,self.IT_FName_0)
         # Landfill
         self.helper(self.IT_Default,self.IT_UserDefine,self.IT_BR,self.IT_FName)
         # Waste_to_Energy (WTE)
@@ -289,8 +291,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.helper(self.IT_Default_4,self.IT_UserDefine_4,self.IT_BR_4,self.IT_FName_4)
         # Single Stream Material Facility (SS_MRF)
         self.helper(self.IT_Default_5,self.IT_UserDefine_5,self.IT_BR_5,self.IT_FName_5)
-        # CommonData
+        # Dual Stream Material Facility (DS_MRF)
         self.helper(self.IT_Default_6,self.IT_UserDefine_6,self.IT_BR_6,self.IT_FName_6)
+        # Multi-Stream Material Facility (MS_MRF)
+        self.helper(self.IT_Default_7,self.IT_UserDefine_7,self.IT_BR_7,self.IT_FName_7)
+        # Reprocessing (REPROC)
+        self.helper(self.IT_Default_8,self.IT_UserDefine_8,self.IT_BR_8,self.IT_FName_8)
+        
         
         
         # Single Family Collection (SF_Collection)
@@ -332,6 +339,38 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Defualt SS_MRF input Type
         self.IT_SSR_5.setChecked(True)
+        
+        #Defualt DS_MRF input Type
+        self.IT_DSR_6.setChecked(True)
+        
+        #Defualt MS_MRF input Type
+        self.IT_REC_7.setChecked(True)
+        self.IT_MSR_7.setChecked(True)
+        self.IT_MSRDO_7.setChecked(True)
+        
+        #Defualt REPROC input Type
+        self.IT_OCC_8.setChecked(True)
+        self.IT_Mixed_Paper_8.setChecked(True)
+        self.IT_ONP_8.setChecked(True)
+        self.IT_OFF_8.setChecked(True)
+        self.IT_Fiber_Other_8.setChecked(True)
+        self.IT_PET_8.setChecked(True)
+        self.IT_HDPE_Unsorted_8.setChecked(True)
+        self.IT_HDPE_P_8.setChecked(True)
+        self.IT_HDPE_T_8.setChecked(True)
+        self.IT_Polystyrene_8.setChecked(True)
+        self.IT_Plastic_Other_8.setChecked(True)
+        self.IT_Mixed_Plastic_8.setChecked(True)
+        self.IT_Brown_glass_8.setChecked(True)
+        self.IT_Clear_glass_8.setChecked(True)
+        self.IT_Green_glass_8.setChecked(True)
+        self.IT_Mixed_Glass_8.setChecked(True)
+        self.IT_PVC_8.setChecked(True)
+        self.IT_LDPE_Film_8.setChecked(True)
+        self.IT_Polypropylene_8.setChecked(True)
+        self.IT_Fe_8.setChecked(True)
+        self.IT_Al_8.setChecked(True)
+        self.IT_Cu_8.setChecked(True)
 
         
         #Connect the PushButton [ImportProcessModels]
@@ -346,13 +385,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()  #Change tab and import process models
     def Import_Process_models_func(self): 
-        global LF, WTE, AD, COMP, SF_Col, SS_MRF, CommonData
+        global LF, WTE, AD, COMP, SF_Col, SS_MRF, CommonData, REPROC
 
         #Import CommonData
-        if self.IT_Default_6.isChecked():
+        if self.IT_Default_0.isChecked():
             import swolfpy.ProcessModels.CommonData as CommonData
-        elif self.IT_UserDefine_6.isChecked():
-            #CommonData=importlib.import_module(self.IT_FName_6.text()[:-3])
+        elif self.IT_UserDefine_0.isChecked():
+            #CommonData=importlib.import_module(self.IT_FName_0.text()[:-3])
             import swolfpy.ProcessModels.CommonData as CommonData
         CommonData=CommonData
         #Import LF
@@ -390,6 +429,19 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #SS_MRF=importlib.import_module(self.IT_FName_5.text()[:-3])
             import swolfpy.ProcessModels.SS_MRF as SS_MRF
         SS_MRF=SS_MRF    
+        
+        #Import DS_MRF later
+        #Import MS_MRF later
+        
+        #Import REPROC
+        if self.IT_Default_8.isChecked():
+            import swolfpy.ProcessModels.Reprocessing as REPROC
+        elif self.IT_UserDefine_8.isChecked():
+            #SS_MRF=importlib.import_module(self.IT_FName_8.text()[:-3])
+            import swolfpy.ProcessModels.Reprocessing as REPROC
+        REPROC=REPROC    
+        
+        
         #Import SF_Collection
         if self.IT_Default_col.isChecked():
             import swolfpy.ProcessModels.SF_collection as SF_Col
@@ -397,13 +449,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #SF_Col=importlib.import_module(self.IT_FName_col.text()[:-3])
             import swolfpy.ProcessModels.SF_collection as SF_Col
         SF_Col=SF_Col    
+        
         self.LF_input_type = []
         for x in [self.IT_RWC,self.IT_SSO,self.IT_DryRes,self.IT_REC,self.IT_WetRes,self.IT_MRDO,self.IT_SSR,
                   self.IT_DSR,self.IT_MSR,self.IT_MSRDO,self.IT_SSYW,self.IT_SSYWDO,self.IT_Bottom_Ash,self.IT_Fly_Ash,
                   self.IT_Other_Residual,self.IT_Separated_Organics,self.IT_OCC,self.IT_Mixed_Paper,self.IT_ONP,
                   self.IT_OFF,self.IT_Fiber_Other,self.IT_PET,self.IT_HDPE_Unsorted,self.IT_HDPE_P,self.IT_HDPE_T,
                   self.IT_Polystyrene,self.IT_Plastic_Other,self.IT_Mixed_Plastic,self.IT_Brown_glass,self.IT_Clear_glass,
-                  self.IT_Green_glass,self.IT_Mixed_Glass,self.IT_PVC,self.IT_LDPE_Film,self.IT_Polypropylene]:
+                  self.IT_Green_glass,self.IT_Mixed_Glass,self.IT_PVC,self.IT_LDPE_Film,self.IT_Polypropylene,
+                  self.IT_Fe,self.IT_Al,self.IT_Cu]:
             self.helper_1(x,self.LF_input_type)
         
         self.WTE_input_type = []
@@ -412,7 +466,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                   self.IT_Other_Residual_2,self.IT_Separated_Organics_2,self.IT_OCC_2,self.IT_Mixed_Paper_2,self.IT_ONP_2,
                   self.IT_OFF_2,self.IT_Fiber_Other_2,self.IT_PET_2,self.IT_HDPE_Unsorted_2,self.IT_HDPE_P_2,self.IT_HDPE_T_2,
                   self.IT_Polystyrene_2,self.IT_Plastic_Other_2,self.IT_Mixed_Plastic_2,self.IT_Brown_glass_2,self.IT_Clear_glass_2,
-                  self.IT_Green_glass_2,self.IT_Mixed_Glass_2,self.IT_PVC_2,self.IT_LDPE_Film_2,self.IT_Polypropylene_2]:
+                  self.IT_Green_glass_2,self.IT_Mixed_Glass_2,self.IT_PVC_2,self.IT_LDPE_Film_2,self.IT_Polypropylene_2,
+                  self.IT_Fe_2,self.IT_Al_2,self.IT_Cu_2]:
             self.helper_1(x,self.WTE_input_type)
 
         self.AD_input_type = []
@@ -421,7 +476,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                   self.IT_Other_Residual_3,self.IT_Separated_Organics_3,self.IT_OCC_3,self.IT_Mixed_Paper_3,self.IT_ONP_3,
                   self.IT_OFF_3,self.IT_Fiber_Other_3,self.IT_PET_3,self.IT_HDPE_Unsorted_3,self.IT_HDPE_P_3,self.IT_HDPE_T_3,
                   self.IT_Polystyrene_3,self.IT_Plastic_Other_3,self.IT_Mixed_Plastic_3,self.IT_Brown_glass_3,self.IT_Clear_glass_3,
-                  self.IT_Green_glass_3,self.IT_Mixed_Glass_3,self.IT_PVC_3,self.IT_LDPE_Film_3,self.IT_Polypropylene_3]:
+                  self.IT_Green_glass_3,self.IT_Mixed_Glass_3,self.IT_PVC_3,self.IT_LDPE_Film_3,self.IT_Polypropylene_3,
+                  self.IT_Fe_3,self.IT_Al_3,self.IT_Cu_3]:
             self.helper_1(x,self.AD_input_type)
 
         self.COMP_input_type = []
@@ -430,7 +486,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                   self.IT_Other_Residual_4,self.IT_Separated_Organics_4,self.IT_OCC_4,self.IT_Mixed_Paper_4,self.IT_ONP_4,
                   self.IT_OFF_4,self.IT_Fiber_Other_4,self.IT_PET_4,self.IT_HDPE_Unsorted_4,self.IT_HDPE_P_4,self.IT_HDPE_T_4,
                   self.IT_Polystyrene_4,self.IT_Plastic_Other_4,self.IT_Mixed_Plastic_4,self.IT_Brown_glass_4,self.IT_Clear_glass_4,
-                  self.IT_Green_glass_4,self.IT_Mixed_Glass_4,self.IT_PVC_4,self.IT_LDPE_Film_4,self.IT_Polypropylene_4]:
+                  self.IT_Green_glass_4,self.IT_Mixed_Glass_4,self.IT_PVC_4,self.IT_LDPE_Film_4,self.IT_Polypropylene_4,
+                  self.IT_Fe_4,self.IT_Al_4,self.IT_Cu_4]:
             self.helper_1(x,self.COMP_input_type)
 
         self.SS_MRF_input_type = []
@@ -439,8 +496,23 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                   self.IT_Other_Residual_5,self.IT_Separated_Organics_5,self.IT_OCC_5,self.IT_Mixed_Paper_5,self.IT_ONP_5,
                   self.IT_OFF_5,self.IT_Fiber_Other_5,self.IT_PET_5,self.IT_HDPE_Unsorted_5,self.IT_HDPE_P_5,self.IT_HDPE_T_5,
                   self.IT_Polystyrene_5,self.IT_Plastic_Other_5,self.IT_Mixed_Plastic_5,self.IT_Brown_glass_5,self.IT_Clear_glass_5,
-                  self.IT_Green_glass_5,self.IT_Mixed_Glass_5,self.IT_PVC_5,self.IT_LDPE_Film_5,self.IT_Polypropylene_5]:
+                  self.IT_Green_glass_5,self.IT_Mixed_Glass_5,self.IT_PVC_5,self.IT_LDPE_Film_5,self.IT_Polypropylene_5,
+                  self.IT_Fe_5,self.IT_Al_5,self.IT_Cu_5]:
             self.helper_1(x,self.SS_MRF_input_type)
+
+        #DS_MRF Add later
+        #MS_MRF Add later
+
+        self.REPROC_input_type = []
+        for x in [self.IT_RWC_8,self.IT_SSO_8,self.IT_DryRes_8,self.IT_REC_8,self.IT_WetRes_8,self.IT_MRDO_8,self.IT_SSR_8,
+                  self.IT_DSR_8,self.IT_MSR_8,self.IT_MSRDO_8,self.IT_SSYW_8,self.IT_SSYWDO_8,self.IT_Bottom_Ash_8,self.IT_Fly_Ash_8,
+                  self.IT_Other_Residual_8,self.IT_Separated_Organics_8,self.IT_OCC_8,self.IT_Mixed_Paper_8,self.IT_ONP_8,
+                  self.IT_OFF_8,self.IT_Fiber_Other_8,self.IT_PET_8,self.IT_HDPE_Unsorted_8,self.IT_HDPE_P_8,self.IT_HDPE_T_8,
+                  self.IT_Polystyrene_8,self.IT_Plastic_Other_8,self.IT_Mixed_Plastic_8,self.IT_Brown_glass_8,self.IT_Clear_glass_8,
+                  self.IT_Green_glass_8,self.IT_Mixed_Glass_8,self.IT_PVC_8,self.IT_LDPE_Film_8,self.IT_Polypropylene_8,
+                  self.IT_Fe_8,self.IT_Al_8,self.IT_Cu_8]:
+            self.helper_1(x,self.REPROC_input_type)
+
 
         #Does include collection
         self.isCollection = QtWidgets.QMessageBox()
@@ -666,7 +738,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================    
     def init_TreatmentProcesses(self):
         #Create treatment dict
-        self._Plist = ['...','LF','WTE','Composting','AD','SS_MRF']
+        self._Plist = ['...','LF','WTE','Composting','AD','SS_MRF','REPROC']
         self.P_index = 1
         
         # Add process and create dict
@@ -815,6 +887,16 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.SS_MRF_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
+
+            elif Process.currentText() == 'REPROC':
+                self._Treatment_processes[Process_Name.text()]={}
+                if Type_input.isChecked():
+                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.REPROC(CommonDataObjct=self.CommonData)
+                else:
+                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.REPROC(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                self._Treatment_processes[Process_Name.text()]['input_type']=self.REPROC_input_type
+                Process_Label.setFont(font1)
+                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
             
             else:
                 Process_Label.setFont(font2)
@@ -920,6 +1002,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             print(self._Collection_processes)
 
+        Time_start = time()
         self.demo = project(self.P_Name,self._Treatment_processes,self.distance,self._Collection_processes)
         self.demo.store_CommonData(self.CommonData)
         self.demo.init_project(Path(__file__).parent.parent/'Data/SWOLF_AccountMode_LCI DATA.csv')
@@ -928,8 +1011,11 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.demo.group_exchanges()
         self.progressBar_write_project.setValue(100)
         
+        Time_finish = time()
+        Total_time = round(Time_finish - Time_start)
+        
         #Notift the user that the project has created successfully
-        self.msg_popup('Project','Project is created successfully','Information')
+        self.msg_popup('Project','Project is created successfully in {} seconds'.format(Total_time),'Information')
 
     @QtCore.Slot()
     def load_params_func(self):

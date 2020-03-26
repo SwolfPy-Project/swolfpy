@@ -173,7 +173,9 @@ class Process_Model():
             
             for key in self.process_model_output ["Waste"][x]:
                 if key in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual',
-                 'RDF','Al','Fe','Cu','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
+                 'RDF','Al','Fe','Cu','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO',
+                 'OCC','Mixed_Paper','ONP','OFF','Fiber_Other','PET','HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film',
+                 'Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic','Brown_glass','Clear_glass','Green_glass','Mixed_Glass']:
                     ex = {}                        # add exchange to activities
                     ex['amount'] = self.process_model_output ["Waste"][x][key]
                     ex['input'] = (self.process_name+'_product' , x+'_'+key)
@@ -204,6 +206,7 @@ class Process_Model():
                             else:
                                 self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((p,key),(self.process_name+'_product' , x+'_'+key)))									
                             self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex)
+
                             
                             #Exchange for transportation between the process models
                             ex_trnp = {}                        # add exchange to activities _ related to transportation
@@ -244,7 +247,8 @@ class Process_Model():
                                     self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((self.process_name+'_product' ,key+'_'+'to'+'_'+p),(self.process_name+'_product' , x+'_'+key)))
                                     self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex1)
                             
-                            if key in ['Separated_Organics','Other_Residual','RDF','Al','Fe','Cu']:
+                            #if key in ['Separated_Organics','Other_Residual','RDF','Al','Fe','Cu']:
+                            if key not in ['Bottom_Ash','Fly_Ash','Wastewater','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
                                 #Exchange for transportation between the process models
                                 ex_trnp = {}                        # add exchange to activities _ related to transportation
                                 ex_trnp['amount'] = 0
@@ -253,12 +257,15 @@ class Process_Model():
                                 ex_trnp['unit'] = 'Mg'
                                 ex_trnp['formula']= "frac_of_"+key+'_from_'+self.DB_name+'_to_'+p
                                 self.params_dict["frac_of_"+key+'_from_'+self.DB_name+'_to_'+p].add(((self.process_name+'_product' ,self.process_name+'_'+'to'+'_'+p),(self.process_name+'_product' , x+'_'+key)))
-                                self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex_trnp)  
+                                self.db_waste_data[(self.DB_waste_name,x+'_'+key)]['exchanges'].append(ex_trnp)
                             
-                elif key in ['Wastewater','OCC','Mixed_Paper','ONP','OFF','Fiber_Other','PET',
-                             'HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film','Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic','Brown_glass','Clear_glass',
-                             'Green_glass','Mixed_Glass']:
+# =============================================================================
+#                 elif key in ['Wastewater','OCC','Mixed_Paper','ONP','OFF','Fiber_Other','PET',
+#                              'HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film','Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic','Brown_glass','Clear_glass',
+#                              'Green_glass','Mixed_Glass']:
+# =============================================================================
                 
+                elif key in ['Wastewater']:
                     ex = {}                        # add exchange to activities
                     ex['amount'] = self.process_model_output ["Waste"][x][key]
                     ex['input'] = (self.process_name+'_product' ,key)
@@ -329,12 +336,14 @@ class Process_Model():
 ####        
 ++++++ Writing the {}   
         """.format(self.DB_waste_name))
+        #print(self.db_waste_data)
         self.database_Waste.write(self.db_waste_data)
         
         print("""
 ####        
 ++++++ Writing the {}       
         """.format(self.DB_name))
+        #print(self.db_data)
         db = Database(self.DB_name)
         db.write(self.db_data)
         self.uncertain_parameters.set_params_dict(self.params_dict)

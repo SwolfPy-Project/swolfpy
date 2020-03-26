@@ -10,7 +10,7 @@ from ..process_model_output import *
 from stats_arrays import *
 from pathlib import Path
 
-class Reprocessing:
+class REPROC:
     def __init__(self,input_data_path=None,CommonDataObjct=None):
         self.Reprocessing = ProcessModelOutput()
     

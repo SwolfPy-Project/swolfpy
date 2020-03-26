@@ -9,6 +9,7 @@ import numpy as np
 from .Required_keys import *
 from brightway2 import *
 from pathlib import Path
+import ast
 
 class ProcessModelOutput():
     def __init__(self):
@@ -61,7 +62,7 @@ class ProcessModelOutput():
         technosphere[EE[0]]=technosphere.pop(2)
         y=33
         for x in EE[1:]:
-            technosphere[x]=technosphere.pop(y)
+            technosphere[ast.literal_eval(x)]=technosphere.pop(y)
             y+=1
             
         FF=[x for x in technosphere.keys()]
