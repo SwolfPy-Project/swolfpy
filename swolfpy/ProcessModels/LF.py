@@ -19,6 +19,7 @@ class LF:
         else:
             self.CommonData = CommonData()
 
+        self.Process_Type = 'Treatment'
         self.InputData= LF_input(input_data_path)
 ### Read Material properties
         self.Material_Properties=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties.xlsx',index_col = 'Materials')

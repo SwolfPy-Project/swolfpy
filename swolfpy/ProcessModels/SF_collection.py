@@ -19,6 +19,7 @@ class SF_Col:
         else:
             self.CommonData = CommonData()
 
+        self.Process_Type = 'Collection'
         self.InputData= SF_collection_Input(input_data_path)
         self.name = name
         

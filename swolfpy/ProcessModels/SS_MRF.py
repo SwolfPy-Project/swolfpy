@@ -20,6 +20,7 @@ class SS_MRF:
         else:
             self.CommonData = CommonData()
             
+        self.Process_Type = 'Treatment'
         self.InputData= SS_MRF_input(input_data_path)
         
         ### Read Material properties
@@ -194,7 +195,7 @@ class SS_MRF:
         # Waste
         #self.waste_DF = self.LCI_Waste.report(self._Input)
         #self.SS_MRF["Waste"] = self.waste_DF.transpose().to_dict()
-        self.SS_MRF["Waste"] = self.LCI_Waste.report_T(self._Input).to_dict()
+        self.SS_MRF["Waste"] = self.LCI_Waste.report_T(self._Input).to_dict() 
         
         # Technosphere
         #self.technosphere = self.LCI.report(self._Input)
