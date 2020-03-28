@@ -16,9 +16,9 @@ class Parameters():
         self.uncertainty_vals = list()
         self.param_uncertainty_dict_MC = dict()
     
-    def add_parameter (self, waste_stream, process_model_from, process_model_to):
-        long_name = 'frac_of_' + waste_stream + '_from_' + process_model_from + '_to_' + process_model_to
-        key = waste_stream + process_model_from
+    def add_parameter (self, product, process_model_from, process_model_to):
+        long_name = 'frac_of_' + product + '_from_' + process_model_from + '_to_' + process_model_to
+        key = product + process_model_from
         if key not in self.param_uncertainty_dict.keys():
             self.param_uncertainty_dict[key] = list()
             self.param_uncertainty_dict[key].append([process_model_to, 0.0, long_name])

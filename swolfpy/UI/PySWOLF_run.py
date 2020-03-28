@@ -1003,8 +1003,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             print(self._Collection_processes)
 
         Time_start = time()
-        self.demo = project(self.P_Name,self._Treatment_processes,self.distance,self._Collection_processes)
-        self.demo.store_CommonData(self.CommonData)
+        self.demo = project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
         self.demo.init_project(Path(__file__).parent.parent/'Data/SWOLF_AccountMode_LCI DATA.csv')
         self.demo.write_project()
         self.progressBar_write_project.setValue(30)

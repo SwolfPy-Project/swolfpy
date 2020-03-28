@@ -8,8 +8,8 @@ Created on Wed May 29 12:13:23 2019
 from brightway2 import *
 from bw2data.parameters import ActivityParameter, DatabaseParameter, ProjectParameter, Group
 from .process_model import *
-import pandas as pd
 from .Required_keys import *
+import pandas as pd
 import copy
 from bw2analyzer import ContributionAnalysis
 from .Parameters import *
@@ -19,11 +19,14 @@ class project():
     """
     Project class creates a new project in Birghtway2.
     """
-    def __init__ (self,project_name,Treatment_processes,Distance,Collection_processes=None):
+    def __init__ (self,project_name,CommonData,Treatment_processes,Distance,Collection_processes=None):
         """Create project object.            
 
         :param project_name: Name for the project
         :type project_name: str
+        
+        :param CommonData: CommonData object
+        :type CommonData: class: `swolfpy.ProcessMoldes.CommonData`
         
         :param Treatment_processes: Dictionary for treatment processes include their input type and model.
         :type Treatment_processes: dict
@@ -41,8 +44,10 @@ class project():
         
         >>> # Treatment_processes:
         >>> # Include LF and WTE
+        >>> from swolfpy.ProcessModels import CommonData
         >>> from swolfpy.ProcessModels import LF
         >>> from swolfpy.ProcessModels import WTE
+        >>> common_data = CommonData.CommonData()
         >>> Treatment_processes = {}
         >>> Treatment_processes['LF']={'input_type':['RWC','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF.LF()}
         >>> Treatment_processes['WTE']={'input_type':['RWC','Other_Residual'],'model': WTE.WTE()}
@@ -63,10 +68,11 @@ class project():
         >>> Collection_processes['SF_COl']={'input_type':[],'model': SF_collection.SF_Col('SF_COl',Collection_scheme_SF_COL,Treatment_processes=Treatment_processes,Distance=distance)}      
         >>> # project
         >>> from swolfpy import project_class
-        >>> demo = project_class.project('demo',Treatment_processes,distance,Collection_processes)
+        >>> demo = project_class.project('demo',common_data,Treatment_processes,distance,Collection_processes)
         
         """
         self.project_name= project_name
+        self.CommonData =  CommonData  
         self.Treatment_processes = Treatment_processes
         self.Collection_processes = Collection_processes
         self.Distance = Distance
@@ -83,18 +89,8 @@ class project():
                  'Green_glass','Mixed_Glass','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
             self.waste_treatment[i]= self.find_destination(i) 
             
-        self.process_inputdata={}
         self.process_model={}
-
-    def store_CommonData(self,CommonData):
-        """
-        Store the Common Data in the project.
-        
-        :param CommonData: CommonData object
-        :type CommonData: class: `swolfpy.ProcessMoldes.CommonData`
-        
-        """
-        self.CommonData =  CommonData   
+   
 
     def find_destination(self,product):
         """
@@ -137,16 +133,39 @@ class project():
         :type path: str, optional 
         
         """
+        #initiate biosphere database and LCIA methods
         bw2setup()
-        self.technosphere_data ={}
-        self.technosphere_db_name='Technosphere'
-        if self.technosphere_db_name in databases:
-            del databases[self.technosphere_db_name]   
         
+        #Checking the path for technosphere LCI data and writing the technophere database
         if path:
             self.technosphere_path = path
         else:
             self.technosphere_path = str(Path(__file__).parent)+'/Data/SWOLF_AccountMode_LCI DATA.csv'
+        self.write_technosphere()
+        
+        #Deleting the old (expired) databases (if exist)
+        xx= [x for x in databases]
+        for x in xx:
+            if x not in ['biosphere3','Technosphere']:
+                del databases[x]
+        
+        #Initializing the databases
+        for DB_name in self.Treatment_processes:
+            if self.Treatment_processes[DB_name]['model'].Process_Type in ['Treatment','Collection']:
+                Process_Model.init_DB(DB_name,self.CommonData.Index)
+            elif self.Treatment_processes[DB_name]['model'].Process_Type == 'Reprocessing':
+                Process_Model.init_DB(DB_name,self.CommonData.Reprocessing_Index)
+                
+        
+        Database("waste").register()
+        self.waste_BD = Database("waste")
+
+    def write_technosphere(self):
+        self.technosphere_data ={}
+        self.technosphere_db_name='Technosphere'
+        if self.technosphere_db_name in databases:
+            del databases[self.technosphere_db_name]   
+
         outputdata1 = pd.read_csv(self.technosphere_path)
         
         # activities
@@ -173,46 +192,27 @@ class project():
         
         self.technosphere_db = Database(self.technosphere_db_name)
         self.technosphere_db.write(self.technosphere_data)
-        
-        xx= [x for x in databases]
-        for x in xx:
-            if x not in ['biosphere3','Technosphere']:
-                del databases[x]
-        
-        for j in self.Treatment_processes:
-            self.init_database(j,self.waste_treatment)
-        
-        Database("waste").register()
-        self.waste_BD = Database("waste")
             
-
-    def init_database(self,name,waste_treatment):
-        process = Process_Model(name,waste_treatment,self.Distance)
-        process.init_DB(name)
-    
     def write_project(self):
         self.parameters={}
         self.parameters_list=[]
         self.act_include_param={}
         for j in self.Treatment_processes:
-            if 'path' in self.Treatment_processes[j].keys():
-                (P,G)=self.import_database(j,self.waste_treatment,self.Treatment_processes[j]['path'])
-            else:
-                (P,G)=self.import_database(j,self.waste_treatment)
+            (P,G)=self.import_database(j,self.waste_treatment)
             self.parameters[j]=P
             self.act_include_param[j]=G
             self.parameters_list+=P
                             
-    def import_database(self,name,waste_treatment,path = None):
+    def import_database(self,name,waste_treatment):
         self.process_model[name] = Process_Model(name,waste_treatment,self.Distance)
-        if path:
-            self.process_inputdata[name] = self.process_model[name].read_output_from_SWOLF(path)
-        else:
-            self.Treatment_processes[name]['model'].calc()
-            self.process_inputdata[name] = self.Treatment_processes[name]['model'].report()
-            self.process_model[name].process_model_output = self.Treatment_processes[name]['model'].report()
+        self.Treatment_processes[name]['model'].calc()
+        self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
         
-        (P,G)=self.process_model[name].Write_DB(name)
+        if self.Treatment_processes[name]['model'].Process_Type in ['Treatment','Collection']:
+            (P,G)=self.process_model[name].Write_DB(self.CommonData.Index)
+        elif self.Treatment_processes[name]['model'].Process_Type == 'Reprocessing':
+            (P,G)=self.process_model[name].Write_DB(self.CommonData.Reprocessing_Index)
+            
         return((P,G))
     
     def report_parameters(self):
