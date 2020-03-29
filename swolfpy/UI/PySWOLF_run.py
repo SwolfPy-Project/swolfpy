@@ -1018,7 +1018,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()
     def load_params_func(self):
-        param_data=pd.DataFrame(self.demo.parameters_list)
+        param_data=pd.DataFrame(self.demo.parameters.default_parameters_list())
         param_data['Unit'] = 'fraction'
         self.param_data = Table_from_pandas_editable(param_data)
         self.Param_table.setModel(self.param_data)
