@@ -90,6 +90,9 @@ class project():
             self.waste_treatment[i]= self.find_destination(i) 
             
         self.process_model={}
+        
+        # Creating swolfpy parameter class
+        self.parameters = Parameters()
    
 
     def find_destination(self,product):
@@ -159,6 +162,7 @@ class project():
         
         Database("waste").register()
         self.waste_BD = Database("waste")
+        
 
     def write_technosphere(self):
         self.technosphere_data ={}
@@ -194,24 +198,24 @@ class project():
         self.technosphere_db.write(self.technosphere_data)
             
     def write_project(self):
-        self.parameters={}
+        self.parameters_dict={}
         self.parameters_list=[]
         self.act_include_param={}
         for j in self.Treatment_processes:
-            (P,G)=self.import_database(j,self.waste_treatment)
-            self.parameters[j]=P
+            (P,G)=self.import_database(j)
+            self.parameters_dict[j]=P
             self.act_include_param[j]=G
             self.parameters_list+=P
                             
-    def import_database(self,name,waste_treatment):
-        self.process_model[name] = Process_Model(name,waste_treatment,self.Distance)
+    def import_database(self,name):
+        self.process_model[name] = Process_Model(name,self.waste_treatment,self.Distance)
         self.Treatment_processes[name]['model'].calc()
         self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
         
         if self.Treatment_processes[name]['model'].Process_Type in ['Treatment','Collection']:
-            (P,G)=self.process_model[name].Write_DB(self.CommonData.Index)
+            (P,G)=self.process_model[name].Write_DB(self.CommonData.Index,self.parameters)
         elif self.Treatment_processes[name]['model'].Process_Type == 'Reprocessing':
-            (P,G)=self.process_model[name].Write_DB(self.CommonData.Reprocessing_Index)
+            (P,G)=self.process_model[name].Write_DB(self.CommonData.Reprocessing_Index,self.parameters)
             
         return((P,G))
     
@@ -223,7 +227,7 @@ class project():
         :rtype: dict
         
         """
-        return(self.parameters)
+        return(self.parameters_dict)
     
     def report_parameters_list(self):
         """
@@ -248,19 +252,6 @@ class project():
             if len(self.act_include_param[j]) > 0:
                 for r in self.act_include_param[j]:
                     parameters.add_exchanges_to_group(j,r)
-	
-    def create_unified_params(self):
-        unified_dict = dict()
-        unified_dict2 = dict()
-        for item in self.process_model.values():
-            for key, value in item.uncertain_parameters.param_uncertainty_dict.items():
-                unified_dict[key]=value
-				
-            for key, value in item.uncertain_parameters.params_dict.items():
-                unified_dict2[key]=value
-        self.unified_params = Parameters()
-        self.unified_params.set_params_uncertainty_dict(unified_dict)
-        self.unified_params.set_params_dict(unified_dict2)
         		
                     
     def update_parameters(self,new_param_data):
@@ -273,15 +264,14 @@ class project():
         .. note:: `parameters` are waste fractions which show what fraction of waste from one source go to different destinations, so sum of parameters from each source should be 1. (0<= `parameters` <=1)
         
         """
-        self.create_unified_params()
         self.new_param_data=new_param_data
 		
         for j in self.new_param_data:
             for k in self.parameters_list:
                 if k['name'] == j['name']:
-                    self.unified_params.update_values(j['name'],j['amount'])
+                    self.parameters.update_values(j['name'],j['amount'])
 					
-        if self.unified_params.check_sum():
+        if self.parameters.check_sum():
             for j in self.new_param_data:
                 for k in self.parameters_list:
                     if k['name'] == j['name']:
@@ -295,7 +285,7 @@ class project():
             for j in self.new_param_data:
                 for k in self.parameters_list:
                     if k['name'] == j['name']:
-                        self.unified_params.update_values(k['name'],k['amount'])
+                        self.parameters.update_values(k['name'],k['amount'])
 		
                 
     def process_start_scenario(self,input_dict,scenario_name):

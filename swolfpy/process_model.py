@@ -28,10 +28,8 @@ class Process_Model():
         ### ==========================
         self.database_Waste_technosphere = Database("Technosphere")
         ### ==========================
-		
-        self.uncertain_parameters = Parameters()
         
-    
+
     def check_nan(self, x):  # replace zeros when there is no data ("nan")
         if str(x) == "nan":
             return 0
@@ -55,13 +53,14 @@ class Process_Model():
         db.write(db_data)
         
     
-    def Write_DB (self,waste_flows):
+    def Write_DB (self,waste_flows,parameters):
         self.db_data ={}
         self.db_Pr_data={}
-        self.parameters=[]
-        self.list_of_params=[]
+        self.parameters=[] # List of dictionaries ({'name':Formula ,'amount':0})
+        self.list_of_params=[] # List of parameters name
         self.act_in_group =set()
-        self.params_dict = dict()
+        self.params_dict = dict()  # Dictionary that has set() include the key (input,act) for all the exchanges with parameters.
+        self.uncertain_parameters = parameters
         
         for x in  waste_flows:    # x is waste fraction
             self.db_data[(self.P_Name,x)] ={}    # add activity to database
@@ -186,7 +185,7 @@ class Process_Model():
               """.format(self.P_Name))
         db = Database(self.P_Name)
         db.write(self.db_data)
-        self.uncertain_parameters.set_params_dict(self.params_dict)
+        self.uncertain_parameters.params_dict.update(self.params_dict)
         return(self.parameters,self.act_in_group)
 
 
@@ -209,7 +208,7 @@ class Process_Model():
                 self.list_of_params.append(Formula)
                 self.params_dict[Formula] = set()
                 self.params_dict[Formula].add((Input,Act))
-                self.uncertain_parameters.add_parameter(product,self.P_Name,Input[0]) #add_parameter (self, product, process_model_from, process_model_to)							
+                self.uncertain_parameters.add_parameter(product,self.P_Name,Input[0],0) #add_parameter (self, product, process_model_from, process_model_to,value)							
             else:
                 self.params_dict[Formula].add((Input,Act)) 
         

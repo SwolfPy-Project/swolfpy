@@ -89,9 +89,9 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
             i+=1
         
     if parameters:
-        matrix,params = parameters.MC_calc()
+        param_exchanges,params = parameters.MC_calc()
         uncertain_inputs += params
-        for key, value in matrix.items():
+        for key, value in param_exchanges.items():
             if key in tech_matrix:
                 tech_matrix[key] = value    
     
@@ -114,7 +114,7 @@ def parallel_mc (lca, project, functional_unit, method, tech_matrix, bio_matrix,
             lca_results[method[i]]=lca.score
         lca.switch_method(method[0])
     print(os.getpid(),index)
-    return(os.getpid(),lca_results,uncertain_inputs,report_dict)
+    return(os.getpid(),lca_results,uncertain_inputs)
     
   
 
@@ -208,8 +208,8 @@ class ParallelData(LCA):
         and reculate the LCA score
         """
         if self.oldx != list(x): # Calculations are done only when the function get new x.
-            matrix=self.project.unified_params.get_matrix(x)
-            for key, value in matrix.items():
+            param_exchanges=self.project.parameters.Param_exchanges(x)
+            for key, value in param_exchanges.items():
                 if key in self.tech_matrix:
                     self.tech_matrix[key] = value    
         
@@ -305,8 +305,8 @@ class ParallelData(LCA):
         self.Param_index=0
         
         # Number of parameters in each group (from one source to different denstinations)
-        for key in self.project.unified_params.param_uncertainty_dict.keys():
-            group[key] = len(self.project.unified_params.param_uncertainty_dict[key])
+        for key in self.project.parameters.param_uncertainty_dict.keys():
+            group[key] = len(self.project.parameters.param_uncertainty_dict[key])
 
         # Equal constraint (sum of the parameters in each group should be one)
         for vals in group.values():
