@@ -27,7 +27,7 @@ class WTE:
         self.Material_Properties.fillna(0,inplace=True)
         self.process_data=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties - process modles.xlsx', sheet_name = 'WTE', index_col = 'Parameter')
         self.process_data.fillna(0,inplace=True)
-        self.Index = self.CommonData.Index[1:]
+        self.Index = self.CommonData.Index
         
     def calc(self):
         self.LCI_index = False
