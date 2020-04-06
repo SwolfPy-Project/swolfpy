@@ -2,6 +2,7 @@ from .project_class import *
 from stats_arrays import *
 import copy
 import math
+#import graphviz
 
 
 def approx_eq(x, y):
@@ -9,13 +10,17 @@ def approx_eq(x, y):
     return abs(x - y) <= max(abs(x), abs(y)) * tol
 
 class Parameters():
-    def __init__ (self):
+    def __init__ (self,processes):
         self.param_uncertainty_dict = dict() 
         self.params_dict = dict()
         
         self.MC_param_name = list() #name of parameters that include uncertainty
         self.MC_param_base = list() #uncertainty base for parameters that have uncertainty
         self.MC_param_uncertainty_dict = dict()
+        
+        self.processes = processes
+        self.nodes = list(self.processes.keys())
+
 
     
     def add_parameter (self, product, process_model_from, process_model_to,value):
@@ -36,10 +41,27 @@ class Parameters():
         key = product + process_model_from
         if key not in self.param_uncertainty_dict.keys():
             self.param_uncertainty_dict[key] = list()
-            self.param_uncertainty_dict[key].append([process_model_to, value, param_name])
+            self.param_uncertainty_dict[key].append([process_model_to, value, param_name,(process_model_from,process_model_to,product)])
         else:
-            self.param_uncertainty_dict[key].append([process_model_to, value, param_name])
-
+            self.param_uncertainty_dict[key].append([process_model_to, value, param_name,(process_model_from,process_model_to,product)])
+    
+    def SWM_network(self):
+        pass
+# =============================================================================
+#         #Initialize SWM network
+#         self.network = graphviz.Digraph(name='SWM_network',filename='SWM_network.gv',format='png',engine='dot')
+#         self.network.graph_attr['rankdir']='LR'
+#         for x in self.nodes:
+#             self.network.node(x)
+#         
+#         for y in self.param_uncertainty_dict.values():
+#             for x in y:
+#                 self.add_edge(x[3][0],x[3][1],x[3][2],x[1])
+#         self.network.render('SWM_network', view = True)
+# 
+#     def add_edge(self,head,tail,name,value):
+#         self.network.edge(head,tail,label=name + ' (fraction = {})'.format(value))
+# =============================================================================
             
     def default_parameters_list(self):
         default_parameters_list=[]
