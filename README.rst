@@ -6,11 +6,22 @@ Solid Waste Optimization Life-cycle Framework in Python(swolfpy)
 
 .. image:: https://img.shields.io/pypi/v/swolfpy.svg
         :target: https://pypi.python.org/pypi/swolfpy
+        
+.. image:: https://img.shields.io/pypi/pyversions/swolfpy.svg
+    :target: https://pypi.org/project/swolfpy/
+    :alt: Supported Python Versions
+
+.. image:: https://img.shields.io/pypi/l/swolfpy.svg
+    :target: https://pypi.org/project/swolfpy/
+    :alt: License
+
+.. image:: https://img.shields.io/pypi/format/swolfpy.svg
+    :target: https://pypi.org/project/swolfpy/
+    :alt: Format
 
 .. image:: https://readthedocs.org/projects/swolfpy/badge/?version=latest
         :target: https://swolfpy.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
-
 
 
 * Free software: GNU GENERAL PUBLIC LICENSE V2
