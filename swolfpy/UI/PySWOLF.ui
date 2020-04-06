@@ -241,7 +241,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>1344</width>
-                    <height>918</height>
+                    <height>1023</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_22">
@@ -264,8 +264,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>584</height>
+                        <width>406</width>
+                        <height>70</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -345,8 +345,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -839,8 +839,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -1333,8 +1333,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -1827,8 +1827,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -2321,8 +2321,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -2815,8 +2815,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -3309,8 +3309,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -3804,7 +3804,7 @@ p, li { white-space: pre-wrap; }
                         <x>0</x>
                         <y>0</y>
                         <width>1326</width>
-                        <height>492</height>
+                        <height>597</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -4297,8 +4297,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>432</width>
+                        <height>96</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -4378,8 +4378,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>432</width>
+                        <height>96</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -4459,8 +4459,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>533</height>
+                        <width>432</width>
+                        <height>96</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -4561,8 +4561,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1364</width>
-                 <height>946</height>
+                 <width>143</width>
+                 <height>638</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_105">
@@ -4829,8 +4829,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>806</height>
+                        <width>864</width>
+                        <height>727</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -5102,8 +5102,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1364</width>
-                 <height>946</height>
+                 <width>373</width>
+                 <height>829</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_106">
@@ -5301,8 +5301,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1364</width>
-                 <height>946</height>
+                 <width>540</width>
+                 <height>769</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_52">
@@ -6251,8 +6251,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1364</width>
-                 <height>946</height>
+                 <width>722</width>
+                 <height>874</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_109">
@@ -6845,8 +6845,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>650</width>
-                        <height>325</height>
+                        <width>218</width>
+                        <height>182</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -6921,8 +6921,8 @@ p, li { white-space: pre-wrap; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>630</width>
-                            <height>248</height>
+                            <width>198</width>
+                            <height>28</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -7124,8 +7124,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1364</width>
-                 <height>946</height>
+                 <width>1143</width>
+                 <height>892</height>
                 </rect>
                </property>
                <property name="palette">
@@ -8172,29 +8172,6 @@ p, li { white-space: pre-wrap; }
             </item>
            </layout>
           </widget>
-         </widget>
-         <widget class="QTextBrowser" name="Terminal">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>100</height>
-           </size>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
          </widget>
         </widget>
        </item>
