@@ -92,7 +92,7 @@ class project():
         self.process_model={}
         
         # Creating swolfpy parameter class
-        self.parameters = Parameters()
+        self.parameters = Parameters(self.Treatment_processes)
    
 
     def find_destination(self,product):
@@ -213,9 +213,9 @@ class project():
         self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
         
         if self.Treatment_processes[name]['model'].Process_Type in ['Treatment','Collection']:
-            (P,G)=self.process_model[name].Write_DB(self.CommonData.Index,self.parameters)
+            (P,G)=self.process_model[name].Write_DB(self.CommonData.Index,self.parameters,self.Treatment_processes[name]['model'].Process_Type)
         elif self.Treatment_processes[name]['model'].Process_Type == 'Reprocessing':
-            (P,G)=self.process_model[name].Write_DB(self.CommonData.Reprocessing_Index,self.parameters)
+            (P,G)=self.process_model[name].Write_DB(self.CommonData.Reprocessing_Index,self.parameters,self.Treatment_processes[name]['model'].Process_Type)
             
         return((P,G))
     

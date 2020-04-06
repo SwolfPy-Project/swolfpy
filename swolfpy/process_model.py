@@ -53,7 +53,7 @@ class Process_Model():
         db.write(db_data)
         
     
-    def Write_DB (self,waste_flows,parameters):
+    def Write_DB (self,waste_flows,parameters,Process_Type):
         self.db_data ={}
         self.db_Pr_data={}
         self.parameters=[] # List of dictionaries ({'name':Formula ,'amount':0})
@@ -65,7 +65,10 @@ class Process_Model():
         for x in  waste_flows:    # x is waste fraction
             self.db_data[(self.P_Name,x)] ={}    # add activity to database
             self.db_data[(self.P_Name,x)]['name'] = self.P_Name+"_"+x
-            self.db_data[(self.P_Name,x)]['unit'] = 'Mg'
+            if Process_Type == 'Collection':
+                self.db_data[(self.P_Name,x)]['unit'] = '{} Mg Colleted/year'.format(np.round(sum(self.Report["Waste"][x].values()),decimals=2))
+            else:
+                self.db_data[(self.P_Name,x)]['unit'] = 'Mg'
             self.db_data[(self.P_Name,x)]['exchanges'] =[]
 
 # =============================================================================
