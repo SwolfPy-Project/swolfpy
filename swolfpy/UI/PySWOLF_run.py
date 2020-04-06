@@ -18,7 +18,6 @@ import pandas as pd
 from ..Distance import *
 from ..project_class import *
 from ..building_matrices import *
-from ..Required_keys import *
 import numpy as np
 import pickle
 from copy import deepcopy
@@ -49,9 +48,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         super(MyQtApp,self).__init__()
         self.setupUi(self)
         self.init_app()
-        self.cursor = self.Terminal.textCursor()
-        self.cursor.movePosition(QtGui.QTextCursor.Start)
         
+        #self.cursor = self.Terminal.textCursor()
+        #self.cursor.movePosition(QtGui.QTextCursor.Start)
         #Emitting_stream=  EmittingStream()
         #sys.stdout.write = Emitting_stream.write
         #sys.stdout.writelines = Emitting_stream.writelines
@@ -1022,7 +1021,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         param_data['Unit'] = 'fraction'
         self.param_data = Table_from_pandas_editable(param_data)
         self.Param_table.setModel(self.param_data)
-        self.Param_table.resizeColumnsToContents()       
+        self.Param_table.resizeColumnsToContents()
+        
+        # Create SWM Network
+        self.demo.parameters.SWM_network()
         
     @QtCore.Slot()
     def update_network_parameters(self):
@@ -1032,7 +1034,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             x['amount'] = self.param_data._data['amount'][i]
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
+        
+        Time_start = time()
         self.demo.update_parameters(new_param)
+        Total_time = round(time() - Time_start)
+        #Notift the user that the project has created successfully
+        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(Total_time),'Information')
+        
         self.PySWOLF.setCurrentWidget(self.Create_Scenario)
         self.Create_Scenario.setEnabled(True)
         self.LCA_tab.setEnabled(True)
@@ -1041,6 +1049,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #init create scenario
         self.init_CreateScenario()
         self.Opt_tab_init()
+        # Create SWM Network
+        self.demo.parameters.SWM_network()
+        
 
 #%% Create Scenario
 # =============================================================================
@@ -1082,10 +1093,17 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         else:
             process=[x for x in self.demo.Treatment_processes.keys()][i-1]
             self.process_waste=pd.DataFrame(columns=self._column_name_def_scenario)
-            self.process_waste['Name'] = MSW_Fractions
+            db = Database(process)
+            flows = []
+            units = []
+            for x in db:
+                act=x.as_dict()
+                flows.append(act['code'])
+                units.append(act['unit'])
+            self.process_waste['Name'] = flows
             self.process_waste['Process'] = process
             self.process_waste['Amount'] = 0
-            self.process_waste['Unit'] = ''
+            self.process_waste['Unit'] = units
         self.process_WF = Table_from_pandas_editable(self.process_waste)
         self.act_in_process_table.setModel(self.process_WF)
         self.act_in_process_table.resizeColumnsToContents()
@@ -1095,7 +1113,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot()
     def add_act_to_scenario(self):
         for i in range(len(self.process_WF._data['Name'])):
-            if self.process_WF._data['Amount'][i] != 0 and not np.isnan(self.process_WF._data['Amount'][i]):
+            if self.process_WF._data['Amount'].iloc[i] != 0 and not np.isnan(self.process_WF._data['Amount'].iloc[i]):
                 self.act_included.loc[self.j]=self.process_WF._data.iloc[i]
                 self.j+=1
         self.Included_act_table.setEnabled(True)
@@ -1116,20 +1134,27 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()
     def create_new_scenario(self):
-        scenario = {}
+        print('\n \n \n new scenario \n',self.Inc_act_table._data,'\n\n\n')
+        name = self.Name_new_scenario.text()
+        mass = 0
+        for i in range(len(self.Inc_act_table._data['Unit'])):
+            unit = self.Inc_act_table._data['Unit'][i]
+            flow = self.Inc_act_table._data['Amount'][i]
+            unit_i = unit.split(sep=' ')
+            if len(unit_i) > 1:
+                mass += float(unit_i[0]) * flow
+            if unit_i[0] == 'Mg':
+                mass += 1 * flow
+        
+        self.demo.waste_BD.new_activity(code = name, name = name, type = "process", unit = '{} Mg'.format(np.round(mass,decimals=2))).save()
         for i in range(len(self.Inc_act_table._data['Process'])):
-            if self.Inc_act_table._data['Process'][i] not in scenario.keys():
-                scenario[self.Inc_act_table._data['Process'][i]]={}
-                scenario[self.Inc_act_table._data['Process'][i]][self.Inc_act_table._data['Name'][i]]= float(self.Inc_act_table._data['Amount'][i])
-            else:
-                scenario[self.Inc_act_table._data['Process'][i]][self.Inc_act_table._data['Name'][i]]= float(self.Inc_act_table._data['Amount'][i])
-        print('\n \n \n new scenario \n',scenario,'\n\n\n')
-        self.demo.process_start_scenario(scenario,self.Name_new_scenario.text())
+            self.demo.waste_BD.get(name).new_exchange(input=(self.Inc_act_table._data['Process'][i],self.Inc_act_table._data['Name'][i]),amount=self.Inc_act_table._data['Amount'][i],type="technosphere").save()
+        self.demo.waste_BD.get(name).save()   
         
         #Notift the user that the scenario has created successfully
         self.msg_popup('Create Scenario','Scenario {} is created successfully'.format(self.Name_new_scenario.text()),'Information')
-
-
+        self.delect_act_included()
+        
 #%% LCA
 # =============================================================================
 # =============================================================================
@@ -2013,9 +2038,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             x['amount'] = self.Opt_Param_table.model()._data['amount'][i]
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
-        self.demo.update_parameters(new_param)   
-        
-        
+       
+        Time_start = time()
+        self.demo.update_parameters(new_param)
+        Total_time = round(time() - Time_start)
+        #Notift the user that the project has created successfully
+        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(Total_time),'Information')
+               
     @QtCore.Slot()
     def Opt_ClearConstr_func(self):
         self.Const_DF = pd.DataFrame(columns=['flow','inequality','limit'])
