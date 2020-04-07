@@ -5,7 +5,7 @@ Created on Thu Jan  9 17:44:09 2020
 @author: msardar2
 """
 from PySide2 import QtCore, QtGui, QtWidgets
-from .Table_from_pandas import Table_from_pandas,Table_from_pandas_editable,Table_modeifed_distanceTable,Table_modeifed_collection_schm
+from .Table_from_pandas import *
 import os
 import io
 import csv
@@ -1171,7 +1171,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.LCA_LCI_tab.setEnabled(False)
             
             # Functional unit
-            self.DB_name_list = [x for x in databases]
+            self.DB_name_list = [x for x in databases if x != 'biosphere3']
             self.DB_name_list.sort()
             self.LCA_DataBase.setMaxVisibleItems(100)
             self.LCA_DataBase.clear()
@@ -1642,7 +1642,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_tab.setEnabled(True)
             self.MC_setting.setCurrentWidget(self.Normal)
             projects.set_current(self.demo.project_name)
-            self.DB_name_list = [x for x in databases]
+            self.DB_name_list = [x for x in databases if x != 'biosphere3']
             self.DB_name_list.sort()
             self.MC_FU_DB.clear()
             self.MC_FU_DB.addItems(['...']+self.DB_name_list)
@@ -1878,7 +1878,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             #Functional Unit
             projects.set_current(self.demo.project_name)
-            self.DB_name_list = [x for x in databases]
+            self.DB_name_list = [x for x in databases if x != 'biosphere3']
             self.DB_name_list.sort()
             self.Opt_FU_DB.clear()
             self.Opt_FU_DB.addItems(['...']+self.DB_name_list)
@@ -2018,7 +2018,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if results.success:
             self.msg_popup('Optimization Result',results.message+'\n Total time: {} seconds'.format(Total_time),'Information')
             obj = results.fun*10**opt.magnitude
-            self.Opt_score.setText(str(obj))
+            self.Opt_score.setText(f_n(obj))
             unit =Method(method[0]).metadata['unit'] 
             self.Opt_unit.setText(unit)
             
