@@ -1177,6 +1177,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.LCA_DataBase.clear()
             self.LCA_DataBase.addItems(['...']+self.DB_name_list)
             self.LCA_DataBase.currentIndexChanged.connect(self.load_db_func(self.LCA_activity))
+            self.LCA_activity.currentTextChanged.connect(self.load_act_unit(self.LCA_DataBase,self.LCA_FU_unit))
             self.LCA_acts_index=0
             self.LCA_List_of_functional_units=[]
             self.LCA_acts_DF = pd.DataFrame(columns=['Key','Name','Amount','Unit'])
@@ -1215,7 +1216,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         act=get_activity((self.LCA_DataBase.currentText(),self.LCA_activity.currentText()))
         Key = act.key
         Name = act.as_dict()['name']
-        Amount = float(self.LCA_Func_unit.text())
+        Amount = float(self.LCA_FU_amount.text())
         Unit = act.as_dict()['unit']
         self.LCA_acts_DF.loc[self.LCA_acts_index]=[Key,Name,Amount,Unit]
         self.LCA_acts_index+=1
@@ -1642,11 +1643,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_tab.setEnabled(True)
             self.MC_setting.setCurrentWidget(self.Normal)
             projects.set_current(self.demo.project_name)
-            self.DB_name_list = [x for x in databases if x != 'biosphere3']
-            self.DB_name_list.sort()
             self.MC_FU_DB.clear()
             self.MC_FU_DB.addItems(['...']+self.DB_name_list)
             self.MC_FU_DB.currentIndexChanged.connect(self.load_db_func(self.MC_FU_act))
+            self.MC_FU_act.currentTextChanged.connect(self.load_act_unit(self.MC_FU_DB,self.MC_FU_unit))
             
             list_methods = [str(x) for x in methods]
             list_methods.sort()
@@ -1878,11 +1878,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             #Functional Unit
             projects.set_current(self.demo.project_name)
-            self.DB_name_list = [x for x in databases if x != 'biosphere3']
-            self.DB_name_list.sort()
             self.Opt_FU_DB.clear()
             self.Opt_FU_DB.addItems(['...']+self.DB_name_list)
             self.Opt_FU_DB.currentIndexChanged.connect(self.load_db_func(self.Opt_FU_act))
+            self.Opt_FU_act.currentTextChanged.connect(self.load_act_unit(self.Opt_FU_DB,self.Opt_FU_unit))
             
             #Objective Impact
             list_methods = [str(x) for x in methods]
@@ -1984,7 +1983,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()
     def Opt_minimize_func(self):
-        functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):float(self.Opt_MC_FU_amount.text())}
+        functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):float(self.Opt_FU_amount.text())}
         method = [ast.literal_eval( self.Opt_method.currentText())]
         project_name = self.demo.project_name
         Time_start = time()
@@ -2159,6 +2158,17 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 act_ComboBox.clear()
                 act_ComboBox.addItems(acts)  
         return(load_db_func)
+
+    @QtCore.Slot(str)
+    def load_act_unit(self,db_ComboBox,Unit_label):
+        def load_act_unit(i):
+            if len(i) > 0:
+                act=get_activity((db_ComboBox.currentText(),i))
+                Unit = act.as_dict()['unit']
+                Unit_label.setText('Unit: {}'.format(Unit))
+            else:
+                Unit_label.setText('Unit')
+        return(load_act_unit)
 
     @QtCore.Slot()
     def Filter_Method_func(self,keyWord_lineEdit,Method_ComboBox):

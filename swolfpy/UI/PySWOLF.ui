@@ -49,7 +49,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>7</number>
           </property>
           <widget class="QWidget" name="Start">
            <attribute name="title">
@@ -240,8 +240,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1344</width>
-                    <height>1023</height>
+                    <width>123</width>
+                    <height>768</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_22">
@@ -3803,8 +3803,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>597</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -5741,22 +5741,6 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="1" column="1" colspan="3">
-                       <widget class="QComboBox" name="LCA_activity">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>400</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="2" column="0">
                        <widget class="QLabel" name="label_48">
                         <property name="text">
@@ -5765,7 +5749,7 @@ p, li { white-space: pre-wrap; }
                        </widget>
                       </item>
                       <item row="2" column="1">
-                       <widget class="QLineEdit" name="LCA_Func_unit">
+                       <widget class="QLineEdit" name="LCA_FU_amount">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                           <horstretch>0</horstretch>
@@ -5775,6 +5759,19 @@ p, li { white-space: pre-wrap; }
                        </widget>
                       </item>
                       <item row="2" column="2">
+                       <widget class="QLabel" name="LCA_FU_unit">
+                        <property name="font">
+                         <font>
+                          <weight>75</weight>
+                          <bold>true</bold>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Unit</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="3">
                        <widget class="QPushButton" name="LCA_AddAct">
                         <property name="text">
                          <string>Add activity to LCA</string>
@@ -5784,19 +5781,6 @@ p, li { white-space: pre-wrap; }
                           <normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</iconset>
                         </property>
                        </widget>
-                      </item>
-                      <item row="2" column="3">
-                       <spacer name="horizontalSpacer_16">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>150</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
                       </item>
                       <item row="2" column="4">
                        <spacer name="horizontalSpacer_15">
@@ -5820,6 +5804,22 @@ p, li { white-space: pre-wrap; }
                       </item>
                       <item row="3" column="1" colspan="4">
                        <widget class="QTableView" name="LCA_ActTable">
+                        <property name="minimumSize">
+                         <size>
+                          <width>400</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1" colspan="3">
+                       <widget class="QComboBox" name="LCA_activity">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
                         <property name="minimumSize">
                          <size>
                           <width>400</width>
@@ -6251,8 +6251,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>722</width>
-                 <height>874</height>
+                 <width>1364</width>
+                 <height>1083</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_109">
@@ -6283,6 +6283,23 @@ p, li { white-space: pre-wrap; }
                      </property>
                     </widget>
                    </item>
+                   <item row="0" column="1" colspan="3">
+                    <widget class="QComboBox" name="MC_FU_DB">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                       <kerning>true</kerning>
+                      </font>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="1" column="0">
                     <widget class="QLabel" name="label_64">
                      <property name="font">
@@ -6297,13 +6314,19 @@ p, li { white-space: pre-wrap; }
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="MC_FU_amount">
+                   <item row="1" column="1" colspan="3">
+                    <widget class="QComboBox" name="MC_FU_act">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>250</width>
+                       <height>0</height>
+                      </size>
                      </property>
                      <property name="font">
                       <font>
@@ -6328,7 +6351,31 @@ p, li { white-space: pre-wrap; }
                      </property>
                     </widget>
                    </item>
+                   <item row="2" column="1">
+                    <widget class="QLineEdit" name="MC_FU_amount">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                       <kerning>true</kerning>
+                      </font>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="2" column="2">
+                    <widget class="QLabel" name="MC_FU_unit">
+                     <property name="text">
+                      <string>Unit</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="3">
                     <spacer name="horizontalSpacer_2">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
@@ -6340,46 +6387,6 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                     </spacer>
-                   </item>
-                   <item row="1" column="1" colspan="2">
-                    <widget class="QComboBox" name="MC_FU_act">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>250</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>50</weight>
-                       <bold>false</bold>
-                       <kerning>true</kerning>
-                      </font>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1" colspan="2">
-                    <widget class="QComboBox" name="MC_FU_DB">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>50</weight>
-                       <bold>false</bold>
-                       <kerning>true</kerning>
-                      </font>
-                     </property>
-                    </widget>
                    </item>
                   </layout>
                  </widget>
@@ -6845,8 +6852,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>218</width>
-                        <height>182</height>
+                        <width>650</width>
+                        <height>450</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -6921,8 +6928,8 @@ p, li { white-space: pre-wrap; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>198</width>
-                            <height>28</height>
+                            <width>630</width>
+                            <height>373</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -7124,8 +7131,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1143</width>
-                 <height>892</height>
+                 <width>1364</width>
+                 <height>1083</height>
                 </rect>
                </property>
                <property name="palette">
@@ -7206,51 +7213,6 @@ p, li { white-space: pre-wrap; }
                    <string>Functional Unit</string>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_7">
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="label_72">
-                     <property name="font">
-                      <font>
-                       <weight>50</weight>
-                       <bold>false</bold>
-                       <kerning>true</kerning>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Activity:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="label_73">
-                     <property name="font">
-                      <font>
-                       <weight>50</weight>
-                       <bold>false</bold>
-                       <kerning>true</kerning>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Amount:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="Opt_MC_FU_amount">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>50</weight>
-                       <bold>false</bold>
-                       <kerning>true</kerning>
-                      </font>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="0" column="0">
                     <widget class="QLabel" name="label_71">
                      <property name="font">
@@ -7265,20 +7227,21 @@ p, li { white-space: pre-wrap; }
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="2">
-                    <spacer name="horizontalSpacer_10">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_72">
+                     <property name="font">
+                      <font>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                       <kerning>true</kerning>
+                      </font>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
+                     <property name="text">
+                      <string>Activity:</string>
                      </property>
-                    </spacer>
+                    </widget>
                    </item>
-                   <item row="1" column="1" colspan="2">
+                   <item row="1" column="1" colspan="3">
                     <widget class="QComboBox" name="Opt_FU_act">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -7301,7 +7264,58 @@ p, li { white-space: pre-wrap; }
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="1" colspan="2">
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_73">
+                     <property name="font">
+                      <font>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                       <kerning>true</kerning>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Amount:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QLineEdit" name="Opt_FU_amount">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                       <kerning>true</kerning>
+                      </font>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="2">
+                    <widget class="QLabel" name="Opt_FU_unit">
+                     <property name="text">
+                      <string>Unit</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="3">
+                    <spacer name="horizontalSpacer_10">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item row="0" column="1" colspan="3">
                     <widget class="QComboBox" name="Opt_FU_DB">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
