@@ -9,6 +9,16 @@ import numpy as np
 import io
 import csv
 
+def f_n(x):
+    """
+    format number function
+    If the input is string, it returns string but if the input in number, it will return it in sceintific format.
+    """
+    if (isinstance(x,float) or isinstance(x,int)) and len(str(x))>6:
+        return("{:.4e}".format(x))
+    else:
+        return(str(x))
+
 
 #%% Table: View Pandas Data Frame
 class Table_from_pandas(QtCore.QAbstractTableModel):
@@ -25,7 +35,7 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
-                return str(self._data.iloc[index.row(), index.column()])
+                return f_n(self._data.iloc[index.row(), index.column()])
         return None
 
     def headerData(self, col, orientation, role):
@@ -64,7 +74,7 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
-                return str(self._data.iloc[index.row(), index.column()])
+                return f_n(self._data.iloc[index.row(), index.column()])
             
             elif role == QtCore.Qt.EditRole:
                 return str(self._data.iloc[index.row(), index.column()])
@@ -115,7 +125,7 @@ class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
-                return str(self._data.iloc[index.row(), index.column()])
+                return f_n(self._data.iloc[index.row(), index.column()])
 
             if role==QtCore.Qt.BackgroundColorRole and index.row() >= index.column():
                 return QtGui.QBrush(QtCore.Qt.gray)
@@ -158,7 +168,7 @@ class Table_modeifed_collection_schm(QtCore.QAbstractTableModel):
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
-                return str(self._data.iloc[index.row(), index.column()])
+                return f_n(self._data.iloc[index.row(), index.column()])
             
             # gray color for fix cells
             elif role==QtCore.Qt.BackgroundColorRole and index.column()==0:
