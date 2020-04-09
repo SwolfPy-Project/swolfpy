@@ -49,7 +49,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="Start">
            <attribute name="title">
@@ -264,8 +264,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1326</width>
-                        <height>563</height>
+                        <width>406</width>
+                        <height>160</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -6002,10 +6002,20 @@ p, li { white-space: pre-wrap; }
                       <string>Functional Unit</string>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_18">
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label_51">
+                      <item row="0" column="1" colspan="3">
+                       <widget class="QComboBox" name="LCA_DataBase">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QLabel" name="label_12">
                         <property name="text">
-                         <string>Database:</string>
+                         <string>Activities:</string>
                         </property>
                        </widget>
                       </item>
@@ -6013,36 +6023,6 @@ p, li { white-space: pre-wrap; }
                        <widget class="QLabel" name="label_49">
                         <property name="text">
                          <string>Activity:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0">
-                       <widget class="QLabel" name="label_48">
-                        <property name="text">
-                         <string>Amount:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="1">
-                       <widget class="QLineEdit" name="LCA_FU_amount">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="2">
-                       <widget class="QLabel" name="LCA_FU_unit">
-                        <property name="font">
-                         <font>
-                          <weight>75</weight>
-                          <bold>true</bold>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Unit</string>
                         </property>
                        </widget>
                       </item>
@@ -6070,13 +6050,6 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </spacer>
                       </item>
-                      <item row="3" column="0">
-                       <widget class="QLabel" name="label_12">
-                        <property name="text">
-                         <string>Activities:</string>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="3" column="1" colspan="4">
                        <widget class="QTableView" name="LCA_ActTable">
                         <property name="minimumSize">
@@ -6103,13 +6076,30 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="1" colspan="3">
-                       <widget class="QComboBox" name="LCA_DataBase">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_51">
+                        <property name="text">
+                         <string>Database:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="label_48">
+                        <property name="text">
+                         <string>Unit:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLabel" name="LCA_FU_unit">
+                        <property name="font">
+                         <font>
+                          <weight>75</weight>
+                          <bold>true</bold>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string/>
                         </property>
                        </widget>
                       </item>
@@ -6622,31 +6612,14 @@ p, li { white-space: pre-wrap; }
                       </font>
                      </property>
                      <property name="text">
-                      <string>Amount:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="MC_FU_amount">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>50</weight>
-                       <bold>false</bold>
-                       <kerning>true</kerning>
-                      </font>
+                      <string>Unit:</string>
                      </property>
                     </widget>
                    </item>
                    <item row="2" column="2">
                     <widget class="QLabel" name="MC_FU_unit">
                      <property name="text">
-                      <string>Unit</string>
+                      <string> </string>
                      </property>
                     </widget>
                    </item>
@@ -7128,7 +7101,7 @@ p, li { white-space: pre-wrap; }
                         <x>0</x>
                         <y>0</y>
                         <width>650</width>
-                        <height>450</height>
+                        <height>448</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -7204,7 +7177,7 @@ p, li { white-space: pre-wrap; }
                             <x>0</x>
                             <y>0</y>
                             <width>630</width>
-                            <height>373</height>
+                            <height>371</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -7549,31 +7522,14 @@ p, li { white-space: pre-wrap; }
                       </font>
                      </property>
                      <property name="text">
-                      <string>Amount:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="Opt_FU_amount">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>50</weight>
-                       <bold>false</bold>
-                       <kerning>true</kerning>
-                      </font>
+                      <string>Unit:</string>
                      </property>
                     </widget>
                    </item>
                    <item row="2" column="2">
                     <widget class="QLabel" name="Opt_FU_unit">
                      <property name="text">
-                      <string>Unit</string>
+                      <string> </string>
                      </property>
                     </widget>
                    </item>

@@ -1245,7 +1245,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         act=get_activity((self.LCA_DataBase.currentText(),self.LCA_activity.currentText()))
         Key = act.key
         Name = act.as_dict()['name']
-        Amount = float(self.LCA_FU_amount.text())
+        Amount = 1
         Unit = act.as_dict()['unit']
         self.LCA_acts_DF.loc[self.LCA_acts_index]=[Key,Name,Amount,Unit]
         self.LCA_acts_index+=1
@@ -1778,7 +1778,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def MC_run_func(self):
         projects.set_current(self.demo.project_name)
         project = self.demo.project_name
-        FU = {(self.MC_FU_DB.currentText(),self.MC_FU_act.currentText()):ast.literal_eval(self.MC_FU_amount.text())}
+        FU = {(self.MC_FU_DB.currentText(),self.MC_FU_act.currentText()):1}
         method = self.MC_method_table_model._data['LCIA method'].values.tolist()
         process_models = list()
         process_model_names = list()
@@ -2012,7 +2012,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()
     def Opt_minimize_func(self):
-        functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):float(self.Opt_FU_amount.text())}
+        functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):1}
         method = [ast.literal_eval( self.Opt_method.currentText())]
         project_name = self.demo.project_name
         Time_start = time()
@@ -2202,9 +2202,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             if len(i) > 0:
                 act=get_activity((db_ComboBox.currentText(),i))
                 Unit = act.as_dict()['unit']
-                Unit_label.setText('Unit: {}'.format(Unit))
+                Unit_label.setText('{}'.format(Unit))
             else:
-                Unit_label.setText('Unit')
+                Unit_label.setText('...')
         return(load_act_unit)
 
     @QtCore.Slot()
