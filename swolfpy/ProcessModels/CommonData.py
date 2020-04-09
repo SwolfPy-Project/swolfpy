@@ -47,6 +47,15 @@ class CommonData(MC):
                                    'OCC','Mixed_Paper','ONP','OFF','Fiber_Other',
                                    'Brown_glass','Clear_glass','Green_glass','Mixed_Glass',
                                    'PET','HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film','Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic']
+
+# Collection products index
+        self.Collection_Index = ['RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']        
+
+# Waste products index
+        self.Waste_Pr_Index = ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual','RDF']
+
+# all waste_pr_index
+        self.All_Waste_Pr_Index =  self.Waste_Pr_Index + self.Collection_Index + self.Reprocessing_Index
         
 ### Update_Input
     def Update_input(self,NewData):

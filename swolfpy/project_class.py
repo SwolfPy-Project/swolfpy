@@ -13,13 +13,14 @@ import pandas as pd
 import copy
 from bw2analyzer import ContributionAnalysis
 from .Parameters import *
+from .ProcessModels.Technosphere import Technosphere
 from pathlib import Path
 
 class project():
     """
     Project class creates a new project in Birghtway2.
     """
-    def __init__ (self,project_name,CommonData,Treatment_processes,Distance,Collection_processes=None):
+    def __init__ (self,project_name,CommonData,Treatment_processes,Distance,Collection_processes=None,Technosphere_obj=None):
         """Create project object.            
 
         :param project_name: Name for the project
@@ -71,7 +72,15 @@ class project():
         >>> demo = project_class.project('demo',common_data,Treatment_processes,distance,Collection_processes)
         
         """
-        self.project_name= project_name
+        if Technosphere_obj:
+            self.Technosphere = Technosphere_obj
+            self.project_name = self.Technosphere.project_name
+            if self.project_name != project_name:
+                raise Warning('The project name should be same with the name selected for creating the technosphere')
+        else:
+            self.project_name = project_name
+            self.Technosphere = Technosphere(self.project_name)
+            
         self.CommonData =  CommonData  
         self.Treatment_processes = Treatment_processes
         self.Collection_processes = Collection_processes
@@ -84,9 +93,7 @@ class project():
         projects.set_current(self.project_name)
         
         self.waste_treatment = {}
-        for i in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual','RDF','Wastewater','OCC','Mixed_Paper','ONP','OFF','Fiber_Other','PET',
-                 'HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film','Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic','Al','Fe','Cu','Brown_glass','Clear_glass',
-                 'Green_glass','Mixed_Glass','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO']:
+        for i in self.CommonData.All_Waste_Pr_Index:
             self.waste_treatment[i]= self.find_destination(i) 
             
         self.process_model={}
@@ -136,21 +143,7 @@ class project():
         :type path: str, optional 
         
         """
-        #initiate biosphere database and LCIA methods
-        bw2setup()
-        
-        #Checking the path for technosphere LCI data and writing the technophere database
-        if path:
-            self.technosphere_path = path
-        else:
-            self.technosphere_path = str(Path(__file__).parent)+'/Data/SWOLF_AccountMode_LCI DATA.csv'
-        self.write_technosphere()
-        
-        #Deleting the old (expired) databases (if exist)
-        xx= [x for x in databases]
-        for x in xx:
-            if x not in ['biosphere3','Technosphere']:
-                del databases[x]
+        self.Technosphere.Create_Technosphere()
         
         #Initializing the databases
         for DB_name in self.Treatment_processes:
@@ -162,41 +155,7 @@ class project():
         
         Database("waste").register()
         self.waste_BD = Database("waste")
-        
-
-    def write_technosphere(self):
-        self.technosphere_data ={}
-        self.technosphere_db_name='Technosphere'
-        if self.technosphere_db_name in databases:
-            del databases[self.technosphere_db_name]   
-
-        outputdata1 = pd.read_csv(self.technosphere_path)
-        
-        # activities
-        names = [x for x in outputdata1.columns][3:]
-        for x in names:
-            self.technosphere_data[(self.technosphere_db_name,x)] ={}    # add activity to database
-            self.technosphere_data[(self.technosphere_db_name,x)]['name'] = x
-            self.technosphere_data[(self.technosphere_db_name,x)]['unit'] = self.check_nan(outputdata1[x][0])
-            self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'] =[]
-            i=0
-            for val in outputdata1[x][1:]:
-                if float(self.check_nan(val)) != 0:
-                    ex = {}                        # add exchange to activities
-                    ex['amount'] = float(self.check_nan(val))
-                    ex['input'] = biosphere_keys[i][0]
-                    ex['type'] = 'biosphere'
-                    ex['unit'] = 'kg'
-                    self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'].append(ex)
-                i+=1
-        print("""
-####
-++++++  Writing the {}
-        """.format(self.technosphere_db_name))
-        
-        self.technosphere_db = Database(self.technosphere_db_name)
-        self.technosphere_db.write(self.technosphere_data)
-            
+                    
     def write_project(self):
         self.parameters_dict={}
         self.parameters_list=[]

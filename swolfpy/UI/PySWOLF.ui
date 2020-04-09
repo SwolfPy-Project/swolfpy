@@ -49,7 +49,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>7</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="Start">
            <attribute name="title">
@@ -240,8 +240,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>123</width>
-                    <height>768</height>
+                    <width>1344</width>
+                    <height>1023</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_22">
@@ -257,28 +257,25 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                      <property name="currentIndex">
-                      <number>8</number>
+                      <number>1</number>
                      </property>
                      <widget class="QWidget" name="CommonData">
                       <property name="geometry">
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>406</width>
-                        <height>70</height>
+                        <width>1326</width>
+                        <height>563</height>
                        </rect>
                       </property>
                       <attribute name="label">
                        <string>Common Data</string>
                       </attribute>
-                      <layout class="QGridLayout" name="gridLayout_97">
+                      <layout class="QGridLayout" name="gridLayout_130">
                        <item row="0" column="0">
-                        <widget class="QFrame" name="frame_41">
-                         <property name="frameShape">
-                          <enum>QFrame::StyledPanel</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Raised</enum>
+                        <widget class="QGroupBox" name="groupBox_38">
+                         <property name="title">
+                          <string>Model:</string>
                          </property>
                          <layout class="QGridLayout" name="gridLayout_96">
                           <item row="0" column="0">
@@ -316,7 +313,7 @@ p, li { white-space: pre-wrap; }
                             </property>
                             <property name="sizeHint" stdset="0">
                              <size>
-                              <width>40</width>
+                              <width>490</width>
                               <height>20</height>
                              </size>
                             </property>
@@ -326,6 +323,56 @@ p, li { white-space: pre-wrap; }
                         </widget>
                        </item>
                        <item row="1" column="0">
+                        <widget class="QGroupBox" name="groupBox_37">
+                         <property name="title">
+                          <string>Input Data:</string>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_97">
+                          <item row="0" column="0">
+                           <widget class="QRadioButton" name="IT_Default_00">
+                            <property name="text">
+                             <string>Default</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QRadioButton" name="IT_UserDefine_00">
+                            <property name="text">
+                             <string>User Defined</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="2">
+                           <widget class="QToolButton" name="IT_BR_00">
+                            <property name="text">
+                             <string>Browse</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="3">
+                           <widget class="QLineEdit" name="IT_FName_00">
+                            <property name="placeholderText">
+                             <string>Path to the user defined model</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="4">
+                           <spacer name="horizontalSpacer_44">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>490</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item row="2" column="0">
                         <spacer name="verticalSpacer_29">
                          <property name="orientation">
                           <enum>Qt::Vertical</enum>
@@ -334,6 +381,234 @@ p, li { white-space: pre-wrap; }
                           <size>
                            <width>20</width>
                            <height>169</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </widget>
+                     <widget class="QWidget" name="Technosphere">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>1326</width>
+                        <height>563</height>
+                       </rect>
+                      </property>
+                      <attribute name="label">
+                       <string>Technosphere</string>
+                      </attribute>
+                      <layout class="QGridLayout" name="gridLayout_128">
+                       <item row="0" column="0">
+                        <widget class="QGroupBox" name="groupBox_33">
+                         <property name="title">
+                          <string>Model:</string>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_124">
+                          <item row="0" column="0">
+                           <widget class="QRadioButton" name="IT_Default_Tech">
+                            <property name="text">
+                             <string>Default</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QRadioButton" name="IT_UserDefine_Tech">
+                            <property name="text">
+                             <string>User Defined</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="2">
+                           <widget class="QToolButton" name="IT_BR_Tech">
+                            <property name="text">
+                             <string>Browse</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="3">
+                           <widget class="QLineEdit" name="IT_FName_Tech">
+                            <property name="placeholderText">
+                             <string>Path to the user defined model</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="4">
+                           <spacer name="horizontalSpacer_57">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>490</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QGroupBox" name="groupBox_34">
+                         <property name="title">
+                          <string>SwolfPy Technosphere LCI:</string>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_125">
+                          <item row="0" column="0">
+                           <widget class="QRadioButton" name="IT_Default_LCI">
+                            <property name="text">
+                             <string>Default</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QRadioButton" name="IT_UserDefine_LCI">
+                            <property name="text">
+                             <string>User Defined</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="2">
+                           <widget class="QToolButton" name="IT_BR_LCI">
+                            <property name="text">
+                             <string>Browse</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="3">
+                           <widget class="QLineEdit" name="IT_FName_LCI">
+                            <property name="placeholderText">
+                             <string>Path to the user defined model</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="4">
+                           <spacer name="horizontalSpacer_58">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>487</width>
+                              <height>17</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item row="2" column="0">
+                        <widget class="QGroupBox" name="groupBox_35">
+                         <property name="title">
+                          <string>Technosphere Reference:</string>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_126">
+                          <item row="0" column="4">
+                           <spacer name="horizontalSpacer_59">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>490</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item row="0" column="0">
+                           <widget class="QRadioButton" name="IT_Default_LCI_Ref">
+                            <property name="text">
+                             <string>Default</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="2">
+                           <widget class="QToolButton" name="IT_BR_LCI_Ref">
+                            <property name="text">
+                             <string>Browse</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QRadioButton" name="IT_UserDefine_LCI_Ref">
+                            <property name="text">
+                             <string>User Defined</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="3">
+                           <widget class="QLineEdit" name="IT_FName_LCI_Ref">
+                            <property name="placeholderText">
+                             <string>Path to the user defined model</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item row="3" column="0">
+                        <widget class="QGroupBox" name="groupBox_36">
+                         <property name="title">
+                          <string>Technosphere EcoSpold2:</string>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_127">
+                          <item row="0" column="0">
+                           <widget class="QRadioButton" name="IT_Default_EcoSpold2">
+                            <property name="text">
+                             <string>Default</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QRadioButton" name="IT_UserDefine_EcoSpold2">
+                            <property name="text">
+                             <string>User Defined</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="2">
+                           <widget class="QToolButton" name="IT_BR_EcoSpold2">
+                            <property name="text">
+                             <string>Browse</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="3">
+                           <widget class="QLineEdit" name="IT_FName_EcoSpold2">
+                            <property name="placeholderText">
+                             <string>Path to the user defined model</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="4">
+                           <spacer name="horizontalSpacer_60">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>487</width>
+                              <height>17</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item row="4" column="0">
+                        <spacer name="verticalSpacer">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>258</height>
                           </size>
                          </property>
                         </spacer>
@@ -4561,8 +4836,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>143</width>
-                 <height>638</height>
+                 <width>1364</width>
+                 <height>1083</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_105">
@@ -4829,8 +5104,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>864</width>
-                        <height>727</height>
+                        <width>1326</width>
+                        <height>943</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -5102,8 +5377,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>373</width>
-                 <height>829</height>
+                 <width>1364</width>
+                 <height>1083</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_106">
@@ -5301,8 +5576,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>540</width>
-                 <height>769</height>
+                 <width>1364</width>
+                 <height>1083</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_52">

@@ -150,8 +150,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         ### Start tab
         #Radio bottoms
         self.Start_def_process.setChecked(True)
-        self.Start_user_process.clicked.connect(lambda: self.Start_def_process.setChecked(not(self.Start_user_process.isChecked())))
-        self.Start_def_process.clicked.connect(lambda: self.Start_user_process.setChecked(not(self.Start_def_process.isChecked())))
         
         #bottoms connection
         self.Start_new_project.clicked.connect(self.Start_new_project_func)
@@ -279,34 +277,42 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def Importing_processes(self):
         self.init_process_toolbox.setCurrentWidget(self.CommonData)
         # CommonData
-        self.helper(self.IT_Default_0,self.IT_UserDefine_0,self.IT_BR_0,self.IT_FName_0)
+        self.helper(self.IT_Default_0,self.IT_UserDefine_0,self.IT_BR_0,self.IT_FName_0,"Python (*.py)")
+        self.helper(self.IT_Default_00,self.IT_UserDefine_00,self.IT_BR_00,self.IT_FName_00,"CSV (*.csv)")
+        
+        # Technosphere
+        self.helper(self.IT_Default_Tech,self.IT_UserDefine_Tech,self.IT_BR_Tech,self.IT_FName_Tech,"Python (*.py)")
+        self.helper(self.IT_Default_LCI,self.IT_UserDefine_LCI,self.IT_BR_LCI,self.IT_FName_LCI,"CSV (*.csv)")
+        self.helper(self.IT_Default_LCI_Ref,self.IT_UserDefine_LCI_Ref,self.IT_BR_LCI_Ref,self.IT_FName_LCI_Ref,"CSV (*.csv)")
+        self.helper_dir(self.IT_Default_EcoSpold2,self.IT_UserDefine_EcoSpold2,self.IT_BR_EcoSpold2,self.IT_FName_EcoSpold2)
+        
         # Landfill
-        self.helper(self.IT_Default,self.IT_UserDefine,self.IT_BR,self.IT_FName)
+        self.helper(self.IT_Default,self.IT_UserDefine,self.IT_BR,self.IT_FName,"Python (*.py)")
         # Waste_to_Energy (WTE)
-        self.helper(self.IT_Default_2,self.IT_UserDefine_2,self.IT_BR_2,self.IT_FName_2)
+        self.helper(self.IT_Default_2,self.IT_UserDefine_2,self.IT_BR_2,self.IT_FName_2,"Python (*.py)")
         # Anaerobic Digestion (AD)
-        self.helper(self.IT_Default_3,self.IT_UserDefine_3,self.IT_BR_3,self.IT_FName_3)
+        self.helper(self.IT_Default_3,self.IT_UserDefine_3,self.IT_BR_3,self.IT_FName_3,"Python (*.py)")
         # Aerobic Composting (COMP)
-        self.helper(self.IT_Default_4,self.IT_UserDefine_4,self.IT_BR_4,self.IT_FName_4)
+        self.helper(self.IT_Default_4,self.IT_UserDefine_4,self.IT_BR_4,self.IT_FName_4,"Python (*.py)")
         # Single Stream Material Facility (SS_MRF)
-        self.helper(self.IT_Default_5,self.IT_UserDefine_5,self.IT_BR_5,self.IT_FName_5)
+        self.helper(self.IT_Default_5,self.IT_UserDefine_5,self.IT_BR_5,self.IT_FName_5,"Python (*.py)")
         # Dual Stream Material Facility (DS_MRF)
-        self.helper(self.IT_Default_6,self.IT_UserDefine_6,self.IT_BR_6,self.IT_FName_6)
+        self.helper(self.IT_Default_6,self.IT_UserDefine_6,self.IT_BR_6,self.IT_FName_6,"Python (*.py)")
         # Multi-Stream Material Facility (MS_MRF)
-        self.helper(self.IT_Default_7,self.IT_UserDefine_7,self.IT_BR_7,self.IT_FName_7)
+        self.helper(self.IT_Default_7,self.IT_UserDefine_7,self.IT_BR_7,self.IT_FName_7,"Python (*.py)")
         # Reprocessing (REPROC)
-        self.helper(self.IT_Default_8,self.IT_UserDefine_8,self.IT_BR_8,self.IT_FName_8)
+        self.helper(self.IT_Default_8,self.IT_UserDefine_8,self.IT_BR_8,self.IT_FName_8,"Python (*.py)")
         
         
         
         # Single Family Collection (SF_Collection)
-        self.helper(self.IT_Default_col,self.IT_UserDefine_col,self.IT_BR_col,self.IT_FName_col)
+        self.helper(self.IT_Default_col,self.IT_UserDefine_col,self.IT_BR_col,self.IT_FName_col,"Python (*.py)")
         
         # Multi-Family Collection (MF_Collection)
-        self.helper(self.IT_Default_col_2,self.IT_UserDefine_col_2,self.IT_BR_col_2,self.IT_FName_col_2)
+        self.helper(self.IT_Default_col_2,self.IT_UserDefine_col_2,self.IT_BR_col_2,self.IT_FName_col_2,"Python (*.py)")
         
         # Commercial Collection (COM_Collection)
-        self.helper(self.IT_Default_col_3,self.IT_UserDefine_col_3,self.IT_BR_col_3,self.IT_FName_col_3)
+        self.helper(self.IT_Default_col_3,self.IT_UserDefine_col_3,self.IT_BR_col_3,self.IT_FName_col_3,"Python (*.py)")
         
         #Defualt LF input Type
         self.IT_RWC.setChecked(True)
@@ -376,15 +382,21 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.ImportProcessModels.clicked.connect(self.Import_Process_models_func)
         
     # Check to ethier select Default or User Defined option
-    def helper(self,IT_Default,IT_UserDefine,IT_BR,IT_FName):
+    def helper(self,IT_Default,IT_UserDefine,IT_BR,IT_FName,Filter):
         IT_Default.setChecked(True)
-        IT_UserDefine.clicked.connect(lambda: IT_Default.setChecked(not(IT_UserDefine.isChecked())))
-        IT_Default.clicked.connect(lambda: IT_UserDefine.setChecked(not(IT_Default.isChecked())))
-        IT_BR.clicked.connect(self.select_file(IT_FName,"Python (*.py)"))
+        IT_BR.clicked.connect(self.select_file(IT_FName,Filter))
+        IT_BR.clicked.connect((lambda : IT_UserDefine.setChecked(True)))
+    
+    # Check to ethier select Default or User Defined option
+    def helper_dir(self,IT_Default,IT_UserDefine,IT_BR,IT_FName):
+        IT_Default.setChecked(True)
+        IT_BR.clicked.connect(self.select_dir(IT_FName))
+        IT_BR.clicked.connect((lambda : IT_UserDefine.setChecked(True)))
+    
 
     @QtCore.Slot()  #Change tab and import process models
     def Import_Process_models_func(self): 
-        global LF, WTE, AD, COMP, SF_Col, SS_MRF, CommonData, REPROC
+        global LF, WTE, AD, COMP, SF_Col, SS_MRF, CommonData, REPROC, Technosphere
 
         #Import CommonData
         if self.IT_Default_0.isChecked():
@@ -393,6 +405,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #CommonData=importlib.import_module(self.IT_FName_0.text()[:-3])
             import swolfpy.ProcessModels.CommonData as CommonData
         CommonData=CommonData
+        
+        #Import Technosphere
+        if self.IT_Default_Tech.isChecked():
+            import swolfpy.ProcessModels.Technosphere as Technosphere
+        elif self.IT_UserDefine_Tech.isChecked():
+            import swolfpy.ProcessModels.Technosphere as Technosphere
+        Technosphere=Technosphere
+        
         #Import LF
         if self.IT_Default.isChecked():
             import swolfpy.ProcessModels.LF as LF
@@ -828,8 +848,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         font2.setStrikeOut(True)
         font2.setBold(False)
         
-        self.CommonData = CommonData.CommonData()
-        
+        input_data_path = self.IT_FName_00.text() if self.IT_UserDefine_00.isChecked() else None
+        self.CommonData = CommonData.CommonData(input_data_path=input_data_path)            
+            
         for Index in np.arange(1,self.P_index):
             Process = self.frame_Process_treatment.findChildren(QtWidgets.QComboBox,"Process_"+str(Index))[0]
             Process_Name = self.frame_Process_treatment.findChildren(QtWidgets.QLineEdit,"Process_Name_"+str(Index))[0]
@@ -1002,7 +1023,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             print(self._Collection_processes)
 
         Time_start = time()
-        self.demo = project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
+        if self.IT_UserDefine_Tech.isChecked() or self.IT_UserDefine_LCI.isChecked() or self.IT_UserDefine_LCI_Ref.isChecked() or self.IT_UserDefine_EcoSpold2.isChecked():
+            LCI_path = self.IT_FName_LCI.text() if self.IT_UserDefine_LCI.isChecked()  else None
+            LCI_Reference_path = self.IT_FName_LCI_Ref.text() if self.IT_UserDefine_LCI_Ref.isChecked() else None
+            Ecospold2_Path = self.IT_FName_EcoSpold2.text() if self.IT_UserDefine_EcoSpold2.isChecked()  else None
+            self.Technosphere = Technosphere.Technosphere(project_name=self.P_Name,LCI_path=LCI_path,LCI_Reference_path=LCI_Reference_path,Ecospold2_Path=Ecospold2_Path)
+            self.demo = project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,Collection_processes=self._Collection_processes,Technosphere_obj=self.Technosphere)
+        else:
+            self.demo = project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
+
         self.demo.init_project(Path(__file__).parent.parent/'Data/SWOLF_AccountMode_LCI DATA.csv')
         self.demo.write_project()
         self.progressBar_write_project.setValue(30)
@@ -1171,7 +1200,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.LCA_LCI_tab.setEnabled(False)
             
             # Functional unit
-            self.DB_name_list = [x for x in databases if x != 'biosphere3']
+            self.DB_name_list = [x for x in databases if x != 'biosphere3' and x!=self.demo.Technosphere.user_tech_name]
             self.DB_name_list.sort()
             self.LCA_DataBase.setMaxVisibleItems(100)
             self.LCA_DataBase.clear()
@@ -1435,7 +1464,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_Contr_lca.lcia()
         
         #set impact score and unit
-        self.LCA_Contr_score.setText(str(self.LCA_Contr_lca.score))
+        self.LCA_Contr_score.setText(f_n(self.LCA_Contr_lca.score))
         self.LCA_Contr_unit.setText(Method(impact).metadata['unit'])
         
         #Call contribution analysis functions
@@ -2125,6 +2154,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #file_name = str(fileDialog.getOpenFileName(filter=Filter)[0]).split('/')[-1]
             file_name = str(fileDialog.getOpenFileName(filter=Filter)[0])
             LineEdit.setText(file_name)
+        return(edit_line)
+
+    @QtCore.Slot()  # select file and read the name of it. Import the name to the LineEdit.
+    def select_dir(self, LineEdit):
+        fileDialog = QtWidgets.QFileDialog()
+        def edit_line():
+            Directory = str(fileDialog.getExistingDirectory())
+            LineEdit.setText(Directory)
         return(edit_line)
         
     @QtCore.Slot()

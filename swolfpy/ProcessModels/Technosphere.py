@@ -1,0 +1,125 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Apr  8 11:18:40 2020
+
+@author: msmsa
+"""
+from brightway2 import *
+import bw2io
+import numpy as np
+import pandas as pd
+from ..Required_keys import biosphere_keys
+from pathlib import Path
+
+class Technosphere:
+    def __init__(self,project_name,LCI_path=None,LCI_Reference_path=None,Ecospold2_Path=None):
+        self.project_name = project_name
+        self.technosphere_db_name='Technosphere' 
+        self.user_tech_name = 'User_Technosphere'
+        
+        
+        #Checking the path for technosphere LCI data and writing the technophere database
+        if LCI_path:
+            self.technosphere_path = LCI_path
+        else:
+            self.technosphere_path = str(Path(__file__).parent.parent)+'/Data/Technosphere_LCI.csv'
+        
+        #Checking the path for technosphere LCI references
+        if LCI_Reference_path:
+            self.LCI_Reference_path = LCI_Reference_path
+        else:
+            self.LCI_Reference_path = str(Path(__file__).parent.parent)+'/Data/Technosphere_References.csv'
+        
+        #Checking the path for Ecospold2
+        if Ecospold2_Path:
+            self.Ecospold2_Path = Ecospold2_Path
+        else:
+            self.Ecospold2_Path = str(Path(__file__).parent.parent)+'/Data/Ecospold2'
+        
+        #Read the data
+        self.LCI_swolfpy_data = pd.read_csv(self.technosphere_path)
+        self.LCI_reference = pd.read_csv(self.LCI_Reference_path,index_col='swolfpy_technosphere_name')
+        
+        if self.LCI_reference['Reference_activity_id'].count()>0 and self.Ecospold2_Path==None:
+            raise ValueError('User should select the path to ecospold files, because of keys in Technosphere_References.csv')
+        
+        
+    def Create_Technosphere(self):
+        projects.set_current(self.project_name)
+        bw2setup()
+        #Deleting the old (expired) databases (if exist)
+        xx= [x for x in databases]
+        for x in xx:
+            if x not in ['biosphere3']:
+                del databases[x]
+        if self.LCI_reference['Reference_activity_id'].count()>0 and self.Ecospold2_Path:
+            self.Write_user_technospher()
+            db = Database(self.user_tech_name)
+            self.user_tech_keys={}
+            for x in db:
+                self.user_tech_keys[x.as_dict()['activity']] = x.key
+        self.write_technosphere()
+    
+    def Write_user_technospher(self):
+        """
+        Creates the user technosphere database
+        """
+        self.user_tech=bw2io.importers.SingleOutputEcospold2Importer(dirpath=self.Ecospold2_Path,db_name=self.user_tech_name)
+        self.user_tech.apply_strategies()
+        stats=self.user_tech.statistics()
+        if stats[2]>0:
+            raise KeyError('There is {} unlink flows in the user defined technosphere (ecospold files). Make sure you are using the LCI ecosplod'.format(stats[2]))
+        print("""
+                ####
+                ++++++  Writing the {}
+                """.format(self.user_tech_name))
+        self.user_tech.write_database()
+
+
+    def write_technosphere(self):
+        """
+        Creates the swolfpy technosphere database
+        """
+        self.technosphere_data ={}
+        # activities
+        names = [x for x in self.LCI_swolfpy_data.columns][3:]
+        for x in names:
+            self.technosphere_data[(self.technosphere_db_name,x)] ={}    # add activity to database
+            self.technosphere_data[(self.technosphere_db_name,x)]['name'] = x
+            self.technosphere_data[(self.technosphere_db_name,x)]['unit'] = (lambda y: 'NA' if pd.isnull(y) else y)(self.LCI_swolfpy_data[x][0])
+            self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'] =[]
+            if pd.isnull(self.LCI_reference['Reference_activity_id'][x]):
+                i=0
+                for val in self.LCI_swolfpy_data[x][1:]:
+                    if float(self.check_nan(val)) != 0:
+                        ex = {}                        # add exchange to activities
+                        ex['amount'] = float(self.check_nan(val))
+                        ex['input'] = biosphere_keys[i][0]
+                        ex['type'] = 'biosphere'
+                        ex['unit'] = 'kg'
+                        self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'].append(ex)
+                    i+=1
+            else:
+                ex = {}                        # add exchange to activities
+                ex['amount'] = 1
+                ex['input'] = self.user_tech_keys[self.LCI_reference['Reference_activity_id'][x]]
+                ex['type'] = 'technosphere'
+                ex['unit'] = self.LCI_reference['Unit'][x]
+                self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'].append(ex)
+                
+        print("""
+                ####
+                ++++++  Writing the {}
+                """.format(self.technosphere_db_name))
+        self.technosphere_db = Database(self.technosphere_db_name)
+        self.technosphere_db.write(self.technosphere_data)
+        # replace zeros when there is no data ("nan")
+    
+    def check_nan(self,x):  
+        """
+        Check the `x` and return `0` if `x` is `nan`.
+        
+        """
+        if str(x) == "nan":
+            return 0
+        return x
