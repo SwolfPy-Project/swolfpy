@@ -1172,10 +1172,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             unit_i = unit.split(sep=' ')
             if len(unit_i) > 1:
                 mass += float(unit_i[0]) * flow
-            if unit_i[0] == 'Mg':
+            if unit_i[0] == 'Mg/year':
                 mass += 1 * flow
         
-        self.demo.waste_BD.new_activity(code = name, name = name, type = "process", unit = '{} Mg'.format(np.round(mass,decimals=2))).save()
+        self.demo.waste_BD.new_activity(code = name, name = name, type = "process", unit = '{} Mg/year'.format(np.round(mass,decimals=2))).save()
         for i in range(len(self.Inc_act_table._data['Process'])):
             self.demo.waste_BD.get(name).new_exchange(input=(self.Inc_act_table._data['Process'][i],self.Inc_act_table._data['Name'][i]),amount=self.Inc_act_table._data['Amount'][i],type="technosphere").save()
         self.demo.waste_BD.get(name).save()   

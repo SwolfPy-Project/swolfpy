@@ -41,7 +41,7 @@ class Process_Model():
         for x in waste_flows:
             db_data[(DB_name,x)] ={}    # add activity to database
             db_data[(DB_name,x)]['name'] = DB_name+"_"+x
-            db_data[(DB_name,x)]['unit'] = 'Mg'
+            db_data[(DB_name,x)]['unit'] = 'Mg/year'
             db_data[(DB_name,x)]['exchanges'] =[]
         
         print("""
@@ -66,9 +66,9 @@ class Process_Model():
             self.db_data[(self.P_Name,x)] ={}    # add activity to database
             self.db_data[(self.P_Name,x)]['name'] = self.P_Name+"_"+x
             if Process_Type == 'Collection':
-                self.db_data[(self.P_Name,x)]['unit'] = '{} Mg Colleted/year'.format(np.round(sum(self.Report["Waste"][x].values()),decimals=2))
+                self.db_data[(self.P_Name,x)]['unit'] = '{} Mg/year'.format(np.round(sum(self.Report["Waste"][x].values()),decimals=2))
             else:
-                self.db_data[(self.P_Name,x)]['unit'] = 'Mg'
+                self.db_data[(self.P_Name,x)]['unit'] = 'Mg/year'
             self.db_data[(self.P_Name,x)]['exchanges'] =[]
 
 # =============================================================================
@@ -80,12 +80,12 @@ class Process_Model():
 
             for key in self.Report["Waste"][x]:
                 
-                ex = self.exchange((self.P_Pr_Name , x+'_'+key),'technosphere','Mg',self.Report["Waste"][x][key])
+                ex = self.exchange((self.P_Pr_Name , x+'_'+key),'technosphere','Mg/year',self.Report["Waste"][x][key])
                 self.db_data[(self.P_Name,x)]['exchanges'].append(ex)
                 
                 self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)] ={}    # add activity to Waste_database
                 self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['name'] = self.P_Pr_Name+"_"+x+'_'+key
-                self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['unit'] = 'Mg'
+                self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['unit'] = 'Mg/year'
                 self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['exchanges'] =[]
                 self.act_in_group.add((self.P_Pr_Name,x+'_'+key))
                 
@@ -98,11 +98,11 @@ class Process_Model():
                     #finding the destination
                     for p in self.waste_treatment[key]:
                         #adding exchange to waste processing
-                        ex = self.exchange((p ,key),'technosphere','Mg',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p,Act=(self.P_Pr_Name,x+'_'+key),product=key)
+                        ex = self.exchange((p ,key),'technosphere','Mg/year',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p,Act=(self.P_Pr_Name,x+'_'+key),product=key)
                         self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['exchanges'].append(ex)
                         
                         #addin exchange for transportation between the process models
-                        ex_trnp = self.exchange((self.P_Pr_Name ,self.P_Name+'_'+'to'+'_'+p),'technosphere','Mg',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key),product=key)
+                        ex_trnp = self.exchange((self.P_Pr_Name ,self.P_Name+'_'+'to'+'_'+p),'technosphere','Mg/year',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key),product=key)
                         self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['exchanges'].append(ex_trnp)
                                    
                 #Streams that are same with the source.
@@ -110,11 +110,11 @@ class Process_Model():
                     #finding the destination
                     for p in self.waste_treatment[key]:
                         #adding exchange to waste processing
-                        ex = self.exchange((p ,x),'technosphere','Mg',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)                      
+                        ex = self.exchange((p ,x),'technosphere','Mg/year',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)                      
                         self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['exchanges'].append(ex)
                         
                         #addin exchange for transportation between the process models
-                        ex_trnp = self.exchange((self.P_Pr_Name ,self.P_Name+'_'+'to'+'_'+p),'technosphere','Mg',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)
+                        ex_trnp = self.exchange((self.P_Pr_Name ,self.P_Name+'_'+'to'+'_'+p),'technosphere','Mg/year',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)
                         self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['exchanges'].append(ex_trnp)
                 
                 #Collection streams. Transportation between the collection and treatment processes are calculate inside collection model.
@@ -122,12 +122,12 @@ class Process_Model():
                     #finding the destination
                     for p in self.waste_treatment[key]:
                         #adding exchange to waste processing
-                        ex = self.exchange((p ,x),'technosphere','Mg',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)                      
+                        ex = self.exchange((p ,x),'technosphere','Mg/year',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)                      
                         self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['exchanges'].append(ex)            
             
                         #addin exchange for transportation between the collection sector and treatment processs
                         if p in self.Report['LCI'][key].keys():
-                            ex_trnp = self.exchange((self.P_Pr_Name ,key+'_'+'to'+'_'+p),'technosphere','Mg',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)
+                            ex_trnp = self.exchange((self.P_Pr_Name ,key+'_'+'to'+'_'+p),'technosphere','Mg/year',0,Formula="frac_of_"+key+'_from_'+self.P_Name+'_to_'+p ,Act=(self.P_Pr_Name,x+'_'+key) ,product=key)
                             self.db_Pr_data[(self.P_Pr_Name,x+'_'+key)]['exchanges'].append(ex_trnp)
                         else:
                             raise ValueError('Inconsistent treatment processes in model and collection')
@@ -137,7 +137,7 @@ class Process_Model():
             for key in self.Report["Technosphere"][x]:
                 #if self.Report["Technosphere"][x][key] != 0:
                 if True:
-                    ex = self.exchange(key,'technosphere','Mg',self.Report["Technosphere"][x][key])                      
+                    ex = self.exchange(key,'technosphere','Mg/year',self.Report["Technosphere"][x][key])                      
                     self.db_data[(self.P_Name,x)]['exchanges'].append(ex)
             
             ### Adding the biosphere exchnages       
@@ -154,7 +154,7 @@ class Process_Model():
                     for m in self.Report["LCI"][y].keys():
                         self.db_Pr_data[(self.P_Pr_Name,y+'_'+'to'+'_'+m)] ={}
                         self.db_Pr_data[(self.P_Pr_Name,y+'_'+'to'+'_'+m)]['name'] = 'LCI'+'_'+y+'to'+'_'+m
-                        self.db_Pr_data[(self.P_Pr_Name,y+'_'+'to'+'_'+m)]['unit'] = 'Mg'
+                        self.db_Pr_data[(self.P_Pr_Name,y+'_'+'to'+'_'+m)]['unit'] = 'Mg/year'
                         self.db_Pr_data[(self.P_Pr_Name,y+'_'+'to'+'_'+m)]['exchanges'] =[]
                         ### Adding exchage to transport activity between the collection and treatment processes
                         for n in self.Report["LCI"][y][m].keys():
@@ -167,10 +167,10 @@ class Process_Model():
                     if p == self.P_Name and p != q:
                         self.db_Pr_data[(self.P_Pr_Name,p+'_'+'to'+'_'+q)] ={}
                         self.db_Pr_data[(self.P_Pr_Name,p+'_'+'to'+'_'+q)]['name'] = 'LCI'+'_'+p+'_'+'to'+'_'+q
-                        self.db_Pr_data[(self.P_Pr_Name,p+'_'+'to'+'_'+q)]['unit'] = 'Mg'
+                        self.db_Pr_data[(self.P_Pr_Name,p+'_'+'to'+'_'+q)]['unit'] = 'Mg/year'
                         self.db_Pr_data[(self.P_Pr_Name,p+'_'+'to'+'_'+q)]['exchanges'] =[]
                         ### Adding exchage to transport activity between the treatment processes
-                        ex = self.exchange(('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck'),'technosphere','Mg',1000 * self.Distance.Distance[(p,q)],Formula=None,Act=None,product=None)  # unit converion Mg to kg 
+                        ex = self.exchange(('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck'),'technosphere','Mg/year',1000 * self.Distance.Distance[(p,q)],Formula=None,Act=None,product=None)  # unit converion Mg to kg 
                         self.db_Pr_data[(self.P_Pr_Name,p+'_'+'to'+'_'+q)]['exchanges'].append(ex)
                     
 ### writing the databases
