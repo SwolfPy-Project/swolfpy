@@ -53,10 +53,17 @@ setup(
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Natural Language :: English',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7'
+        'Programming Language :: Python :: 3.7',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft :: Windows',
+        'Topic :: Scientific/Engineering :: Information Analysis',
+        'Topic :: Scientific/Engineering :: Mathematics',
+        'Topic :: Scientific/Engineering :: Visualization',
+        'Natural Language :: English',
     ],
     description="Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)",
     install_requires=requirements,
@@ -72,6 +79,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://bitbucket.org/swolfpy/swolfpy',
-    version='0.1.4',
+    version='0.1.5',
     zip_safe=False,
 )

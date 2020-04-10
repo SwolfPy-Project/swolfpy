@@ -15,6 +15,13 @@ __all__ = [
     'swolfpy'
 ]
 
+__version__ = '0.1.5'
+
+# module level doc-string
+__doc__ = """
+Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
+"""
+
 
 from .Distance import Distance
 from .project_class import project
