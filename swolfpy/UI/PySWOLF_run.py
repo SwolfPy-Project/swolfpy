@@ -402,51 +402,52 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.IT_Default_0.isChecked():
             import swolfpy.ProcessModels.CommonData as CommonData
         elif self.IT_UserDefine_0.isChecked():
-            #CommonData=importlib.import_module(self.IT_FName_0.text()[:-3])
-            import swolfpy.ProcessModels.CommonData as CommonData
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_0.text()[:-3].split('/')[-1]
+            CommonData=importlib.import_module(path)
         CommonData=CommonData
         
         #Import Technosphere
         if self.IT_Default_Tech.isChecked():
             import swolfpy.ProcessModels.Technosphere as Technosphere
         elif self.IT_UserDefine_Tech.isChecked():
-            import swolfpy.ProcessModels.Technosphere as Technosphere
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_Tech.text()[:-3].split('/')[-1]
+            Technosphere=importlib.import_module(path)
         Technosphere=Technosphere
         
         #Import LF
         if self.IT_Default.isChecked():
             import swolfpy.ProcessModels.LF as LF
         elif self.IT_UserDefine.isChecked():
-            #LF=importlib.import_module(self.IT_FName.text()[:-3])
-            import swolfpy.ProcessModels.LF as LF
+            path = 'swolfpy.ProcessModels.'+self.IT_FName.text()[:-3].split('/')[-1]
+            LF=importlib.import_module(path)
         LF=LF
         #Import WTE
         if self.IT_Default_2.isChecked():
             import swolfpy.ProcessModels.WTE as WTE
         elif self.IT_UserDefine_2.isChecked():
-            #WTE=importlib.import_module(self.IT_FName_2.text()[:-3])
-            import swolfpy.ProcessModels.WTE as WTE
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_2.text()[:-3].split('/')[-1]
+            WTE=importlib.import_module(path)
         WTE=WTE
         #Import AD
         if self.IT_Default_3.isChecked():
             import swolfpy.ProcessModels.AD as AD
         elif self.IT_UserDefine_3.isChecked():
-            #AD=importlib.import_module(self.IT_FName_3.text()[:-3])
-            import swolfpy.ProcessModels.AD as AD
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_3.text()[:-3].split('/')[-1]
+            AD=importlib.import_module(path)
         AD=AD   
         #Import COMP
         if self.IT_Default_4.isChecked():
             import swolfpy.ProcessModels.Composting as COMP
         elif self.IT_UserDefine_4.isChecked():
-            #COMP=importlib.import_module(self.IT_FName_4.text()[:-3])
-            import swolfpy.ProcessModels.Composting as COMP
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_4.text()[:-3].split('/')[-1]
+            COMP=importlib.import_module(path)
         COMP=COMP
         #Import SS_MRF
         if self.IT_Default_5.isChecked():
             import swolfpy.ProcessModels.SS_MRF as SS_MRF
         elif self.IT_UserDefine_5.isChecked():
-            #SS_MRF=importlib.import_module(self.IT_FName_5.text()[:-3])
-            import swolfpy.ProcessModels.SS_MRF as SS_MRF
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_5.text()[:-3].split('/')[-1]
+            SS_MRF=importlib.import_module(path)
         SS_MRF=SS_MRF    
         
         #Import DS_MRF later
@@ -456,8 +457,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.IT_Default_8.isChecked():
             import swolfpy.ProcessModels.Reprocessing as REPROC
         elif self.IT_UserDefine_8.isChecked():
-            #SS_MRF=importlib.import_module(self.IT_FName_8.text()[:-3])
-            import swolfpy.ProcessModels.Reprocessing as REPROC
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_8.text()[:-3].split('/')[-1]
+            REPROC=importlib.import_module(path)
         REPROC=REPROC    
         
         
@@ -465,8 +466,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.IT_Default_col.isChecked():
             import swolfpy.ProcessModels.SF_collection as SF_Col
         elif self.IT_UserDefine_col.isChecked():
-            #SF_Col=importlib.import_module(self.IT_FName_col.text()[:-3])
-            import swolfpy.ProcessModels.SF_collection as SF_Col
+            path = 'swolfpy.ProcessModels.'+self.IT_FName_col.text()[:-3].split('/')[-1]
+            SF_Col=importlib.import_module(path)
         SF_Col=SF_Col    
         
         self.LF_input_type = []
