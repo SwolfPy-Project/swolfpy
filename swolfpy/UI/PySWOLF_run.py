@@ -2119,7 +2119,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 table[row][column] = index.data()
             stream = io.StringIO()
             csv.writer(stream, delimiter='\t').writerows(table)
-            QtWidgets.qApp.clipboard().setText(stream.getvalue())
+            QtWidgets.QApplication.clipboard().setText(stream.getvalue())
     
     # Paste function for QTabelView
     def pasteSelection(self,obj):
@@ -2127,7 +2127,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if hasattr(model,'setData'):
             selection = obj.selectedIndexes()
             if selection:
-                buffer = QtWidgets.qApp.clipboard().text() 
+                buffer = QtWidgets.QApplication.clipboard().text() 
                 rows = sorted(index.row() for index in selection)
                 columns = sorted(index.column() for index in selection)
                 reader = csv.reader(io.StringIO(buffer), delimiter='\t')
