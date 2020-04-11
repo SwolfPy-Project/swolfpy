@@ -26,6 +26,7 @@ Solid Waste Optimization Life-cycle Framework in Python(swolfpy)
 
 * Free software: GNU GENERAL PUBLIC LICENSE V2
 * Documentation: https://swolfpy.readthedocs.io.
+* Repository: https://bitbucket.org/swolfpy/swolfpy
 * Other links: 
         https://go.ncsu.edu/swolfpy
 
@@ -35,7 +36,7 @@ Solid Waste Optimization Life-cycle Framework in Python(swolfpy)
 Features
 --------
 
-* Life cycle assessment of Municipal Solid Waste (MSW) systems. Process models include Landfill, Waste-to-Energy (WTE), Composting, Anaerobic Digestion (AD), Single Stream Material Recovery Facility (MRF), and Collection.
+* Life cycle assessment of Municipal Solid Waste (MSW) systems. Process models include Landfill, Waste-to-Energy (WTE), Composting, Anaerobic Digestion (AD), Single Stream Material Recovery Facility (MRF), Reprocessing, and Collection.
 * Monte Carlo simulation
 * Optimization
 
@@ -78,11 +79,3 @@ Installation
         swolfpy()
 
 .. endInstallation
-
-Credits
--------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage

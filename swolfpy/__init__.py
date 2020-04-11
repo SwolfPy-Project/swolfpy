@@ -15,7 +15,7 @@ __all__ = [
     'swolfpy'
 ]
 
-__version__ = '0.1.5'
+__version__ = '0.1.6'
 
 # module level doc-string
 __doc__ = """
