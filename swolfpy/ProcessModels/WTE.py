@@ -168,6 +168,14 @@ class WTE:
             #'kg/Mg ww'
             self.APC_Consumption[x] = self.InputData.Material_Consumption[x]['amount']*1000
         		
+### Cost Calculation
+        self.add_cost()
+        
+### Add economic data
+    def add_cost(self):
+        self.Cost=pd.DataFrame(index = self.Index)
+        self.Cost[('biosphere3','Capital_Cost')]=self.InputData.Capital_Cost['Capital_Cost']['amount']
+        self.Cost[('biosphere3','Operational_Cost')]=[self.InputData.Operational_Cost[y]['amount'] for y in self.Index]
 		
     def setup_MC(self,seed=None):
         self.InputData.setup_MC(seed)
@@ -257,7 +265,9 @@ class WTE:
             self.Combustion_Emission=self.Combustion_Emission.rename(columns=bio_rename_dict)
             self.LCI_index = True
         
-        self.Biosphere = (self.Combustion_Emission[bio_rename_dict.values()]*1000).transpose().to_dict()
+        self.LCI = self.Combustion_Emission[bio_rename_dict.values()]*1000
+        self.LCI = pd.concat([self.LCI,self.Cost],axis=1)
+        self.Biosphere = self.LCI.transpose().to_dict()
         self.WTE["Biosphere"] = self.Biosphere
         return(self.WTE)
 

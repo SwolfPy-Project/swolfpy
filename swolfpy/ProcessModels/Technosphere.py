@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from ..Required_keys import biosphere_keys
 from pathlib import Path
+from ..SWOLF_method import import_methods
 
 class Technosphere:
     def __init__(self,project_name,LCI_path=None,LCI_Reference_path=None,Ecospold2_Path=None):
@@ -47,6 +48,14 @@ class Technosphere:
     def Create_Technosphere(self):
         projects.set_current(self.project_name)
         bw2setup()
+        db=Database('biosphere3')
+        if len(db.search('capital cost'))==0:
+            db.new_activity(code='Capital_Cost', name="Capital Cost",unit='USD',categories='economic',location='US').save()
+            db.new_activity(code='Operational_Cost', name="Operational Cost",unit='USD',categories='economic',location='US').save()
+        
+        # adding swolf methods
+        import_methods()
+                    
         #Deleting the old (expired) databases (if exist)
         xx= [x for x in databases]
         for x in xx:

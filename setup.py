@@ -36,7 +36,7 @@ package_input_data = {'swolfpy.Data':['AD_Input.csv',
                                 'SS_MRF_Input.csv',
                                 'Reprocessing_Input.csv',
                                 'WTE_Input.csv',
-                                'SWOLF _ IPPC.csv',                                
+                                'SWOLF_LCIA_Methods.csv',                                
                                 'Material properties - process modles.xlsx',
                                 'Material properties.xlsx']}
                                                                 

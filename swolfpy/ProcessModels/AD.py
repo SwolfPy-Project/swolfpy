@@ -85,7 +85,15 @@ class AD:
 ### Transportation Compost
         add_LCI(('Technosphere', 'Internal_Process_Transportation_Medium_Duty_Diesel_Truck'), self.FinalCompost.data['mass'].values * self.InputData.Land_app['distLand']['amount'] ,self.LCI)
         add_LCI(('Technosphere', 'Empty_Return_Medium_Duty_Diesel_Truck'), self.FinalCompost.data['mass'].values/1000 / self.InputData.Land_app['land_payload']['amount']* self.InputData.Land_app['distLand']['amount'] ,self.LCI)
-
+        
+### Cost Calculation
+        self.add_cost()
+        
+### Add economic data
+    def add_cost(self):
+        add_LCI(('biosphere3','Capital_Cost'),self.InputData.Capital_Cost['Capital_Cost']['amount'],self.LCI)
+        add_LCI(('biosphere3','Operational_Cost'),[self.InputData.Operational_Cost[y]['amount'] for y in self.Index],self.LCI)
+        
     def setup_MC(self,seed=None):
         self.InputData.setup_MC(seed)
         #self.create_uncertainty_from_inputs()
@@ -185,7 +193,7 @@ class AD:
             self.LCI=self.LCI.rename(columns=bio_rename_dict)
             self.LCI_index = True
         
-        self.Biosphere = self.LCI[bio_rename_dict.values()].transpose().to_dict()
+        self.Biosphere = self.LCI[list(bio_rename_dict.values())+[('biosphere3','Capital_Cost'),('biosphere3','Operational_Cost')]].transpose().to_dict()
         self.AD["Biosphere"] = self.Biosphere
         
         return(self.AD)    

@@ -86,6 +86,15 @@ class Comp:
         add_LCI('Medium-duty truck transportation to land application', self.final_comp.data['mass'].values * self.InputData.Land_app['distLand']['amount'] ,self.LCI)
         add_LCI('Medium-duty empty return', self.final_comp.data['mass'].values/1000 / self.InputData.Land_app['land_payload']['amount']* self.InputData.Land_app['distLand']['amount'] ,self.LCI)
 
+### Cost Calculation
+        self.add_cost()
+        
+### Add economic data
+    def add_cost(self):
+        add_LCI(('biosphere3','Capital_Cost'),self.InputData.Capital_Cost['Capital_Cost']['amount'],self.LCI)
+        add_LCI(('biosphere3','Operational_Cost'),[self.InputData.Operational_Cost[y]['amount'] for y in self.Index],self.LCI)
+        
+        
     def setup_MC(self,seed=None):
         self.InputData.setup_MC(seed)
         #self.create_uncertainty_from_inputs()
@@ -139,6 +148,9 @@ class Comp:
             Biosphere[y][('biosphere3', '7ce56135-2ca5-4fba-ad52-d62a34bfeb35')]= report_LCI('Nitrate (Surface water)',self.LCI,y) #Nitrate ('water', 'surface water')
             Biosphere[y][('biosphere3', '736f52e8-9703-4076-8909-7ae80a7f8005')]= report_LCI('Ammonium, ion (ground water)',self.LCI,y) #'Ammonium, ion' (kilogram, None, ('water', 'ground-'))
             Biosphere[y][('biosphere3', '13331e67-6006-48c4-bdb4-340c12010036')]= report_LCI('Ammonium, ion (surface water)',self.LCI,y) # 'Ammonium, ion' (kilogram, None, ('water', 'surface water'))                
+            Biosphere[y][('biosphere3','Capital_Cost')]= report_LCI(('biosphere3','Capital_Cost'),self.LCI,y)
+            Biosphere[y][('biosphere3','Operational_Cost')]= report_LCI(('biosphere3','Operational_Cost'),self.LCI,y)
+        
         return(self.COMP)
 
 

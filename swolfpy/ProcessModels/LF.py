@@ -326,6 +326,13 @@ class LF:
 ### Life-Cycle Costs
 #
 # =============================================================================
+
+### Add economic data
+    def add_cost(self):
+        self.cost = pd.DataFrame(index=self.Index)
+        self.cost[('biosphere3','Operational_Cost')] = [self.InputData.Operational_Cost[y]['amount'] for y in self.Index]
+       
+
 # =============================================================================
 #     def cost(self):
 # # minimum labor costs
@@ -441,13 +448,15 @@ class LF:
 
         self.bio_rename_dict = dict(self.key1, **self.key2)
         self.bio_rename_dict = dict(self.bio_rename_dict , **self.key3)
+        self.bio_rename_dict[('biosphere3','Operational_Cost')]=('biosphere3','Operational_Cost')
         self.LCI_bio = pd.concat([self.emission_to_air, self.Surface_water_emission, self.Ground_water_emission],axis=1)
         self.LCI_bio = self.LCI_bio.rename(columns = self.bio_rename_dict)
         self.LCI_bio_index = True
         keys = list(self.bio_rename_dict.keys())
         for x in keys:
             if "biosphere3" not in str(self.bio_rename_dict[x]):
-                self.bio_rename_dict.pop(x) 
+                self.bio_rename_dict.pop(x)
+        self.LCI_bio[('biosphere3','Operational_Cost')] = self.cost[('biosphere3','Operational_Cost')].values
         self.Biosphere = self.LCI_bio[self.bio_rename_dict.values()].transpose().to_dict()
         self.LF["Biosphere"] = self.Biosphere
             
@@ -460,6 +469,7 @@ class LF:
         self.Cal_LFG()
         self.Leachate()
         self.Material_energy_use()
+        self.add_cost()
 
 ### setup for Monte Carlo simulation   
     def setup_MC(self,seed=None):
