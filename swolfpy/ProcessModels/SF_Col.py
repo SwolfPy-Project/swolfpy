@@ -6,21 +6,17 @@ This is a temporary script file.
 """
 import numpy as np
 import pandas as pd
-from .SF_collection_Input import *
-from .CommonData import *
-from stats_arrays import *
+from .SF_Col_Input import *
+from .ProcessModel import *
 from pathlib import Path
 
-class SF_Col:
+class SF_Col(ProcessModel):
+    Process_Type = 'Collection'
     def __init__(self,name,Collection_scheme,Treatment_processes=None,Distance=None,Waste_gen_comp=None,sector_population=None,CommonDataObjct=None,input_data_path=None):
-### Importing the CommonData and Input data for SF_collection
-        if CommonDataObjct:
-            self.CommonData = CommonDataObjct
-        else:
-            self.CommonData = CommonData()
-
-        self.Process_Type = 'Collection'
-        self.InputData= SF_collection_Input(input_data_path)
+        ### Importing the CommonData and Input data for SF_collection
+        super().__init__(CommonDataObjct)
+    
+        self.InputData= SF_Col_Input(input_data_path)
         self.name = name
         
         if Treatment_processes:
@@ -32,11 +28,6 @@ class SF_Col:
         else:
             self.Treat_proc =False
             
-            
-### Read Material properties
-        self.Material_Properties=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties.xlsx',index_col = 'Materials')
-        self.Material_Properties.fillna(0,inplace=True)
-        
 ### Read Material properties related to the process        
         self.process_data = pd.read_csv(Path(__file__).parent.parent/'Data/SF_collection_Input-Material_dependent.csv',index_col = 'Materials')
         self.process_data.fillna(0,inplace=True)
@@ -45,8 +36,8 @@ class SF_Col:
         self.col=pd.read_csv(Path(__file__).parent.parent/'Data/SF_input_col.csv',index_col='Name',usecols=['Name','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO'])
         self.col = self.col.transpose()
 
-        self.Index = self.CommonData.Index
         self.col_schm = Collection_scheme
+    
     def calc_composition(self):
         #Single Family Residential Waste Generation Rate (kg/household-week)
         g_res = 7*self.InputData.Col['res_per_dwel']['amount']*self.InputData.Col['res_gen']['amount']

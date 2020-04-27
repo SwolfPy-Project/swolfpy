@@ -6,24 +6,15 @@ Created on Mon Mar  9 21:46:21 2020
 """
 import numpy as np
 import pandas as pd
-from ..process_model_output import *
-from stats_arrays import *
-from pathlib import Path
-from .Reprocessing_Input import *
-from .CommonData import *
-import ast
+from .ProcessModel import *
+from .Reproc_Input import *
 
-class REPROC:
+class Reproc(ProcessModel):
+    Process_Type = 'Reprocessing'
     def __init__(self,input_data_path=None,CommonDataObjct=None):
+        super().__init__(CommonDataObjct)
         
-        if CommonDataObjct:
-            self.CommonData = CommonDataObjct
-        else:
-            self.CommonData = CommonData()
-        
-        #self.Reprocessing = ProcessModelOutput()
-        self.Process_Type = 'Reprocessing'
-        self.InputData= REPROC_input(input_data_path)
+        self.InputData= Reproc_Input(input_data_path)
         
     def calc(self):
         self.Biosphere = {}

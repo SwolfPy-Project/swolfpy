@@ -10,10 +10,7 @@ from brightway2 import *
 from .Parameters import *
 
 
-
-
-class Process_Model():
-
+class ProcessDB():
     def __init__(self, process_name,waste_treatment,Distance=None):
         self.Report = {}
         self.P_Name = process_name

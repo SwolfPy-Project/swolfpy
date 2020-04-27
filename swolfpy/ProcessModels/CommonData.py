@@ -4,32 +4,18 @@ Created on Mon Jul  1 20:05:32 2019
 
 @author: msardar2
 """
-import pandas as pd
-import numpy as np
-from stats_arrays import *
-from ..MC import *
+from .InputData import InputData
 from pathlib import Path
 
-class CommonData(MC):
+class CommonData(InputData):
     def __init__(self,input_data_path = None):
         if input_data_path:
             self.input_data_path = input_data_path
         else:
             self.input_data_path = Path(__file__).parent.parent/'Data/CommonData.csv'
-        self.Data=pd.read_csv(self.input_data_path,dtype={'amount':float,'uncertainty_type':float,'loc':float,
-                                                      'scale':float,'shape':float,'minimum':float,'maximum':float})
-        self.Data['uncertainty_type'].fillna(0,inplace=True)    
-        self.Data=self.Data.where((pd.notnull(self.Data)),None)    
-        self.Input_list = {}
-        self.keys = self.Data.columns[3:]
-        for i in range(len(self.Data)):
-            if self.Data.Category[i] not in self.Input_list.keys():
-                exec("self.%s = {}" % self.Data.Dictonary_Name[i])
-                exec("self.Input_list[self.Data.Category[i]] = self.%s" % self.Data.Dictonary_Name[i])
-                exec("self.%s[self.Data.Parameter[i]] = dict(zip(self.keys,self.Data.loc[i,'Name':]))" % self.Data.Dictonary_Name[i])
-            else:
-                exec("self.%s[self.Data.Parameter[i]] = dict(zip(self.keys,self.Data.loc[i,'Name':]))" % self.Data.Dictonary_Name[i])
-
+        
+        # Initialize the superclass 
+        super().__init__(self.input_data_path)
 
 ### Materials
         self.Index = ['Yard_Trimmings_Leaves', 'Yard_Trimmings_Grass', 'Yard_Trimmings_Branches', 'Food_Waste_Vegetable', 'Food_Waste_Non_Vegetable',
@@ -57,16 +43,6 @@ class CommonData(MC):
 # all waste_pr_index
         self.All_Waste_Pr_Index =  self.Waste_Pr_Index + self.Collection_Index + self.Reprocessing_Index
         
-### Update_Input
-    def Update_input(self,NewData):
-        for i in NewData.index:
-            exec("self.%s[NewData.Parameter[i]] = dict(zip(self.keys,NewData.loc[i,'Name':]))" %NewData.Dictonary_Name[i])
-            self.Data.loc[i]=NewData.loc[i]
-            
-### Monte_carlo          
-    def setup_MC(self,seed=None):
-        super().__init__(self.Input_list)
-        super().setup_MC(seed)
 
 
 

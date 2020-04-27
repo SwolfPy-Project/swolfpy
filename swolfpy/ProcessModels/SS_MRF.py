@@ -7,29 +7,20 @@ Created on Tue Jan  7 11:10:12 2020
 import numpy as np
 import pandas as pd
 from .SS_MRF_Input import *
-from .CommonData import *
-from stats_arrays import *
 from .SS_MRF_subprocess import *
+from .ProcessModel import *
 from pathlib import Path
 
-class SS_MRF:
+class SS_MRF(ProcessModel):
+    Process_Type = 'Treatment'
     def __init__(self,input_data_path=None,CommonDataObjct=None):
-        
-        if CommonDataObjct:
-            self.CommonData = CommonDataObjct
-        else:
-            self.CommonData = CommonData()
+        super().__init__(CommonDataObjct)
             
-        self.Process_Type = 'Treatment'
-        self.InputData= SS_MRF_input(input_data_path)
-        
-        ### Read Material properties
-        self.Material_Properties=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties.xlsx',index_col = 'Materials')
-        self.Material_Properties.fillna(0,inplace=True)
+        self.InputData= SS_MRF_Input(input_data_path)
+        self.Assumed_Comp = pd.Series(self.InputData.Assumed_Comp,index=self.Index)
+
         self.process_data=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties - process modles.xlsx', sheet_name = 'SS_MRF', index_col = 'Parameter')
         self.process_data.fillna(0,inplace=True)
-        self.Index = self.CommonData.Index
-        self.Assumed_Comp = pd.Series(self.InputData.Assumed_Comp,index=self.Index)
 
 #%% Calc Function
     def calc(self):

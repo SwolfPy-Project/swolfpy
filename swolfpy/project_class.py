@@ -4,10 +4,9 @@ Created on Wed May 29 12:13:23 2019
 
 @author: msmsa
 """
-
 from brightway2 import *
 from bw2data.parameters import ActivityParameter, DatabaseParameter, ProjectParameter, Group
-from .process_model import *
+from .ProcessDB import *
 from .Required_keys import *
 import pandas as pd
 import copy
@@ -148,9 +147,9 @@ class project():
         #Initializing the databases
         for DB_name in self.Treatment_processes:
             if self.Treatment_processes[DB_name]['model'].Process_Type in ['Treatment','Collection']:
-                Process_Model.init_DB(DB_name,self.CommonData.Index)
+                ProcessDB.init_DB(DB_name,self.CommonData.Index)
             elif self.Treatment_processes[DB_name]['model'].Process_Type == 'Reprocessing':
-                Process_Model.init_DB(DB_name,self.CommonData.Reprocessing_Index)
+                ProcessDB.init_DB(DB_name,self.CommonData.Reprocessing_Index)
                 
         
         Database("waste").register()
@@ -167,7 +166,7 @@ class project():
             self.parameters_list+=P
                             
     def import_database(self,name):
-        self.process_model[name] = Process_Model(name,self.waste_treatment,self.Distance)
+        self.process_model[name] = ProcessDB(name,self.waste_treatment,self.Distance)
         self.Treatment_processes[name]['model'].calc()
         self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
         

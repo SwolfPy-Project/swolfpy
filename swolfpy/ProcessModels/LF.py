@@ -6,30 +6,26 @@ Created on Tue Aug 13 11:07:56 2019
 """
 import numpy as np
 import pandas as pd
+from .ProcessModel import *
 from .LF_Input import *
-from .CommonData import *
-from stats_arrays import *
 import ast
 from pathlib import Path
 
-class LF:
+class LF(ProcessModel):
+    Process_Type = 'Treatment'
     def __init__(self,input_data_path=None,CommonDataObjct=None):
-        if CommonDataObjct:
-            self.CommonData = CommonDataObjct
-        else:
-            self.CommonData = CommonData()
+        super().__init__(CommonDataObjct)
+        
+        self.InputData= LF_Input(input_data_path)
 
-        self.Process_Type = 'Treatment'
-        self.InputData= LF_input(input_data_path)
-### Read Material properties
-        self.Material_Properties=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties.xlsx',index_col = 'Materials')
-        self.Material_Properties.fillna(0,inplace=True)
+
         self.gas_emission_factor=pd.read_csv(Path(__file__).parent.parent/'Data/LF_Gas_emission_factors.csv',converters={'Biosphere_key': ast.literal_eval})
         self.gas_emission_factor.fillna('',inplace=True)
+        
         self.lcht_coef = pd.read_csv(Path(__file__).parent.parent/'Data/LF_Leachate_Coeff.csv',converters={'Surface_water': ast.literal_eval,'Ground_water': ast.literal_eval})
         self.lcht_coef.fillna(0,inplace=True)
+        
         self.lcht_Alloc = pd.read_csv(Path(__file__).parent.parent/'Data/LF_Leachate_Allocation.csv')
-        self.Index = self.CommonData.Index
         
         self.n = self.InputData.LF_gas['optime']['amount']+1
         self.timescale = 101

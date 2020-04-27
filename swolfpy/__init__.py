@@ -10,7 +10,8 @@ __all__ = [
     'Distance',
     'project',
     'import_methods',
-    'ParallelData',
+    'Optimization',
+    'Monte_Carlo',
     'MyQtApp',
     'swolfpy'
 ]
@@ -26,7 +27,8 @@ Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
 from .Distance import Distance
 from .project_class import project
 from .SWOLF_method import import_methods
-from .building_matrices import ParallelData
+from .Optimization import Optimization
+from .Monte_Carlo import Monte_Carlo
 from .UI.PySWOLF_run import MyQtApp
 from PySide2 import QtCore, QtGui, QtWidgets
 

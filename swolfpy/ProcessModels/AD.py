@@ -6,32 +6,25 @@ Created on Wed Jul 17 16:35:15 2019
 """
 import numpy as np
 import pandas as pd
+from .ProcessModel import *
 #from AD_Input_script import *
 from .AD_Input import *
-from .CommonData import *
-from stats_arrays import *
 from .flow import *
 from .AD_subprocess import *
 from pathlib import Path
 
-class AD:
+class AD(ProcessModel):
+    Process_Type = 'Treatment'
     def __init__(self,input_data_path=None,CommonDataObjct=None):
-        if CommonDataObjct:
-            self.CommonData = CommonDataObjct
-        else:
-            self.CommonData = CommonData()
-            
-        self.Process_Type = 'Treatment'
-        self.InputData= AD_input(input_data_path)
-        ### Read Material properties
-        self.Material_Properties=pd.read_excel(Path(__file__).parent.parent/"Data/Material properties.xlsx",index_col = 'Materials')
-        self.Material_Properties.fillna(0,inplace=True)
+        super().__init__(CommonDataObjct)
+
+        self.InputData= AD_Input(input_data_path)
+        self.Assumed_Comp = pd.Series(self.InputData.Assumed_Comp,index=self.Index)
+        
         self.process_data=pd.read_excel(Path(__file__).parent.parent/"Data/Material properties - process modles.xlsx", sheet_name = 'AD', index_col = 'Parameter')
         self.process_data.fillna(0,inplace=True)
-        self.Index = self.CommonData.Index
-        self.Assumed_Comp = pd.Series(self.InputData.Assumed_Comp,index=self.Index)
+        
         self.flow_init = flow(self.Material_Properties[4:])
-
 
     def calc(self):
         self.LCI = pd.DataFrame(index = self.Index)

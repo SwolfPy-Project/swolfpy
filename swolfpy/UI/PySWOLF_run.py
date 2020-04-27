@@ -17,7 +17,8 @@ import importlib  #to import moduls with string name
 import pandas as pd
 from ..Distance import *
 from ..project_class import *
-from ..building_matrices import *
+from ..Optimization import *
+from ..Monte_Carlo import *
 import numpy as np
 import pickle
 from copy import deepcopy
@@ -437,7 +438,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         AD=AD   
         #Import COMP
         if self.IT_Default_4.isChecked():
-            import swolfpy.ProcessModels.Composting as COMP
+            import swolfpy.ProcessModels.Comp as COMP
         elif self.IT_UserDefine_4.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_4.text()[:-3].split('/')[-1]
             COMP=importlib.import_module(path)
@@ -455,7 +456,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Import REPROC
         if self.IT_Default_8.isChecked():
-            import swolfpy.ProcessModels.Reprocessing as REPROC
+            import swolfpy.ProcessModels.Reproc as REPROC
         elif self.IT_UserDefine_8.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_8.text()[:-3].split('/')[-1]
             REPROC=importlib.import_module(path)
@@ -464,7 +465,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Import SF_Collection
         if self.IT_Default_col.isChecked():
-            import swolfpy.ProcessModels.SF_collection as SF_Col
+            import swolfpy.ProcessModels.SF_Col as SF_Col
         elif self.IT_UserDefine_col.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_col.text()[:-3].split('/')[-1]
             SF_Col=importlib.import_module(path)
@@ -912,9 +913,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'REPROC':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.REPROC(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.Reproc(CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.REPROC(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.Reproc(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.REPROC_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -1832,7 +1833,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                           process_model_names=process_model_names,process_models=process_models,Yes_No = IsCommonData))
         
         Time_start = time()
-        Monte_carlo = ParallelData(FU, method, project,process_models=process_models,process_model_names=process_model_names,common_data = CommonData,seed = seed)
+        Monte_carlo = Monte_Carlo(FU, method, project,process_models=process_models,process_model_names=process_model_names,common_data = CommonData,seed = seed)
 
         Monte_carlo.run(int(self.MC_N_Thread.text()),int(self.MC_N_runs.text()))
         self.MC_results = Monte_carlo.result_to_DF()
@@ -2036,7 +2037,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             constraints = None
         
         
-        opt = ParallelData(functional_unit, method, project_name) 
+        opt = Optimization(functional_unit, method, project_name) 
         results = opt.optimize_parameters(self.demo, constraints=constraints)
         print(results)
         Time_finish = time()

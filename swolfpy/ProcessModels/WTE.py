@@ -8,26 +8,19 @@ import numpy as np
 import pandas as pd
 #from WTE_Input_script import *
 from .WTE_Input import *
-from .CommonData import *
-from stats_arrays import *
+from .ProcessModel import *
 from pathlib import Path
 
 
-class WTE:
+class WTE(ProcessModel):
+    Process_Type = 'Treatment'
     def __init__(self,input_data_path=None,CommonDataObjct=None):
-        if CommonDataObjct:
-            self.CommonData = CommonDataObjct
-        else:
-            self.CommonData = CommonData()
-            
-        self.Process_Type = 'Treatment'
-        self.InputData= WTE_input(input_data_path)
-        ### Read Material properties
-        self.Material_Properties=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties.xlsx',index_col = 'Materials')
-        self.Material_Properties.fillna(0,inplace=True)
+        super().__init__(CommonDataObjct)
+
+        self.InputData= WTE_Input(input_data_path)
+
         self.process_data=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties - process modles.xlsx', sheet_name = 'WTE', index_col = 'Parameter')
         self.process_data.fillna(0,inplace=True)
-        self.Index = self.CommonData.Index
         
     def calc(self):
         self.LCI_index = False

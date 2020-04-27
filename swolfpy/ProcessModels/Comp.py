@@ -6,30 +6,24 @@ Created on Mon Jul  1 21:59:44 2019
 """
 import numpy as np
 import pandas as pd
+from .ProcessModel import *
 #from Composting_Input_script import *
-from .Composting_Input import *
-from .CommonData import *
+from .Comp_Input import *
 from .flow import *
-from .Composting_subprocess import *
+from .Comp_subprocess import *
 from pathlib import Path
 
-
-class Comp:
+class Comp(ProcessModel):
+    Process_Type = 'Treatment'
     def __init__(self,input_data_path=None,CommonDataObjct=None):
-        if CommonDataObjct:
-            self.CommonData = CommonDataObjct
-        else:
-            self.CommonData = CommonData()
+        super().__init__(CommonDataObjct)
 
-        self.Process_Type = 'Treatment'
-        self.InputData= Composting_input(input_data_path)
-        ### Read Material properties
-        self.Material_Properties=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties.xlsx',index_col = 'Materials')
-        self.Material_Properties.fillna(0,inplace=True)
+        self.InputData= Comp_Input(input_data_path)
+        self.Assumed_Comp = pd.Series(self.InputData.Assumed_Comp,index=self.Index)
+        
         self.process_data=pd.read_excel(Path(__file__).parent.parent/'Data/Material properties - process modles.xlsx', sheet_name = 'Composting', index_col = 'Parameter')
         self.process_data.fillna(0,inplace=True)
-        self.Index = self.CommonData.Index
-        self.Assumed_Comp = pd.Series(self.InputData.Assumed_Comp,index=self.Index)
+
         self.flow_init = flow(self.Material_Properties[4:])
 
     def calc(self):
