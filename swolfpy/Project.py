@@ -15,7 +15,7 @@ from .Parameters import *
 from .ProcessModels.Technosphere import Technosphere
 from pathlib import Path
 
-class project():
+class Project():
     """
     Project class creates a new project in Birghtway2.
     """
@@ -59,16 +59,16 @@ class project():
         >>> distance = Distance(Data=Data)
         >>> # Collection_processes:
         >>> # Ony include one single family sector wih residual waste collection
-        >>> from swolfpy.ProcessModels import SF_collection
+        >>> from swolfpy.ProcessModels import SF_Col
         >>> Collection_processes = {}
         >>> Collection_scheme_SF_COL={'RWC':{'Contribution':1,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
         >>> 'SSO_DryRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
         >>> 'REC_WetRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
         >>> 'MRDO':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}}} 
-        >>> Collection_processes['SF_COl']={'input_type':[],'model': SF_collection.SF_Col('SF_COl',Collection_scheme_SF_COL,Treatment_processes=Treatment_processes,Distance=distance)}      
+        >>> Collection_processes['SF_COl']={'input_type':[],'model': SF_Col.SF_Col('SF_COl',Collection_scheme_SF_COL,Treatment_processes=Treatment_processes,Distance=distance)}      
         >>> # project
-        >>> from swolfpy import project_class
-        >>> demo = project_class.project('demo',common_data,Treatment_processes,distance,Collection_processes)
+        >>> from swolfpy import Project
+        >>> demo = Project('demo',common_data,Treatment_processes,distance,Collection_processes)
         
         """
         if Technosphere_obj:

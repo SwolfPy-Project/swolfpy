@@ -16,7 +16,7 @@ from bw2analyzer import ContributionAnalysis
 import importlib  #to import moduls with string name
 import pandas as pd
 from ..Distance import *
-from ..project_class import *
+from ..Project import *
 from ..Optimization import *
 from ..Monte_Carlo import *
 import numpy as np
@@ -1030,9 +1030,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             LCI_Reference_path = self.IT_FName_LCI_Ref.text() if self.IT_UserDefine_LCI_Ref.isChecked() else None
             Ecospold2_Path = self.IT_FName_EcoSpold2.text() if self.IT_UserDefine_EcoSpold2.isChecked()  else None
             self.Technosphere = Technosphere.Technosphere(project_name=self.P_Name,LCI_path=LCI_path,LCI_Reference_path=LCI_Reference_path,Ecospold2_Path=Ecospold2_Path)
-            self.demo = project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,Collection_processes=self._Collection_processes,Technosphere_obj=self.Technosphere)
+            self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,Collection_processes=self._Collection_processes,Technosphere_obj=self.Technosphere)
         else:
-            self.demo = project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
+            self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
 
         self.demo.init_project(Path(__file__).parent.parent/'Data/SWOLF_AccountMode_LCI DATA.csv')
         self.demo.write_project()

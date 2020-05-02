@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 28 12:22:24 2020
-
 @author: msardar2
+
+Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
 """
 
 
 __all__ = [
     'Distance',
-    'project',
+    'Project',
     'import_methods',
     'Optimization',
     'Monte_Carlo',
@@ -18,14 +18,9 @@ __all__ = [
 
 __version__ = '0.1.6'
 
-# module level doc-string
-__doc__ = """
-Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
-"""
-
 
 from .Distance import Distance
-from .project_class import project
+from .Project import Project
 from .SWOLF_method import import_methods
 from .Optimization import Optimization
 from .Monte_Carlo import Monte_Carlo

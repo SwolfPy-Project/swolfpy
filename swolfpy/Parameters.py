@@ -1,4 +1,4 @@
-from .project_class import *
+from .Project import *
 from stats_arrays import *
 import copy
 import math
