@@ -17,7 +17,7 @@ class Technosphere:
         self.project_name = project_name
         self.technosphere_db_name='Technosphere' 
         self.user_tech_name = 'User_Technosphere'
-        
+       
         
         #Checking the path for technosphere LCI data and writing the technophere database
         if LCI_path:
@@ -50,8 +50,13 @@ class Technosphere:
         bw2setup()
         db=Database('biosphere3')
         if len(db.search('capital cost'))==0:
-            db.new_activity(code='Capital_Cost', name="Capital Cost",unit='USD',categories='economic',location='US').save()
-            db.new_activity(code='Operational_Cost', name="Operational Cost",unit='USD',categories='economic',location='US').save()
+            db.new_activity(code='Capital_Cost', name="Capital Cost",unit='USD', categories=('economic',), type='economic',location='US').save()
+            db.new_activity(code='Operational_Cost', name="Operational Cost", unit='USD',categories=('economic',), type='economic',location='US').save()
+            db.new_activity(code='Utility_Cost', name="Utility Cost",unit='USD', categories=('economic',), type='economic',location='US').save()
+            db.new_activity(code='Fuel_Cost', name="Fuel Cost",unit='USD', categories=('economic',), type='economic',location='US').save()
+            db.new_activity(code='Electricity_Cost', name="Electricity Cost", unit='USD', categories=('economic',), type='economic',location='US').save()
+            db.new_activity(code='Transportation_Cost', name="Transportation Cost", unit='USD',categories=('economic',), type='economic',location='US').save()
+            db.new_activity(code='Material_Cost', name="Material Cost",unit='USD', categories=('economic',), type='economic',location='US').save()
         
         # adding swolf methods
         import_methods()
@@ -61,7 +66,7 @@ class Technosphere:
         for x in xx:
             if x not in ['biosphere3']:
                 del databases[x]
-        if self.LCI_reference['Reference_activity_id'].count()>0 and self.Ecospold2_Path:
+        if self.LCI_reference['Reference_activity_id'].count()>0:
             self.Write_user_technospher()
             db = Database(self.user_tech_name)
             self.user_tech_keys={}
@@ -114,6 +119,14 @@ class Technosphere:
                 ex['input'] = self.user_tech_keys[self.LCI_reference['Reference_activity_id'][x]]
                 ex['type'] = 'technosphere'
                 ex['unit'] = self.LCI_reference['Unit'][x]
+                self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'].append(ex)
+            
+            if not pd.isnull(self.LCI_reference['Cost_key'][x]):        # adding the cost to technosphere
+                ex = {}                        # add exchange to activities
+                ex['amount'] = self.check_nan(self.LCI_reference['Cost'][x])
+                ex['input'] = ('biosphere3',self.LCI_reference['Cost_key'][x]) 
+                ex['type'] = 'biosphere'
+                ex['unit'] = self.LCI_reference['Cost_Unit'][x]
                 self.technosphere_data[(self.technosphere_db_name,x)]['exchanges'].append(ex)
                 
         print("""

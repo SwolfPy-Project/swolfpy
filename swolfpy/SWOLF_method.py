@@ -50,9 +50,18 @@ def import_methods():
         if Data.CF7[i] != 0:
             SWOLF_HumanToxicity.append(( jj[0][i], Data.CF7[i]))
 
+    
     SWOLF_Capital_Cost = [(('biosphere3','Capital_Cost'),1)]
-    SWOLF_Operational_Cost = [(('biosphere3','Operational_Cost'),1)]
-    SWOLF_Total_Cost = [(('biosphere3','Capital_Cost'),1),(('biosphere3','Operational_Cost'),1)]
+    
+    SWOLF_Operational_Cost = [(('biosphere3','Operational_Cost'),1),(('biosphere3','Utility Cost'),1),
+                              (('biosphere3','Fuel_Cost'),1),(('biosphere3','Electricity_Cost'),1),
+                              (('biosphere3','Transportation_Cost'),1),(('biosphere3','Material_Cost'),1)]
+    
+    SWOLF_Total_Cost = [(('biosphere3','Capital_Cost'),1),(('biosphere3','Operational_Cost'),1),
+                        (('biosphere3','Utility Cost'),1),(('biosphere3','Fuel_Cost'),1),
+                        (('biosphere3','Electricity_Cost'),1),(('biosphere3','Transportation_Cost'),1),
+                        (('biosphere3','Material_Cost'),1)]
+    
 
     Method(('SWOLF_Capital_Cost','SWOLF')).register(**{'unit':'USD',
                             'num_cfs':1,
