@@ -9,4 +9,5 @@ pipelines:
     - step:
         script:
           - pip install -r requirements.txt
-          - pip install swolfpy 
+          - pip install swolfpy
+          - pytest --cov=swolfpy tests/         
