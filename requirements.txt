@@ -1,0 +1,4 @@
+brightway2
+jupyter
+PySide2
+pandas
