@@ -8,8 +8,5 @@ pipelines:
   default:
     - step:
         script:
-          - conda config --append channels conda-forge
-          - conda config --append channels cmutel
-          - conda config --append channels haasad
           - pip install -r requirements.txt
           - pip install swolfpy 
