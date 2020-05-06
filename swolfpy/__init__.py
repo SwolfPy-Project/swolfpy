@@ -24,7 +24,7 @@ from .Project import Project
 from .SWOLF_method import import_methods
 from .Optimization import Optimization
 from .Monte_Carlo import Monte_Carlo
-from .UI.PySWOLF_run import MyQtApp
+#from .UI.PySWOLF_run import MyQtApp
 #from PySide2 import QtCore, QtGui, QtWidgets
 
 #class swolfpy():
