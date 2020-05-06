@@ -2,7 +2,6 @@
 
 """Tests for `swolfpy` package."""
 import pytest
-from swolfpy import *
 from swolfpy.ProcessModels import LF
 
 
