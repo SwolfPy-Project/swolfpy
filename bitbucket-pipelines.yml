@@ -11,5 +11,4 @@ pipelines:
           - pip
         script:
           - pip install -r requirements.txt
-          - pip install swolfpy
-          - pytest --cov=swolfpy tests/         
+          - pip install swolfpy         
