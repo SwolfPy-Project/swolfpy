@@ -4,7 +4,15 @@
 
 
 from swolfpy import *
+from swolfpy.ProcessModels import LF
 
 
 class TestPyswolf():
-    pass
+    def test():
+        A=LF.LF()
+        A.calc()
+        B=A.report()
+        assert len(B)==3
+      
+    
+
