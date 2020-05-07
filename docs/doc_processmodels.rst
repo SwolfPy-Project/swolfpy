@@ -6,7 +6,7 @@ Process models Code Document
 InputData
 =========
 
-.. autoclass:: swolfpy.ProcessModels.InputData.InputData
+.. autoclass:: swolfpy_inputdata.InputData
    :members:
 
 
@@ -16,5 +16,5 @@ InputData
 Process Model
 =============
 
-.. autoclass:: swolfpy.ProcessModels.ProcessModel.ProcessModel
+.. autoclass:: swolfpy_processmodels.ProcessModel
    :members:
