@@ -24,7 +24,7 @@ def import_methods():
     ### Add the Characterization factors to the SWOLF_IPPC.csv file from the SWOLF and read it again to have characterization factors
     
     
-    Data = pd.read_csv(Path(__file__).parent/'Data/SWOLF_LCIA_Methods.csv')
+    Data = pd.read_csv(Path(__file__).parent/'SWOLF_LCIA_Methods.csv')
     
     SWOLF_IPCC = []
     SWOLF_Acidification = []

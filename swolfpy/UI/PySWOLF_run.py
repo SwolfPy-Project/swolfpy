@@ -401,7 +401,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
         #Import CommonData
         if self.IT_Default_0.isChecked():
-            import swolfpy.ProcessModels.CommonData as CommonData
+            import swolfpy_inputdata.CommonData as CommonData
         elif self.IT_UserDefine_0.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_0.text()[:-3].split('/')[-1]
             CommonData=importlib.import_module(path)
@@ -409,7 +409,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Import Technosphere
         if self.IT_Default_Tech.isChecked():
-            import swolfpy.ProcessModels.Technosphere as Technosphere
+            import swolfpy.Technosphere as Technosphere
         elif self.IT_UserDefine_Tech.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_Tech.text()[:-3].split('/')[-1]
             Technosphere=importlib.import_module(path)
@@ -417,35 +417,35 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Import LF
         if self.IT_Default.isChecked():
-            import swolfpy.ProcessModels.LF as LF
+            import swolfpy_processmodels.LF as LF
         elif self.IT_UserDefine.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName.text()[:-3].split('/')[-1]
             LF=importlib.import_module(path)
         LF=LF
         #Import WTE
         if self.IT_Default_2.isChecked():
-            import swolfpy.ProcessModels.WTE as WTE
+            import swolfpy_processmodels.WTE as WTE
         elif self.IT_UserDefine_2.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_2.text()[:-3].split('/')[-1]
             WTE=importlib.import_module(path)
         WTE=WTE
         #Import AD
         if self.IT_Default_3.isChecked():
-            import swolfpy.ProcessModels.AD as AD
+            import swolfpy_processmodels.AD as AD
         elif self.IT_UserDefine_3.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_3.text()[:-3].split('/')[-1]
             AD=importlib.import_module(path)
         AD=AD   
         #Import COMP
         if self.IT_Default_4.isChecked():
-            import swolfpy.ProcessModels.Comp as COMP
+            import swolfpy_processmodels.Comp as COMP
         elif self.IT_UserDefine_4.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_4.text()[:-3].split('/')[-1]
             COMP=importlib.import_module(path)
         COMP=COMP
         #Import SS_MRF
         if self.IT_Default_5.isChecked():
-            import swolfpy.ProcessModels.SS_MRF as SS_MRF
+            import swolfpy_processmodels.SS_MRF as SS_MRF
         elif self.IT_UserDefine_5.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_5.text()[:-3].split('/')[-1]
             SS_MRF=importlib.import_module(path)
@@ -456,7 +456,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Import REPROC
         if self.IT_Default_8.isChecked():
-            import swolfpy.ProcessModels.Reproc as REPROC
+            import swolfpy_processmodels.Reproc as REPROC
         elif self.IT_UserDefine_8.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_8.text()[:-3].split('/')[-1]
             REPROC=importlib.import_module(path)
@@ -465,7 +465,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Import SF_Collection
         if self.IT_Default_col.isChecked():
-            import swolfpy.ProcessModels.SF_Col as SF_Col
+            import swolfpy_processmodels.SF_Col as SF_Col
         elif self.IT_UserDefine_col.isChecked():
             path = 'swolfpy.ProcessModels.'+self.IT_FName_col.text()[:-3].split('/')[-1]
             SF_Col=importlib.import_module(path)
@@ -851,7 +851,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         font2.setBold(False)
         
         input_data_path = self.IT_FName_00.text() if self.IT_UserDefine_00.isChecked() else None
-        self.CommonData = CommonData.CommonData(input_data_path=input_data_path)            
+        self.CommonData = CommonData(input_data_path=input_data_path)            
             
         for Index in np.arange(1,self.P_index):
             Process = self.frame_Process_treatment.findChildren(QtWidgets.QComboBox,"Process_"+str(Index))[0]
@@ -863,9 +863,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             if Process.currentText()== 'LF':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = LF.LF(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = LF(CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = LF.LF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = LF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.LF_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -873,9 +873,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'WTE':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = WTE.WTE(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = WTE(CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = WTE.WTE(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = WTE(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.WTE_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -883,9 +883,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'AD':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = AD.AD(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = AD(CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = AD.AD(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = AD(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.AD_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -893,9 +893,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'Composting':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = COMP.Comp(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = COMP(CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = COMP.Comp(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = COMP(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.COMP_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -903,9 +903,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'SS_MRF':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF.SS_MRF(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF(CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF.SS_MRF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.SS_MRF_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -913,9 +913,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             elif Process.currentText() == 'REPROC':
                 self._Treatment_processes[Process_Name.text()]={}
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.Reproc(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC(CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC.Reproc(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
                 self._Treatment_processes[Process_Name.text()]['input_type']=self.REPROC_input_type
                 Process_Label.setFont(font1)
                 print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
@@ -1018,9 +1018,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 z = self.Collection.findChildren(QtWidgets.QCheckBox,"Col_def_input_{}".format(i))[0].isChecked()
                 if x == 'SF_Colllection':
                     if z:
-                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData)
+                        self._Collection_processes[y]['model'] = SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData)
                     else:
-                        self._Collection_processes[y]['model'] = SF_Col.SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData,input_data_path=m)
+                        self._Collection_processes[y]['model'] = SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData,input_data_path=m)
             
             print(self._Collection_processes)
 

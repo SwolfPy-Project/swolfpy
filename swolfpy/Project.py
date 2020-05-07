@@ -12,7 +12,7 @@ import pandas as pd
 import copy
 from bw2analyzer import ContributionAnalysis
 from .Parameters import *
-from .ProcessModels.Technosphere import Technosphere
+from .Technosphere import Technosphere
 from pathlib import Path
 
 class Project():

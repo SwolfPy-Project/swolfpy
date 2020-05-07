@@ -57,7 +57,7 @@ Installation
         conda config --append channels cmutel
         conda config --append channels haasad
 
-4- Create a new environment for PySWOLF::
+4- Create a new environment for swolfpy::
 
         conda create --name swolfpy python=3.7
 
@@ -65,7 +65,7 @@ Installation
 
         conda activate swolfpy
 
-6- Install PySWOLF in the environment::
+6- Install swolfpy in the environment::
 
         pip install swolfpy
 

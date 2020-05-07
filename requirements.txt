@@ -1,7 +1,7 @@
+swolfpy_inputdata
+swolfpy_processmodels
 brightway2
-jupyter
 PySide2
-pandas
 pytest
 pytest-cov
 

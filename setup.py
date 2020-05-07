@@ -11,34 +11,15 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+"swolfpy_inputdata",
+"swolfpy_processmodels",
 "brightway2",
-"jupyter",
 "PySide2",
-"pandas"
 ]
 
 setup_requirements = [ ]
 
-package_input_data = {'swolfpy.Data':['AD_Input.csv',
-                                'CommonData.csv',
-                                'Technosphere_LCI.csv',
-                                'Technosphere_References.csv',
-                                'Composting_Input.csv',
-                                'LF_Gas_emission_factors.csv',
-                                'LF_Input.csv',
-                                'LF_Leachate_Allocation.csv',
-                                'LF_Leachate_Coeff.csv',
-                                'LF_Gas_emission_factors.xlsx',
-                                'LF_Leachate_Allocation.xlsx',
-                                'SF_collection_Input.csv',
-                                'SF_collection_Input-Material_dependent.csv',
-                                'SF_input_col.csv',
-                                'SS_MRF_Input.csv',
-                                'Reprocessing_Input.csv',
-                                'WTE_Input.csv',
-                                'SWOLF_LCIA_Methods.csv',                                
-                                'Material properties - process modles.xlsx',
-                                'Material properties.xlsx']}
+package_input_data = {'swolfpy':['SWOLF_LCIA_Methods.csv']}
                                                                 
 
 test_requirements = [ ]
@@ -79,6 +60,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://bitbucket.org/swolfpy/swolfpy',
-    version='0.1.6',
+    version='0.1.7',
     zip_safe=False,
 )
