@@ -1,15 +1,5 @@
-Process models Code Document
-****************************
-
-.. _InputData:
-
-InputData
-=========
-
-.. autoclass:: swolfpy_inputdata.InputData
-   :members:
-
-
+swolfpy_processmodels
+**********************
 
 .. _ProcessModel:
 

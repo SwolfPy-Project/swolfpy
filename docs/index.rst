@@ -9,6 +9,7 @@ Welcome to swolfpy's documentation!
    installation
    Getting_started
    doc_swolfpy
+   doc_inputdata
    doc_processmodels
    contributing
    authors

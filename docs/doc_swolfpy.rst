@@ -1,5 +1,5 @@
-swolfpy Code Document
-*********************
+swolfpy
+********
 
 .. _Distance:
 
