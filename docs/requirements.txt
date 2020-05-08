@@ -1,3 +1,5 @@
+nbsphinx
+ipykernel
 swolfpy_inputdata
 swolfpy_processmodels
 brightway2
