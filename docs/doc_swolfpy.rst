@@ -16,7 +16,7 @@ Distance
 Project Class
 =============
 
-.. autoclass:: swolfpy.project_class.project
+.. autoclass:: swolfpy.Project.Project
    :members:
 
 
@@ -49,7 +49,7 @@ Input data uncertainty (random number generation)
 .. autoclass:: swolfpy.MC.MC
    :members:
 
-.. _LCA_matrix
+.. _LCA_matrix:
 
 LCA_matrix
 ==========
