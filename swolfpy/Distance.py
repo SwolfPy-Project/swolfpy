@@ -16,7 +16,7 @@ class Distance():
 
         :param path: Path to the *csv* file
         :type path: str, optional
-        :param Data: Padans Dataframe for the distances between the process models.Dataframe should use the name of processes as both column and row index.
+        :param Data: Padans Dataframe for the distances between the process models. Dataframe should use the name of processes as both column and row index.
         :type Data: class: `pandas.DataFrame` , optional
 
         :Example:
