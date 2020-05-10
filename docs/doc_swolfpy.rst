@@ -1,16 +1,6 @@
 swolfpy
 ********
 
-.. _Distance:
-
-Distance
-========
-
-.. autoclass:: swolfpy.Distance.Distance
-   :members:
-
-
-
 .. _project_class:
 
 Project Class
