@@ -15,7 +15,7 @@ from brightway2 import *
 from bw2analyzer import ContributionAnalysis
 import importlib  #to import moduls with string name
 import pandas as pd
-from ..Distance import *
+from swolfpy_processmodels import Distance
 from ..Project import *
 from ..Optimization import *
 from ..Monte_Carlo import *

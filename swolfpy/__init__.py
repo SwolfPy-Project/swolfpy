@@ -7,7 +7,6 @@ Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
 
 
 __all__ = [
-    'Distance',
     'Technosphere',
     'Project',
     'import_methods',
@@ -20,7 +19,6 @@ __all__ = [
 __version__ = '0.1.7'
 
 
-from .Distance import Distance
 from .Technosphere import Technosphere
 from .Project import Project
 from .SWOLF_method import import_methods
