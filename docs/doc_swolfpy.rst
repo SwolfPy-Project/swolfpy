@@ -1,14 +1,22 @@
 swolfpy
 ********
 
-.. _project_class:
+.. _project:
 
-Project Class
-=============
+Project
+=======
 
 .. autoclass:: swolfpy.Project.Project
    :members:
 
+
+.. _technosphere:
+
+Technosphere
+============
+
+.. autoclass:: swolfpy.Technosphere.Technosphere
+   :members:
 
 
 .. _process_DB:
@@ -30,25 +38,18 @@ Parameters
    :members:
 
 
-
-.. _MC:
-
-Input data uncertainty (random number generation)
-=================================================
-
-.. autoclass:: swolfpy.MC.MC
-   :members:
-
-.. _LCA_matrix:
+   
+.. _lca_matrix:
 
 LCA_matrix
 ==========
 
 .. autoclass:: swolfpy.LCA_matrix.LCA_matrix
-   :members:
+	:members:
 
 
-.. _Monte_Carlo:
+
+.. _monte_carlo:
 
 Monte Carlo
 ===========
@@ -57,7 +58,7 @@ Monte Carlo
    :members:
 
 
-.. _Optimization:
+.. _optimization:
 
 Optimization
 ============

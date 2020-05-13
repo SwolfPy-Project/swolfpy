@@ -42,7 +42,7 @@ sys.path.insert(0, os.path.abspath('..'))
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'nbsphinx']
 
 autodoc_mock_imports = []
-for mod in ['swolfpy','swolfpy.MC','swolfpy.project_class','swolfpy.ProcessDB',\
+for mod in ['swolfpy',\
             'swolfpy_inputdata','swolfpy_processmodels',\
             'matplotlib','scipy','pandas','numpy',\
             'bw2analyzer','stats_arrays','brightway2','bw2data',\
