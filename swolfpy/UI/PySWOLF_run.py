@@ -689,6 +689,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         # setup Frame2
         Sch_Col = QtWidgets.QTableView(Frame2)
         Sch_Col.setObjectName("Sch_Col_{}".format(self.col_index))
+        Sch_Col.setMinimumSize(QtCore.QSize(500, 400))
         F2_layout.addWidget(Sch_Col, 0, 0, 1, 1)
         
         #Collection scheme DataFrame
@@ -702,7 +703,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Sch_Col.installEventFilter(self)
 
         
-        spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         F2_layout.addItem(spacerItem_1, 0, 1, 1, 1)
         spacerItem_2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         F2_layout.addItem(spacerItem_2, 1, 0, 1, 1)
