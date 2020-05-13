@@ -18,59 +18,71 @@ from pathlib import Path
 class Project():
     """
     Project class creates a new project in Birghtway2.
-    """
-    def __init__ (self,project_name,CommonData,Treatment_processes,Distance,Collection_processes=None,Technosphere_obj=None):
-        """Create project object.            
+    
+    :param project_name: Name for the project
+    :type project_name: str
+    
+    :param CommonData: CommonData object
+    :type CommonData: class: `swolfpy.ProcessMoldes.CommonData`
+    
+    :param Treatment_processes: Dictionary for treatment processes include their input type and model.
+    :type Treatment_processes: dict
+    
+    :param Distance: Distance object.
+    :type Distance: class: `swolfpy.Distance.Distance`
+    
+    
+    :param Collection_processes: Dictionary for collection processes include their input type and model. Input type for the collection process is empty list ``[]`` as they don't accept waste from other processes.
+    :type Collection_processes: dict, optional
+    
+    .. note:: Treatment processes and distance between them are required for creating a project. Collection processes are not required unless they are included in the system boundary.
+    
+    :Create sample project:
+    
+    Step 1: Create CommonData and Treatment_processes dict with LF and WTE:
+        
+    >>> from swolfpy_inputdata import CommonData
+    >>> from swolfpy_processmodels import LF
+    >>> from swolfpy_processmodels import WTE
+    >>> common_data = CommonData()
+    >>> Treatment_processes = {}
+    >>> Treatment_processes['LF']={'input_type':['RWC','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF()}
+    >>> Treatment_processes['WTE']={'input_type':['RWC','Other_Residual'],'model': WTE()}
 
-        :param project_name: Name for the project
-        :type project_name: str
+    Step 2: Create Distance object:
         
-        :param CommonData: CommonData object
-        :type CommonData: class: `swolfpy.ProcessMoldes.CommonData`
+    >>> from swolfpy_processmodels import Distance
+    >>> import pandas as pd
+    >>> Processes = ['LF','WTE','SF_COl']
+    >>> Data = pd.DataFrame([[None,20,20],[None,None,20],[None,None,None]],index=Processes,columns=Processes)
+    >>> distance = Distance(Data=Data)
+    
+    Step 3: Create Collection_processes dict with one single family sector which only has residual waste collection:
         
-        :param Treatment_processes: Dictionary for treatment processes include their input type and model.
-        :type Treatment_processes: dict
+    >>> from swolfpy_processmodels import SF_Col
+    >>> Collection_processes = {}
+    >>> Collection_scheme_SF_COL={'RWC':{'Contribution':1,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
+    >>> 'SSO_DryRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
+    >>> 'REC_WetRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
+    >>> 'MRDO':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}}} 
+    >>> Collection_processes['SF_COl']={'input_type':[],'model': SF_Col('SF_COl',Collection_scheme_SF_COL,
+    >>>                                 Treatment_processes=Treatment_processes,Distance=distance)}      
+    
+    Step 4: Create project:
         
-        :param Distance: Distance object.
-        :type Distance: class: `swolfpy.Distance.Distance`
-        
-        
-        :param Collection_processes: Dictionary for collection processes include their input type and model. Input type for the collection process is empty list ``[]`` as they don't accept waste from other processes.
-        :type Collection_processes: dict, optional
-        
-        .. note:: Treatment processes and distance between them are required for creating a project. Collection processes are not need unless they are included in the system boundary.
-        
-        :Example:
-        
-        >>> # Treatment_processes:
-        >>> # Include LF and WTE
-        >>> from swolfpy.ProcessModels import CommonData
-        >>> from swolfpy.ProcessModels import LF
-        >>> from swolfpy.ProcessModels import WTE
-        >>> common_data = CommonData.CommonData()
-        >>> Treatment_processes = {}
-        >>> Treatment_processes['LF']={'input_type':['RWC','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF.LF()}
-        >>> Treatment_processes['WTE']={'input_type':['RWC','Other_Residual'],'model': WTE.WTE()}
-        >>> # Distance            
-        >>> from swolfpy.Distance import Distance
-        >>> import pandas as pd
-        >>> Processes = ['LF','WTE','SF_COl']
-        >>> Data = pd.DataFrame([[None,20,20],[None,None,20],[None,None,None]],index=Processes,columns=Processes)
-        >>> distance = Distance(Data=Data)
-        >>> # Collection_processes:
-        >>> # Ony include one single family sector wih residual waste collection
-        >>> from swolfpy.ProcessModels import SF_Col
-        >>> Collection_processes = {}
-        >>> Collection_scheme_SF_COL={'RWC':{'Contribution':1,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
-        >>> 'SSO_DryRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
-        >>> 'REC_WetRes':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}},
-        >>> 'MRDO':{'Contribution':0,'separate_col':{'SSR':0,'DSR':0,'MSR':0,'MSRDO':0,'SSYW':0,'SSYWDO':0}}} 
-        >>> Collection_processes['SF_COl']={'input_type':[],'model': SF_Col.SF_Col('SF_COl',Collection_scheme_SF_COL,Treatment_processes=Treatment_processes,Distance=distance)}      
-        >>> # project
-        >>> from swolfpy import Project
-        >>> demo = Project('demo',common_data,Treatment_processes,distance,Collection_processes)
-        
-        """
+    >>> from swolfpy import Project
+    >>> demo = Project('demo',common_data,Treatment_processes,distance,Collection_processes)
+    >>> demo.init_project()
+    >>> demo.write_project()
+    >>> demo.group_exchanges()
+    >>> demo.parameters.default_parameters_list()
+        [{'name': 'frac_of_Bottom_Ash_from_WTE_to_LF', 'amount': 1.0},
+         {'name': 'frac_of_Fly_Ash_from_WTE_to_LF', 'amount': 1.0},
+         {'name': 'frac_of_RWC_from_SF_COl_to_LF', 'amount': 0.5},
+         {'name': 'frac_of_RWC_from_SF_COl_to_WTE', 'amount': 0.5}]
+    >>> demo.update_parameters(demo.parameters.default_parameters_list())
+    """
+    def __init__ (self,project_name,CommonData,Treatment_processes,Distance,Collection_processes=None,Technosphere_obj=None):        
         if Technosphere_obj:
             self.Technosphere = Technosphere_obj
             self.project_name = self.Technosphere.project_name
@@ -121,7 +133,7 @@ class Project():
     # replace zeros when there is no data ("nan")
     def check_nan(self,x):  
         """
-        Check the `x` and return `0` if `x` is `nan`.
+        Check the `x` and return 0 if `x` is `nan`.
         
         """
         if str(x) == "nan":

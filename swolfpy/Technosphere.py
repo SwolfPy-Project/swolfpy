@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from .Required_keys import biosphere_keys
 from pathlib import Path
-from .SWOLF_method import import_methods
+from .swolfpy_method import import_methods
 from swolfpy_inputdata import Technosphere_Input
 
 class Technosphere:
@@ -25,6 +25,14 @@ class Technosphere:
         self.Ecospold2_Path = self.InputData.Ecospold2_Path
         
     def Create_Technosphere(self):
+        """ Initialize a `project` in Brightway2 by calling the ``bw2setup()`` function whcih creates the `biosphere3` 
+        database and imports the impact assesment methods. \n
+        It also addes 7 new biosphere flows for cost calculations swoflpy. \n
+        New impact methods are imported by calling the  ``import_methods()`` from `import_methods` module.  
+        
+        Note: If the `project` already exists, it will delete all the databases except 'biosphere3'. `Technosphere` database is written from the 
+        `SWOLF_AccountMode_LCI DATA.csv` in the `Data` folder unless user select new file with it's `path`.
+        """
         projects.set_current(self.project_name)
         bw2setup()
         db=Database('biosphere3')
