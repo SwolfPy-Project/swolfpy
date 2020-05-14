@@ -14,10 +14,10 @@ class Optimization(LCA_matrix):
         super().__init__(functional_unit, method, project)
         
     ### Objective function    
-    def objective_function(self, x):
+    def _objective_function(self, x):
         """
-        Use the new parameters (Waste fractions) to update the tech_matrix (tech_param)
-        and reculate the LCA score
+        Use the new parameters (Waste fractions) to update the ``tech_matrix`` (``tech_param``)
+        and reculate the LCA score.
         """
         if self.oldx != list(x): # Calculations are done only when the function get new x.
             param_exchanges=self.project.parameters.Param_exchanges(x)
@@ -40,9 +40,9 @@ class Optimization(LCA_matrix):
     ### Mass to process
     def get_mass_flow(self, key, KeyType, x):
         """
-        calculate the mass to the process from the supply_array matrix
+        calculate the mass to the process from the `supply_array` matrix.
         """
-        self.objective_function(x)
+        self._objective_function(x)
         
         mass_flow=0
         if KeyType == 'WasteToProcess':
@@ -60,7 +60,10 @@ class Optimization(LCA_matrix):
         
     ### Emission flow in LCI
     def get_emission_amount(self, emission, x):
-        self.objective_function(x)
+        """
+        calculate the mass of the `emission` to biosphere from the `inventory`.
+        """
+        self._objective_function(x)
         inventory=self.biosphere_matrix*self.supply_array
         emission_amount = 0
         for i in range(len(inventory)):
@@ -69,7 +72,7 @@ class Optimization(LCA_matrix):
         return emission_amount
     
     
-    def create_equality(self, N_param_Ingroup):
+    def _create_equality(self, N_param_Ingroup):
         """
         Check that the sum of parameters in each group should be one.
         """
@@ -78,11 +81,18 @@ class Optimization(LCA_matrix):
         self.Param_index+=N_param_Ingroup
         return l
         
-    def create_inequality(self, key, limit, KeyType,ConstType):
+    def _create_inequality(self, key, limit, KeyType,ConstType):
         """
-        key: process name, key for activtity in process or key for activity in biosphere
-        ConstType: <= , >=
-        KeyType: Process,WasteToProcess,Emission
+        
+        :param key: process name, key for activtity in process or key for activity in biosphere
+        :type key: str or tuple
+        :param limit: 
+        :type limit: float
+        :param KeyType: ``"Process"``, ``"WasteToProcess"``, ``"Emission"``
+        :type KeyType: str
+        :param ConstType: ``"<="`` , ``">="``
+        :type ConstType: str
+        
         """
         if ConstType not in ['<=','>=']:
             raise ValueError(" Constraint Type is not defined correct ") 
@@ -109,7 +119,7 @@ class Optimization(LCA_matrix):
             return l
             
     
-    def create_constraints(self):
+    def _create_constraints(self):
         cons = list()
         group = dict()
         
@@ -122,11 +132,11 @@ class Optimization(LCA_matrix):
 
         # Equal constraint (sum of the parameters in each group should be one)
         for vals in group.values():
-            cons.append({'type':'eq', 'fun':self.create_equality(N_param_Ingroup=vals)})
+            cons.append({'type':'eq', 'fun':self._create_equality(N_param_Ingroup=vals)})
             
         if self.constraints:
             for key in self.constraints.keys():
-                cons.append({'type':'ineq', 'fun': self.create_inequality(key, self.constraints[key]['limit'], self.constraints[key]['KeyType'], self.constraints[key]['ConstType'])})
+                cons.append({'type':'ineq', 'fun': self._create_inequality(key, self.constraints[key]['limit'], self.constraints[key]['KeyType'], self.constraints[key]['ConstType'])})
         return cons
     
     def optimize_parameters(self, project, constraints=None):
@@ -140,9 +150,9 @@ class Optimization(LCA_matrix):
         self.oldx=[0 for i in range(len(x0))]
         
         bnds = tuple([(0,1) for _ in self.project.parameters_list])
-        self.cons = self.create_constraints()
+        self.cons = self._create_constraints()
         
-        res = minimize(self.objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
+        res = minimize(self._objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
         if res.success:
             self.success=True
             self.optimized_x=list()
@@ -163,13 +173,13 @@ class Optimization(LCA_matrix):
         
         global_min = 1E100
         
-        self.cons = self.create_constraints()
+        self.cons = self._create_constraints()
         bnds = tuple([(0,1) for _ in self.project.parameters_list])
         
         for _ in range(max_iter):
             x0 = [random() for i in self.project.parameters_list] #initializing with the users initial solution
             self.oldx=[0 for i in range(len(x0))]
-            res = minimize(self.objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
+            res = minimize(self._objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
             
             if res.success:
                 if res.fun < global_min:

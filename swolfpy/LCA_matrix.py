@@ -7,16 +7,24 @@ Created on Wed Apr 22 19:09:14 2020
 from brightway2 import LCA
 
 class LCA_matrix(LCA):
+    """ 
+    This class translate the ``row`` and ``col`` of the ``tech_param`` and ``bio_param`` to
+    the acticity `key` in the Brightway2 database. \n
+    Both the ``tech_param`` and ``bio_param`` has the ``dtype=[('input', '<u4'), ('output', '<u4'), 
+    ('row', '<u4'), ('col', '<u4'), ('type', 'u1'), ('uncertainty_type', 'u1'), ('amount', '<f4'),
+    ('loc', '<f4'), ('scale', '<f4'), ('shape', '<f4'), ('minimum', '<f4'), ('maximum', '<f4'),
+    ('negative', '?')])`` data type. \n
+    
+    ``self.tech_matrix`` is a dictionary that includes all the technosphere and waste exhanges as tuple ``(product,Feed)`` key and amount as value:
+    ``{(('LF', 'Aerobic_Residual'), ('SF1_product', 'Aerobic_Residual_MRDO')):0.828}``
+           
+    ``self.bio_matrix`` is a dictionary taht includes all the biosphere exhanges as tuple ``(product,Feed)`` `key` and amount as `value`
+    ``{(('biosphere3', '0015ec22-72cb-4af1-8c7b-0ba0d041553c'), ('Technosphere', 'Boiler_Diesel')):6.12e-15}``
+    
+    So we can update the ``tech_params`` and ``bio_params`` by tuple keys that are consistant with the keys
+    in the ``ProcessMolde.report()``. Check :ref:`Process models class <ProcessModel>` for more info.
+    """
     def __init__(self, functional_unit, method, project):
-        """
-        tech_matrix is dictionary include all the exhange as tuple (product,Feed) key and amount as value
-        {(('LF', 'Aerobic_Residual'), ('SF1_product', 'Aerobic_Residual_MRDO')):0.8288506683507344}
-               
-        bio_matrix is dictionary include all the exhange as tuple (product,Feed) key and amount as value
-        {(('biosphere3', '0015ec22-72cb-4af1-8c7b-0ba0d041553c'), ('Technosphere', 'Boiler_Diesel')):6.12e-15}
-        
-        So we can update the tech_params and bio_params by the keys      
-        """
         super().__init__(functional_unit, method[0])
         self.lci()
         self.lcia()

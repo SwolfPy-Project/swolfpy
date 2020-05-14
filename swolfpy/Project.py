@@ -50,7 +50,7 @@ class Project():
     >>> Treatment_processes['LF']={'input_type':['RWC','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF()}
     >>> Treatment_processes['WTE']={'input_type':['RWC','Other_Residual'],'model': WTE()}
 
-    Step 2: Create Distance object:
+    Step 2: Create :ref:`Distance <Distance>` object:  
         
     >>> from swolfpy_processmodels import Distance
     >>> import pandas as pd
