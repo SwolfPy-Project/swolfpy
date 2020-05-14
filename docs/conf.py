@@ -55,10 +55,9 @@ for mod in ['swolfpy',\
 print('autodoc_mock_imports: {}'.format(autodoc_mock_imports))
 
 autodoc_default_options = {
-    'special-members': '__init__',  #members that __special__
     'member-order': 'bysource',  
     'undoc-members': True,
-    'exclude-members': '__weakref__'
+    'private-members':True
 }
 
 autodoc_member_order = 'bysource'  # the other options are : 'alphabetical', 'groupwise'

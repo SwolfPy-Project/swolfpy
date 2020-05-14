@@ -12,6 +12,9 @@ import multiprocessing as mp
 from brightway2 import LCA, projects
 
 class Monte_Carlo(LCA_matrix):
+    """
+    test doc
+    """
     def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, common_data = None, parameters = None,seed = None):
         super().__init__(functional_unit, method, project)
         

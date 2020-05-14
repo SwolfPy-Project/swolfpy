@@ -35,7 +35,8 @@ class Project():
     :param Collection_processes: Dictionary for collection processes include their input type and model. Input type for the collection process is empty list ``[]`` as they don't accept waste from other processes.
     :type Collection_processes: dict, optional
     
-    .. note:: Treatment processes and distance between them are required for creating a project. Collection processes are not required unless they are included in the system boundary.
+    .. note:: Treatment processes and distance between them are required for creating a project. 
+                Collection processes are not required unless they are included in the system boundary.
     
     :Create sample project:
     
@@ -105,7 +106,7 @@ class Project():
         
         self.waste_treatment = {}
         for i in self.CommonData.All_Waste_Pr_Index:
-            self.waste_treatment[i]= self.find_destination(i) 
+            self.waste_treatment[i]= self._find_destination(i) 
             
         self.process_model={}
         
@@ -113,14 +114,14 @@ class Project():
         self.parameters = Parameters(self.Treatment_processes)
    
 
-    def find_destination(self,product):
+    def _find_destination(self,product):
         """
-        Find the processes that can treat the `product`. This function check the `input_type` in the `Treatment_processes` dictionary.
+        Find the processes that can treat the `product`. This function check the ``input_type`` in the ``Treatment_processes`` dictionary.
         
         :param product: Waste product e.g., RWC, Fly_Ash, Separated_Organics, Other_Residual
         :type product: str
         
-        :return: A list of the discovered processes in the `Treatment_processes` dictionary that can treat the `product`
+        :return: A list of the discovered processes in the ``Treatment_processes`` dictionary that can treat the `product`
         :rtype: list
         
         """
@@ -129,30 +130,14 @@ class Project():
             if product in self.Treatment_processes[P]['input_type']:
                 destination.append(P)
         return(destination)
-   
-    # replace zeros when there is no data ("nan")
-    def check_nan(self,x):  
-        """
-        Check the `x` and return 0 if `x` is `nan`.
-        
-        """
-        if str(x) == "nan":
-            return 0
-        return x
     
     
-    def init_project(self,path=None):
+    def init_project(self):
         """
-        This function initialize a `project` in Brightway2 by creating the `biosphere3` database and importing the impact assesment methods.
-        Note: If the `project` already exists, it will delete all the databases except 'biosphere3'. `Technosphere` database is written from the 
-        `SWOLF_AccountMode_LCI DATA.csv` in the `Data` folder unless user select new file with it's `path`.
-        
-        This function create an empty database for each process as a placeholder, so the model can browse these databases in 
-        the next step (writing project) and create exchanges between them.
-        
-        :param path: Path to the `csv` file that includes the LCI data for technosphere flows
-        :type path: str, optional 
-        
+        Calls the Create_Technosphere_ method to initilize a project.\n 
+        This function create an empty database for each process as a placeholder, so swolfpy 
+        can browse these databases in the next step (writing project) and 
+        create exchanges between them.        
         """
         self.Technosphere.Create_Technosphere()
         
@@ -168,16 +153,27 @@ class Project():
         self.waste_BD = Database("waste")
                     
     def write_project(self):
+        """ Call the import_database_ for all the process models. 
+        """
         self.parameters_dict={}
         self.parameters_list=[]
         self.act_include_param={}
         for j in self.Treatment_processes:
-            (P,G)=self.import_database(j)
+            (P,G)=self._import_database(j)
             self.parameters_dict[j]=P
             self.act_include_param[j]=G
             self.parameters_list+=P
                             
-    def import_database(self,name):
+    def _import_database(self,name):
+        """ 
+        .. _import_database:
+            
+        Instantiate the ProcessDB_ class for the process model and gets the LCI report from it; then translates
+        the report for Brightway2 and populates the databases by Write_DB_ method. 
+        
+        :return: Returns a tuple (parameters,act_in_group)
+        :rtype: tuple
+        """
         self.process_model[name] = ProcessDB(name,self.waste_treatment,self.Distance)
         self.Treatment_processes[name]['model'].calc()
         self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
@@ -211,9 +207,8 @@ class Project():
         
     def group_exchanges(self):
         """
-        Create a group for each `parameter` and add the exchanges that include this `parameter` to this group. As a results, model know to 
-        update the values in those exchanges when the `parameter` is updated.
-        
+        Create a group for the `parameters` in each database and add the exchanges that include these `parameters` 
+        to this group. As a results, model know to update the values in those exchanges when the `parameter` is updated
         """
         for j in self.processes:
             print("""
@@ -226,12 +221,13 @@ class Project():
                     
     def update_parameters(self,new_param_data):
         """
-        Update the `parameters` and their related exchanges based on the `new_param_data`.
+        Updates the `parameters` and their related exchanges based on the `new_param_data`.
         
         :param new_param_data: List of `parameters` (waste fractions) in the project with new values
         :type new_param_data: list
         
-        .. note:: `parameters` are waste fractions which show what fraction of waste from one source go to different destinations, so sum of parameters from each source should be 1. (0<= `parameters` <=1)
+        .. note:: `parameters` are waste fractions which show what fraction of waste from one source
+                    go to different destinations, so sum of parameters from each source should be 1. (0<= `parameters` <=1)
         
         """
         self.new_param_data=new_param_data
@@ -259,6 +255,8 @@ class Project():
 		
                 
     def process_start_scenario(self,input_dict,scenario_name):
+        """Creates a new scenario (activity).
+        """
         self.input_dict=input_dict
         self.scenario_name=scenario_name
         self.waste_BD.new_activity(code = self.scenario_name, name = self.scenario_name, type = "process", unit = "Mg" ).save()
@@ -269,6 +267,9 @@ class Project():
         self.waste_BD.get(self.scenario_name).save()    
 
     def Do_LCA(self,scenario_name,impact_method,functioanl_unit):
+        """
+        Perform LCA by instantiating the ``bw2calc.lca.LCA`` class from Brightway2.
+        """
         self.demand={(self.waste_BD.name,scenario_name):functioanl_unit}   
         lca= LCA(self.demand,impact_method)
         lca.lci()
@@ -321,6 +322,12 @@ class Project():
         plt.title('Top Activities Contribution, CutOff = 0.05,'+scenario_name)
         
     def save(self,filename):
+        """
+        Dumps the ``Project`` class to pickle file. User can load the pickle and use it later.
+        
+        :param filename: 
+        :type filename: str
+        """
         import pickle
         pickle.dump(self, open(filename, "wb"))
 		

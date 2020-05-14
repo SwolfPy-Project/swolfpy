@@ -38,35 +38,42 @@ Parameters
    :members:
 
 
-   
-.. _lca_matrix:
+.. _swolfpy_method:
 
-LCA_matrix
-==========
+swolfpy_method
+===============
+
+.. autofunction:: swolfpy.swolfpy_method.import_methods
+   
+
+
+.. _LCA_matrix:
+
+LCA Matrix
+===========
 
 .. autoclass:: swolfpy.LCA_matrix.LCA_matrix
-	:members:
+   :members:
+   :show-inheritance:
+   
+   
 
-
-
-.. _monte_carlo:
+.. _montecarlo:
 
 Monte Carlo
 ===========
 
 .. autoclass:: swolfpy.Monte_Carlo.Monte_Carlo
    :members:
+   :show-inheritance:
 
 
-.. _optimization:
+
+.. _optimizaiton:
 
 Optimization
 ============
 
 .. autoclass:: swolfpy.Optimization.Optimization
    :members:
-
-
-   
-
-
+   :show-inheritance:

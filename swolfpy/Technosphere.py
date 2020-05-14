@@ -14,6 +14,16 @@ from .swolfpy_method import import_methods
 from swolfpy_inputdata import Technosphere_Input
 
 class Technosphere:
+    """ 
+    :param project_name: Name for the project
+    :type project_name: str
+    :param LCI_path: Patht to the technosphere LIC csv file 
+    :type LCI_path: str
+    :param LCI_Reference_path: Path to the csv file for the technosphere refrences
+    :type LCI_Reference_path: str
+    :param Ecospold2_Path: Path to the user defined technosphere LCI with ecospold2 format.
+    :type Ecospold2_Path: str
+    """
     def __init__(self,project_name,LCI_path=None,LCI_Reference_path=None,Ecospold2_Path=None):
         self.project_name = project_name
         self.technosphere_db_name='Technosphere' 
@@ -25,10 +35,13 @@ class Technosphere:
         self.Ecospold2_Path = self.InputData.Ecospold2_Path
         
     def Create_Technosphere(self):
-        """ Initialize a `project` in Brightway2 by calling the ``bw2setup()`` function whcih creates the `biosphere3` 
+        """ 
+        .. _Create_Technosphere:
+            
+        Initialize a `project` in Brightway2 by calling the ``bw2setup()`` function which creates the `biosphere3` 
         database and imports the impact assesment methods. \n
         It also addes 7 new biosphere flows for cost calculations swoflpy. \n
-        New impact methods are imported by calling the  ``import_methods()`` from `import_methods` module.  
+        New impact methods are imported by calling the  ``import_methods()`` from swolfpy_method_ module. \n  
         
         Note: If the `project` already exists, it will delete all the databases except 'biosphere3'. `Technosphere` database is written from the 
         `SWOLF_AccountMode_LCI DATA.csv` in the `Data` folder unless user select new file with it's `path`.
@@ -54,16 +67,17 @@ class Technosphere:
             if x not in ['biosphere3']:
                 del databases[x]
         if self.LCI_reference['Reference_activity_id'].count()>0:
-            self.Write_user_technospher()
+            self._Write_user_technospher()
             db = Database(self.user_tech_name)
             self.user_tech_keys={}
             for x in db:
                 self.user_tech_keys[x.as_dict()['activity']] = x.key
-        self.write_technosphere()
+        self._write_technosphere()
     
-    def Write_user_technospher(self):
+    def _Write_user_technospher(self):
         """
-        Creates the user technosphere database
+        Creates the user technosphere database from Ecospold2 files. \n
+        Interface with Brightway2: Calls the ``bw2io.importers.SingleOutputEcospold2Importer`` function.
         """
         self.user_tech=bw2io.importers.SingleOutputEcospold2Importer(dirpath=self.Ecospold2_Path,db_name=self.user_tech_name)
         self.user_tech.apply_strategies()
@@ -77,9 +91,9 @@ class Technosphere:
         self.user_tech.write_database()
 
 
-    def write_technosphere(self):
+    def _write_technosphere(self):
         """
-        Creates the swolfpy technosphere database
+        Creates the swolfpy technosphere database.\n
         """
         self.technosphere_data ={}
         # activities
@@ -92,9 +106,9 @@ class Technosphere:
             if pd.isnull(self.LCI_reference['Reference_activity_id'][x]):
                 i=0
                 for val in self.LCI_swolfpy_data[x][1:]:
-                    if float(self.check_nan(val)) != 0:
+                    if float(self._check_nan(val)) != 0:
                         ex = {}                        # add exchange to activities
-                        ex['amount'] = float(self.check_nan(val))
+                        ex['amount'] = float(self._check_nan(val))
                         ex['input'] = biosphere_keys[i][0]
                         ex['type'] = 'biosphere'
                         ex['unit'] = 'kg'
@@ -110,7 +124,7 @@ class Technosphere:
             
             if not pd.isnull(self.LCI_reference['Cost_key'][x]):        # adding the cost to technosphere
                 ex = {}                        # add exchange to activities
-                ex['amount'] = self.check_nan(self.LCI_reference['Cost'][x])
+                ex['amount'] = self._check_nan(self.LCI_reference['Cost'][x])
                 ex['input'] = ('biosphere3',self.LCI_reference['Cost_key'][x]) 
                 ex['type'] = 'biosphere'
                 ex['unit'] = self.LCI_reference['Cost_Unit'][x]
@@ -124,9 +138,9 @@ class Technosphere:
         self.technosphere_db.write(self.technosphere_data)
         # replace zeros when there is no data ("nan")
     
-    def check_nan(self,x):  
+    def _check_nan(self,x):  
         """
-        Check the `x` and return `0` if `x` is `nan`.
+        Check the `x` and return 0 if `x` is `nan`.
         
         """
         if str(x) == "nan":

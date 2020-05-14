@@ -21,7 +21,7 @@ __version__ = '0.1.7'
 
 from .Technosphere import Technosphere
 from .Project import Project
-from .SWOLF_method import import_methods
+from .swolfpy_method import import_methods
 from .Optimization import Optimization
 from .Monte_Carlo import Monte_Carlo
 from .UI.PySWOLF_run import MyQtApp

@@ -51,6 +51,11 @@ class ProcessDB():
         
     
     def Write_DB (self,waste_flows,parameters,Process_Type):
+        """
+        .. _Write_DB:
+        
+            
+        """
         self.db_data ={}
         self.db_Pr_data={}
         self.parameters=[] # List of dictionaries ({'name':Formula ,'amount':0})
