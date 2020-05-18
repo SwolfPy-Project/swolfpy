@@ -8,10 +8,24 @@ from .LCA_matrix import LCA_matrix
 import numpy as np
 from scipy.optimize import minimize
 from random import random
+import plotly.graph_objects as go
+from plotly.offline import plot
+
 
 class Optimization(LCA_matrix):
+    """
+    
+    :param functional_unit: 
+    :type functional_unit: dict
+    :param method: 
+    :type method: lsit
+    :param project: 
+    :type project: ``swolfpy.Project.Project``
+    
+    """
     def __init__(self,functional_unit, method, project):
-        super().__init__(functional_unit, method, project)
+        super().__init__(functional_unit, method)
+        self.project = project
         
     ### Objective function    
     def _objective_function(self, x):
@@ -69,6 +83,7 @@ class Optimization(LCA_matrix):
         for i in range(len(inventory)):
             if emission == self.biosphere_dict[i]:
                 emission_amount+=inventory[i]
+        print(emission_amount)
         return emission_amount
     
     
@@ -139,9 +154,32 @@ class Optimization(LCA_matrix):
                 cons.append({'type':'ineq', 'fun': self._create_inequality(key, self.constraints[key]['limit'], self.constraints[key]['KeyType'], self.constraints[key]['ConstType'])})
         return cons
     
-    def optimize_parameters(self, project, constraints=None):
+    def optimize_parameters(self, constraints=None):
+        """
+        Call the ``scipy.optimize.minimize()`` to minimize the LCA score. \n
+        ``constraints`` is python dictionary. \n 
+        Constraint type can be ``'<='`` or ``'>='``. \n
+        Three kind of constraints are defined as below: \n
+        * **Process:** Constraint on the total mass to the processs. The ``'KeyType'`` should be ``'Process'`` (e.g., The capacity of the WTE). Examaple:
+        
+        >>> constraints = {}
+        >>> # Use name the the process as key in dict
+        >>> constraints['WTE'] = {'limit':100, 'KeyType':'Process','ConstType':"<="}
+        
+        * **WasteToProcess:** Constraint on the total mass of waste fraction to the processs. The ``'KeyType'`` should be ``'WasteToProcess'`` (e.g., Ban food waste from landfill). Examaple:
+        
+        >>> constraints = {}
+        >>> # Use database key as key in dict
+        >>> constraints[('LF','Food_Waste_Vegetable')] = {'limit':0, 'KeyType':'WasteToProcess','ConstType':"<="}
+        
+        * **Emission:** Constraint on the emissions. The ``'KeyType'`` should be ``'Emission'`` (e.g., CO2 emissions Cap). Examaple:
+        
+        >>> constraints = {}
+        >>> # Use database key as key in dict
+        >>> constraints[('biosphere3', 'eba59fd6-f37e-41dc-9ca3-c7ea22d602c7')] = {'limit':100,'KeyType':'Emission','ConstType':"<="}
+        
+        """
         self.constraints=constraints
-        self.project = project
         self.magnitude = len(str(int(abs(self.score)))) 
         
         x0 = [i['amount'] for i in self.project.parameters_list] # initializing with the users initial solution
@@ -166,9 +204,8 @@ class Optimization(LCA_matrix):
             print(res.message)
             return res
             
-    def multi_start_optimization(self, project, constraints=None, max_iter=30):
+    def multi_start_optimization(self, constraints=None, max_iter=30):
         self.constraints=constraints
-        self.project = project
         self.magnitude = len(str(int(abs(self.score)))) 
         
         global_min = 1E100
@@ -205,7 +242,71 @@ class Optimization(LCA_matrix):
         
         self.project.update_parameters(self.optimized_x)
     
-# =============================================================================
-#     def mass_to_process(self):
-#         get_mass_flow(self, key, KeyType, x):
-# =============================================================================
+    def plot_sankey(self,optimized_flow=True):
+        """Plots a sankey diagram for the waste mass flows. \n
+        Calls the ``plotly.graph_objs.Sankey`` to plot sankey. \n
+        Calculates the mass flows by calling ``self.get_mass_flow()``. \n
+        
+        :param optimized_flow: If ``True``, it plots the sankey based on the optimized waste fractions. 
+                                If ``False``, it plost the sankey based on the current waste fractions by calling ``self.project.parameters_list``.
+        :type optimized_flow: bool
+        
+        """
+        if optimized_flow:
+            params = [i['amount'] for i in self.optimized_x]
+        else:
+            params = [i['amount'] for i in self.project.parameters_list]
+            self.oldx=[0 for i in range(len(params))]
+            self.magnitude = len(str(int(abs(self.score)))) 
+   
+        product = []
+        index = 0
+        for _,i in self.project.parameters.param_uncertainty_dict.items():
+            for j in i:
+                product.append((j[3],params[index]))
+                index+=1
+        
+        label = self.project.parameters.nodes
+        source = []
+        target = []
+        value = []
+        label_link = []
+        color = []
+        for x in product:
+            key,frac =  x
+            source.append(label.index(key[0]))
+            target.append(label.index(key[1]))
+            label_link.append(key[2])
+            color.append('rgba({},{},{}, 0.8)'.format(*np.random.randint(256, size=3))) 
+            mass=0
+            for m in self.project.CommonData.Index:
+                mass += self.get_mass_flow((key[0]+'_product',m+'_'+key[2]),'WasteToProcess',params)
+                mass += self.get_mass_flow((key[0]+'_product',key[2]),'WasteToProcess',params)
+                
+            value.append(np.round(mass*frac,3))
+        
+        print("""
+              # Sankey Mass flows
+              label= {}
+              source= {}
+              target= {}
+              label_link= {}
+              value= {}""".format(label,source,target,label_link,value))
+        
+        node = dict(pad = 20,
+                    thickness = 20,
+                    line = dict(color = "black", width = 0.5),
+                    label = label,
+                    color = "blue")
+        
+        link = dict(source = source, 
+                    target = target,
+                    value = value,
+                    label = label_link,
+                    color = color)
+        
+        # The other good option for the valueformat is ".3f". Yes
+        plot(go.Figure(data=[go.Sankey( valueformat = ".3s",
+                                             valuesuffix = "Mg",
+                                             node = node,
+                                             link = link)]))

@@ -1035,7 +1035,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         else:
             self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
 
-        self.demo.init_project(Path(__file__).parent.parent/'Data/SWOLF_AccountMode_LCI DATA.csv')
+        self.demo.init_project()
         self.demo.write_project()
         self.progressBar_write_project.setValue(30)
         self.demo.group_exchanges()
@@ -2038,11 +2038,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             constraints = None
         
         
-        opt = Optimization(functional_unit, method, project_name) 
-        results = opt.optimize_parameters(self.demo, constraints=constraints)
+        opt = Optimization(functional_unit, method, self.demo) 
+        results = opt.optimize_parameters(constraints=constraints)
         print(results)
         Time_finish = time()
         Total_time = round(Time_finish - Time_start)
+        opt.plot_sankey()
         
         print("Total time for optimization: {} seconds".format(Total_time))
         
