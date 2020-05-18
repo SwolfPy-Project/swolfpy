@@ -24,12 +24,11 @@ class LCA_matrix(LCA):
     So we can update the ``tech_params`` and ``bio_params`` by tuple keys that are consistant with the keys
     in the ``ProcessMolde.report()``. Check :ref:`Process models class <ProcessModel>` for more info.
     """
-    def __init__(self, functional_unit, method, project):
+    def __init__(self, functional_unit, method):
         super().__init__(functional_unit, method[0])
         self.lci()
         self.lcia()
         
-        self.project = project
         self.functional_unit = functional_unit
         self.method = method
 

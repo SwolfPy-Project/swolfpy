@@ -42,12 +42,13 @@ class Monte_Carlo(LCA_matrix):
     
     """
     def __init__(self, functional_unit, method, project, process_models = None, process_model_names = None, common_data = None, parameters = None,seed = None):
-        super().__init__(functional_unit, method, project)
+        super().__init__(functional_unit, method)
         
         self.process_models = process_models
         self.process_model_names = process_model_names
         self.parameters = parameters
         self.common_data = common_data
+        self.project = project
         if seed:
             self.seed = seed
         else:
