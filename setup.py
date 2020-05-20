@@ -15,6 +15,8 @@ requirements = [
 "swolfpy_processmodels",
 "brightway2",
 "PySide2",
+"plotly",
+"graphviz"
 ]
 
 setup_requirements = [ ]

@@ -2,6 +2,8 @@ swolfpy_inputdata
 swolfpy_processmodels
 brightway2
 PySide2
+graphviz
+plotly
 pytest
 pytest-cov
 
