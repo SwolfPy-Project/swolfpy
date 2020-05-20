@@ -2,7 +2,7 @@ from .Project import *
 from stats_arrays import *
 import copy
 import math
-#import graphviz
+import graphviz
 
 
 def approx_eq(x, y):
@@ -45,23 +45,32 @@ class Parameters():
         else:
             self.param_uncertainty_dict[key].append([process_model_to, value, param_name,(process_model_from,process_model_to,product)])
     
-    def SWM_network(self):
-        pass
-# =============================================================================
-#         #Initialize SWM network
-#         self.network = graphviz.Digraph(name='SWM_network',filename='SWM_network.gv',format='png',engine='dot')
-#         self.network.graph_attr['rankdir']='LR'
-#         for x in self.nodes:
-#             self.network.node(x)
-#         
-#         for y in self.param_uncertainty_dict.values():
-#             for x in y:
-#                 self.add_edge(x[3][0],x[3][1],x[3][2],x[1])
-#         self.network.render('SWM_network', view = True)
-# 
-#     def add_edge(self,head,tail,name,value):
-#         self.network.edge(head,tail,label=name + ' (fraction = {})'.format(value))
-# =============================================================================
+    def SWM_network(self,view=True):
+        """
+        To render the generated DOT source code, you also need to install `Graphviz <https://www.graphviz.org/download>`_ \n.
+        
+        ..note:: Make sure that the directory containing the dot executable is on your systems’ path.
+        
+        """
+        #Initialize SWM network
+        self.network = graphviz.Digraph(name='SWM_network',filename='SWM_network.gv',format='png',engine='dot')
+        self.network.graph_attr['rankdir']='LR'
+        for x in self.nodes:
+            self.network.node(x)
+        
+        for y in self.param_uncertainty_dict.values():
+            for x in y:
+                self.add_edge(x[3][0],x[3][1],x[3][2],x[1])
+        try:
+            self.network.render('SWM_network', view = view)
+        except Exception:
+            print("""            
+            To render the generated DOT source code, you also need to install Graphviz (`Graphviz <https://www.graphviz.org/download>`_).\n
+            Make sure that the directory containing the dot executable is on your systems’ path.
+            """)
+        
+    def add_edge(self,head,tail,name,value):
+        self.network.edge(head,tail,label=name + ' (fraction = {})'.format(value))
             
     def default_parameters_list(self):
         default_parameters_list=[]
