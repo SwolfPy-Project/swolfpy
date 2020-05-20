@@ -988,6 +988,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #Load parameters
         self.Load_params.clicked.connect(self.load_params_func)
         
+        #Show SWM Network
+        self.Show_SWM_Network.clicked.connect(self.show_SWM_Network_func)
+        
         #Update the parameters
         self.update_param.clicked.connect(self.update_network_parameters)
         
@@ -1067,8 +1070,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Param_table.setModel(self.param_data)
         self.Param_table.resizeColumnsToContents()
         
-        # Create SWM Network
-        self.demo.parameters.SWM_network()
         
     @QtCore.Slot()
     def update_network_parameters(self):
@@ -1093,8 +1094,30 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #init create scenario
         self.init_CreateScenario()
         self.Opt_tab_init()
-        # Create SWM Network
-        self.demo.parameters.SWM_network()
+
+    @QtCore.Slot()
+    def show_SWM_Network_func(self):
+        self.demo.parameters.SWM_network(view=True)
+# =============================================================================
+#         Dialog = QtWidgets.QDialog()
+#         Dialog.setWindowIcon(self.icon)
+#         Dialog.setWindowTitle('swolfpy: SWM Network')
+#         Layout = QtWidgets.QVBoxLayout(Dialog)
+#         
+#         Label = QtWidgets.QLabel()
+#         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+#         Label.setSizePolicy(sizePolicy)
+#         image_path =  os.getcwd()+'/SWM_network.png'
+#         #QImage object
+#         image_profile = QtGui.QImage(image_path) 
+#         pixmap = QtGui.QPixmap(image_profile)
+#         Label.setPixmap(pixmap)
+#         Layout.addWidget(Label)
+#         
+#         #Show Dialog    
+#         Dialog.show()
+#         Dialog.exec_()
+# =============================================================================
         
 
 #%% Create Scenario
@@ -1420,7 +1443,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.ax_LCA.set_ylabel('Scenarios', fontsize=18)
             self.ax_LCA.tick_params(axis='both', which='major', labelsize=18)
             self.ax_LCA.tick_params(axis='both', which='minor', labelsize=16)
-            self.ax_LCA.legend(fontsize=18)
             
             #set margins
             self.canvas_LCA.draw()
@@ -1914,6 +1936,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Dialog = QtWidgets.QDialog()
         self.MC_Widget = MC_ui.Ui_MC_Results()
         self.MC_Widget.setupUi(Dialog)
+        self.MC_Widget.tabWidget.setCurrentWidget(self.MC_Widget.MC_Data)
         
         ### Data Tab
         MC_res_table_model = Table_from_pandas(self.MC_results)
@@ -2189,11 +2212,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             Opt_Param_table_model = Table_from_pandas_editable(param_data)
             self.Opt_Param_table.setModel(Opt_Param_table_model)
             self.Opt_Param_table.resizeColumnsToContents()
-            
-            opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
-            self.html_figur = QWebEngineView()
-            self.html_figur.setUrl(QtCore.QUrl.fromLocalFile(os.getcwd()+'\\Optimized_sankey.html'))
-            self.html_figur.show()
+            #Draw sankey
+            self.Opt_draw_sankey_func(opt)
         else:
             self.msg_popup('Optimization Result',results.message,'Warning')
         
@@ -2219,7 +2239,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Opt_Const_table_update()
         self.constraints={}
         
-                     
+    def Opt_draw_sankey_func(self,opt):
+        ### plot mass sankey
+        opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
+        self.html_figur = QWebEngineView()
+        self.html_figur.setWindowIcon(self.icon)
+        self.html_figur.setWindowTitle('swolfpy: Sankey Diagram')
+        self.html_figur.setUrl(QtCore.QUrl.fromLocalFile(os.getcwd()+'\\Optimized_sankey.html'))
+        self.html_figur.show()
+                    
         
         
 #%% General Functions          
