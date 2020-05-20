@@ -1,3 +1,4 @@
+	Copyright (c) 2020, NORTH CAROLINA STATE UNIVERSITY
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
