@@ -242,7 +242,7 @@ class Optimization(LCA_matrix):
         
         self.project.update_parameters(self.optimized_x)
     
-    def plot_sankey(self,optimized_flow=True):
+    def plot_sankey(self,optimized_flow=True,show=True,fileName=None):
         """Plots a sankey diagram for the waste mass flows. \n
         Calls the ``plotly.graph_objs.Sankey`` to plot sankey. \n
         Calculates the mass flows by calling ``self.get_mass_flow()``. \n
@@ -250,6 +250,9 @@ class Optimization(LCA_matrix):
         :param optimized_flow: If ``True``, it plots the sankey based on the optimized waste fractions. 
                                 If ``False``, it plost the sankey based on the current waste fractions by calling ``self.project.parameters_list``.
         :type optimized_flow: bool
+        
+        :param show: If ``True``, it will show the figure
+        :type show: bool
         
         """
         if optimized_flow:
@@ -304,9 +307,11 @@ class Optimization(LCA_matrix):
                     value = value,
                     label = label_link,
                     color = color)
-        
+         
         # The other good option for the valueformat is ".3f". Yes
         plot(go.Figure(data=[go.Sankey( valueformat = ".3s",
                                              valuesuffix = "Mg",
                                              node = node,
-                                             link = link)]))
+                                             link = link)]),
+                                            filename=fileName if fileName else 'plot.html',
+                                            auto_open=show)
