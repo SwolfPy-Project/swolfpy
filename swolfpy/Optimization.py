@@ -309,9 +309,12 @@ class Optimization(LCA_matrix):
                     color = color)
          
         # The other good option for the valueformat is ".3f". Yes
-        plot(go.Figure(data=[go.Sankey( valueformat = ".3s",
-                                             valuesuffix = "Mg",
-                                             node = node,
-                                             link = link)]),
-                                            filename=fileName if fileName else 'plot.html',
-                                            auto_open=show)
+        layout=go.Layout(title_text="Sankey Diagram (Unit = Mg)", 
+                         font_size=16,
+                         hoverlabel=dict(font_size=14))
+        data = go.Sankey( valueformat = ".3s",
+                         valuesuffix = "Mg",
+                         node = node,
+                         link = link)
+        fig = go.Figure(data=[data],layout=layout)
+        plot(fig,filename=fileName if fileName else 'plot.html',auto_open=show)
