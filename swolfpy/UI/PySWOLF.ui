@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1263</width>
-    <height>1248</height>
+    <width>1371</width>
+    <height>1150</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,7 +24,7 @@
     <normaloff>:/ICONS/PySWOLF_ICONS/PySWOLF.ico</normaloff>:/ICONS/PySWOLF_ICONS/PySWOLF.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_84">
+   <layout class="QGridLayout" name="gridLayout_67">
     <item row="0" column="0">
      <widget class="QFrame" name="frame">
       <property name="frameShape">
@@ -240,8 +240,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1179</width>
-                    <height>1039</height>
+                    <width>993</width>
+                    <height>768</height>
                    </rect>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_22">
@@ -257,15 +257,15 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                      <property name="currentIndex">
-                      <number>12</number>
+                      <number>10</number>
                      </property>
                      <widget class="QWidget" name="CommonData">
                       <property name="geometry">
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>382</width>
+                        <height>160</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -392,8 +392,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>382</width>
+                        <height>302</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -620,8 +620,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -1114,8 +1114,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -1608,8 +1608,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -2102,8 +2102,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -3090,8 +3090,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -3584,8 +3584,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>444</width>
+                        <height>400</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -4572,8 +4572,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>975</width>
+                        <height>308</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -4653,7 +4653,7 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>432</width>
+                        <width>408</width>
                         <height>96</height>
                        </rect>
                       </property>
@@ -4734,8 +4734,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>579</height>
+                        <width>408</width>
+                        <height>96</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -4836,8 +4836,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1199</width>
-                 <height>1099</height>
+                 <width>1030</width>
+                 <height>737</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_105">
@@ -4866,8 +4866,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>959</height>
+                        <width>992</width>
+                        <height>597</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -5104,8 +5104,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1161</width>
-                        <height>959</height>
+                        <width>858</width>
+                        <height>726</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -5382,8 +5382,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1199</width>
-                 <height>1099</height>
+                 <width>1013</width>
+                 <height>829</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_106">
@@ -5581,8 +5581,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1199</width>
-                 <height>1099</height>
+                 <width>1013</width>
+                 <height>769</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_52">
@@ -5827,7 +5827,7 @@ p, li { white-space: pre-wrap; }
             <item row="0" column="0">
              <widget class="QTabWidget" name="LCA_subTab">
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="LCA_setup_tab">
                <attribute name="title">
@@ -6209,18 +6209,18 @@ p, li { white-space: pre-wrap; }
                       <string>Setting</string>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_60">
-                      <item row="2" column="6">
-                       <spacer name="horizontalSpacer_22">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="label_61">
+                        <property name="minimumSize">
                          <size>
-                          <width>252</width>
-                          <height>20</height>
+                          <width>100</width>
+                          <height>0</height>
                          </size>
                         </property>
-                       </spacer>
+                        <property name="text">
+                         <string>Environmental Impact:</string>
+                        </property>
+                       </widget>
                       </item>
                       <item row="2" column="5">
                        <widget class="QPushButton" name="LCA_Contr_updat">
@@ -6239,21 +6239,35 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label_60">
-                        <property name="minimumSize">
-                         <size>
-                          <width>100</width>
-                          <height>0</height>
-                         </size>
+                      <item row="2" column="4">
+                       <widget class="QRadioButton" name="LCA_Contr_Top_emis">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
                         </property>
                         <property name="text">
-                         <string>Functional Unit:</string>
+                         <string>Top Emissions</string>
                         </property>
                        </widget>
                       </item>
-                      <item row="2" column="1">
-                       <widget class="QComboBox" name="LCA_Contr_CutOffType"/>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="label_11">
+                        <property name="text">
+                         <string>CutOff:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1" colspan="5">
+                       <widget class="QComboBox" name="LCA_Contr_FU">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                       </widget>
                       </item>
                       <item row="2" column="3">
                        <widget class="QRadioButton" name="LCA_Contr__Top_act">
@@ -6284,38 +6298,18 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="1" column="0">
-                       <widget class="QLabel" name="label_61">
-                        <property name="minimumSize">
+                      <item row="2" column="6">
+                       <spacer name="horizontalSpacer_22">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
                          <size>
-                          <width>100</width>
-                          <height>0</height>
+                          <width>252</width>
+                          <height>20</height>
                          </size>
                         </property>
-                        <property name="text">
-                         <string>Environmental Impact:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0">
-                       <widget class="QLabel" name="label_11">
-                        <property name="text">
-                         <string>CutOff:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="4">
-                       <widget class="QRadioButton" name="LCA_Contr_Top_emis">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="text">
-                         <string>Top Emissions</string>
-                        </property>
-                       </widget>
+                       </spacer>
                       </item>
                       <item row="1" column="1" colspan="5">
                        <widget class="QComboBox" name="LCA_Contr_Method">
@@ -6327,15 +6321,21 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="1" colspan="5">
-                       <widget class="QComboBox" name="LCA_Contr_FU">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_60">
+                        <property name="minimumSize">
+                         <size>
+                          <width>100</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Functional Unit:</string>
                         </property>
                        </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QComboBox" name="LCA_Contr_CutOffType"/>
                       </item>
                      </layout>
                     </widget>
@@ -6345,61 +6345,117 @@ p, li { white-space: pre-wrap; }
                      <property name="title">
                       <string>Contribution Results</string>
                      </property>
-                     <layout class="QGridLayout" name="gridLayout_67">
+                     <layout class="QGridLayout" name="gridLayout_84">
                       <item row="0" column="0">
-                       <widget class="QLabel" name="label_59">
-                        <property name="minimumSize">
-                         <size>
-                          <width>100</width>
-                          <height>0</height>
-                         </size>
+                       <widget class="QScrollArea" name="scrollArea_7">
+                        <property name="widgetResizable">
+                         <bool>true</bool>
                         </property>
-                        <property name="text">
-                         <string>Impact:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="QLineEdit" name="LCA_Contr_score">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="2">
-                       <widget class="QLineEdit" name="LCA_Contr_unit">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="3">
-                       <spacer name="horizontalSpacer_29">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="1" column="0" colspan="4">
-                       <widget class="QTableView" name="LCA_contribution_Table">
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>50</height>
-                         </size>
-                        </property>
+                        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>1217</width>
+                           <height>849</height>
+                          </rect>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_129">
+                          <item row="0" column="2">
+                           <widget class="QLineEdit" name="LCA_Contr_unit">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="0">
+                           <widget class="QLabel" name="label_59">
+                            <property name="minimumSize">
+                             <size>
+                              <width>100</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>Impact:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="QLineEdit" name="LCA_Contr_score">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="3">
+                           <spacer name="horizontalSpacer_29">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>726</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item row="1" column="0" colspan="4">
+                           <widget class="QFrame" name="frame_3">
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>800</height>
+                             </size>
+                            </property>
+                            <property name="frameShape">
+                             <enum>QFrame::StyledPanel</enum>
+                            </property>
+                            <property name="frameShadow">
+                             <enum>QFrame::Raised</enum>
+                            </property>
+                            <layout class="QGridLayout" name="gridLayout_131">
+                             <item row="0" column="0">
+                              <widget class="QSplitter" name="splitter_3">
+                               <property name="orientation">
+                                <enum>Qt::Vertical</enum>
+                               </property>
+                               <widget class="QTableView" name="LCA_contribution_Table">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>0</width>
+                                  <height>200</height>
+                                 </size>
+                                </property>
+                               </widget>
+                               <widget class="QWidget" name="LCA_Contr_fig" native="true">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>0</width>
+                                  <height>200</height>
+                                 </size>
+                                </property>
+                               </widget>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
                        </widget>
                       </item>
                      </layout>
@@ -6535,8 +6591,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1199</width>
-                 <height>1099</height>
+                 <width>1013</width>
+                 <height>860</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_109">
@@ -7119,8 +7175,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>567</width>
-                        <height>456</height>
+                        <width>474</width>
+                        <height>239</height>
                        </rect>
                       </property>
                       <attribute name="label">
@@ -7195,8 +7251,8 @@ p, li { white-space: pre-wrap; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>547</width>
-                            <height>379</height>
+                            <width>454</width>
+                            <height>162</height>
                            </rect>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -7398,8 +7454,8 @@ p, li { white-space: pre-wrap; }
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1199</width>
-                 <height>1099</height>
+                 <width>1133</width>
+                 <height>887</height>
                 </rect>
                </property>
                <property name="palette">
@@ -8449,7 +8505,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1263</width>
+     <width>1371</width>
      <height>30</height>
     </rect>
    </property>

@@ -5,7 +5,10 @@ Created on Thu Jan  9 17:44:09 2020
 @author: msardar2
 """
 from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineDownloadItem, QWebEngineProfile
+
 from .Table_from_pandas import *
+from . import MC_ui
 import os
 import io
 import csv
@@ -1268,6 +1271,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #Create Dialog
             Dialog = QtWidgets.QDialog()
             Dialog.setObjectName("showMethod_Dialog")
+            Dialog.setWindowIcon(self.icon)
             gridLayout = QtWidgets.QGridLayout(Dialog)
             gridLayout.setObjectName("showMethod_gridLayout")
             frame = QtWidgets.QFrame(Dialog)
@@ -1341,6 +1345,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.LCA_List_of_functional_units=[]
             self.LCA_acts_DF = pd.DataFrame(columns=['Key','Name','Amount','Unit'])
             self.LCA_ActTable.model()._data = self.LCA_acts_DF
+            self.LCA_ActTable.model().layoutChanged.emit()
             self.LCA_ActTable.resizeColumnsToContents()
         
         #Impacts
@@ -1349,6 +1354,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.LCA_List_of_Impacts=[]
             self.LCA_impacts_DF = pd.DataFrame(columns=['Imapct Category','Unit'])
             self.LCA_Impact_table.model()._data = self.LCA_impacts_DF
+            self.LCA_Impact_table.model().layoutChanged.emit()
             self.LCA_Impact_table.resizeColumnsToContents()
 
 # =============================================================================
@@ -1365,13 +1371,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.LCA_subTab.setCurrentWidget(self.LCA_Results_tab)
             
             #Figure initialization
-            self.fig = Figure(figsize=(4, 5), dpi=65, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
-            self.canvas = FigureCanvas(self.fig)
-            self.toolbar = NavigationToolbar(self.canvas, self)
+            self.fig_LCA = Figure(figsize=(4, 5), dpi=65, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+            self.canvas_LCA = FigureCanvas(self.fig_LCA)
+            toolbar = NavigationToolbar(self.canvas_LCA, self)
             lay = QtWidgets.QVBoxLayout(self.LCA_Results_fig)
-            lay.addWidget(self.toolbar)
-            lay.addWidget(self.canvas)
-            self.ax = self.fig.add_subplot(111)
+            lay.addWidget(toolbar)
+            lay.addWidget(self.canvas_LCA)
+            self.ax_LCA = self.fig_LCA.add_subplot(111)
             
             #Connect figure input
             self.LCA_Results_ImpactFig.currentIndexChanged.connect(self.LCA_Results_ImpactFig_func)
@@ -1396,19 +1402,20 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if impact_index >= 0:
             names = [str(x) for x in list(self.MultiLca.all.keys())]
             values =  list((self.MultiLca.results[:,impact_index]))
-            self.ax.clear()
-            self.ax.barh(names,values,height=0.3)
+            self.ax_LCA.clear()
+            self.ax_LCA.barh(names,values,height=0.3)
             
             #set lables
-            self.ax.set_title(str(self.LCA_List_of_Impacts[impact_index]), fontsize=20)
-            self.ax.set_xlabel(self.LCA_impacts_DF['Unit'][impact_index], fontsize=14)
-            self.ax.set_ylabel('Scenarios', fontsize=14)
-            self.ax.tick_params(axis='both', which='major', labelsize=14)
-            self.ax.tick_params(axis='both', which='minor', labelsize=10)
+            self.ax_LCA.set_title(str(self.LCA_List_of_Impacts[impact_index]), fontsize=20)
+            self.ax_LCA.set_xlabel(self.LCA_impacts_DF['Unit'][impact_index], fontsize=18)
+            self.ax_LCA.set_ylabel('Scenarios', fontsize=18)
+            self.ax_LCA.tick_params(axis='both', which='major', labelsize=18)
+            self.ax_LCA.tick_params(axis='both', which='minor', labelsize=16)
+            self.ax_LCA.legend(fontsize=18)
             
             #set margins
-            self.canvas.draw()
-            self.fig.set_tight_layout(True)
+            self.canvas_LCA.draw()
+            self.fig_LCA.set_tight_layout(True)
             
 # =============================================================================
 # =============================================================================
@@ -1441,6 +1448,16 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #QTableView
             self.LCA_contribution_Table.installEventFilter(self)
             self.LCA_contribution_Table.setSortingEnabled(True)
+            
+            #Figure initialization
+            self.fig_Contr_LCA = Figure(figsize=(4, 5), dpi=65, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+            self.canvas_Contr_LCA = FigureCanvas(self.fig_Contr_LCA)
+            toolbar = NavigationToolbar(self.canvas_Contr_LCA, self)
+            lay = QtWidgets.QVBoxLayout(self.LCA_Contr_fig)
+            lay.addWidget(toolbar)
+            lay.addWidget(self.canvas_Contr_LCA)
+            self.ax_Contr_LCA = self.fig_Contr_LCA.add_subplot(111)
+            
             
     
     @QtCore.Slot(str)
@@ -1529,17 +1546,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         index = [self.LCA_Contr_FU.currentText()]
         data = [[x for x in top_act_DF['Contribution'].values]]
         plot_DF = pd.DataFrame(data,columns=columns,index=index)
-        
-        #ploting the DataFrame
-        Contr_fig,sub_Contr_fig = plt.subplots(nrows=1,ncols=1)
-        sub_Contr_fig=plot_DF.plot(kind='bar',stacked='True', ax=sub_Contr_fig)
-        
-        #set lables
-        sub_Contr_fig.set_title('Contribution to '+str(self.LCA_Contr_lca.method), fontsize=16)
-        sub_Contr_fig.set_ylabel(self.LCA_Contr_unit.text(), fontsize=14)
-        sub_Contr_fig.tick_params(axis='both', which='major', labelsize=14,rotation='auto')
-        sub_Contr_fig.tick_params(axis='both', which='minor', labelsize=10,rotation='auto')
-        Contr_fig.set_tight_layout(True)
+        self.LCA_Contr_fig_func(plot_DF)
             
     # Contribution analysis , Report the top emissions in DF format
     @QtCore.Slot()
@@ -1599,18 +1606,25 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         index = [self.LCA_Contr_FU.currentText()]
         data = [[x for x in top_emission_DF['Contribution'].values]]
         plot_DF = pd.DataFrame(data,columns=columns,index=index)
+        self.LCA_Contr_fig_func(plot_DF)
         
-        #ploting the DataFrame
-        Contr_fig,sub_Contr_fig = plt.subplots(nrows=1,ncols=1)
-        sub_Contr_fig=plot_DF.plot(kind='bar',stacked='True', ax=sub_Contr_fig)
+
+    def LCA_Contr_fig_func(self,DF):
+        self.ax_Contr_LCA.clear()
+        
+        #ploting the DataFrame        
+        self.ax_Contr_LCA=DF.plot(kind='bar',stacked='True', ax=self.ax_Contr_LCA)
         
         #set lables
-        sub_Contr_fig.set_title('Contribution to '+str(self.LCA_Contr_lca.method), fontsize=16)
-        sub_Contr_fig.set_ylabel(self.LCA_Contr_unit.text(), fontsize=14)
-        sub_Contr_fig.tick_params(axis='both', which='major', labelsize=14,rotation='auto')
-        sub_Contr_fig.tick_params(axis='both', which='minor', labelsize=10,rotation='auto')
-        Contr_fig.set_tight_layout(True)
+        self.ax_Contr_LCA.set_title('Contribution to '+str(self.LCA_Contr_lca.method), fontsize=18)
+        self.ax_Contr_LCA.set_ylabel(self.LCA_Contr_unit.text(), fontsize=18)
+        self.ax_Contr_LCA.tick_params(axis='both', which='major', labelsize=18,rotation='auto')
+        self.ax_Contr_LCA.tick_params(axis='both', which='minor', labelsize=16,rotation='auto')
+        self.ax_Contr_LCA.legend(fontsize=18)
 
+        #set margins
+        self.canvas_Contr_LCA.draw()
+        self.fig_Contr_LCA.set_tight_layout(True)
 
 # =============================================================================
 # =============================================================================
@@ -1712,6 +1726,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_load_uncertain_func(self.MC_Model.currentText())
             self.MC_uncertain_filter.clicked.connect(self.MC_uncertain_filter_func)
             self.MC_uncertain_update.clicked.connect(self.MC_uncertain_update_func)
+            self.MC_unceratin_clear.clicked.connect(self.MC_uncertain_clear_func)
         
             CheckBoxes = ['CommonData','Parameters']+[x for x in self.demo.Treatment_processes.keys()]
             self.include_model_dict = dict(zip(CheckBoxes,[False for i in range(len(CheckBoxes))]))
@@ -1776,12 +1791,19 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.demo.CommonData.Update_input(self.MC_Uncertain_table.model()._data)
         self.msg_popup('Update input data','Input Data is successfully updated','Information')
         self.MC_load_uncertain_func(self.MC_Model.currentText())
+
+    @QtCore.Slot()
+    def MC_uncertain_clear_func(self):
+        self.MC_Uncertain_table.model()._data['uncertainty_type'] = 0
+        self.MC_Uncertain_table.model()._data[['loc','scale','shape','minimum','maximum']] = np.nan 
+        self.MC_Uncertain_table.model().layoutChanged.emit()
+        self.MC_Uncertain_table.resizeColumnsToContents()
         
     @QtCore.Slot()
     def MC_run_func(self):
         projects.set_current(self.demo.project_name)
         project = self.demo.project_name
-        FU = {(self.MC_FU_DB.currentText(),self.MC_FU_act.currentText()):1}
+        self.MC_FU = {(self.MC_FU_DB.currentText(),self.MC_FU_act.currentText()):1}
         method = self.MC_method_table_model._data['LCIA method'].values.tolist()
         process_models = list()
         process_model_names = list()
@@ -1830,11 +1852,11 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                   CommonData: {Yes_No}
                   
                 #################################             
-              """.format(FU=FU,method=method,Nthread=int(self.MC_N_Thread.text()),nruns=int(self.MC_N_runs.text()),
+              """.format(FU=self.MC_FU,method=method,Nthread=int(self.MC_N_Thread.text()),nruns=int(self.MC_N_runs.text()),
                           process_model_names=process_model_names,process_models=process_models,Yes_No = IsCommonData))
         
         Time_start = time()
-        Monte_carlo = Monte_Carlo(FU, method, project,process_models=process_models,process_model_names=process_model_names,common_data = CommonData,seed = seed)
+        Monte_carlo = Monte_Carlo(self.MC_FU, method, project,process_models=process_models,process_model_names=process_model_names,common_data = CommonData,seed = seed)
 
         Monte_carlo.run(int(self.MC_N_Thread.text()),int(self.MC_N_runs.text()))
         self.MC_results = Monte_carlo.result_to_DF()
@@ -1845,33 +1867,130 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.show_res_func()
         
     
+# =============================================================================
+#     @QtCore.Slot()
+#     def show_res_func(self):
+#         Dialog = QtWidgets.QDialog()
+#         Dialog.setObjectName("showRes_Dialog")
+#         gridLayout = QtWidgets.QGridLayout(Dialog)
+#         gridLayout.setObjectName("showRes_gridLayout")
+#         frame = QtWidgets.QFrame(Dialog)
+#         frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+#         frame.setFrameShadow(QtWidgets.QFrame.Raised)
+#         frame.setObjectName("showRes_frame")
+#         gridLayout_2 = QtWidgets.QGridLayout(frame)
+#         
+#         gridLayout_2.setObjectName("showRes_gridLayout_2")
+#         MC_res_table = QtWidgets.QTableView(frame)
+#         MC_res_table.setObjectName("Show_res_tableView")
+#         gridLayout_2.addWidget(MC_res_table, 0, 0, 1, 1)
+#         
+#         MC_res_table_model = Table_from_pandas(self.MC_results)
+#         MC_res_table.setModel(MC_res_table_model)
+#         MC_res_table.resizeColumnsToContents()
+#         MC_res_table.installEventFilter(self)
+#         MC_res_table.setSortingEnabled(True)
+#     
+#         gridLayout.addWidget(frame, 0, 0, 1, 1)
+#         Dialog.show()
+#         Dialog.exec_()
+# =============================================================================
+
+
+
+
+
     @QtCore.Slot()
     def show_res_func(self):
         Dialog = QtWidgets.QDialog()
-        Dialog.setObjectName("showRes_Dialog")
-        gridLayout = QtWidgets.QGridLayout(Dialog)
-        gridLayout.setObjectName("showRes_gridLayout")
-        frame = QtWidgets.QFrame(Dialog)
-        frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        frame.setObjectName("showRes_frame")
-        gridLayout_2 = QtWidgets.QGridLayout(frame)
+        self.MC_Widget = MC_ui.Ui_MC_Results()
+        self.MC_Widget.setupUi(Dialog)
         
-        gridLayout_2.setObjectName("showRes_gridLayout_2")
-        MC_res_table = QtWidgets.QTableView(frame)
-        MC_res_table.setObjectName("Show_res_tableView")
-        gridLayout_2.addWidget(MC_res_table, 0, 0, 1, 1)
-        
+        ### Data Tab
         MC_res_table_model = Table_from_pandas(self.MC_results)
-        MC_res_table.setModel(MC_res_table_model)
-        MC_res_table.resizeColumnsToContents()
-        MC_res_table.installEventFilter(self)
-        MC_res_table.setSortingEnabled(True)
-    
-        gridLayout.addWidget(frame, 0, 0, 1, 1)
+        self.MC_Widget.MC_Res_Table.setModel(MC_res_table_model)
+        self.MC_Widget.MC_Res_Table.resizeColumnsToContents()
+        self.MC_Widget.MC_Res_Table.installEventFilter(self)
+        self.MC_Widget.MC_Res_Table.setSortingEnabled(True)
+        
+        ### Plot tab
+        #Figure initialization _ plot
+        self.fig_plot_mc = Figure(figsize=(4, 5), dpi=65, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+        self.canvas_plot_mc = FigureCanvas(self.fig_plot_mc)
+        toolbar = NavigationToolbar(self.canvas_plot_mc, self)
+        lay = QtWidgets.QVBoxLayout(self.MC_Widget.plot)
+        lay.addWidget(toolbar)
+        lay.addWidget(self.canvas_plot_mc)
+        #self.ax_plot_mc = self.fig_plot_mc.add_subplot(111)
+        
+        #Figure initialization _ plot dist
+        self.fig_plot_dist_mc = Figure(figsize=(4, 5), dpi=65, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+        self.canvas_plot_dist_mc = FigureCanvas(self.fig_plot_dist_mc)
+        toolbar2 = NavigationToolbar(self.canvas_plot_dist_mc, self)
+        lay2 = QtWidgets.QVBoxLayout(self.MC_Widget.plot_dist)
+        lay2.addWidget(toolbar2)
+        lay2.addWidget(self.canvas_plot_dist_mc)
+        #self.ax_plot_dist_mc = self.fig_plot_dist_mc.add_subplot(111)
+        
+        self.MC_Widget.y_axis.addItems([str(x) for x in self.MC_results.columns])
+        self.MC_Widget.x_axis.addItems([str(x) for x in self.MC_results.columns])
+        self.MC_Widget.scatter.setChecked(True)
+        self.MC_Widget.param.addItems([str(x) for x in self.MC_results.columns])
+        self.MC_Widget.box.setChecked(True)
+        
+        
+        ### Connect the push bottoms
+        self.MC_Widget.Update_plot.clicked.connect(self.mc_plot_func)
+        self.MC_Widget.Update_dist_fig.clicked.connect(self.mc_plot_dist_func)
+        
         Dialog.show()
         Dialog.exec_()
         
+    @QtCore.Slot()
+    def mc_plot_func(self):
+        self.fig_plot_mc.clear()
+        self.ax_plot_mc = self.fig_plot_mc.add_subplot(111)
+    
+        #ploting the DataFrame        
+        self.ax_plot_mc=self.MC_results.plot(kind='scatter' if self.MC_Widget.scatter.isChecked() else 'hexbin',
+                                        x=self.MC_results.columns[self.MC_Widget.x_axis.currentIndex()],
+                                        y=self.MC_results.columns[self.MC_Widget.y_axis.currentIndex()],
+                                        ax=self.ax_plot_mc)
+        #set lables
+        self.ax_plot_mc.set_title(str(list(self.MC_FU.keys())[0]), fontsize=18)
+        self.ax_plot_mc.set_ylabel(self.MC_Widget.y_axis.currentText(), fontsize=18)
+        self.ax_plot_mc.set_xlabel(self.MC_Widget.x_axis.currentText(), fontsize=18)
+        self.ax_plot_mc.tick_params(axis='both', which='major', labelsize=18,rotation='auto')
+        self.ax_plot_mc.tick_params(axis='both', which='minor', labelsize=16,rotation='auto')
+
+        #set margins
+        self.canvas_plot_mc.draw()
+        self.fig_plot_mc.set_tight_layout(True)
+            
+    @QtCore.Slot()    
+    def mc_plot_dist_func(self):
+        self.fig_plot_dist_mc.clear()
+        self.ax_plot_dist_mc = self.fig_plot_dist_mc.add_subplot(111)
+        
+        if self.MC_Widget.hist.isChecked():
+            kind = 'hist'
+        elif self.MC_Widget.box.isChecked():
+            kind = 'box'
+        else:
+            kind = 'density'
+
+        #ploting the DataFrame        
+        self.ax_plot_dist_mc=self.MC_results[self.MC_results.columns[self.MC_Widget.param.currentIndex()]].plot(kind=kind,
+                                        ax=self.ax_plot_dist_mc)
+        #set lables
+        self.ax_plot_dist_mc.set_title(str(list(self.MC_FU.keys())[0]), fontsize=18)
+        plt.rcParams["font.size"] = "18"
+        self.ax_plot_dist_mc.tick_params(axis='both', which='major', labelsize=18,rotation='auto')
+        self.ax_plot_dist_mc.tick_params(axis='both', which='minor', labelsize=16,rotation='auto')
+
+        #set margins
+        self.canvas_plot_dist_mc.draw()
+        self.fig_plot_dist_mc.set_tight_layout(True)
         
     @QtCore.Slot()  # select file and read the name of it. Import the name to the LineEdit.
     def MC_save_file(self):
@@ -1965,6 +2084,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             #Remove Constraints
             self.Opt_ClearConstr.clicked.connect(self.Opt_ClearConstr_func)
+            
+            # connect the signal for download file
+            QWebEngineProfile.defaultProfile().downloadRequested.connect(self.on_downloadRequested)
      
         
     @QtCore.Slot()
@@ -2043,7 +2165,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         print(results)
         Time_finish = time()
         Total_time = round(Time_finish - Time_start)
-        opt.plot_sankey()
         
         print("Total time for optimization: {} seconds".format(Total_time))
         
@@ -2059,9 +2180,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             Opt_Param_table_model = Table_from_pandas_editable(param_data)
             self.Opt_Param_table.setModel(Opt_Param_table_model)
             self.Opt_Param_table.resizeColumnsToContents()
+            
+            opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
+            self.html_figur = QWebEngineView()
+            self.html_figur.setUrl(QtCore.QUrl.fromLocalFile(os.getcwd()+'\\Optimized_sankey.html'))
+            self.html_figur.show()
         else:
             self.msg_popup('Optimization Result',results.message,'Warning')
-            
+        
     @QtCore.Slot()
     def Opt_update_network_parameters(self):
         new_param = deepcopy(self.demo.parameters_list)
@@ -2170,8 +2296,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
     @QtCore.Slot()
     def save(self):
-        file = open(self.P_Name+'.pickle', 'wb')
-        pickle.dump(self.demo, file)
+        """
+        https://stackoverflow.com/questions/15416334/qfiledialog-how-to-set-default-filename-in-save-as-dialog
+        """
+        cwd = os.getcwd()
+        path, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Save File", cwd + "/" +self.P_Name , "*.pickle")
+        if path:
+            file = open(path, 'wb')
+            pickle.dump(self.demo, file)
         
     def msg_popup(self,Subject,Information,Type):
         msg = QtWidgets.QMessageBox()
@@ -2220,6 +2353,18 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             Method_ComboBox.addItems(['...']+list_methods)  
         return(Filter_Method_func_helper)
 
+
+    @QtCore.Slot()
+    def on_downloadRequested(self, download):
+        """
+        https://stackoverflow.com/questions/55963931/how-to-download-csv-file-with-qwebengineview-and-qurl
+        """
+        old_path = download.url().path()
+        path, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Save File", old_path, "*.png")
+        if path:
+            download.setPath(path)
+            download.accept()
 
 #%% Run
 # =============================================================================
