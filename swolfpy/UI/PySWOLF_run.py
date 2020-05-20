@@ -4,35 +4,44 @@ Created on Thu Jan  9 17:44:09 2020
 
 @author: msardar2
 """
+# Import UI
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineDownloadItem, QWebEngineProfile
-
 from .Table_from_pandas import *
 from . import MC_ui
+from . import PySWOLF_ui
+
+# Import Top level
 import os
 import io
 import csv
-from . import PySWOLF_ui
 import sys
+import ast
+import pickle
+import importlib  #to import moduls with string name
+
+# Import Brightway
 from brightway2 import *
 from bw2analyzer import ContributionAnalysis
-import importlib  #to import moduls with string name
+
+# Import General
 import pandas as pd
-from swolfpy_processmodels import Distance
-from ..Project import *
-from ..Optimization import *
-from ..Monte_Carlo import *
 import numpy as np
-import pickle
-from copy import deepcopy
-import ast
 from time import time
+from copy import deepcopy
+from pathlib import Path
+
+# Import matplotlin
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-from pathlib import Path
 
+# Import swolfpy
+from swolfpy_processmodels import Distance
+from ..Project import *
+from ..Optimization import *
+from ..Monte_Carlo import *
 
 
 class EmittingStream(QtCore.QObject):
