@@ -2,6 +2,13 @@
 History
 =======
 
+0.1.8 (2020-05-20)
+------------------
+
+* Add tab for Monte Carlo results analysis. Show Sankey for mass flows after optimization. Show SWM Network graph.
+
+
+
 0.1.6 (2020-04-11)
 ------------------
 

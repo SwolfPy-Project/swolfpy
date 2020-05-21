@@ -16,7 +16,7 @@ __all__ = [
     'swolfpy'
 ]
 
-__version__ = '0.1.7'
+__version__ = '0.1.8'
 
 
 from .Technosphere import Technosphere
