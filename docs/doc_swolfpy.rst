@@ -6,7 +6,7 @@ swolfpy
 Project
 =======
 
-.. autoclass:: swolfpy.Project.Project
+.. autoclass:: swolfpy.Project
    :members:
 
 

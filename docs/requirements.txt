@@ -1,6 +1,5 @@
 nbsphinx
 ipykernel
-swolfpy
 swolfpy_inputdata
 swolfpy_processmodels
 brightway2
