@@ -1,6 +1,7 @@
 nbsphinx
 ipykernel
-swolfpy_inputdata
-swolfpy_processmodels
 brightway2
 PySide2
+swolfpy_inputdata
+swolfpy_processmodels
+swolfpy
