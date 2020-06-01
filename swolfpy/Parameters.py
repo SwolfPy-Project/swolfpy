@@ -47,9 +47,9 @@ class Parameters():
     
     def SWM_network(self,view=True):
         """
-        To render the generated DOT source code, you also need to install `Graphviz <https://www.graphviz.org/download>`_ \n.
+        To render the generated DOT source code, you also need to install `Graphviz <https://www.graphviz.org/download>`_.
         
-        ..note:: Make sure that the directory containing the dot executable is on your systems’ path.
+        ..note:: Make sure that the directory containing the dot executable is on your systems path.
         
         """
         #Initialize SWM network
@@ -70,7 +70,7 @@ class Parameters():
             """)
         
     def add_edge(self,head,tail,name,value):
-        self.network.edge(head,tail,label=name + ' (fraction = {})'.format(value))
+        self.network.edge(head,tail,label=name + ' (frac:{})'.format(value))
             
     def default_parameters_list(self):
         default_parameters_list=[]
