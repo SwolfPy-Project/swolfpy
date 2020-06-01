@@ -2104,7 +2104,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Opt_Const3_Inequality.clear()
             self.Opt_Const3_Inequality.addItems(['<=','>='])
             
-            self.Opt_optimize.clicked.connect(self.Opt_minimize_func)
+            self.Opt_optimize.clicked.connect(self.Opt_type_func)
             
             self.Opt_update_param.clicked.connect(self.Opt_update_network_parameters)
             
@@ -2166,7 +2166,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Opt_Const_table.setModel(self.Opt_Const_table_model)
         self.Opt_Const_table.resizeColumnsToContents()
 
-
+    @QtCore.Slot()
+    def Opt_type_func(self):
+        if self.Multi_start_opt.isChecked():
+            self.Opt_mstart_minimize_func()
+        else:
+            self.Opt_minimize_func()
+            
+    
     @QtCore.Slot()
     def Opt_minimize_func(self):
         functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):1}
@@ -2216,6 +2223,60 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Opt_draw_sankey_func(opt)
         else:
             self.msg_popup('Optimization Result',results.message,'Warning')
+
+    @QtCore.Slot()
+    def Opt_mstart_minimize_func(self):
+        functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):1}
+        method = [ast.literal_eval( self.Opt_method.currentText())]
+        project_name = self.demo.project_name
+        Time_start = time()
+        print("""
+        Optimization setting:
+        
+        project_name = {}
+        
+        functional_unit = {}
+        
+        method = {}
+        
+        constraints = {}
+        
+        """.format(project_name,functional_unit,method,self.constraints))
+        
+        if len(self.constraints)>0:
+            constraints =self.constraints
+        else:
+            constraints = None
+        
+        
+        opt = Optimization(functional_unit, method, self.demo)
+        results = opt.multi_start_optimization(constraints=constraints, max_iter=30)
+        print(results)
+        Time_finish = time()
+        Total_time = round(Time_finish - Time_start)
+        
+        self.opt_all_results = opt.all_results
+        
+        print("Total time for optimization: {} seconds".format(Total_time))
+        
+        if results.success:
+            self.msg_popup('Optimization Result',results.message+'\n Total time: {} seconds'.format(Total_time),'Information')
+            obj = results.fun*10**opt.magnitude
+            self.Opt_score.setText(f_n(obj))
+            unit =Method(method[0]).metadata['unit'] 
+            self.Opt_unit.setText(unit)
+            
+            param_data=pd.DataFrame(opt.optimized_x)
+            param_data['Unit'] = 'fraction'
+            Opt_Param_table_model = Table_from_pandas_editable(param_data)
+            self.Opt_Param_table.setModel(Opt_Param_table_model)
+            self.Opt_Param_table.resizeColumnsToContents()
+            #Draw sankey
+            self.Opt_draw_sankey_func(opt)
+        else:
+            self.msg_popup('Optimization Result',results.message,'Warning')
+
+
         
     @QtCore.Slot()
     def Opt_update_network_parameters(self):

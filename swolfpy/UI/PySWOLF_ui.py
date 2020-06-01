@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'PySWOLF.ui',
 # licensing of 'PySWOLF.ui' applies.
 #
-# Created: Wed May 20 19:17:22 2020
+# Created: Thu May 28 13:40:27 2020
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -3815,6 +3815,10 @@ class Ui_MainWindow(object):
         self.Opt_optimize.setFont(font)
         self.Opt_optimize.setObjectName("Opt_optimize")
         self.horizontalLayout_12.addWidget(self.Opt_optimize)
+        self.Multi_start_opt = QtWidgets.QCheckBox(self.groupBox_21)
+        self.Multi_start_opt.setMinimumSize(QtCore.QSize(200, 0))
+        self.Multi_start_opt.setObjectName("Multi_start_opt")
+        self.horizontalLayout_12.addWidget(self.Multi_start_opt)
         self.label_9 = QtWidgets.QLabel(self.groupBox_21)
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_12.addWidget(self.label_9)
@@ -3887,7 +3891,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.PySWOLF.setCurrentIndex(5)
+        self.PySWOLF.setCurrentIndex(7)
         self.init_process_toolbox.setCurrentIndex(1)
         self.Define_SWM_1.setCurrentIndex(2)
         self.Collection.setCurrentIndex(-1)
@@ -4468,6 +4472,7 @@ class Ui_MainWindow(object):
         self.groupBox_22.setTitle(QtWidgets.QApplication.translate("MainWindow", "Table of Constraints", None, -1))
         self.groupBox_21.setTitle(QtWidgets.QApplication.translate("MainWindow", "Results", None, -1))
         self.Opt_optimize.setText(QtWidgets.QApplication.translate("MainWindow", "Minimize", None, -1))
+        self.Multi_start_opt.setText(QtWidgets.QApplication.translate("MainWindow", "Multi-start Opt", None, -1))
         self.label_9.setText(QtWidgets.QApplication.translate("MainWindow", "Results:", None, -1))
         self.Opt_ClearConstr.setText(QtWidgets.QApplication.translate("MainWindow", "Clear Constraints", None, -1))
         self.Opt_update_param.setText(QtWidgets.QApplication.translate("MainWindow", "Update project parameters", None, -1))
@@ -4476,4 +4481,4 @@ class Ui_MainWindow(object):
         self.actionExit.setText(QtWidgets.QApplication.translate("MainWindow", "Exit", None, -1))
         self.actionSave.setText(QtWidgets.QApplication.translate("MainWindow", "Save", None, -1))
 
-from . import  PyWOLF_Resource_rc
+from . import PyWOLF_Resource_rc
