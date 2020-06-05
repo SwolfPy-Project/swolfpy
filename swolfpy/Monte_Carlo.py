@@ -119,39 +119,8 @@ class Monte_Carlo(LCA_matrix):
             i = 0
             for process_name in process_model_names:
                 report_dict = process_models[i].report()
-        
-                for material,value in report_dict["Technosphere"].items():
-                    for key2, value2 in value.items():
-                        if not np.isnan(value2):
-                            if ((key2),(process_name, material)) in tech_matrix.keys():
-                                if tech_matrix[((key2),(process_name, material))] != value2:
-                                    tech_matrix[((key2),(process_name, material))] = value2 
-                            else:
-                                raise KeyError('Exchange {} is calculated but not exist in LCA technosphere'.format(((key2),(process_name, material))))
-                        else:
-                            raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'.format(((key2),(process_name, material))))
-                                
-                for material,value in report_dict["Waste"].items():
-                    for key2, value2 in value.items():
-                        key2 = (process_name + "_product", material + '_' + key2)
-                        if not np.isnan(value2):
-                            if ((key2),(process_name, material)) in tech_matrix.keys():
-                                if tech_matrix[((key2),(process_name, material))] != value2:
-                                    tech_matrix[((key2),(process_name, material))] = value2
-                            else:
-                                raise KeyError('Exchange {} is calculated but not exist in LCA technosphere'.format(((key2),(process_name, material))))
-                                
-                        else:
-                            raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'.format(((key2),(process_name, material))))
-                            
-                
-                for material,value in report_dict["Biosphere"].items():
-                    for key2, value2 in value.items():
-                        if not np.isnan(value2):
-                            if bio_matrix[((key2),(process_name, material))] != value2:
-                                bio_matrix[((key2),(process_name, material))] = value2
-                        else:
-                            raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'.format(((key2),(process_name, material))))              
+                LCA_matrix.update_techmatrix(process_name,report_dict,tech_matrix)
+                LCA_matrix.update_biomatrix(process_name,report_dict,bio_matrix)
                 i+=1
             
         if parameters:
