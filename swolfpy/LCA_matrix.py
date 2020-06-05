@@ -5,6 +5,7 @@ Created on Wed Apr 22 19:09:14 2020
 @author: msmsa
 """
 from brightway2 import LCA
+import numpy as np
 
 class LCA_matrix(LCA):
     """ 
@@ -45,3 +46,54 @@ class LCA_matrix(LCA):
             else:
                 self.bio_matrix[(str(self.biosphere_dict[i[2]]) + " - 1", self.activities_dict[i[3]])] = i[6]
                 #print((str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]]))
+
+    @staticmethod
+    def update_techmatrix(process_name,report_dict,tech_matrix):
+        for material,value in report_dict["Technosphere"].items():
+            for key2, value2 in value.items():
+                if not np.isnan(value2):
+                    if ((key2),(process_name, material)) in tech_matrix.keys():
+                        if tech_matrix[((key2),(process_name, material))] != value2:
+                            tech_matrix[((key2),(process_name, material))] = value2 
+                    else:
+                        raise KeyError('Exchange {} is calculated but not exist in LCA technosphere'.format(((key2),(process_name, material))))
+                else:
+                    raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'.format(((key2),(process_name, material))))
+                        
+        for material,value in report_dict["Waste"].items():
+            for key2, value2 in value.items():
+                key2 = (process_name + "_product", material + '_' + key2)
+                if not np.isnan(value2):
+                    if ((key2),(process_name, material)) in tech_matrix.keys():
+                        if tech_matrix[((key2),(process_name, material))] != value2:
+                            tech_matrix[((key2),(process_name, material))] = value2
+                    else:
+                        raise KeyError('Exchange {} is calculated but not exist in LCA technosphere'.format(((key2),(process_name, material))))
+                        
+                else:
+                    raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'.format(((key2),(process_name, material))))
+
+            ### Adding activity for transport between the collection and treatment processes
+            if 'LCI' in report_dict.keys():
+                for y in  report_dict["LCI"].keys():
+                    for m in report_dict["LCI"][y].keys():
+                        for n in report_dict["LCI"][y][m].keys():
+                            if not np.isnan(report_dict["LCI"][y][m][n]):
+                                if (n,(process_name+'_product',y+'_'+'to'+'_'+m)) in tech_matrix.keys():
+                                    if tech_matrix[(n,(process_name+'_product',y+'_'+'to'+'_'+m))] != report_dict["LCI"][y][m][n]:
+                                        tech_matrix[(n,(process_name+'_product',y+'_'+'to'+'_'+m))] = report_dict["LCI"][y][m][n]
+                                else:
+                                    raise KeyError('Exchange {} is calculated but not exist in LCA technosphere'.format((n,(process_name+'_product',y+'_'+'to'+'_'+m))))
+                            else:
+                                raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'.format((n,(process_name+'_product',y+'_'+'to'+'_'+m))))
+                    
+    @staticmethod   
+    def update_biomatrix(process_name,report_dict,bio_matrix):        
+        for material,value in report_dict["Biosphere"].items():
+            for key2, value2 in value.items():
+                if not np.isnan(value2):
+                    if bio_matrix[((key2),(process_name, material))] != value2:
+                        bio_matrix[((key2),(process_name, material))] = value2
+                else:
+                    raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'.format(((key2),(process_name, material)))) 
+
