@@ -34,11 +34,38 @@ class Optimization(LCA_matrix):
         and reculate the LCA score.
         """
         if self.oldx != list(x): # Calculations are done only when the function get new x.
-            param_exchanges=self.project.parameters.Param_exchanges(x)
-            for key, value in param_exchanges.items():
-                if key in self.tech_matrix:
-                    self.tech_matrix[key] = value    
-        
+            if self.oldx[0:self.N_param] != list(x)[0:self.N_param]:
+                param_exchanges=self.project.parameters.Param_exchanges(x[0:self.N_param])
+                for key, value in param_exchanges.items():
+                    if key in self.tech_matrix:
+                        self.tech_matrix[key] = value
+            
+            if len(self.col_model):
+                n=0
+                for model in self.col_model:
+                    index=self.N_param+11*n
+                    param = x[index:index+11]
+                    n+=1
+                    model.col_schm['RWC']['Contribution'] = param[0]
+                    model.col_schm['SSO_DryRes']['Contribution'] = param[1]
+                    model.col_schm['REC_WetRes']['Contribution'] = param[2]
+                    model.col_schm['MRDO']['Contribution'] = param[3]
+                    separate_col = {'SSR': param[4],
+                                    'DSR': param[5],
+                                    'MSR': param[6],
+                                    'MSRDO': param[7],
+                                    'SSYW': param[8],
+                                    'SSYWDO': param[9],
+                                    'LV': param[10]}
+                    model.col_schm['RWC']['separate_col'] = separate_col
+                    model.col_schm['SSO_DryRes']['separate_col'] = separate_col
+                    model.col_schm['REC_WetRes']['separate_col'] = separate_col
+                    model.col_schm['MRDO']['separate_col'] = separate_col
+                    model.calc()
+                    report_dict = model.report()
+                    process_name = model.name
+                    LCA_matrix.update_techmatrix(process_name,report_dict,self.tech_matrix)
+            
             tech = np.array(list(self.tech_matrix.values()), dtype=float)
             bio = np.array(list(self.bio_matrix.values()), dtype=float)
             
@@ -132,7 +159,16 @@ class Optimization(LCA_matrix):
             else:
                 l = lambda x: self.get_emission_amount(key, x) - limit
             return l
-            
+
+    
+    def _create_collection_constraints(self,cons,model,n):      
+        i = self.N_param+11*n
+        cons.append({'type':'eq', 'fun':(lambda x: (x[i]+x[i+1]+x[i+2]+x[i+3])-1)})
+        # Sep collection of Recyclables <= 1
+        cons.append({'type':'ineq', 'fun':(lambda x: 1-(x[i+4]+x[i+5]+x[i+6]+x[i+7]))})
+        # Sep collection of Organics <= 1
+        cons.append({'type':'ineq', 'fun':(lambda x: 1-(x[i+8]+x[i+9]))})
+           
     
     def _create_constraints(self):
         cons = list()
@@ -148,13 +184,19 @@ class Optimization(LCA_matrix):
         # Equal constraint (sum of the parameters in each group should be one)
         for vals in group.values():
             cons.append({'type':'eq', 'fun':self._create_equality(N_param_Ingroup=vals)})
-            
+        
+        if len(self.col_model):
+            n=0
+            for model in self.col_model:
+                self._create_collection_constraints(cons,model,n)
+                n+=1
+        
         if self.constraints:
             for key in self.constraints.keys():
                 cons.append({'type':'ineq', 'fun': self._create_inequality(key, self.constraints[key]['limit'], self.constraints[key]['KeyType'], self.constraints[key]['ConstType'])})
         return cons
     
-    def optimize_parameters(self, constraints=None):
+    def optimize_parameters(self, Col_model=[] , constraints=None):
         """
         Call the ``scipy.optimize.minimize()`` to minimize the LCA score. \n
         ``constraints`` is python dictionary. \n 
@@ -180,23 +222,42 @@ class Optimization(LCA_matrix):
         
         """
         self.constraints=constraints
+        self.col_model = Col_model
+        
         self.magnitude = len(str(int(abs(self.score)))) 
         
+        self.N_param = len(self.project.parameters_list)
+        
+        
         x0 = [i['amount'] for i in self.project.parameters_list] # initializing with the users initial solution
+        
+        
+        if len(self.col_model):
+            for model in self.col_model:
+                x0=x0+[1,0,0,0,0,0,0,0,0,0,0]
+        
         #x0 = [1 for _ in self.project.parameters_list] #changing initial x0 to outside feasible region
         
         self.oldx=[0 for i in range(len(x0))]
         
-        bnds = tuple([(0,1) for _ in self.project.parameters_list])
+        bnds = tuple([(0,1) for _ in x0])
         self.cons = self._create_constraints()
-        
+
         res = minimize(self._objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
+                       #options={'eps':0.01,'ftol':0.000001,'disp': True})
         if res.success:
             self.success=True
             self.optimized_x=list()
             res.x=res.x.round(decimals=3)
             for i in range(len(self.project.parameters_list)):
                 self.optimized_x.append({'name':self.project.parameters_list[i]['name'],'amount':res.x[i]})
+            
+            if len(self.col_model):
+                index=self.N_param
+                for model in self.col_model:
+                    for jj in ['RWC','SSO_DryRes','REC_WetRes','MRDO','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO','LV']:
+                        self.optimized_x.append({'name':(model.name,jj),'amount':res.x[index]})
+                        index+=1
             print(self.optimized_x)
             return res
         else:
@@ -204,7 +265,8 @@ class Optimization(LCA_matrix):
             print(res.message)
             return res
             
-    def multi_start_optimization(self, constraints=None, max_iter=30):
+    def multi_start_optimization(self,Col_model=[],constraints=None, max_iter=30):
+        self.col_model = Col_model
         self.constraints=constraints
         self.magnitude = len(str(int(abs(self.score)))) 
         
@@ -213,11 +275,14 @@ class Optimization(LCA_matrix):
         self.cons = self._create_constraints()
         bnds = tuple([(0,1) for _ in self.project.parameters_list])
         
+        self.all_results = []
+        
         for _ in range(max_iter):
             x0 = [random() for i in self.project.parameters_list] #initializing with the users initial solution
             self.oldx=[0 for i in range(len(x0))]
             res = minimize(self._objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
             
+            self.all_results.append(res)
             if res.success:
                 if res.fun < global_min:
                     res_global = res
@@ -242,7 +307,7 @@ class Optimization(LCA_matrix):
         
         self.project.update_parameters(self.optimized_x)
     
-    def plot_sankey(self,optimized_flow=True,show=True,fileName=None):
+    def plot_sankey(self,optimized_flow=True,show=True,fileName=None,params=None):
         """Plots a sankey diagram for the waste mass flows. \n
         Calls the ``plotly.graph_objs.Sankey`` to plot sankey. \n
         Calculates the mass flows by calling ``self.get_mass_flow()``. \n
@@ -255,12 +320,17 @@ class Optimization(LCA_matrix):
         :type show: bool
         
         """
-        if optimized_flow:
-            params = [i['amount'] for i in self.optimized_x]
+        if params:
+            params = params
         else:
-            params = [i['amount'] for i in self.project.parameters_list]
-            self.oldx=[0 for i in range(len(params))]
-            self.magnitude = len(str(int(abs(self.score)))) 
+            if optimized_flow:
+                params = [i['amount'] for i in self.optimized_x]
+            else:
+                params = [i['amount'] for i in self.project.parameters_list]
+                self.oldx=[0 for i in range(len(params))]
+                self.magnitude = len(str(int(abs(self.score)))) 
+                self.N_param = len(self.project.parameters_list)
+                self.col_model = []
    
         product = []
         index = 0

@@ -2119,6 +2119,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             # connect the signal for download file
             QWebEngineProfile.defaultProfile().downloadRequested.connect(self.on_downloadRequested)
+            
+            # Calc objective functions
+            self.Opt_CalObjFunc.clicked.connect(self.Opt_CalObjFunc_func)
      
         
     @QtCore.Slot()
@@ -2199,8 +2202,11 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             constraints = None
         
         
-        opt = Optimization(functional_unit, method, self.demo) 
-        results = opt.optimize_parameters(constraints=constraints)
+        self.opt = Optimization(functional_unit, method, self.demo) 
+        if self.Opt_1.isChecked():
+            results = self.opt.optimize_parameters(Col_model=[self.demo.Treatment_processes['SF_COL']['model']],constraints=constraints)
+        else:
+            results = self.opt.optimize_parameters(Col_model=[],constraints=constraints)
         print(results)
         Time_finish = time()
         Total_time = round(Time_finish - Time_start)
@@ -2209,20 +2215,34 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         if results.success:
             self.msg_popup('Optimization Result',results.message+'\n Total time: {} seconds'.format(Total_time),'Information')
-            obj = results.fun*10**opt.magnitude
+            obj = results.fun*10**self.opt.magnitude
             self.Opt_score.setText(f_n(obj))
             unit =Method(method[0]).metadata['unit'] 
             self.Opt_unit.setText(unit)
             
-            param_data=pd.DataFrame(opt.optimized_x)
+            param_data=pd.DataFrame(self.opt.optimized_x)
             param_data['Unit'] = 'fraction'
             Opt_Param_table_model = Table_from_pandas_editable(param_data)
             self.Opt_Param_table.setModel(Opt_Param_table_model)
             self.Opt_Param_table.resizeColumnsToContents()
             #Draw sankey
-            self.Opt_draw_sankey_func(opt)
+            self.Opt_draw_sankey_func()
         else:
             self.msg_popup('Optimization Result',results.message,'Warning')
+
+    @QtCore.Slot()
+    def Opt_CalObjFunc_func(self):
+        x = list(self.Opt_Param_table.model()._data['amount'].values)
+        obj=self.opt._objective_function(x)*10**self.opt.magnitude
+        self.Opt_CalObjFunc_Res.setText(f_n(obj))
+        print(' \n \n \n Constraints \n')
+        
+        for i,func in enumerate(self.opt.cons):
+            print('Constraint {} = {}'.format(i,f_n(func['fun'](x))))
+        
+        self.Opt_draw_sankey_func(params=x)
+        
+        
 
     @QtCore.Slot()
     def Opt_mstart_minimize_func(self):
@@ -2249,30 +2269,30 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             constraints = None
         
         
-        opt = Optimization(functional_unit, method, self.demo)
-        results = opt.multi_start_optimization(constraints=constraints, max_iter=30)
+        self.opt = Optimization(functional_unit, method, self.demo)
+        results = self.opt.multi_start_optimization(constraints=constraints, max_iter=30)
         print(results)
         Time_finish = time()
         Total_time = round(Time_finish - Time_start)
         
-        self.opt_all_results = opt.all_results
+        self.opt_all_results = self.opt.all_results
         
         print("Total time for optimization: {} seconds".format(Total_time))
         
         if results.success:
             self.msg_popup('Optimization Result',results.message+'\n Total time: {} seconds'.format(Total_time),'Information')
-            obj = results.fun*10**opt.magnitude
+            obj = results.fun*10**self.opt.magnitude
             self.Opt_score.setText(f_n(obj))
             unit =Method(method[0]).metadata['unit'] 
             self.Opt_unit.setText(unit)
             
-            param_data=pd.DataFrame(opt.optimized_x)
+            param_data=pd.DataFrame(self.opt.optimized_x)
             param_data['Unit'] = 'fraction'
             Opt_Param_table_model = Table_from_pandas_editable(param_data)
             self.Opt_Param_table.setModel(Opt_Param_table_model)
             self.Opt_Param_table.resizeColumnsToContents()
             #Draw sankey
-            self.Opt_draw_sankey_func(opt)
+            self.Opt_draw_sankey_func()
         else:
             self.msg_popup('Optimization Result',results.message,'Warning')
 
@@ -2300,9 +2320,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Opt_Const_table_update()
         self.constraints={}
         
-    def Opt_draw_sankey_func(self,opt):
+    def Opt_draw_sankey_func(self,params = None):
         ### plot mass sankey
-        opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
+        if params:
+            self.opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html',params=params)
+        else:        
+            if self.Opt_2.isChecked():
+                self.opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
+            else:
+                self.opt.plot_sankey(optimized_flow=False,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
         self.html_figur = QWebEngineView()
         self.html_figur.setWindowIcon(self.icon)
         self.html_figur.setWindowTitle('swolfpy: Sankey Diagram')
