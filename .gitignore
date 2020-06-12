@@ -103,3 +103,7 @@ ENV/
 
 # IDE settings
 .vscode/
+
+# html and pickle files
+*.html
+*.pickle
