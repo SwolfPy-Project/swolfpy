@@ -6,10 +6,12 @@ Created on Wed Apr 22 19:35:26 2020
 """
 from .LCA_matrix import LCA_matrix
 import numpy as np
+import pandas as pd
 from scipy.optimize import minimize
 from random import random
 import plotly.graph_objects as go
 from plotly.offline import plot
+from copy import deepcopy
 
 
 class Optimization(LCA_matrix):
@@ -25,8 +27,69 @@ class Optimization(LCA_matrix):
     """
     def __init__(self,functional_unit, method, project):
         super().__init__(functional_unit, method)
-        self.project = project
+        self.project = deepcopy(project)
+        self.N_param = len(self.project.parameters_list)
         
+        self.n_scheme_vars = 0
+        
+    @staticmethod
+    def config(project):
+        columns = []
+        schemes={}
+        for col in project.Collection_processes:
+            columns.append(col)
+            columns.append(col+' mode')
+            schemes[col] = project.Collection_processes[col]['model'].col_schm
+        
+        index = ['RWC','SSO_DryRes','REC_WetRes','MRDO',
+                'SSR','DSR','MSR','MSRDO',
+                'SSYW','SSYWDO']
+        
+        config_pd = pd.DataFrame(index=index, columns=columns)
+        config_pd[columns[1::2]] = 'Fix'
+            
+        for col,sch in schemes.items():
+            base = 'RWC'
+            for i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
+                config_pd[col][i]=sch[i]['Contribution']
+                config_pd[col+' mode'][i] = 'Optimize'
+                if sch[i]['Contribution'] > 0:
+                    base = i
+            for i in ['SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']:
+                config_pd[col][i]=sch[base]['separate_col'][i]
+        
+        return(config_pd)
+    
+    
+    def set_config(self,config):
+        self.config = config
+        self.scheme_vars_index = self.N_param
+        self.scheme_vars_dict = {}
+        self.x0_col = []
+        
+        for c in self.config.columns[1::2]:
+            for i in self.config.index:
+                if self.config[c][i] == 'Optimize':
+                    self.scheme_vars_dict[self.scheme_vars_index] = (c.split(' mode')[0],i)
+                    self.x0_col.append(self.config[c.split(' mode')[0]][i])
+                    self.scheme_vars_index+=1
+                    self.n_scheme_vars +=1
+        print("\n\n collection scheme vars dict: \n",self.scheme_vars_dict)
+    
+    
+    def update_col_scheme(self,x):
+        if self.n_scheme_vars:
+            for k in self.scheme_vars_dict:
+                process=self.scheme_vars_dict[k][0]
+                i = self.scheme_vars_dict[k][1]
+                if i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
+                    self.project.Treatment_processes[process]['model'].col_schm[i]['Contribution'] = x[k]
+                else:
+                    for j in  ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
+                        self.project.Treatment_processes[process]['model'].col_schm[j]['separate_col'][i]= x[k]
+        else:
+            return()
+                    
     ### Objective function    
     def _objective_function(self, x):
         """
@@ -40,27 +103,10 @@ class Optimization(LCA_matrix):
                     if key in self.tech_matrix:
                         self.tech_matrix[key] = value
             
-            if len(self.col_model):
-                n=0
-                for model in self.col_model:
-                    index=self.N_param+11*n
-                    param = x[index:index+11]
-                    n+=1
-                    model.col_schm['RWC']['Contribution'] = param[0]
-                    model.col_schm['SSO_DryRes']['Contribution'] = param[1]
-                    model.col_schm['REC_WetRes']['Contribution'] = param[2]
-                    model.col_schm['MRDO']['Contribution'] = param[3]
-                    separate_col = {'SSR': param[4],
-                                    'DSR': param[5],
-                                    'MSR': param[6],
-                                    'MSRDO': param[7],
-                                    'SSYW': param[8],
-                                    'SSYWDO': param[9],
-                                    'LV': param[10]}
-                    model.col_schm['RWC']['separate_col'] = separate_col
-                    model.col_schm['SSO_DryRes']['separate_col'] = separate_col
-                    model.col_schm['REC_WetRes']['separate_col'] = separate_col
-                    model.col_schm['MRDO']['separate_col'] = separate_col
+            if self.collection:
+                self.update_col_scheme(x)
+                for col in self.project.Collection_processes:
+                    model=self.project.Treatment_processes[col]['model']
                     model.calc()
                     report_dict = model.report()
                     process_name = model.name
@@ -159,16 +205,55 @@ class Optimization(LCA_matrix):
             else:
                 l = lambda x: self.get_emission_amount(key, x) - limit
             return l
-
     
-    def _create_collection_constraints(self,cons,model,n):      
-        i = self.N_param+11*n
-        cons.append({'type':'eq', 'fun':(lambda x: (x[i]+x[i+1]+x[i+2]+x[i+3])-1)})
-        # Sep collection of Recyclables <= 1
-        cons.append({'type':'ineq', 'fun':(lambda x: 1-(x[i+4]+x[i+5]+x[i+6]+x[i+7]))})
-        # Sep collection of Organics <= 1
-        cons.append({'type':'ineq', 'fun':(lambda x: 1-(x[i+8]+x[i+9]))})
-           
+    def _create_collection_constraints(self,cons):      
+        const_dict = {}
+        if self.n_scheme_vars:
+            for k in self.scheme_vars_dict:
+                process=self.scheme_vars_dict[k][0]
+                if process not in const_dict:
+                    const_dict[process] = ([False,False,False],[],[],[])
+                i = self.scheme_vars_dict[k][1]
+                if i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
+                    const_dict[process][0][0]=True
+                    const_dict[process][1].append(k)
+                elif i in ['SSR','DSR','MSR','MSRDO']:
+                    const_dict[process][0][1]=True
+                    const_dict[process][2].append(k)
+                elif i in ['SSYW','SSYWDO']:
+                    const_dict[process][0][2]=True
+                    const_dict[process][3].append(k)
+        
+        print("\n\n collection constraints dict: \n",const_dict, '\n\n')
+        
+        for k in const_dict:
+            self._col_const_helper(const_dict,k,cons)
+    
+    def _col_const_helper(self,const_dict,k,cons):
+        def helper_sum(x,index):
+            return(sum([x[i] for i in index]))
+            
+        if const_dict[k][0][0]: # Constraint for main scheme
+                fix=0
+                for i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
+                    if self.config[k+' mode'][i]=='Fix':
+                        fix+=self.config[k][i]
+                cons.append({'type':'eq', 'fun':(lambda x: helper_sum(x,const_dict[k][1])+fix-1),'Name':'{} main const'.format(k)})
+            
+        if const_dict[k][0][1]: # Constraint for separate reclables collection
+            fix=0
+            for i in ['SSR','DSR','MSR','MSRDO']:
+                if self.config[k+' mode'][i]=='Fix':
+                    fix+=self.config[k][i]
+            cons.append({'type':'ineq', 'fun':(lambda x: 1-helper_sum(x,const_dict[k][2])+fix),'Name':'{} Rec const'.format(k)})
+                
+        if const_dict[k][0][2]: # Constraint for separate reclables collection
+            fix=0
+            for i in ['SSYW','SSYWDO']:
+                if self.config[k+' mode'][i]=='Fix':
+                    fix+=self.config[k][i]
+            cons.append({'type':'ineq', 'fun':(lambda x: 1-helper_sum(x,const_dict[k][3])+fix),'Name':'{} YW const'.format(k)})
+        
     
     def _create_constraints(self):
         cons = list()
@@ -185,18 +270,15 @@ class Optimization(LCA_matrix):
         for vals in group.values():
             cons.append({'type':'eq', 'fun':self._create_equality(N_param_Ingroup=vals)})
         
-        if len(self.col_model):
-            n=0
-            for model in self.col_model:
-                self._create_collection_constraints(cons,model,n)
-                n+=1
+        if self.collection and self.n_scheme_vars:
+            self._create_collection_constraints(cons)
         
         if self.constraints:
             for key in self.constraints.keys():
                 cons.append({'type':'ineq', 'fun': self._create_inequality(key, self.constraints[key]['limit'], self.constraints[key]['KeyType'], self.constraints[key]['ConstType'])})
         return cons
     
-    def optimize_parameters(self, Col_model=[] , constraints=None):
+    def optimize_parameters(self, constraints=None, waste_param=True, collection=False):
         """
         Call the ``scipy.optimize.minimize()`` to minimize the LCA score. \n
         ``constraints`` is python dictionary. \n 
@@ -221,20 +303,20 @@ class Optimization(LCA_matrix):
         >>> constraints[('biosphere3', 'eba59fd6-f37e-41dc-9ca3-c7ea22d602c7')] = {'limit':100,'KeyType':'Emission','ConstType':"<="}
         
         """
+        
         self.constraints=constraints
-        self.col_model = Col_model
+        self.waste_param = waste_param
+        self.collection = collection
+        
         
         self.magnitude = len(str(int(abs(self.score)))) 
         
-        self.N_param = len(self.project.parameters_list)
         
         
         x0 = [i['amount'] for i in self.project.parameters_list] # initializing with the users initial solution
         
-        
-        if len(self.col_model):
-            for model in self.col_model:
-                x0=x0+[1,0,0,0,0,0,0,0,0,0,0]
+        if self.collection and self.n_scheme_vars:
+            x0=x0+self.x0_col
         
         #x0 = [1 for _ in self.project.parameters_list] #changing initial x0 to outside feasible region
         
@@ -252,33 +334,39 @@ class Optimization(LCA_matrix):
             for i in range(len(self.project.parameters_list)):
                 self.optimized_x.append({'name':self.project.parameters_list[i]['name'],'amount':res.x[i]})
             
-            if len(self.col_model):
-                index=self.N_param
-                for model in self.col_model:
-                    for jj in ['RWC','SSO_DryRes','REC_WetRes','MRDO','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO','LV']:
-                        self.optimized_x.append({'name':(model.name,jj),'amount':res.x[index]})
-                        index+=1
+            if self.collection:
+                for k,v in self.scheme_vars_dict.items():
+                    self.optimized_x.append({'name':v,'amount':res.x[k]})
             print(self.optimized_x)
             return res
         else:
             self.success=False
             print(res.message)
             return res
-            
-    def multi_start_optimization(self,Col_model=[],constraints=None, max_iter=30):
-        self.col_model = Col_model
+    
+    def multi_start_optimization(self, constraints=None, waste_param=True, collection=False, max_iter=30):
+        
         self.constraints=constraints
+        self.waste_param = waste_param
+        self.collection = collection
+        
         self.magnitude = len(str(int(abs(self.score)))) 
         
-        global_min = 1E100
+        global_min = 1E100      
         
-        self.cons = self._create_constraints()
-        bnds = tuple([(0,1) for _ in self.project.parameters_list])
+        self.cons = self._create_constraints()      
         
         self.all_results = []
         
+        if self.collection:
+            n_dec_vars = len(self.project.parameters_list) + self.n_scheme_vars
+        else:
+            n_dec_vars = len(self.project.parameters_list)
+            
+        bnds = tuple([(0,1) for _ in range(n_dec_vars)])
+        
         for _ in range(max_iter):
-            x0 = [random() for i in self.project.parameters_list] #initializing with the users initial solution
+            x0 = [random() for i in range(n_dec_vars)] #initializing with the users initial solution
             self.oldx=[0 for i in range(len(x0))]
             res = minimize(self._objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
             
@@ -287,14 +375,29 @@ class Optimization(LCA_matrix):
                 if res.fun < global_min:
                     res_global = res
                     global_min = res.fun
-                    print(global_min)
+            
+            print(""" \n
+                  Iteration: {}
+                  Status: {} , Message: {}
+                  Objective function: {}
+                  Global min: {} \n
+                  """.format( _ ,
+                              res.success,res.message,
+                              res.fun*10**self.magnitude,
+                              global_min*10**self.magnitude))
         
         if res_global.success:
             self.success=True
             self.optimized_x=list()
             res_global.x=res_global.x.round(decimals=3)
+            
             for i in range(len(self.project.parameters_list)):
                 self.optimized_x.append({'name':self.project.parameters_list[i]['name'],'amount':res_global.x[i]})
+            
+            if self.collection:
+                for k,v in self.scheme_vars_dict.items():
+                    self.optimized_x.append({'name':v,'amount':res_global.x[k]}) 
+
             return res_global
         else:
             self.success=False
@@ -306,6 +409,7 @@ class Optimization(LCA_matrix):
         assert self.success, "Optimization has to be sucessful first"
         
         self.project.update_parameters(self.optimized_x)
+    
     
     def plot_sankey(self,optimized_flow=True,show=True,fileName=None,params=None):
         """Plots a sankey diagram for the waste mass flows. \n

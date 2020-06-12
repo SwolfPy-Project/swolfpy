@@ -9,6 +9,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineDownloadItem, QWebEngineProfile
 from .Table_from_pandas import *
 from . import MC_ui
+from . import adv_opt_ui
 from . import PySWOLF_ui
 
 # Import Top level
@@ -2104,7 +2105,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Opt_Const3_Inequality.clear()
             self.Opt_Const3_Inequality.addItems(['<=','>='])
             
-            self.Opt_optimize.clicked.connect(self.Opt_type_func)
+            self.Opt_optimize.clicked.connect(self.Opt_minimize_func)
             
             self.Opt_update_param.clicked.connect(self.Opt_update_network_parameters)
             
@@ -2122,6 +2123,11 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             # Calc objective functions
             self.Opt_CalObjFunc.clicked.connect(self.Opt_CalObjFunc_func)
+            
+            # advance optimization options
+            self.opt_adv_options_status = False
+            self.Opt_adv_func()
+            self.adv_opt_btm.clicked.connect(self.Opt_adv_func)
      
         
     @QtCore.Slot()
@@ -2142,7 +2148,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                                                                      'KeyType':'Process',
                                                                      'ConstType':self.Opt_Const1_Inequality.currentText()}
         
-    
     @QtCore.Slot()
     def Opt_add_const2(self):
         if self.Opt_Const2_process.currentText() != "...":
@@ -2170,12 +2175,24 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Opt_Const_table.resizeColumnsToContents()
 
     @QtCore.Slot()
-    def Opt_type_func(self):
-        if self.Multi_start_opt.isChecked():
-            self.Opt_mstart_minimize_func()
+    def Opt_adv_func(self):
+        # always show
+        if self.opt_adv_options_status:
+            self.adv_opt.show()
+            self.adv_opt.exec_()
         else:
-            self.Opt_minimize_func()
+            self.adv_opt = QtWidgets.QDialog()
+            self.opt_Widget = adv_opt_ui.Ui_adv_opt()
+            self.opt_Widget.setupUi(self.adv_opt)
             
+            conf=Optimization.config(self.demo)            
+            ### conf Table
+            conf_table_model = Table_from_pandas_editable(conf)
+            self.opt_Widget.Opt_Conf_table.setModel(conf_table_model)
+            self.opt_Widget.Opt_Conf_table.resizeColumnsToContents()
+            self.opt_Widget.Opt_Conf_table.installEventFilter(self)
+            self.opt_Widget.Opt_Conf_table.setSortingEnabled(True)
+            self.opt_adv_options_status = True
     
     @QtCore.Slot()
     def Opt_minimize_func(self):
@@ -2183,6 +2200,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         method = [ast.literal_eval( self.Opt_method.currentText())]
         project_name = self.demo.project_name
         Time_start = time()
+        
+        if self.opt_Widget.Multi_start_opt.isChecked(): 
+            max_iter=self.opt_Widget.Opt_trial.value()
+        else:
+            max_iter = 1
+        
         print("""
         Optimization setting:
         
@@ -2192,21 +2215,39 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         method = {}
         
+        optimize flows = {}
+        
+        optimize collection scheme = {}
+        
+        number of iterations = {}
+        
         constraints = {}
         
-        """.format(project_name,functional_unit,method,self.constraints))
+        """.format(project_name,functional_unit,method,
+                    self.opt_Widget.Opt_incld_flows.isChecked(),
+                    self.opt_Widget.Opt_incld_col.isChecked(),
+                    max_iter,
+                    self.constraints))
         
         if len(self.constraints)>0:
             constraints =self.constraints
         else:
             constraints = None
         
-        
         self.opt = Optimization(functional_unit, method, self.demo) 
-        if self.Opt_1.isChecked():
-            results = self.opt.optimize_parameters(Col_model=[self.demo.Treatment_processes['SF_COL']['model']],constraints=constraints)
+        if self.opt_Widget.Opt_incld_col.isChecked():
+            self.opt.set_config(self.opt_Widget.Opt_Conf_table.model()._data)
+        
+        if self.opt_Widget.Multi_start_opt.isChecked():
+            results = self.opt.multi_start_optimization(constraints=constraints,
+                                                        waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
+                                                        collection=self.opt_Widget.Opt_incld_col.isChecked(),
+                                                        max_iter=self.opt_Widget.Opt_trial.value())
         else:
-            results = self.opt.optimize_parameters(Col_model=[],constraints=constraints)
+            results = self.opt.optimize_parameters(constraints=constraints,
+                                               waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
+                                               collection=self.opt_Widget.Opt_incld_col.isChecked())
+
         print(results)
         Time_finish = time()
         Total_time = round(Time_finish - Time_start)
@@ -2238,65 +2279,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         print(' \n \n \n Constraints \n')
         
         for i,func in enumerate(self.opt.cons):
-            print('Constraint {} = {}'.format(i,f_n(func['fun'](x))))
+            if 'Name' in func:
+                print('Constraint {} , {} = {}'.format(i,func['Name'],f_n(func['fun'](x))))
+            else:
+                print('Constraint {} = {}'.format(i,f_n(func['fun'](x))))
         
         self.Opt_draw_sankey_func(params=x)
-        
-        
-
-    @QtCore.Slot()
-    def Opt_mstart_minimize_func(self):
-        functional_unit = {(self.Opt_FU_DB.currentText(),self.Opt_FU_act.currentText()):1}
-        method = [ast.literal_eval( self.Opt_method.currentText())]
-        project_name = self.demo.project_name
-        Time_start = time()
-        print("""
-        Optimization setting:
-        
-        project_name = {}
-        
-        functional_unit = {}
-        
-        method = {}
-        
-        constraints = {}
-        
-        """.format(project_name,functional_unit,method,self.constraints))
-        
-        if len(self.constraints)>0:
-            constraints =self.constraints
-        else:
-            constraints = None
-        
-        
-        self.opt = Optimization(functional_unit, method, self.demo)
-        results = self.opt.multi_start_optimization(constraints=constraints, max_iter=30)
-        print(results)
-        Time_finish = time()
-        Total_time = round(Time_finish - Time_start)
-        
-        self.opt_all_results = self.opt.all_results
-        
-        print("Total time for optimization: {} seconds".format(Total_time))
-        
-        if results.success:
-            self.msg_popup('Optimization Result',results.message+'\n Total time: {} seconds'.format(Total_time),'Information')
-            obj = results.fun*10**self.opt.magnitude
-            self.Opt_score.setText(f_n(obj))
-            unit =Method(method[0]).metadata['unit'] 
-            self.Opt_unit.setText(unit)
-            
-            param_data=pd.DataFrame(self.opt.optimized_x)
-            param_data['Unit'] = 'fraction'
-            Opt_Param_table_model = Table_from_pandas_editable(param_data)
-            self.Opt_Param_table.setModel(Opt_Param_table_model)
-            self.Opt_Param_table.resizeColumnsToContents()
-            #Draw sankey
-            self.Opt_draw_sankey_func()
-        else:
-            self.msg_popup('Optimization Result',results.message,'Warning')
-
-
         
     @QtCore.Slot()
     def Opt_update_network_parameters(self):
@@ -2325,17 +2313,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if params:
             self.opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html',params=params)
         else:        
-            if self.Opt_2.isChecked():
-                self.opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
-            else:
-                self.opt.plot_sankey(optimized_flow=False,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
+            self.opt.plot_sankey(optimized_flow=self.opt_Widget.Opt_incld_flows.isChecked(),
+                                 show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
         self.html_figur = QWebEngineView()
         self.html_figur.setWindowIcon(self.icon)
         self.html_figur.setWindowTitle('swolfpy: Sankey Diagram')
         self.html_figur.setUrl(QtCore.QUrl.fromLocalFile(os.getcwd()+'\\Optimized_sankey.html'))
         self.html_figur.show()
                     
-        
         
 #%% General Functions          
 # =============================================================================
