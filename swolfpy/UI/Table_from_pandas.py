@@ -86,9 +86,15 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[col]
     
+    def format_value(self,x):
+        try:
+            return float(x)
+        except Exception:
+            return str(x)
+    
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if index.isValid() and role == QtCore.Qt.EditRole:
-            self._data.iloc[index.row(), index.column()] = float(value)
+            self._data.iloc[index.row(), index.column()] = self.format_value(value)
             self.dataChanged.emit(index, index)
             return True
         return False
