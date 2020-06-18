@@ -111,7 +111,7 @@ class Project():
         self.process_model={}
         
         # Creating swolfpy parameter class
-        self.parameters = Parameters(self.Treatment_processes)
+        self.parameters = Parameters(self.Treatment_processes,self.CommonData)
    
 
     def _find_destination(self,product):

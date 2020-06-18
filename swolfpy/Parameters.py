@@ -10,7 +10,7 @@ def approx_eq(x, y):
     return abs(x - y) <= max(abs(x), abs(y)) * tol
 
 class Parameters():
-    def __init__ (self,processes):
+    def __init__ (self,processes,CommonData):
         self.param_uncertainty_dict = dict() 
         self.params_dict = dict()
         
@@ -20,9 +20,25 @@ class Parameters():
         
         self.processes = processes
         self.nodes = list(self.processes.keys())
+        
+        # Color & shape for plotting the SWM Network
+        self.edge_color =  {'RWC':'black','SSR':'blue','DSR':'blue','MSR':'blue','LV':'green4',
+                            'SSYW':'green4','SSO':'green4','DryRes':'black','REC':'blue',
+                            'WetRes':'black','MRDO':'black','SSYWDO':'green4','MSRDO':'blue',
+                            'Bottom_Ash':'gray','Fly_Ash':'gray','Separated_Organics':'green4',
+                            'Other_Residual':'black','RDF':'red'}
+        for i in CommonData.Reprocessing_Index:
+            self.edge_color[i] = 'blue'
+        self.node_shape={}
+        self.node_color={}
+        for p in self.processes:
+            if self.processes[p]['model'].Process_Type == 'Treatment' or self.processes[p]['model'].Process_Type =='Reprocessing':
+                self.node_shape[p] = 'rectangle'
+                self.node_color[p] = 'cyan3'
+            if self.processes[p]['model'].Process_Type == 'Collection':
+                self.node_shape[p] = 'oval'
+                self.node_color[p] = 'azure'
 
-
-    
     def add_parameter (self, product, process_model_from, process_model_to,value):
         """
         Define new parameter
@@ -56,7 +72,7 @@ class Parameters():
         self.network = graphviz.Digraph(name='SWM_network',filename='SWM_network.gv',format='png',engine='dot')
         self.network.graph_attr['rankdir']='LR'
         for x in self.nodes:
-            self.network.node(x)
+            self.network.node(x,shape=self.node_shape[x],fillcolor=self.node_color[x],style='filled')
         
         for y in self.param_uncertainty_dict.values():
             for x in y:
@@ -70,7 +86,7 @@ class Parameters():
             """)
         
     def add_edge(self,head,tail,name,value):
-        self.network.edge(head,tail,label=name + ' (frac:{})'.format(value))
+        self.network.edge(head,tail,label=name + ' ({})'.format(value),color=self.edge_color[name])
             
     def default_parameters_list(self):
         default_parameters_list=[]
