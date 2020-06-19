@@ -48,18 +48,18 @@ class Optimization(LCA_matrix):
                 'SSYW','SSYWDO']
         
         config_pd = pd.DataFrame(index=index, columns=columns)
-        config_pd[columns[1::2]] = 'Fix'
-            
-        for col,sch in schemes.items():
-            base = 'RWC'
-            for i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
-                config_pd[col][i]=sch[i]['Contribution']
-                config_pd[col+' mode'][i] = 'Optimize'
-                if sch[i]['Contribution'] > 0:
-                    base = i
-            for i in ['SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']:
-                config_pd[col][i]=sch[base]['separate_col'][i]
-        
+        if len(config_pd.columns)>0:
+            config_pd[columns[1::2]] = 'Fix'
+                
+            for col,sch in schemes.items():
+                base = 'RWC'
+                for i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
+                    config_pd[col][i]=sch[i]['Contribution']
+                    config_pd[col+' mode'][i] = 'Optimize'
+                    if sch[i]['Contribution'] > 0:
+                        base = i
+                for i in ['SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']:
+                    config_pd[col][i]=sch[base]['separate_col'][i]
         return(config_pd)
     
     

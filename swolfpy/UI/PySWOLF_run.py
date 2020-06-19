@@ -2189,14 +2189,19 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             self.opt_Widget.Opt_incld_flows.setChecked(True)
             
-            conf=Optimization.config(self.demo)            
+            conf=Optimization.config(self.demo)  
             ### conf Table
-            conf_table_model = Table_from_pandas_editable(conf)
-            self.opt_Widget.Opt_Conf_table.setModel(conf_table_model)
-            self.opt_Widget.Opt_Conf_table.resizeColumnsToContents()
-            self.opt_Widget.Opt_Conf_table.installEventFilter(self)
-            self.opt_Widget.Opt_Conf_table.setSortingEnabled(True)
+            if len(conf.columns) > 0:
+                conf_table_model = Table_from_pandas_editable(conf)
+                self.opt_Widget.Opt_Conf_table.setModel(conf_table_model)
+                self.opt_Widget.Opt_Conf_table.resizeColumnsToContents()
+                self.opt_Widget.Opt_Conf_table.installEventFilter(self)
+                self.opt_Widget.Opt_Conf_table.setSortingEnabled(True)
+            else:
+                self.opt_Widget.Opt_Conf_table.setDisabled(True)
+            
             self.opt_adv_options_status = True
+    
     
     @QtCore.Slot()
     def Opt_minimize_func(self):
