@@ -12,10 +12,12 @@ from swolfpy_processmodels import *
 
 
 
+
 technosphere = Technosphere('demo')
 common_data = CommonData()
 Treatment_processes = {}
-Treatment_processes['LF']={'input_type':['RWC','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF()}
+#Treatment_processes['LF']={'input_type':['RWC','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF()}
+Treatment_processes['LF']={'input_type':['RWC','SSO','DryRes','REC','WetRes','MRDO','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO','LV','Bottom_Ash','Fly_Ash','Other_Residual'],'model': LF()}
 Treatment_processes['WTE']={'input_type':['RWC','Other_Residual'],'model': WTE()}
 
 # Distance            
@@ -26,6 +28,8 @@ distance = Distance(Data=Data)
 # Collection_processes:
 Col_scheme=SF_Col.scheme()
 Col_scheme['RWC']['Contribution'] = 1
+#Col_scheme['RWC']['separate_col']['MSRDO'] = 1
+#Col_scheme['RWC']['separate_col']['SSYWDO'] = 1
 Collection_processes={}
 Collection_processes['SF_COl']={'input_type':[],'model': SF_Col('SF_COl',Col_scheme,Treatment_processes=Treatment_processes,Distance=distance)}      
 
@@ -38,6 +42,22 @@ demo.group_exchanges()
 
 demo.update_parameters(demo.parameters.default_parameters_list())
 
+
+
+AA=[{'name': 'frac_of_Bottom_Ash_from_WTE_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_Fly_Ash_from_WTE_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_RWC_from_SF_COl_to_LF', 'amount': 0.377},
+ {'name': 'frac_of_RWC_from_SF_COl_to_WTE', 'amount': 0.623},
+ {'name': 'frac_of_SSR_from_SF_COl_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_DSR_from_SF_COl_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_MSR_from_SF_COl_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_MSRDO_from_SF_COl_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_LV_from_SF_COl_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_SSYW_from_SF_COl_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_SSYWDO_from_SF_COl_to_LF', 'amount': 1.0},
+ {'name': 'frac_of_MRDO_from_SF_COl_to_LF', 'amount': 1.0}]
+
+demo.update_parameters(AA)
 
 
 # =============================================================================
@@ -108,10 +128,19 @@ res = MonteCarlo.result_to_DF()
 # =============================================================================
 # =============================================================================
 
+from brightway2 import *
+projects.set_current('demo')
 ### Optimizaiton
 db = Database("SF_COl")
-functional_unit = {db.get('Yard_Trimmings_Grass').key : 1}
+#functional_unit = {db.get('Yard_Trimmings_Grass').key : 1}
+functional_unit = {db.get('Aluminum_Cans').key : 1}
 method = [('IPCC 2007 (obsolete)', 'climate change', 'GWP 100a')]
+
+lca = LCA(functional_unit,('IPCC 2007 (obsolete)', 'climate change', 'GWP 100a'))
+lca.lci()
+lca.lcia()
+print('score = {}'.format(lca.score))
+
 
 from swolfpy import Optimization
 Opt = Optimization(functional_unit, method,demo)
@@ -120,6 +149,11 @@ Opt.plot_sankey(optimized_flow=False)
 
 Opt.optimize_parameters()
 Opt.plot_sankey(optimized_flow=True)
+
+
+Opt.optimize_parameters(Col_model=[Treatment_processes['SF_COl']['model']])
+Opt.plot_sankey(optimized_flow=True)
+
 
 Opt.multi_start_optimization()
 Opt.plot_sankey(optimized_flow=True)

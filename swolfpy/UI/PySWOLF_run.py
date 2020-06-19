@@ -1137,6 +1137,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Create_scenario.clicked.connect(self.create_new_scenario)
             self.init_CreateScenario_status = True
             self.Included_act_table.setDisabled(True)
+            self.act_in_process_table.setDisabled(True)
             
             #QTableView
             self.act_in_process_table.installEventFilter(self)
@@ -1173,6 +1174,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.process_waste['Amount'] = 0
             self.process_waste['Unit'] = units
         self.process_WF = Table_from_pandas_editable(self.process_waste)
+        self.act_in_process_table.setEnabled(True)
         self.act_in_process_table.setModel(self.process_WF)
         self.act_in_process_table.resizeColumnsToContents()
 
@@ -2184,6 +2186,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.adv_opt = QtWidgets.QDialog()
             self.opt_Widget = adv_opt_ui.Ui_adv_opt()
             self.opt_Widget.setupUi(self.adv_opt)
+            
+            self.opt_Widget.Opt_incld_flows.setChecked(True)
             
             conf=Optimization.config(self.demo)            
             ### conf Table

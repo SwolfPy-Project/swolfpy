@@ -72,7 +72,7 @@ class Parameters():
         self.network = graphviz.Digraph(name='SWM_network',filename='SWM_network.gv',format='png',engine='dot')
         self.network.graph_attr['rankdir']='LR'
         for x in self.nodes:
-            self.network.node(x,shape=self.node_shape[x],fillcolor=self.node_color[x],style='filled', width=1.2)
+            self.network.node(x,shape=self.node_shape[x],fillcolor=self.node_color[x],style='filled', width='1.2')
         
         for y in self.param_uncertainty_dict.values():
             for x in y:

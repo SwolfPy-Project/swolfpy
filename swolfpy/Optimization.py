@@ -27,7 +27,9 @@ class Optimization(LCA_matrix):
     """
     def __init__(self,functional_unit, method, project):
         super().__init__(functional_unit, method)
-        self.project = deepcopy(project)
+        self.project = project
+        self.Treatment_processes=deepcopy(self.project.Treatment_processes)
+        self.Collection_processes=deepcopy(self.project.Collection_processes)
         self.N_param = len(self.project.parameters_list)
         
         self.n_scheme_vars = 0
@@ -83,10 +85,10 @@ class Optimization(LCA_matrix):
                 process=self.scheme_vars_dict[k][0]
                 i = self.scheme_vars_dict[k][1]
                 if i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
-                    self.project.Treatment_processes[process]['model'].col_schm[i]['Contribution'] = x[k]
+                    self.Treatment_processes[process]['model'].col_schm[i]['Contribution'] = x[k]
                 else:
                     for j in  ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
-                        self.project.Treatment_processes[process]['model'].col_schm[j]['separate_col'][i]= x[k]
+                        self.Treatment_processes[process]['model'].col_schm[j]['separate_col'][i]= x[k]
         else:
             return()
                     
@@ -105,8 +107,8 @@ class Optimization(LCA_matrix):
             
             if self.collection:
                 self.update_col_scheme(x)
-                for col in self.project.Collection_processes:
-                    model=self.project.Treatment_processes[col]['model']
+                for col in self.Collection_processes:
+                    model=self.Treatment_processes[col]['model']
                     model.calc()
                     report_dict = model.report()
                     process_name = model.name
