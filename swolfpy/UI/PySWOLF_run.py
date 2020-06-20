@@ -222,6 +222,11 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if not self.ini_load_project_status:
             self.Br_Project_btm.clicked.connect(self.select_file(self.Project_address,"Pickle (*.pickle)"))
             self.Load_Project_btm.clicked.connect(self.load_project_info)
+            
+            self.load_update_param.clicked.connect(self.load_update_network_parameters)
+            self.Show_SWM_Network_Load.clicked.connect(self.show_SWM_Network_func)
+            self.Load_params_Load.clicked.connect(self.load_params_func_loadtab)
+                    
             self.ini_load_project_status = True
             
             #QTableView
@@ -261,7 +266,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.load_Param_table.setModel(self.load_param_data)
         self.load_Param_table.resizeColumnsToContents()
         
-        self.load_update_param.clicked.connect(self.load_update_network_parameters)
         self.Create_Scenario.setEnabled(True)
         self.init_CreateScenario()
         self.LCA_tab.setEnabled(True)
@@ -269,8 +273,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.MC_tab_init()
         self.Opt_tab_init()
         
-        
-                
     @QtCore.Slot()
     def load_update_network_parameters(self):
         new_param = deepcopy(self.demo.parameters_list)
@@ -280,7 +282,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
         self.demo.update_parameters(new_param)
-        
+
+    @QtCore.Slot()
+    def load_params_func_loadtab(self):
+        param_data=pd.DataFrame(self.demo.parameters_list)
+        param_data['Unit'] = 'fraction'
+        self.load_Param_table.model()._data = param_data
+        self.load_Param_table.model().layoutChanged.emit()
+        self.load_Param_table.resizeColumnsToContents()        
 
 #%% Import processes           
 # =============================================================================
