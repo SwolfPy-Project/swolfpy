@@ -26,12 +26,14 @@ from .Optimization import Optimization
 from .Monte_Carlo import Monte_Carlo
 from .UI.PySWOLF_run import MyQtApp
 from PySide2 import QtCore, QtGui, QtWidgets
+import sys
 
 class swolfpy():
     def __init__(self):
-        self.app = QtWidgets.QApplication()
+        self.app = QtWidgets.QApplication(sys.argv)
         self.qt_app  = MyQtApp()
-        self. qt_app.show()
+        self.qt_app.show()
         self.app.exec_()
+        
 
 

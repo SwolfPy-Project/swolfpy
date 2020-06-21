@@ -45,6 +45,8 @@ from ..Optimization import *
 from ..Monte_Carlo import *
 
 
+from .Workers import * 
+
 class EmittingStream(QtCore.QObject):
     textWritten = QtCore.Signal(str)
     def write(self, text):
@@ -234,6 +236,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.load_treatment_info.setSortingEnabled(True)
             self.load_Param_table.installEventFilter(self)
             self.load_Param_table.setSortingEnabled(True)
+            
+            self.load_PBar_updateParam.setMinimum(0)
+            self.load_PBar_updateParam.setMaximum(100)
+            self.load_PBar_updateParam.setValue(0)
         
     
     @QtCore.Slot()
@@ -281,7 +287,20 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             x['amount'] = self.load_param_data._data['amount'][i]
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
-        self.demo.update_parameters(new_param)
+
+        param_updater=Worker_UpdateParam(parent=self.update_param, project=self.demo, param=new_param)
+        param_updater.UpdatePBr_UpdateParam.connect(self.load_setPBr_UpdateParam)
+        param_updater.report_time.connect(self.load_report_time_UpdateParam)
+        param_updater.start()
+
+    @QtCore.Slot(int)
+    def load_report_time_UpdateParam(self, time):
+        #Notift the user that the project has created successfully
+        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(time),'Information')
+        
+    @QtCore.Slot(int)
+    def load_setPBr_UpdateParam(self, val):
+        self.load_PBar_updateParam.setValue(val)
 
     @QtCore.Slot()
     def load_params_func_loadtab(self):
@@ -990,7 +1009,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def init_write_project(self):
         #Import distance data
         self.Create_Distance.clicked.connect(self.Create_Distance_Table)
-        self.Distanc_unit.addItems(['km'])
         
         #Create system and write project
         self.write_project.clicked.connect(self.write_project_func)
@@ -1008,6 +1026,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.progressBar_write_project.setMinimum(0)
         self.progressBar_write_project.setMaximum(100)
         self.progressBar_write_project.setValue(0)
+        
+        self.progressBar_updateParam.setMinimum(0)
+        self.progressBar_updateParam.setMaximum(100)
+        self.progressBar_updateParam.setValue(0)
         
         #QTableView
         self.Distance_table.installEventFilter(self)
@@ -1033,7 +1055,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot()
     def write_project_func(self):
         self.P_Name=self.Project_Name.text()
-        self.progressBar_write_project.setValue(5)
         self.distance = Distance(Data=self.Dis_data._data)
         
         if len(self._Collection_processes)>0:
@@ -1050,7 +1071,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             
             print(self._Collection_processes)
 
-        Time_start = time()
         if self.IT_UserDefine_Tech.isChecked() or self.IT_UserDefine_LCI.isChecked() or self.IT_UserDefine_LCI_Ref.isChecked() or self.IT_UserDefine_EcoSpold2.isChecked():
             LCI_path = self.IT_FName_LCI.text() if self.IT_UserDefine_LCI.isChecked()  else None
             LCI_Reference_path = self.IT_FName_LCI_Ref.text() if self.IT_UserDefine_LCI_Ref.isChecked() else None
@@ -1059,18 +1079,20 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,Collection_processes=self._Collection_processes,Technosphere_obj=self.Technosphere)
         else:
             self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
+          
+        project_writer=Worker_WriteProject(parent=self.write_project,project=self.demo)
+        project_writer.UpdatePBr_WriteProject.connect(self.setPBr_WriteProject)    
+        project_writer.report_time.connect(self.report_time_WP)
+        project_writer.start()
 
-        self.demo.init_project()
-        self.demo.write_project()
-        self.progressBar_write_project.setValue(30)
-        self.demo.group_exchanges()
-        self.progressBar_write_project.setValue(100)
-        
-        Time_finish = time()
-        Total_time = round(Time_finish - Time_start)
-        
+    @QtCore.Slot(int)
+    def report_time_WP(self, time):
         #Notift the user that the project has created successfully
-        self.msg_popup('Project','Project is created successfully in {} seconds'.format(Total_time),'Information')
+        self.msg_popup('Project','Project is created successfully in {} seconds'.format(time),'Information')
+        
+    @QtCore.Slot(int)
+    def setPBr_WriteProject(self, val):
+        self.progressBar_write_project.setValue(val)
 
     @QtCore.Slot()
     def load_params_func(self):
@@ -1090,11 +1112,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
         
-        Time_start = time()
-        self.demo.update_parameters(new_param)
-        Total_time = round(time() - Time_start)
+        param_updater=Worker_UpdateParam(parent=self.update_param, project=self.demo, param=new_param)
+        param_updater.UpdatePBr_UpdateParam.connect(self.setPBr_UpdateParam)
+        param_updater.report_time.connect(self.report_time_UpdateParam)
+        param_updater.start()
+
+    @QtCore.Slot(int)
+    def report_time_UpdateParam(self, time):
         #Notift the user that the project has created successfully
-        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(Total_time),'Information')
+        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(time),'Information')
         
         self.PySWOLF.setCurrentWidget(self.Create_Scenario)
         self.Create_Scenario.setEnabled(True)
@@ -1104,6 +1130,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #init create scenario
         self.init_CreateScenario()
         self.Opt_tab_init()
+        
+    @QtCore.Slot(int)
+    def setPBr_UpdateParam(self, val):
+        self.progressBar_updateParam.setValue(val)
 
     @QtCore.Slot()
     def show_SWM_Network_func(self):
@@ -2492,16 +2522,4 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if path:
             download.setPath(path)
             download.accept()
-
-#%% Run
-# =============================================================================
-# =============================================================================
-    ### Run
-# =============================================================================
-# =============================================================================        
-if __name__ == '__main__':
-    app = QtWidgets.QApplication()
-    qt_app  = MyQtApp()
-    qt_app.show()
-    app.exec_()
 

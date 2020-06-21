@@ -83,7 +83,7 @@ class Project():
          {'name': 'frac_of_RWC_from_SF_COl_to_WTE', 'amount': 0.5}]
     >>> demo.update_parameters(demo.parameters.default_parameters_list())
     """
-    def __init__ (self,project_name,CommonData,Treatment_processes,Distance,Collection_processes=None,Technosphere_obj=None):        
+    def __init__ (self,project_name,CommonData,Treatment_processes,Distance,Collection_processes=None,Technosphere_obj=None,signal=None):        
         if Technosphere_obj:
             self.Technosphere = Technosphere_obj
             self.project_name = self.Technosphere.project_name
@@ -112,6 +112,8 @@ class Project():
         
         # Creating swolfpy parameter class
         self.parameters = Parameters(self.Treatment_processes,self.CommonData)
+        
+        self._progress = 0
    
 
     def _find_destination(self,product):
@@ -132,14 +134,25 @@ class Project():
         return(destination)
     
     
-    def init_project(self):
+    def init_project(self,signal=None):
         """
         Calls the Create_Technosphere_ method to initilize a project.\n 
         This function create an empty database for each process as a placeholder, so swolfpy 
         can browse these databases in the next step (writing project) and 
         create exchanges between them.        
         """
+        if signal:
+            signal.emit(self._progress)
+        
+        
         self.Technosphere.Create_Technosphere()
+        
+        
+        if signal:
+            self._progress+=15
+            signal.emit(self._progress)
+        
+        
         
         #Initializing the databases
         for DB_name in self.Treatment_processes:
@@ -147,12 +160,16 @@ class Project():
                 ProcessDB.init_DB(DB_name,self.CommonData.Index)
             elif self.Treatment_processes[DB_name]['model'].Process_Type == 'Reprocessing':
                 ProcessDB.init_DB(DB_name,self.CommonData.Reprocessing_Index)
-                
-        
+                        
         Database("waste").register()
         self.waste_BD = Database("waste")
-                    
-    def write_project(self):
+        
+        
+        if signal:
+            self._progress+=5
+            signal.emit(self._progress)
+            
+    def write_project(self,signal=None):
         """ Call the import_database_ for all the process models. 
         """
         self.parameters_dict={}
@@ -163,6 +180,12 @@ class Project():
             self.parameters_dict[j]=P
             self.act_include_param[j]=G
             self.parameters_list+=P
+        
+        
+        if signal:
+            self._progress+=10
+            signal.emit(self._progress)
+        
                             
     def _import_database(self,name):
         """ 
@@ -205,7 +228,7 @@ class Project():
         """
         return(self.parameters_list)
         
-    def group_exchanges(self):
+    def group_exchanges(self,signal):
         """
         Create a group for the `parameters` in each database and add the exchanges that include these `parameters` 
         to this group. As a results, model know to update the values in those exchanges when the `parameter` is updated
@@ -217,9 +240,14 @@ class Project():
             if len(self.act_include_param[j]) > 0:
                 for r in self.act_include_param[j]:
                     parameters.add_exchanges_to_group(j,r)
+            
+            
+            if signal:
+                self._progress+= 70/len(self.processes)
+                signal.emit(self._progress)
         		
                     
-    def update_parameters(self,new_param_data):
+    def update_parameters(self,new_param_data,signal=None):
         """
         Updates the `parameters` and their related exchanges based on the `new_param_data`.
         
@@ -231,6 +259,10 @@ class Project():
         
         """
         self.new_param_data=new_param_data
+        
+        progress = 0
+        if signal:
+            signal.emit(progress)
 		
         for j in self.new_param_data:
             for k in self.parameters_list:
@@ -246,6 +278,10 @@ class Project():
             for j in self.processes:
                 if len(self.act_include_param[j]) > 0:
                     ActivityParameter.recalculate_exchanges(j)
+                
+                progress += 100/len(self.processes)
+                if signal:
+                    signal.emit(progress)
 					
         else:
             for j in self.new_param_data:

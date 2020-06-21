@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1148</width>
-    <height>890</height>
+    <width>1462</width>
+    <height>1174</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -227,8 +227,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1067</width>
-                <height>768</height>
+                <width>1398</width>
+                <height>985</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_22">
@@ -251,8 +251,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>302</width>
-                    <height>136</height>
+                    <width>406</width>
+                    <height>160</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -379,8 +379,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1049</width>
-                    <height>386</height>
+                    <width>1380</width>
+                    <height>525</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -608,7 +608,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1102,7 +1102,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1596,7 +1596,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -2090,7 +2090,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -2584,7 +2584,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -3078,7 +3078,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -3572,7 +3572,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4066,7 +4066,7 @@ p, li { white-space: pre-wrap; }
                     <x>0</x>
                     <y>0</y>
                     <width>444</width>
-                    <height>394</height>
+                    <height>400</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4559,8 +4559,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>328</width>
-                    <height>90</height>
+                    <width>432</width>
+                    <height>96</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4640,8 +4640,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>328</width>
-                    <height>90</height>
+                    <width>432</width>
+                    <height>96</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4721,8 +4721,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>328</width>
-                    <height>90</height>
+                    <width>432</width>
+                    <height>96</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4823,8 +4823,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1104</width>
-             <height>783</height>
+             <width>1418</width>
+             <height>1045</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_105">
@@ -4853,8 +4853,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>187</width>
-                    <height>88</height>
+                    <width>250</width>
+                    <height>108</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4931,8 +4931,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>318</width>
-                    <height>127</height>
+                    <width>426</width>
+                    <height>148</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -5095,8 +5095,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1066</width>
-                    <height>661</height>
+                    <width>1380</width>
+                    <height>905</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -5131,45 +5131,6 @@ p, li { white-space: pre-wrap; }
                           </property>
                          </widget>
                         </item>
-                        <item>
-                         <spacer name="horizontalSpacer_45">
-                          <property name="orientation">
-                           <enum>Qt::Horizontal</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                           <size>
-                            <width>40</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                         </spacer>
-                        </item>
-                       </layout>
-                      </item>
-                      <item row="1" column="0">
-                       <widget class="QTableView" name="Distance_table">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>800</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0">
-                       <layout class="QHBoxLayout" name="horizontalLayout_9">
                         <item>
                          <widget class="QLabel" name="label_41">
                           <property name="minimumSize">
@@ -5216,6 +5177,45 @@ p, li { white-space: pre-wrap; }
                          </widget>
                         </item>
                         <item>
+                         <spacer name="horizontalSpacer_45">
+                          <property name="orientation">
+                           <enum>Qt::Horizontal</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>663</width>
+                            <height>20</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
+                       </layout>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QTableView" name="Distance_table">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>800</width>
+                          <height>200</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <layout class="QHBoxLayout" name="horizontalLayout_9">
+                        <item>
                          <widget class="QPushButton" name="write_project">
                           <property name="maximumSize">
                            <size>
@@ -5240,6 +5240,17 @@ p, li { white-space: pre-wrap; }
                          </widget>
                         </item>
                         <item>
+                         <widget class="QPushButton" name="Load_params">
+                          <property name="text">
+                           <string>Load Parameters</string>
+                          </property>
+                          <property name="icon">
+                           <iconset resource="PyWOLF_Resource.qrc">
+                            <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
                          <spacer name="horizontalSpacer_42">
                           <property name="orientation">
                            <enum>Qt::Horizontal</enum>
@@ -5255,34 +5266,6 @@ p, li { white-space: pre-wrap; }
                        </layout>
                       </item>
                       <item row="3" column="0">
-                       <layout class="QHBoxLayout" name="horizontalLayout_21">
-                        <item>
-                         <widget class="QPushButton" name="Load_params">
-                          <property name="text">
-                           <string>Load Parameters</string>
-                          </property>
-                          <property name="icon">
-                           <iconset resource="PyWOLF_Resource.qrc">
-                            <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <spacer name="horizontalSpacer_48">
-                          <property name="orientation">
-                           <enum>Qt::Horizontal</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                           <size>
-                            <width>40</width>
-                            <height>20</height>
-                           </size>
-                          </property>
-                         </spacer>
-                        </item>
-                       </layout>
-                      </item>
-                      <item row="4" column="0">
                        <widget class="QTableView" name="Param_table">
                         <property name="minimumSize">
                          <size>
@@ -5298,7 +5281,7 @@ p, li { white-space: pre-wrap; }
                         </property>
                        </widget>
                       </item>
-                      <item row="5" column="0">
+                      <item row="4" column="0">
                        <layout class="QHBoxLayout" name="horizontalLayout_8">
                         <item>
                          <widget class="QPushButton" name="update_param">
@@ -5318,9 +5301,20 @@ p, li { white-space: pre-wrap; }
                          </widget>
                         </item>
                         <item>
+                         <widget class="QProgressBar" name="progressBar_updateParam">
+                          <property name="value">
+                           <number>24</number>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
                          <widget class="QPushButton" name="Show_SWM_Network">
                           <property name="text">
                            <string>Show Network</string>
+                          </property>
+                          <property name="icon">
+                           <iconset resource="PyWOLF_Resource.qrc">
+                            <normaloff>:/ICONS/PySWOLF_ICONS/show.png</normaloff>:/ICONS/PySWOLF_ICONS/show.png</iconset>
                           </property>
                          </widget>
                         </item>
@@ -5370,8 +5364,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1087</width>
-             <height>823</height>
+             <width>1418</width>
+             <height>1045</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_106">
@@ -5540,9 +5534,20 @@ p, li { white-space: pre-wrap; }
                       </widget>
                      </item>
                      <item>
+                      <widget class="QProgressBar" name="load_PBar_updateParam">
+                       <property name="value">
+                        <number>24</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <widget class="QPushButton" name="Show_SWM_Network_Load">
                        <property name="text">
                         <string>Show Network</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/show.png</normaloff>:/ICONS/PySWOLF_ICONS/show.png</iconset>
                        </property>
                       </widget>
                      </item>
@@ -5595,8 +5600,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1104</width>
-             <height>783</height>
+             <width>1418</width>
+             <height>1045</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_52">
@@ -6398,8 +6403,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>807</width>
-                       <height>846</height>
+                       <width>490</width>
+                       <height>851</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -6637,8 +6642,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1104</width>
-             <height>783</height>
+             <width>1418</width>
+             <height>1045</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_109">
@@ -7244,8 +7249,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>520</width>
-                    <height>240</height>
+                    <width>677</width>
+                    <height>429</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -7320,8 +7325,8 @@ p, li { white-space: pre-wrap; }
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>500</width>
-                        <height>175</height>
+                        <width>657</width>
+                        <height>352</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -7335,8 +7340,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>374</width>
-                    <height>240</height>
+                    <width>237</width>
+                    <height>82</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -7532,9 +7537,9 @@ p, li { white-space: pre-wrap; }
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-286</y>
-             <width>1087</width>
-             <height>1069</height>
+             <y>0</y>
+             <width>1392</width>
+             <height>1123</height>
             </rect>
            </property>
            <property name="palette">
@@ -8625,8 +8630,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1148</width>
-     <height>22</height>
+     <width>1462</width>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
