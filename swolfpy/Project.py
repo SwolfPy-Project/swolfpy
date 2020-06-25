@@ -142,6 +142,7 @@ class Project():
         create exchanges between them.        
         """
         if signal:
+            self._progress+=5
             signal.emit(self._progress)
         
         
@@ -149,7 +150,7 @@ class Project():
         
         
         if signal:
-            self._progress+=15
+            self._progress+=10
             signal.emit(self._progress)
         
         
@@ -245,6 +246,8 @@ class Project():
             if signal:
                 self._progress+= 70/len(self.processes)
                 signal.emit(self._progress)
+        
+        signal.emit(100)
         		
                     
     def update_parameters(self,new_param_data,signal=None):

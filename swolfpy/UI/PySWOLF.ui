@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -4846,15 +4846,15 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="Collection_process">
                   <property name="geometry">
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>250</width>
-                    <height>108</height>
+                    <width>1380</width>
+                    <height>905</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4931,8 +4931,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>426</width>
-                    <height>148</height>
+                    <width>1380</width>
+                    <height>905</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -5235,7 +5235,7 @@ p, li { white-space: pre-wrap; }
                         <item>
                          <widget class="QProgressBar" name="progressBar_write_project">
                           <property name="value">
-                           <number>24</number>
+                           <number>0</number>
                           </property>
                          </widget>
                         </item>
@@ -5303,7 +5303,7 @@ p, li { white-space: pre-wrap; }
                         <item>
                          <widget class="QProgressBar" name="progressBar_updateParam">
                           <property name="value">
-                           <number>24</number>
+                           <number>0</number>
                           </property>
                          </widget>
                         </item>
@@ -5536,7 +5536,7 @@ p, li { white-space: pre-wrap; }
                      <item>
                       <widget class="QProgressBar" name="load_PBar_updateParam">
                        <property name="value">
-                        <number>24</number>
+                        <number>0</number>
                        </property>
                       </widget>
                      </item>
@@ -7083,7 +7083,7 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
+               <item row="0" column="3">
                 <widget class="QPushButton" name="MC_show">
                  <property name="font">
                   <font>
@@ -7101,7 +7101,23 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                </item>
-               <item row="0" column="2">
+               <item row="0" column="1">
+                <widget class="QProgressBar" name="MC_PBr">
+                 <property name="maximumSize">
+                  <size>
+                   <width>300</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
+                 <property name="textVisible">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="4">
                 <widget class="QPushButton" name="MC_save">
                  <property name="font">
                   <font>
@@ -7118,6 +7134,19 @@ p, li { white-space: pre-wrap; }
                    <normaloff>:/ICONS/PySWOLF_ICONS/save.png</normaloff>:/ICONS/PySWOLF_ICONS/save.png</iconset>
                  </property>
                 </widget>
+               </item>
+               <item row="0" column="2">
+                <spacer name="horizontalSpacer_46">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>
@@ -7537,7 +7566,7 @@ p, li { white-space: pre-wrap; }
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-78</y>
              <width>1392</width>
              <height>1123</height>
             </rect>
@@ -8555,6 +8584,28 @@ p, li { white-space: pre-wrap; }
                     </property>
                     <property name="text">
                      <string>Minimize</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QProgressBar" name="Opt_PBr">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>300</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="maximum">
+                     <number>100</number>
+                    </property>
+                    <property name="value">
+                     <number>0</number>
+                    </property>
+                    <property name="textVisible">
+                     <bool>false</bool>
                     </property>
                    </widget>
                   </item>

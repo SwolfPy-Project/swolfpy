@@ -1928,18 +1928,33 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
               """.format(FU=self.MC_FU,method=method,Nthread=int(self.MC_N_Thread.text()),nruns=int(self.MC_N_runs.text()),
                           process_model_names=process_model_names,process_models=process_models,Yes_No = IsCommonData))
         
-        Time_start = time()
+
         Monte_carlo = Monte_Carlo(self.MC_FU, method, project,process_models=process_models,process_model_names=process_model_names,common_data = CommonData,seed = seed)
 
-        Monte_carlo.run(int(self.MC_N_Thread.text()),int(self.MC_N_runs.text()))
-        self.MC_results = Monte_carlo.result_to_DF()
-        Time_finish = time()
-        Total_time = round(Time_finish - Time_start)
-        print("Total time for Monte Carlo simulation: {} seconds".format(Total_time))
-        self.msg_popup('Monte Carlo simulation Result','Simulation is done succesfully. \n Total time: {} seconds'.format(Total_time),'Information')
+        #Monte_carlo.run(int(self.MC_N_Thread.text()),int(self.MC_N_runs.text()))
+        
+        MC_Simulator = Worker_MC(parent=self.MC_run,
+                                 MC=Monte_carlo,
+                                 nproc=int(self.MC_N_Thread.text()), 
+                                 n=int(self.MC_N_runs.text()))
+        MC_Simulator.UpdatePBr_Opt.connect(self.setPBr_MC)
+        MC_Simulator.report.connect(self.report_MC_func)
+        #MC_Simulator.setPriority(QtCore.QThread.Priority.LowestPriority)
+        MC_Simulator.run()
+        
+         
+    @QtCore.Slot(dict)
+    def report_MC_func(self, report):
+        print("Total time for Monte Carlo simulation: {} seconds".format(report['time']))
+        self.msg_popup('Monte Carlo simulation Result','Simulation is done succesfully. \n Total time: {} seconds'.format(report['time']),'Information')
+        self.MC_results = report['results']
         self.show_res_func()
         
-    
+    @QtCore.Slot(dict)
+    def setPBr_MC(self, dict_):
+        self.MC_PBr.setMaximum(dict_['max'])
+        self.MC_PBr.setValue(dict_['val'])
+
 # =============================================================================
 #     @QtCore.Slot()
 #     def show_res_func(self):
@@ -2286,27 +2301,39 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.opt_Widget.Opt_incld_col.isChecked():
             self.opt.set_config(self.opt_Widget.Opt_Conf_table.model()._data)
         
-        if self.opt_Widget.Multi_start_opt.isChecked():
-            results = self.opt.multi_start_optimization(constraints=constraints,
-                                                        waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
-                                                        collection=self.opt_Widget.Opt_incld_col.isChecked(),
-                                                        max_iter=self.opt_Widget.Opt_trial.value())
-        else:
-            results = self.opt.optimize_parameters(constraints=constraints,
-                                               waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
-                                               collection=self.opt_Widget.Opt_incld_col.isChecked())
+        optimizer_thread = Worker_Optimize(parent=self.Opt_optimize,
+                                           opt=self.opt,
+                                           constraints=constraints,
+                                           waste_param=self.opt_Widget.Opt_incld_flows.isChecked(),
+                                           collection=self.opt_Widget.Opt_incld_col.isChecked(),
+                                           is_multi=self.opt_Widget.Multi_start_opt.isChecked(),
+                                           max_iter=self.opt_Widget.Opt_trial.value())
+        optimizer_thread.UpdatePBr_Opt.connect(self.setPBr_Opt)
+        optimizer_thread.report.connect(self.report_opt_func)
+        optimizer_thread.start()
+# =============================================================================
+#         if self.opt_Widget.Multi_start_opt.isChecked():
+#             results = self.opt.multi_start_optimization(constraints=constraints,
+#                                                         waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
+#                                                         collection=self.opt_Widget.Opt_incld_col.isChecked(),
+#                                                         max_iter=self.opt_Widget.Opt_trial.value())
+#         else:
+#             results = self.opt.optimize_parameters(constraints=constraints,
+#                                                waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
+#                                                collection=self.opt_Widget.Opt_incld_col.isChecked())
+# =============================================================================
 
-        print(results)
-        Time_finish = time()
-        Total_time = round(Time_finish - Time_start)
+    @QtCore.Slot(dict)
+    def report_opt_func(self, report):
+        print(report['results'])        
         
-        print("Total time for optimization: {} seconds".format(Total_time))
+        print("Total time for optimization: {} seconds".format(report['time']))
         
-        if results.success:
-            self.msg_popup('Optimization Result',results.message+'\n Total time: {} seconds'.format(Total_time),'Information')
-            obj = results.fun*10**self.opt.magnitude
+        if report['results'].success:
+            self.msg_popup('Optimization Result',report['results'].message+'\n Total time: {} seconds'.format(report['time']),'Information')
+            obj = report['results'].fun*10**self.opt.magnitude
             self.Opt_score.setText(f_n(obj))
-            unit =Method(method[0]).metadata['unit'] 
+            unit =Method(self.opt.method[0]).metadata['unit'] 
             self.Opt_unit.setText(unit)
             
             param_data=pd.DataFrame(self.opt.optimized_x)
@@ -2317,7 +2344,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #Draw sankey
             self.Opt_draw_sankey_func()
         else:
-            self.msg_popup('Optimization Result',results.message,'Warning')
+            self.msg_popup('Optimization Result',report['results'].message,'Warning')
+
+    @QtCore.Slot(dict)
+    def setPBr_Opt(self, dict_):
+        self.Opt_PBr.setMaximum(dict_['max'])
+        self.Opt_PBr.setValue(dict_['val'])
+        
 
     @QtCore.Slot()
     def Opt_CalObjFunc_func(self):
@@ -2343,11 +2376,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
        
-        Time_start = time()
-        self.demo.update_parameters(new_param)
-        Total_time = round(time() - Time_start)
+        param_updater=Worker_UpdateParam(parent=self.Opt_update_param, project=self.demo, param=new_param)
+        #param_updater.UpdatePBr_UpdateParam.connect(self.setPBr_UpdateParam)
+        param_updater.report_time.connect(self.report_time_UpPar)
+        param_updater.start()
+
+    @QtCore.Slot(int)
+    def report_time_UpPar(self, time):
         #Notift the user that the project has created successfully
-        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(Total_time),'Information')
+        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(time),'Information')
                
     @QtCore.Slot()
     def Opt_ClearConstr_func(self):
