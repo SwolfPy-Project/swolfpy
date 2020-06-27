@@ -374,8 +374,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Defualt AD input Type
         self.IT_SSO_3.setChecked(True)
-        self.IT_SSYW_3.setChecked(True)
-        self.IT_SSYWDO_3.setChecked(True)
         self.IT_Separated_Organics_3.setChecked(True)
         
         #Defualt Composting input Type
@@ -1674,26 +1672,32 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
         #Creating the DataFrame for top emissions
         columns=[]
+        legend=[]
         for x,y in top_emission_DF[['Emission','Compartment']].values:
             columns.append(str(x)+' '+str(y))
+            legend.append(str(x)+' \n'+str(y))
         index = [self.LCA_Contr_FU.currentText()]
         data = [[x for x in top_emission_DF['Contribution'].values]]
         plot_DF = pd.DataFrame(data,columns=columns,index=index)
-        self.LCA_Contr_fig_func(plot_DF)
+        self.LCA_Contr_fig_func(plot_DF,legend)
         
 
-    def LCA_Contr_fig_func(self,DF):
+    def LCA_Contr_fig_func(self,DF,legend=None):
         self.ax_Contr_LCA.clear()
         
         #ploting the DataFrame        
-        self.ax_Contr_LCA=DF.plot(kind='bar',stacked='True', ax=self.ax_Contr_LCA)
+        self.ax_Contr_LCA=DF.plot(kind='bar',stacked='True', ax=self.ax_Contr_LCA,width=1)
         
         #set lables
         self.ax_Contr_LCA.set_title('Contribution to '+str(self.LCA_Contr_lca.method), fontsize=18)
         self.ax_Contr_LCA.set_ylabel(self.LCA_Contr_unit.text(), fontsize=18)
         self.ax_Contr_LCA.tick_params(axis='both', which='major', labelsize=18,rotation='auto')
         self.ax_Contr_LCA.tick_params(axis='both', which='minor', labelsize=16,rotation='auto')
-        self.ax_Contr_LCA.legend(fontsize=18)
+        if legend:
+            self.ax_Contr_LCA.legend(legend,fontsize=18,bbox_to_anchor=(1, 0, .2, 1),loc=2)
+        else:
+            self.ax_Contr_LCA.legend(fontsize=18,bbox_to_anchor=(1, 0, .2, 1),loc=2)
+        self.ax_Contr_LCA.set_xlim(-0.7,0.7)
 
         #set margins
         self.canvas_Contr_LCA.draw()
