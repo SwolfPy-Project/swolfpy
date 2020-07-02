@@ -12,6 +12,7 @@ from random import random
 import plotly.graph_objects as go
 from plotly.offline import plot
 from copy import deepcopy
+import json
 
 
 class Optimization(LCA_matrix):
@@ -451,12 +452,36 @@ class Optimization(LCA_matrix):
         value = []
         label_link = []
         color = []
+        
+        # Color & shape for plotting the SWM Network
+        edge_color =  {'RWC':(160,82,45), #sienna	#A0522D
+                       'SSR':(0,0,255), #	blue	#0000FF
+                       'DSR':(0,0,255), #	blue	#0000FF
+                       'MSR':(0,0,255), #	blue	#0000FF
+                       'LV':(0,100,0), #dark green	#006400
+                       'SSYW':(0,100,0), #dark green	#006400
+                       'SSO':(0,255,127), #spring green	#00FF7F
+                       'DryRes':(160,82,45),#sienna	#A0522D
+                       'REC':(0,0,255), #	blue	#0000FF
+                       'WetRes':(160,82,45),#sienna	#A0522D
+                       'MRDO':(160,82,45),#sienna	#A0522D
+                       'SSYWDO':(0,100,0), #dark green	#006400
+                       'MSRDO':(0,0,255), #	blue	#0000FF
+                       'Bottom_Ash':(128,128,128), # Gray	#808080
+                       'Fly_Ash':(0,0,0), # black	#000000
+                       'Separated_Organics':(0,255,0), #lime	#00FF00	
+                       'Other_Residual':(160,82,45),#sienna	#A0522D
+                       'RDF':(255,0,0)} #Red	#FF0000
+        for i in self.project.CommonData.Reprocessing_Index:
+            edge_color[i] = (0,0,139) #dark blue	#00008B
+        
         for x in product:
             key,frac =  x
             source.append(label.index(key[0]))
             target.append(label.index(key[1]))
             label_link.append(key[2])
-            color.append('rgba({},{},{}, 0.8)'.format(*np.random.randint(256, size=3))) 
+            #color.append('rgba({},{},{}, 0.8)'.format(*np.random.randint(256, size=3)))
+            color.append('rgba({},{},{}, 0.8)'.format(*edge_color[key[2]]))
             mass=0
             for m in self.project.CommonData.Index:
                 mass += self.get_mass_flow((key[0]+'_product',m+'_'+key[2]),'WasteToProcess',params)
@@ -476,16 +501,16 @@ class Optimization(LCA_matrix):
                     thickness = 20,
                     line = dict(color = "black", width = 0.5),
                     label = label,
-                    color = "blue")
+                    color = 'rgba({},{},{}, 0.8)'.format(*(176,196,222)))  #light steel blue	#B0C4DE
         
         link = dict(source = source, 
                     target = target,
                     value = value,
                     label = label_link,
                     color = color)
-         
+                
         # The other good option for the valueformat is ".3f". Yes
-        layout=go.Layout(title_text="Sankey Diagram (Unit = Mg)", 
+        layout=go.Layout(title_text="Impact "+ str(self.method[0]) + ": \n {}".format(np.round(self._objective_function(params)*10**self.magnitude,4)), 
                          font_size=16,
                          hoverlabel=dict(font_size=14))
         data = go.Sankey( valueformat = ".3s",
@@ -494,3 +519,23 @@ class Optimization(LCA_matrix):
                          link = link)
         fig = go.Figure(data=[data],layout=layout)
         plot(fig,filename=fileName if fileName else 'plot.html',auto_open=show)
+        
+        # Store data for ploting the sankey
+        store_data = {}
+        store_data['title_text']="Impact "+ str(self.method[0]) + ": \n {}".format(np.round(self._objective_function(params)*10**self.magnitude,4))
+        store_data['font_size']=16
+        store_data['hoverlabel']=dict(font_size=14)
+        store_data['valueformat']=".3s"
+        store_data['valuesuffix']="Mg"
+        store_data['node']=node
+        store_data['link']=link
+        
+        with open('Sankey_Data.JSON', 'w') as outfile:
+            json.dump(store_data, outfile, indent=4)
+        
+        
+        
+        
+        
+        
+        
