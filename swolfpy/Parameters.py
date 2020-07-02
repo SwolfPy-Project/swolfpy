@@ -61,7 +61,7 @@ class Parameters():
         else:
             self.param_uncertainty_dict[key].append([process_model_to, value, param_name,(process_model_from,process_model_to,product)])
     
-    def SWM_network(self,view=True):
+    def SWM_network(self,view=True,show_vals=True,all_flow=True):
         """
         To render the generated DOT source code, you also need to install `Graphviz <https://www.graphviz.org/download>`_.
         
@@ -75,8 +75,16 @@ class Parameters():
             self.network.node(x,shape=self.node_shape[x],fillcolor=self.node_color[x],style='filled', width='1.2')
         
         for y in self.param_uncertainty_dict.values():
-            for x in y:
-                self.add_edge(x[3][0],x[3][1],x[3][2],x[1])
+            for x in y: 
+                if show_vals:
+                    if all_flow:
+                        self.add_edge(x[3][0],x[3][1],x[3][2],x[1])
+                    elif not all_flow and x[1]>0:
+                        self.add_edge(x[3][0],x[3][1],x[3][2],x[1])
+                    else:
+                        pass
+                else:
+                    self.add_edge(x[3][0],x[3][1],x[3][2])
         try:
             self.network.render('SWM_network', view = view)
         except Exception:
@@ -85,8 +93,11 @@ class Parameters():
             Make sure that the directory containing the dot executable is on your systems’ path.
             """)
         
-    def add_edge(self,head,tail,name,value):
-        self.network.edge(head,tail,label=name + ' ({})'.format(value),color=self.edge_color[name])
+    def add_edge(self,head,tail,name,value=None):
+        if isinstance(value, (int, float)):
+            self.network.edge(head,tail,label=name + ' ({})'.format(value),color=self.edge_color[name])
+        else:
+            self.network.edge(head,tail,label=name, color=self.edge_color[name])
             
     def default_parameters_list(self):
         default_parameters_list=[]

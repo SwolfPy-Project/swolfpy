@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'PySWOLF.ui',
 # licensing of 'PySWOLF.ui' applies.
 #
-# Created: Sun Jun 21 13:43:18 2020
+# Created: Sat Jun 27 21:06:27 2020
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -2118,7 +2118,7 @@ class Ui_MainWindow(object):
         self.gridLayout_99.addLayout(self.horizontalLayout_18, 2, 0, 1, 1)
         self.Define_SWM_1.addItem(self.Collection_process, "")
         self.Treatment_process = QtWidgets.QWidget()
-        self.Treatment_process.setGeometry(QtCore.QRect(0, 0, 1380, 905))
+        self.Treatment_process.setGeometry(QtCore.QRect(0, 0, 426, 148))
         self.Treatment_process.setObjectName("Treatment_process")
         self.gridLayout_100 = QtWidgets.QGridLayout(self.Treatment_process)
         self.gridLayout_100.setObjectName("gridLayout_100")
@@ -2273,6 +2273,9 @@ class Ui_MainWindow(object):
         self.Show_SWM_Network.setIcon(icon6)
         self.Show_SWM_Network.setObjectName("Show_SWM_Network")
         self.horizontalLayout_8.addWidget(self.Show_SWM_Network)
+        self.Show_SWM_Network_AllFlows = QtWidgets.QCheckBox(self.frame_6)
+        self.Show_SWM_Network_AllFlows.setObjectName("Show_SWM_Network_AllFlows")
+        self.horizontalLayout_8.addWidget(self.Show_SWM_Network_AllFlows)
         spacerItem56 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_8.addItem(spacerItem56)
         self.gridLayout_53.addLayout(self.horizontalLayout_8, 4, 0, 1, 1)
@@ -2379,6 +2382,9 @@ class Ui_MainWindow(object):
         self.Show_SWM_Network_Load.setIcon(icon6)
         self.Show_SWM_Network_Load.setObjectName("Show_SWM_Network_Load")
         self.horizontalLayout_16.addWidget(self.Show_SWM_Network_Load)
+        self.Show_SWM_Network_Load_AllFlows = QtWidgets.QCheckBox(self.groupBox_10)
+        self.Show_SWM_Network_Load_AllFlows.setObjectName("Show_SWM_Network_Load_AllFlows")
+        self.horizontalLayout_16.addWidget(self.Show_SWM_Network_Load_AllFlows)
         spacerItem58 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_16.addItem(spacerItem58)
         self.gridLayout_74.addLayout(self.horizontalLayout_16, 1, 0, 1, 1)
@@ -3330,7 +3336,7 @@ class Ui_MainWindow(object):
         self.scrollArea_5.setWidgetResizable(True)
         self.scrollArea_5.setObjectName("scrollArea_5")
         self.scrollAreaWidgetContents_9 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, -78, 1392, 1123))
+        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, 0, 1392, 1123))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -3907,9 +3913,9 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.PySWOLF.setCurrentIndex(6)
+        self.PySWOLF.setCurrentIndex(3)
         self.init_process_toolbox.setCurrentIndex(1)
-        self.Define_SWM_1.setCurrentIndex(0)
+        self.Define_SWM_1.setCurrentIndex(2)
         self.Collection.setCurrentIndex(-1)
         self.LCA_subTab.setCurrentIndex(1)
         self.MC_setting.setCurrentIndex(0)
@@ -4376,6 +4382,7 @@ class Ui_MainWindow(object):
         self.Load_params.setText(QtWidgets.QApplication.translate("MainWindow", "Load Parameters", None, -1))
         self.update_param.setText(QtWidgets.QApplication.translate("MainWindow", "Update Parameters", None, -1))
         self.Show_SWM_Network.setText(QtWidgets.QApplication.translate("MainWindow", "Show Network", None, -1))
+        self.Show_SWM_Network_AllFlows.setText(QtWidgets.QApplication.translate("MainWindow", "Include zero flows", None, -1))
         self.Define_SWM_1.setItemText(self.Define_SWM_1.indexOf(self.Network), QtWidgets.QApplication.translate("MainWindow", "System", None, -1))
         self.PySWOLF.setTabText(self.PySWOLF.indexOf(self.Define_SWM), QtWidgets.QApplication.translate("MainWindow", "Define SWM System", None, -1))
         self.Br_Project_btm.setText(QtWidgets.QApplication.translate("MainWindow", "Browse Project", None, -1))
@@ -4387,6 +4394,7 @@ class Ui_MainWindow(object):
         self.Load_params_Load.setText(QtWidgets.QApplication.translate("MainWindow", "Load Parameters", None, -1))
         self.load_update_param.setText(QtWidgets.QApplication.translate("MainWindow", "Update Parameters", None, -1))
         self.Show_SWM_Network_Load.setText(QtWidgets.QApplication.translate("MainWindow", "Show Network", None, -1))
+        self.Show_SWM_Network_Load_AllFlows.setText(QtWidgets.QApplication.translate("MainWindow", "Include zero flows", None, -1))
         self.PySWOLF.setTabText(self.PySWOLF.indexOf(self.Load_Project), QtWidgets.QApplication.translate("MainWindow", "Load Project", None, -1))
         self.Start_new_sen.setText(QtWidgets.QApplication.translate("MainWindow", "Start New Scenario", None, -1))
         self.label_38.setText(QtWidgets.QApplication.translate("MainWindow", "Name of scenario", None, -1))

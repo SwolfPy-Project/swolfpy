@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -4846,7 +4846,7 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>2</number>
                  </property>
                  <widget class="QWidget" name="Collection_process">
                   <property name="geometry">
@@ -4931,8 +4931,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1380</width>
-                    <height>905</height>
+                    <width>426</width>
+                    <height>148</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -5319,6 +5319,13 @@ p, li { white-space: pre-wrap; }
                          </widget>
                         </item>
                         <item>
+                         <widget class="QCheckBox" name="Show_SWM_Network_AllFlows">
+                          <property name="text">
+                           <string>Include zero flows</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
                          <spacer name="horizontalSpacer_43">
                           <property name="orientation">
                            <enum>Qt::Horizontal</enum>
@@ -5548,6 +5555,13 @@ p, li { white-space: pre-wrap; }
                        <property name="icon">
                         <iconset resource="PyWOLF_Resource.qrc">
                          <normaloff>:/ICONS/PySWOLF_ICONS/show.png</normaloff>:/ICONS/PySWOLF_ICONS/show.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="Show_SWM_Network_Load_AllFlows">
+                       <property name="text">
+                        <string>Include zero flows</string>
                        </property>
                       </widget>
                      </item>
@@ -7566,7 +7580,7 @@ p, li { white-space: pre-wrap; }
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-78</y>
+             <y>0</y>
              <width>1392</width>
              <height>1123</height>
             </rect>

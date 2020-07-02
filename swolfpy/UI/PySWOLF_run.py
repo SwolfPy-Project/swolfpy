@@ -226,7 +226,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Load_Project_btm.clicked.connect(self.load_project_info)
             
             self.load_update_param.clicked.connect(self.load_update_network_parameters)
-            self.Show_SWM_Network_Load.clicked.connect(self.show_SWM_Network_func)
+            self.Show_SWM_Network_Load.clicked.connect(self.show_SWM_Network_func(self.Show_SWM_Network_Load_AllFlows))
             self.Load_params_Load.clicked.connect(self.load_params_func_loadtab)
                     
             self.ini_load_project_status = True
@@ -240,6 +240,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.load_PBar_updateParam.setMinimum(0)
             self.load_PBar_updateParam.setMaximum(100)
             self.load_PBar_updateParam.setValue(0)
+            
+            self.Show_SWM_Network_Load_AllFlows.setChecked(True)
+            
+            self.param_status=True
         
     
     @QtCore.Slot()
@@ -1015,7 +1019,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Load_params.clicked.connect(self.load_params_func)
         
         #Show SWM Network
-        self.Show_SWM_Network.clicked.connect(self.show_SWM_Network_func)
+        self.Show_SWM_Network.clicked.connect(self.show_SWM_Network_func(self.Show_SWM_Network_AllFlows))
         
         #Update the parameters
         self.update_param.clicked.connect(self.update_network_parameters)
@@ -1033,6 +1037,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Distance_table.installEventFilter(self)
         self.Param_table.installEventFilter(self)
         self.Param_table.setSortingEnabled(True) 
+        
+        # Check that the user updates the params
+        self.param_status=False
+    
+        self.Show_SWM_Network_AllFlows.setChecked(True)
+        
+        
     
     @QtCore.Slot()
     def Create_Distance_Table(self):
@@ -1114,13 +1125,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         param_updater.UpdatePBr_UpdateParam.connect(self.setPBr_UpdateParam)
         param_updater.report_time.connect(self.report_time_UpdateParam)
         param_updater.start()
+        self.param_status=True
 
     @QtCore.Slot(int)
     def report_time_UpdateParam(self, time):
         #Notift the user that the project has created successfully
         self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(time),'Information')
         
-        self.PySWOLF.setCurrentWidget(self.Create_Scenario)
+        #self.PySWOLF.setCurrentWidget(self.Create_Scenario)
         self.Create_Scenario.setEnabled(True)
         self.LCA_tab.setEnabled(True)
         self.LCA_tab_init()
@@ -1134,8 +1146,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.progressBar_updateParam.setValue(val)
 
     @QtCore.Slot()
-    def show_SWM_Network_func(self):
-        self.demo.parameters.SWM_network(view=True)
+    def show_SWM_Network_func(self,all_flow):
+        def helper():
+            self.demo.parameters.SWM_network(view=True,show_vals=self.param_status,all_flow=all_flow.isChecked())
+        return(helper)
 # =============================================================================
 #         Dialog = QtWidgets.QDialog()
 #         Dialog.setWindowIcon(self.icon)
@@ -2072,9 +2086,17 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         else:
             kind = 'density'
 
-        #ploting the DataFrame        
-        self.ax_plot_dist_mc=self.MC_results[self.MC_results.columns[self.MC_Widget.param.currentIndex()]].plot(kind=kind,
+        #ploting the DataFrame  
+        if kind == 'hist':
+            self.ax_plot_dist_mc=self.MC_results[self.MC_results.columns[self.MC_Widget.param.currentIndex()]].plot(kind=kind,
+                                        ax=self.ax_plot_dist_mc, bins=max(30,len(self.MC_results)/100))
+        else:
+            self.ax_plot_dist_mc=self.MC_results[self.MC_results.columns[self.MC_Widget.param.currentIndex()]].plot(kind=kind,
                                         ax=self.ax_plot_dist_mc)
+            
+        
+
+        
         #set lables
         self.ax_plot_dist_mc.set_title(str(list(self.MC_FU.keys())[0]), fontsize=18)
         plt.rcParams["font.size"] = "18"
