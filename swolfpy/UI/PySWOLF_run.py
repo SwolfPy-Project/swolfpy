@@ -1868,11 +1868,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot()
     def MC_uncertain_filter_func(self):
         if self.MC_uncertain_filter.isChecked():
-            MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data[:][self.uncertain_data['uncertainty_type']>1])
+            self.MC_Uncertain_table_model = Input_data_table(self.MC_Uncertain_table,self.uncertain_data[:][self.uncertain_data['uncertainty_type']>1])
+            #MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data[:][self.uncertain_data['uncertainty_type']>1])
         else:
-            MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data)
-        self.MC_Uncertain_table.setModel(MC_Uncertain_model)
-        self.MC_Uncertain_table.resizeColumnsToContents()            
+            #MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data)
+            self.MC_Uncertain_table_model = Input_data_table(self.MC_Uncertain_table,self.uncertain_data)
+        self.MC_Uncertain_table.model().new_index.connect(self.MC_Uncertain_table_model.update_ComboBox)
 
     @QtCore.Slot()
     def MC_uncertain_update_func(self):
@@ -1886,6 +1887,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot()
     def MC_uncertain_clear_func(self):
         self.MC_Uncertain_table.model()._data['uncertainty_type'] = 0
+        self.MC_Uncertain_table_model.update_ComboBox()
         self.MC_Uncertain_table.model()._data[['loc','scale','shape','minimum','maximum']] = np.nan 
         self.MC_Uncertain_table.model().layoutChanged.emit()
         self.MC_Uncertain_table.resizeColumnsToContents()
