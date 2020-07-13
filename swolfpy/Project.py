@@ -229,7 +229,7 @@ class Project():
         """
         return(self.parameters_list)
         
-    def group_exchanges(self,signal):
+    def group_exchanges(self,signal=None):
         """
         Create a group for the `parameters` in each database and add the exchanges that include these `parameters` 
         to this group. As a results, model know to update the values in those exchanges when the `parameter` is updated
@@ -247,7 +247,8 @@ class Project():
                 self._progress+= 70/len(self.processes)
                 signal.emit(self._progress)
         
-        signal.emit(100)
+        if signal:
+            signal.emit(100)
         		
                     
     def update_parameters(self,new_param_data,signal=None):
