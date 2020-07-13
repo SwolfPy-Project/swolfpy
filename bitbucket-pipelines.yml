@@ -1,0 +1,16 @@
+# Check our guides at https://confluence.atlassian.com/x/x4UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# You can specify a custom docker image from Docker Hub as your build environment.
+
+image: python:3.7.3
+
+pipelines:
+  default:
+    - step:
+        script:
+          - pip install -r requirements.txt
+          - pip install swolfpy-inputdata
+          - py.test 
+
+
+
