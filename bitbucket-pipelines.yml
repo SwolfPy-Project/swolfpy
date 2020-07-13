@@ -9,7 +9,7 @@ pipelines:
     - step:
         script:
           - pip install -r requirements.txt
-          - pip install swolfpy-inputdata
+          - pip install swolfpy
           - py.test 
 
 
