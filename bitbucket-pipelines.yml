@@ -14,6 +14,8 @@ pipelines:
           - pip install https://bitbucket.org/swolfpy/swolfpy-inputdata/get/master.zip
           - pip install https://bitbucket.org/swolfpy/swolfpy-processmodels/get/master.zip
           - pip install https://bitbucket.org/swolfpy/swolfpy/get/master.zip
+          - ls -R /opt/atlassian/pipelines/agent/build/
+          - ls -R /opt/atlassian/pipelines/agent/build/tests
           - pytest
 
 
