@@ -8,7 +8,8 @@ pipelines:
   default:
     - step:
         script:
-          - pip install -y -q -c conda-forge -c cmutel -c haasad brightway2 jupyter
+          - bash Miniconda3-latest-Linux-x86_64.sh
+          - conda install -y -q -c conda-forge -c cmutel -c haasad brightway2 jupyter
           - pip install -r requirements.txt
           - pip install https://bitbucket.org/swolfpy/swolfpy_inputdata/get/master.zip
           - pip install https://bitbucket.org/swolfpy/swolfpy_processmodels/get/master.zip
