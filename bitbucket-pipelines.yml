@@ -8,6 +8,7 @@ pipelines:
   default:
     - step:
         script:
+          - conda update -n base -c defaults conda
           - conda config --append channels conda-forge
           - conda config --append channels cmutel
           - conda config --append channels haasad
