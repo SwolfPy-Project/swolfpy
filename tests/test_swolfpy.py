@@ -17,7 +17,8 @@ from swolfpy_processmodels import Distance
 
 from swolfpy import Technosphere
 from swolfpy import Project
-from swolfpy import *
+
+
 from brightway2 import *
 
 def test_demo_swolfpy():
