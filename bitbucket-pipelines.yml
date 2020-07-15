@@ -2,16 +2,12 @@
 # Only use spaces to indent your .yml configuration.
 # You can specify a custom docker image from Docker Hub as your build environment.
 
-image: conda/miniconda3
+image: python:3.7.3
 
 pipelines:
   default:
     - step:
         script:
-          - conda update -n base -c defaults conda
-          - conda config --append channels conda-forge
-          - conda config --append channels cmutel
-          - conda config --append channels haasad
           - pip install -r requirements.txt
           - pip install https://bitbucket.org/swolfpy/swolfpy-inputdata/get/master.zip
           - pip install https://bitbucket.org/swolfpy/swolfpy-processmodels/get/master.zip
