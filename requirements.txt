@@ -3,7 +3,7 @@ graphviz
 plotly
 pytest
 pytest-cov
-
+brightway2
 
 
 

@@ -2,13 +2,17 @@
 # Only use spaces to indent your .yml configuration.
 # You can specify a custom docker image from Docker Hub as your build environment.
 
-image: bildcode/pyside2
+image: conda/miniconda3
 
 pipelines:
   default:
     - step:
         script:
-          - conda install -y -q -c conda-forge -c cmutel -c haasad brightway2 jupyter
+          - conda config --append channels conda-forge
+          - conda config --append channels cmutel
+          - conda config --append channels haasad
+          - conda create --name swolfpy python=3.7
+          - conda activate swolfpy
           - pip install -r requirements.txt
           - pip install https://bitbucket.org/swolfpy/swolfpy-inputdata/get/master.zip
           - pip install https://bitbucket.org/swolfpy/swolfpy-processmodels/get/master.zip
