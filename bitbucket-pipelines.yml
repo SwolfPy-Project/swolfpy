@@ -2,7 +2,7 @@
 # Only use spaces to indent your .yml configuration.
 # You can specify a custom docker image from Docker Hub as your build environment.
 
-image: sardarmehni/swolfy:latest
+image: sardarmehni/swolfpy:latest
 
 pipelines:
   default:
