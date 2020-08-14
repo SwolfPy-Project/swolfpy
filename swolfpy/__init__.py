@@ -25,15 +25,10 @@ from .swolfpy_method import import_methods
 from .Optimization import Optimization
 from .Monte_Carlo import Monte_Carlo
 
-try:
-    from .UI.PySWOLF_run import MyQtApp
-except ImportError:
-    print('PySide2 is not imported')
 
-try:
-    from PySide2 import QtCore, QtGui, QtWidgets
-except ImportError:
-    print('PySide2 is not imported')
+from .UI.PySWOLF_run import MyQtApp
+from PySide2 import QtCore, QtGui, QtWidgets
+
     
         
         
