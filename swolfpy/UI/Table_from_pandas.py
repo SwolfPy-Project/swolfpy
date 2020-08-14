@@ -62,7 +62,6 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
 
 #%% Table: View and edit Pandas Data Frame
 class Table_from_pandas_editable(QtCore.QAbstractTableModel):
-    new_index = QtCore.Signal()
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self._data = data
@@ -116,7 +115,6 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
         indicate to any attached views that they should redisplay any items shown, taking the
         new structure into account.
         """
-        self.new_index.emit()
         self.layoutChanged.emit()
         
 
@@ -223,62 +221,3 @@ class Table_modeifed_collection_schm(QtCore.QAbstractTableModel):
                 return QtCore.Qt.ItemIsEnabled
         else:
             return QtCore.Qt.ItemIsEnabled    
-    
-    
-    
- #%% Table: Input Data with Combo Box for uncertainty type   
-class Input_data_table():
-    def __init__(self,QTableView_obj,data):    
-        self.table = QTableView_obj
-       
-        model = Table_from_pandas_editable(data,parent=QTableView_obj)
-        self.table.setModel(model)
-        
-        self.uncertainty_dict= {'Undefined':stats_arrays.UndefinedUncertainty.id,
-                                 'No uncertainty':stats_arrays.NoUncertainty.id,
-                                 'Lognormal':stats_arrays.LognormalUncertainty.id,
-                                 'Normal':stats_arrays.NormalUncertainty.id,
-                                 'Uniform':stats_arrays.UniformUncertainty.id,
-                                 'Triangular':stats_arrays.TriangularUncertainty.id,
-                                 'Bernoulli ':stats_arrays.BernoulliUncertainty.id,
-                                 'Discrete Uniform':stats_arrays.DiscreteUniform.id}
-        
-        for row in range(model.rowCount()):
-            ComboBox = QtWidgets.QComboBox()
-            ComboBox.addItems(list(self.uncertainty_dict.keys()))
-            
-            index = self.table.model().index(row,6)  # Column 6: Uncertainty type
-            self.table.setIndexWidget(index,ComboBox)
-            val = self.table.model().data(index,role=QtCore.Qt.DisplayRole)
-            ComoboBox_index=list(self.uncertainty_dict.values()).index(int(float(val)))
-            ComboBox.setCurrentIndex(ComoboBox_index)
-    
-            ComboBox.currentTextChanged.connect(self.update(index))
-         
-        self.table.resizeColumnsToContents()
-    
-    def update_ComboBox(self):
-        for row in range(self.table.model().rowCount()):
-            index = self.table.model().index(row,6)
-            val = self.table.model().data(index,role=QtCore.Qt.DisplayRole)
-            ComoboBox_index=list(self.uncertainty_dict.values()).index(int(float(val)))
-            self.table.indexWidget(index).setCurrentIndex(ComoboBox_index)
-       
-    @QtCore.Slot(str)
-    def update(self,index):
-        def helper(val):
-            self.table.model().setData(index,self.uncertainty_dict[val],role=QtCore.Qt.EditRole)
-        return(helper)    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
