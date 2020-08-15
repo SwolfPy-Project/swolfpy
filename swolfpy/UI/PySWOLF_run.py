@@ -321,6 +321,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
 # =============================================================================           
     def Importing_processes(self):
+        # Disabled temporary until python process models developed.
+        self.DS_MRF.setDisabled(True)
+        self.MS_MRF.setDisabled(True)
+        self.MF_Collection.setDisabled(True)
+        self.COM_Collection.setDisabled(True)
+
         self.init_process_toolbox.setCurrentWidget(self.CommonData)
         # CommonData
         self.helper(self.IT_Default_0,self.IT_UserDefine_0,self.IT_BR_0,self.IT_FName_0,"Python (*.py)")
@@ -617,7 +623,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
     def init_collection(self):
         self.col_index = 1
-        self._col_list = ['...','SF_Colllection','MF_Colllection','COM_Colllection']
+        self._col_list = ['...','SF_Colllection']
+        #self._col_list = ['...','SF_Colllection','MF_Colllection','COM_Colllection']
         self.Add_col.clicked.connect(self.Add_collection)
         self.Create_Collection_process.clicked.connect(self.Create_collection_dict)
     
