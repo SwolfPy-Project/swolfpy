@@ -446,52 +446,52 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.IT_Default_0.isChecked():
             import swolfpy_inputdata.CommonData as CommonData
         elif self.IT_UserDefine_0.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_0.text()[:-3].split('/')[-1]
-            CommonData=importlib.import_module(path)
+            path = 'swolfpy_inputdata.'+self.IT_FName_0.text()[:-3].split('/')[-1]
+            CommonData=importlib.import_module(path).CommonData
         CommonData=CommonData
         
         #Import Technosphere
         if self.IT_Default_Tech.isChecked():
             import swolfpy.Technosphere as Technosphere
         elif self.IT_UserDefine_Tech.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_Tech.text()[:-3].split('/')[-1]
-            Technosphere=importlib.import_module(path)
+            path = 'swolfpy.'+self.IT_FName_Tech.text()[:-3].split('/')[-1]
+            Technosphere=importlib.import_module(path).Technosphere
         Technosphere=Technosphere
         
         #Import LF
         if self.IT_Default.isChecked():
             import swolfpy_processmodels.LF as LF
         elif self.IT_UserDefine.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName.text()[:-3].split('/')[-1]
-            LF=importlib.import_module(path)
+            path = 'swolfpy_processmodels.'+self.IT_FName.text()[:-3].split('/')[-1]
+            LF=importlib.import_module(path).LF
         LF=LF
         #Import WTE
         if self.IT_Default_2.isChecked():
             import swolfpy_processmodels.WTE as WTE
         elif self.IT_UserDefine_2.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_2.text()[:-3].split('/')[-1]
-            WTE=importlib.import_module(path)
+            path = 'swolfpy_processmodels.'+self.IT_FName_2.text()[:-3].split('/')[-1]
+            WTE=importlib.import_module(path).WTE
         WTE=WTE
         #Import AD
         if self.IT_Default_3.isChecked():
             import swolfpy_processmodels.AD as AD
         elif self.IT_UserDefine_3.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_3.text()[:-3].split('/')[-1]
-            AD=importlib.import_module(path)
+            path = 'swolfpy_processmodels.'+self.IT_FName_3.text()[:-3].split('/')[-1]
+            AD=importlib.import_module(path).AD
         AD=AD   
         #Import COMP
         if self.IT_Default_4.isChecked():
             import swolfpy_processmodels.Comp as COMP
         elif self.IT_UserDefine_4.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_4.text()[:-3].split('/')[-1]
-            COMP=importlib.import_module(path)
+            path = 'swolfpy_processmodels.'+self.IT_FName_4.text()[:-3].split('/')[-1]
+            COMP=importlib.import_module(path).Comp
         COMP=COMP
         #Import SS_MRF
         if self.IT_Default_5.isChecked():
             import swolfpy_processmodels.SS_MRF as SS_MRF
         elif self.IT_UserDefine_5.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_5.text()[:-3].split('/')[-1]
-            SS_MRF=importlib.import_module(path)
+            path = 'swolfpy_processmodels.'+self.IT_FName_5.text()[:-3].split('/')[-1]
+            SS_MRF=importlib.import_module(path).SS_MRF
         SS_MRF=SS_MRF    
         
         #Import DS_MRF later
@@ -501,8 +501,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.IT_Default_8.isChecked():
             import swolfpy_processmodels.Reproc as REPROC
         elif self.IT_UserDefine_8.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_8.text()[:-3].split('/')[-1]
-            REPROC=importlib.import_module(path)
+            path = 'swolfpy_processmodels.'+self.IT_FName_8.text()[:-3].split('/')[-1]
+            REPROC=importlib.import_module(path).Reproc
         REPROC=REPROC    
         
         
@@ -510,8 +510,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         if self.IT_Default_col.isChecked():
             import swolfpy_processmodels.SF_Col as SF_Col
         elif self.IT_UserDefine_col.isChecked():
-            path = 'swolfpy.ProcessModels.'+self.IT_FName_col.text()[:-3].split('/')[-1]
-            SF_Col=importlib.import_module(path)
+            path = 'swolfpy_processmodels.'+self.IT_FName_col.text()[:-3].split('/')[-1]
+            SF_Col=importlib.import_module(path).SF_Col
         SF_Col=SF_Col    
         
         self.LF_input_type = []
@@ -1084,7 +1084,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             LCI_path = self.IT_FName_LCI.text() if self.IT_UserDefine_LCI.isChecked()  else None
             LCI_Reference_path = self.IT_FName_LCI_Ref.text() if self.IT_UserDefine_LCI_Ref.isChecked() else None
             Ecospold2_Path = self.IT_FName_EcoSpold2.text() if self.IT_UserDefine_EcoSpold2.isChecked()  else None
-            self.Technosphere = Technosphere.Technosphere(project_name=self.P_Name,LCI_path=LCI_path,LCI_Reference_path=LCI_Reference_path,Ecospold2_Path=Ecospold2_Path)
+            self.Technosphere = Technosphere(project_name=self.P_Name,LCI_path=LCI_path,LCI_Reference_path=LCI_Reference_path,Ecospold2_Path=Ecospold2_Path)
             self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,Collection_processes=self._Collection_processes,Technosphere_obj=self.Technosphere)
         else:
             self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
