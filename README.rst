@@ -26,7 +26,7 @@ Solid Waste Optimization Life-cycle Framework in Python(swolfpy)
 
 * Free software: GNU GENERAL PUBLIC LICENSE V2
 * Documentation: https://swolfpy.readthedocs.io.
-* Repository: https://bitbucket.org/swolfpy/swolfpy
+* Repository: https://bitbucket.org/msm_sardar/swolfpy
 * Other links: 
         https://go.ncsu.edu/swolfpy
 
