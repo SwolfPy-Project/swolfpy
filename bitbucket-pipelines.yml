@@ -9,8 +9,8 @@ pipelines:
     - step:
         script:
           - conda activate swolfpy 
-          - pip3 install https://bitbucket.org/swolfpy/swolfpy-inputdata/get/master.zip
-          - pip3 install https://bitbucket.org/swolfpy/swolfpy-processmodels/get/master.zip
+          - pip3 install https://bitbucket.org/msm_sardar/swolfpy-inputdata/get/master.zip
+          - pip3 install https://bitbucket.org/msm_sardar/swolfpy-processmodels/get/master.zip
           - ls -R /opt/atlassian/pipelines/agent/build/
           - ls -R /opt/atlassian/pipelines/agent/build/tests
           - pytest
