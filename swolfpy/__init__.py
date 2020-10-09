@@ -39,6 +39,8 @@ class swolfpy():
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
         self.qt_app  = MyQtApp()
+        availableGeometry = self.app.desktop().availableGeometry(self.qt_app)
+        self.qt_app.resize(availableGeometry.width() * 2 / 3, availableGeometry.height() * 2.85 / 3)
         self.qt_app.show()
         self.app.exec_()
         

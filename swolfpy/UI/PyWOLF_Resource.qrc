@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="ICONS">
+    <file>PySWOLF_ICONS/Help.png</file>
     <file>PySWOLF_ICONS/save.png</file>
     <file>PySWOLF_ICONS/show.png</file>
     <file>PySWOLF_ICONS/ADD.png</file>

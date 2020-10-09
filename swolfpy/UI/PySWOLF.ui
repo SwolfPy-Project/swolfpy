@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -45,6 +45,18 @@
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0" colspan="2">
          <widget class="QTextBrowser" name="textBrowser">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>650</height>
+           </size>
+          </property>
           <property name="html">
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -52,7 +64,25 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:20pt; font-weight:600; color:#aa0000;&quot;&gt;Solid Waste Optimization Life-cycle Framework in Python&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; color:#aa0000;&quot;&gt;Developed at North Carolina State University&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/ICONS/PySWOLF_ICONS/PySWOLF.ico&quot; /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/ICONS/PySWOLF_ICONS/PySWOLF.ico&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Development Team:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia','serif'; font-weight:600; color:#000000;&quot;&gt;Mojtaba Sardarmehni&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia','serif'; color:#000000;&quot;&gt;, Ph.D. Student&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia','serif'; font-size:17px; font-weight:600; color:#3e4349; background-color:#ffffff;&quot;&gt;Pedro Anchieta&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia','serif'; color:#000000;&quot;&gt;, Master Student &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia','serif'; font-weight:600; color:#000000;&quot;&gt;Dr. James W. Levis&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia','serif'; color:#000000;&quot;&gt;, Research Assistant Professor&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Related Links:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Install: &lt;/span&gt;&lt;a href=&quot;https://pypi.org/project/swolfpy/&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://pypi.org/project/swolfpy/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Document: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_docs&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_docs&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Source Code: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_source_code&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_source_code&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Report bugs: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_issues&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_issues&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+          <property name="openLinks">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -244,15 +274,15 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="CommonData">
                   <property name="geometry">
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>406</width>
-                    <height>160</height>
+                    <width>1380</width>
+                    <height>525</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1101,8 +1131,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>444</width>
-                    <height>400</height>
+                    <width>1380</width>
+                    <height>525</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -4853,8 +4883,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1380</width>
-                    <height>905</height>
+                    <width>250</width>
+                    <height>108</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -8706,7 +8736,21 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionSave"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp_Guides"/>
+   </widget>
+   <widget class="QMenu" name="menuReferences">
+    <property name="title">
+     <string>References</string>
+    </property>
+    <addaction name="actionReferences"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
+   <addaction name="menuReferences"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
@@ -8717,6 +8761,20 @@ p, li { white-space: pre-wrap; }
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionHelp_Guides">
+   <property name="icon">
+    <iconset resource="PyWOLF_Resource.qrc">
+     <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Help Guides</string>
+   </property>
+  </action>
+  <action name="actionReferences">
+   <property name="text">
+    <string>References</string>
    </property>
   </action>
  </widget>

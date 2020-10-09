@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'PySWOLF.ui',
 # licensing of 'PySWOLF.ui' applies.
 #
-# Created: Sat Jun 27 21:06:27 2020
+# Created: Fri Oct  9 16:04:13 2020
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,6 +32,14 @@ class Ui_MainWindow(object):
         self.gridLayout_2 = QtWidgets.QGridLayout(self.Start)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.textBrowser = QtWidgets.QTextBrowser(self.Start)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
+        self.textBrowser.setSizePolicy(sizePolicy)
+        self.textBrowser.setMinimumSize(QtCore.QSize(0, 650))
+        self.textBrowser.setOpenExternalLinks(True)
+        self.textBrowser.setOpenLinks(True)
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout_2.addWidget(self.textBrowser, 0, 0, 1, 2)
         self.groupBox_8 = QtWidgets.QGroupBox(self.Start)
@@ -116,7 +124,7 @@ class Ui_MainWindow(object):
         self.init_process_toolbox.setMinimumSize(QtCore.QSize(0, 750))
         self.init_process_toolbox.setObjectName("init_process_toolbox")
         self.CommonData = QtWidgets.QWidget()
-        self.CommonData.setGeometry(QtCore.QRect(0, 0, 406, 160))
+        self.CommonData.setGeometry(QtCore.QRect(0, 0, 1380, 525))
         self.CommonData.setObjectName("CommonData")
         self.gridLayout_130 = QtWidgets.QGridLayout(self.CommonData)
         self.gridLayout_130.setObjectName("gridLayout_130")
@@ -462,7 +470,7 @@ class Ui_MainWindow(object):
         self.gridLayout_23.addWidget(self.frame_11, 0, 0, 1, 1)
         self.init_process_toolbox.addItem(self.Landfill, "")
         self.WTE = QtWidgets.QWidget()
-        self.WTE.setGeometry(QtCore.QRect(0, 0, 444, 400))
+        self.WTE.setGeometry(QtCore.QRect(0, 0, 1380, 525))
         self.WTE.setObjectName("WTE")
         self.gridLayout_6 = QtWidgets.QGridLayout(self.WTE)
         self.gridLayout_6.setObjectName("gridLayout_6")
@@ -2087,7 +2095,7 @@ class Ui_MainWindow(object):
         self.Define_SWM_1.setMinimumSize(QtCore.QSize(0, 600))
         self.Define_SWM_1.setObjectName("Define_SWM_1")
         self.Collection_process = QtWidgets.QWidget()
-        self.Collection_process.setGeometry(QtCore.QRect(0, 0, 1380, 905))
+        self.Collection_process.setGeometry(QtCore.QRect(0, 0, 250, 108))
         self.Collection_process.setObjectName("Collection_process")
         self.gridLayout_99 = QtWidgets.QGridLayout(self.Collection_process)
         self.gridLayout_99.setObjectName("gridLayout_99")
@@ -3900,6 +3908,10 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
+        self.menuHelp = QtWidgets.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
+        self.menuReferences = QtWidgets.QMenu(self.menubar)
+        self.menuReferences.setObjectName("menuReferences")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -3908,13 +3920,24 @@ class Ui_MainWindow(object):
         self.actionExit.setObjectName("actionExit")
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
+        self.actionHelp_Guides = QtWidgets.QAction(MainWindow)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(":/ICONS/PySWOLF_ICONS/Help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionHelp_Guides.setIcon(icon10)
+        self.actionHelp_Guides.setObjectName("actionHelp_Guides")
+        self.actionReferences = QtWidgets.QAction(MainWindow)
+        self.actionReferences.setObjectName("actionReferences")
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionExit)
+        self.menuHelp.addAction(self.actionHelp_Guides)
+        self.menuReferences.addAction(self.actionReferences)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuHelp.menuAction())
+        self.menubar.addAction(self.menuReferences.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.PySWOLF.setCurrentIndex(3)
-        self.init_process_toolbox.setCurrentIndex(1)
+        self.PySWOLF.setCurrentIndex(1)
+        self.init_process_toolbox.setCurrentIndex(0)
         self.Define_SWM_1.setCurrentIndex(2)
         self.Collection.setCurrentIndex(-1)
         self.LCA_subTab.setCurrentIndex(1)
@@ -3929,7 +3952,19 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:20pt; font-weight:600; color:#aa0000;\">Solid Waste Optimization Life-cycle Framework in Python</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:16pt; color:#aa0000;\">Developed at North Carolina State University</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/ICONS/PySWOLF_ICONS/PySWOLF.ico\" /></p></body></html>", None, -1))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/ICONS/PySWOLF_ICONS/PySWOLF.ico\" /></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; font-weight:600; color:#aa0000;\">Development Team:</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Georgia\',\'serif\'; font-weight:600; color:#000000;\">Mojtaba Sardarmehni</span><span style=\" font-family:\'Georgia\',\'serif\'; color:#000000;\">, Ph.D. Student</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Georgia\',\'serif\'; font-size:17px; font-weight:600; color:#3e4349; background-color:#ffffff;\">Pedro Anchieta</span><span style=\" font-family:\'Georgia\',\'serif\'; color:#000000;\">, Master Student </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Georgia\',\'serif\'; font-weight:600; color:#000000;\">Dr. James W. Levis</span><span style=\" font-family:\'Georgia\',\'serif\'; color:#000000;\">, Research Assistant Professor</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; font-weight:600; color:#aa0000;\">Related Links:</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-weight:600;\">Install: </span><a href=\"https://pypi.org/project/swolfpy/\"><span style=\" font-family:\'MS Shell Dlg 2\'; text-decoration: underline; color:#0000ff;\">https://pypi.org/project/swolfpy/</span></a></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-weight:600;\">Document: </span><a href=\"https://go.ncsu.edu/swolfpy_docs\"><span style=\" font-family:\'MS Shell Dlg 2\'; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolfpy_docs</span></a></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-weight:600;\">Source Code: </span><a href=\"https://go.ncsu.edu/swolfpy_source_code\"><span style=\" font-family:\'MS Shell Dlg 2\'; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolfpy_source_code</span></a></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-weight:600;\">Report bugs: </span><a href=\"https://go.ncsu.edu/swolfpy_issues\"><span style=\" font-family:\'MS Shell Dlg 2\'; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolfpy_issues</span></a></p></body></html>", None, -1))
         self.groupBox_8.setTitle(QtWidgets.QApplication.translate("MainWindow", "Strat New Project", None, -1))
         self.Start_new_project.setText(QtWidgets.QApplication.translate("MainWindow", "Start New Project", None, -1))
         self.label_55.setText(QtWidgets.QApplication.translate("MainWindow", "Options:", None, -1))
@@ -4504,7 +4539,11 @@ class Ui_MainWindow(object):
         self.adv_opt_btm.setText(QtWidgets.QApplication.translate("MainWindow", "Optimization setting", None, -1))
         self.PySWOLF.setTabText(self.PySWOLF.indexOf(self.Opt_tab), QtWidgets.QApplication.translate("MainWindow", "Optimization", None, -1))
         self.menuFile.setTitle(QtWidgets.QApplication.translate("MainWindow", "File", None, -1))
+        self.menuHelp.setTitle(QtWidgets.QApplication.translate("MainWindow", "Help", None, -1))
+        self.menuReferences.setTitle(QtWidgets.QApplication.translate("MainWindow", "References", None, -1))
         self.actionExit.setText(QtWidgets.QApplication.translate("MainWindow", "Exit", None, -1))
         self.actionSave.setText(QtWidgets.QApplication.translate("MainWindow", "Save", None, -1))
+        self.actionHelp_Guides.setText(QtWidgets.QApplication.translate("MainWindow", "Help Guides", None, -1))
+        self.actionReferences.setText(QtWidgets.QApplication.translate("MainWindow", "References", None, -1))
 
 from . import PyWOLF_Resource_rc
