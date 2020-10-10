@@ -43,6 +43,7 @@ from swolfpy_processmodels import Distance
 from ..Project import *
 from ..Optimization import *
 from ..Monte_Carlo import *
+from swolfpy_processmodels.ProcessModelsMetaData import ProcessModelsMetaData
 
 
 from .Workers import * 
@@ -112,10 +113,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
     def init_app(self):
         ### Initial main window (set Disable and Enabled)
-        self.PySWOLF.setCurrentWidget(self.Basic)
+        self.PySWOLF.setCurrentWidget(self.Import_PM)
         self.Start.setEnabled(True)
         self.PySWOLF.setCurrentWidget(self.Start)
-        self.Basic.setDisabled(True)
+        self.Import_PM.setDisabled(True)
         self.Define_SWM.setDisabled(True)
         self.Load_Project.setDisabled(True)
         self.Create_Scenario.setDisabled(True)
@@ -126,7 +127,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Collection_process.setDisabled(True)
         self.Network.setDisabled(True)
         self.Distance_table.setDisabled(True)
-        
+
+        self.textBrowser.setSizeAdjustPolicy(self.textBrowser.AdjustToContents)
         
         #Status: Is the tap initiated or not?!
         self.app_init_status = False
@@ -139,13 +141,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_Contribution_tab_init_status = False
         self.LCA_LCI_tab_init_status = False
         
-        
-        
-    
-        
         #init First paer
-        self.init_FirstPage()  
-        
+        self.init_FirstPage()
+
         #Icons
         self.icon = QtGui.QIcon()
         self.icon.addPixmap(QtGui.QPixmap(":/ICONS/PySWOLF_ICONS/PySWOLF.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -166,41 +164,38 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         ### Start tab
         #Radio bottoms
         self.Start_def_process.setChecked(True)
-        
+
         #bottoms connection
         self.Start_new_project.clicked.connect(self.Start_new_project_func)
         self.Start_load_project.clicked.connect(self.Start_load_project_func)
-        
-    
+
     @QtCore.Slot()  #Change tab: go to the process models or Define SWM system based on the user input
     def Start_new_project_func(self):
         if not self.app_init_status:
             self.app_init_status = True
             #import process models
             self.Importing_processes()
-            
+
             #init treatement processse tab
             self.init_TreatmentProcesses()
-            
+
             #init write project
             self.init_write_project()
-            
+
             self._Collection_processes = {}
             self._Treatment_processes = {}
-            
+
             if self.Start_def_process.isChecked():
                 self.Import_Process_models_func()
                 self.PySWOLF.setCurrentWidget(self.Define_SWM)
-                self.Define_SWM.setEnabled(True)
-                
+                self.Define_SWM.setEnabled(True)               
             else:
-                self.PySWOLF.setCurrentWidget(self.Basic)
-                self.Basic.setEnabled(True)
+                self.PySWOLF.setCurrentWidget(self.Import_PM)
+                self.Import_PM.setEnabled(True)
         else:
             #Notift the user to restart program
             self.msg_popup('swolfpy Mode','Restart the swolfpy to start new project','Warning')
-            
-                           
+
     @QtCore.Slot()  #Change tab and import process models
     def Start_load_project_func(self):
         if not self.app_init_status:
@@ -321,116 +316,80 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
 # =============================================================================           
     def Importing_processes(self):
-        # Disabled temporary until python process models developed.
-        self.DS_MRF.setDisabled(True)
-        self.MS_MRF.setDisabled(True)
-        self.MF_Collection.setDisabled(True)
-        self.COM_Collection.setDisabled(True)
+        self.init_process_toolbox.setCurrentWidget(self.PM_PMTab)
 
-        self.init_process_toolbox.setCurrentWidget(self.CommonData)
-        # CommonData
+       # CommonData
         self.helper(self.IT_Default_0,self.IT_UserDefine_0,self.IT_BR_0,self.IT_FName_0,"Python (*.py)")
         self.helper(self.IT_Default_00,self.IT_UserDefine_00,self.IT_BR_00,self.IT_FName_00,"CSV (*.csv)")
-        
+
         # Technosphere
         self.helper(self.IT_Default_Tech,self.IT_UserDefine_Tech,self.IT_BR_Tech,self.IT_FName_Tech,"Python (*.py)")
         self.helper(self.IT_Default_LCI,self.IT_UserDefine_LCI,self.IT_BR_LCI,self.IT_FName_LCI,"CSV (*.csv)")
         self.helper(self.IT_Default_LCI_Ref,self.IT_UserDefine_LCI_Ref,self.IT_BR_LCI_Ref,self.IT_FName_LCI_Ref,"CSV (*.csv)")
         self.helper_dir(self.IT_Default_EcoSpold2,self.IT_UserDefine_EcoSpold2,self.IT_BR_EcoSpold2,self.IT_FName_EcoSpold2)
-        
-        # Landfill
-        self.helper(self.IT_Default,self.IT_UserDefine,self.IT_BR,self.IT_FName,"Python (*.py)")
-        # Waste_to_Energy (WTE)
-        self.helper(self.IT_Default_2,self.IT_UserDefine_2,self.IT_BR_2,self.IT_FName_2,"Python (*.py)")
-        # Anaerobic Digestion (AD)
-        self.helper(self.IT_Default_3,self.IT_UserDefine_3,self.IT_BR_3,self.IT_FName_3,"Python (*.py)")
-        # Aerobic Composting (COMP)
-        self.helper(self.IT_Default_4,self.IT_UserDefine_4,self.IT_BR_4,self.IT_FName_4,"Python (*.py)")
-        # Single Stream Material Facility (SS_MRF)
-        self.helper(self.IT_Default_5,self.IT_UserDefine_5,self.IT_BR_5,self.IT_FName_5,"Python (*.py)")
-        # Dual Stream Material Facility (DS_MRF)
-        self.helper(self.IT_Default_6,self.IT_UserDefine_6,self.IT_BR_6,self.IT_FName_6,"Python (*.py)")
-        # Multi-Stream Material Facility (MS_MRF)
-        self.helper(self.IT_Default_7,self.IT_UserDefine_7,self.IT_BR_7,self.IT_FName_7,"Python (*.py)")
-        # Reprocessing (REPROC)
-        self.helper(self.IT_Default_8,self.IT_UserDefine_8,self.IT_BR_8,self.IT_FName_8,"Python (*.py)")
-        
-        
-        
-        # Single Family Collection (SF_Collection)
-        self.helper(self.IT_Default_col,self.IT_UserDefine_col,self.IT_BR_col,self.IT_FName_col,"Python (*.py)")
-        
-        # Multi-Family Collection (MF_Collection)
-        self.helper(self.IT_Default_col_2,self.IT_UserDefine_col_2,self.IT_BR_col_2,self.IT_FName_col_2,"Python (*.py)")
-        
-        # Commercial Collection (COM_Collection)
-        self.helper(self.IT_Default_col_3,self.IT_UserDefine_col_3,self.IT_BR_col_3,self.IT_FName_col_3,"Python (*.py)")
-        
-        #Defualt LF input Type
-        self.IT_RWC.setChecked(True)
-        self.IT_DryRes.setChecked(True)
-        self.IT_WetRes.setChecked(True)
-        self.IT_MRDO.setChecked(True)
-        self.IT_Bottom_Ash.setChecked(True)
-        self.IT_Fly_Ash.setChecked(True)
-        self.IT_Other_Residual.setChecked(True)
-        
-        #Defualt WTE input Type
-        self.IT_RWC_2.setChecked(True)
-        self.IT_DryRes_2.setChecked(True)
-        self.IT_WetRes_2.setChecked(True)
-        self.IT_MRDO_2.setChecked(True)
-        self.IT_Other_Residual_2.setChecked(True)
-        
-        #Defualt AD input Type
-        self.IT_SSO_3.setChecked(True)
-        self.IT_Separated_Organics_3.setChecked(True)
-        
-        #Defualt Composting input Type
-        self.IT_SSO_4.setChecked(True)
-        self.IT_SSYW_4.setChecked(True)
-        self.IT_SSYWDO_4.setChecked(True)
-        self.IT_Separated_Organics_4.setChecked(True)
-        
-        #Defualt SS_MRF input Type
-        self.IT_SSR_5.setChecked(True)
-        
-        #Defualt DS_MRF input Type
-        self.IT_DSR_6.setChecked(True)
-        
-        #Defualt MS_MRF input Type
-        self.IT_REC_7.setChecked(True)
-        self.IT_MSR_7.setChecked(True)
-        self.IT_MSRDO_7.setChecked(True)
-        
-        #Defualt REPROC input Type
-        self.IT_OCC_8.setChecked(True)
-        self.IT_Mixed_Paper_8.setChecked(True)
-        self.IT_ONP_8.setChecked(True)
-        self.IT_OFF_8.setChecked(True)
-        self.IT_Fiber_Other_8.setChecked(True)
-        self.IT_PET_8.setChecked(True)
-        self.IT_HDPE_Unsorted_8.setChecked(True)
-        self.IT_HDPE_P_8.setChecked(True)
-        self.IT_HDPE_T_8.setChecked(True)
-        self.IT_Polystyrene_8.setChecked(True)
-        self.IT_Plastic_Other_8.setChecked(True)
-        self.IT_Mixed_Plastic_8.setChecked(True)
-        self.IT_Brown_glass_8.setChecked(True)
-        self.IT_Clear_glass_8.setChecked(True)
-        self.IT_Green_glass_8.setChecked(True)
-        self.IT_Mixed_Glass_8.setChecked(True)
-        self.IT_PVC_8.setChecked(True)
-        self.IT_LDPE_Film_8.setChecked(True)
-        self.IT_Polypropylene_8.setChecked(True)
-        self.IT_Fe_8.setChecked(True)
-        self.IT_Al_8.setChecked(True)
-        self.IT_Cu_8.setChecked(True)
 
-        
+        # Keys for Input flow types:
+        self._InputKey = {'RWC':self.IT_RWC,
+                          'SSR':self.IT_SSR,
+                          'DSR':self.IT_DSR,
+                          'MSR':self.IT_MSR,
+                          'LV':self.IT_LV,
+                          'SSYW':self.IT_SSYW,
+                          'SSO':self.IT_SSO,
+                          'DryRes':self.IT_DryRes,
+                          'REC':self.IT_REC,
+                          'WetRes':self.IT_WetRes,
+                          'MRDO':self.IT_MRDO,
+                          'SSYWDO':self.IT_SSYWDO,
+                          'MSRDO':self.IT_MRDO,
+                          'Bottom_Ash':self.IT_Bottom_Ash,
+                          'Fly_Ash':self.IT_Fly_Ash,
+                          'Separated_Organics':self.IT_Separated_Organics,
+                          'Other_Residual':self.IT_Other_Residual,
+                          'RDF':self.IT_RDF,
+                          'Al':self.IT_Al,
+                          'Fe':self.IT_Fe,
+                          'Cu':self.IT_Cu,
+                          'OCC':self.IT_OCC,
+                          'Mixed_Paper':self.IT_Mixed_Paper,
+                          'ONP':self.IT_ONP,
+                          'OFF':self.IT_OFF,
+                          'Fiber_Other':self.IT_Fiber_Other,
+                          'Brown_glass':self.IT_Brown_glass,
+                          'Clear_glass':self.IT_Clear_glass,
+                          'Green_glass':self.IT_Green_glass,
+                          'Mixed_Glass':self.IT_Mixed_Glass,
+                          'PET':self.IT_PET,
+                          'HDPE_Unsorted':self.IT_HDPE_Unsorted,
+                          'HDPE_P':self.IT_HDPE_P,
+                          'HDPE_T':self.IT_HDPE_T,
+                          'PVC':self.IT_PVC,
+                          'LDPE_Film':self.IT_LDPE_Film,
+                          'Polypropylene':self.IT_Polypropylene,
+                          'Polystyrene':self.IT_Polystyrene,
+                          'Plastic_Other':self.IT_Plastic_Other,
+                          'Mixed_Plastic':self.IT_Mixed_Plastic}
+    
+        # Process models
+        self._ProcessMetaData = ProcessModelsMetaData
+        self._ProcessNameDict = {}
+        for P in self._ProcessMetaData:
+            self._ProcessMetaData[P]['Default'] = True
+            self._ProcessNameDict[self._ProcessMetaData[P]['Name']] = P
+
+        self.PM.clear()
+        self.PM.addItems(sorted(list(self._ProcessNameDict.keys())))
+        self.PM.currentTextChanged.connect(self.load_PM_setting)
+        self.load_PM_setting(self.PM.currentText())
+        self.Clear_PM_setting.clicked.connect(self.clear_PM_setting)
+        self.Update_PM_setting.clicked.connect(self.update_PM_setting)
+        self.IT_BR.clicked.connect(self.select_file(self.IT_FName,"Python (*.py)"))
+        self.IT_BR.clicked.connect((lambda : self.IT_UserDefine.setChecked(True)))      
+                
         #Connect the PushButton [ImportProcessModels]
         self.ImportProcessModels.clicked.connect(self.Import_Process_models_func)
-        
+
+
     # Check to ethier select Default or User Defined option
     def helper(self,IT_Default,IT_UserDefine,IT_BR,IT_FName,Filter):
         IT_Default.setChecked(True)
@@ -444,9 +403,48 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         IT_BR.clicked.connect((lambda : IT_UserDefine.setChecked(True)))
     
 
+
+    @QtCore.Slot(str)  #Load process model setting
+    def load_PM_setting(self,ProcessModel):
+        ProcessModel = self._ProcessNameDict[ProcessModel]
+        self.clear_PM_setting()
+        self.IT_Default.setChecked(self._ProcessMetaData[ProcessModel]['Default'])
+        self.IT_UserDefine.setChecked(not self._ProcessMetaData[ProcessModel]['Default'])
+
+        if not self._ProcessMetaData[ProcessModel]['Default']:
+            self.IT_FName.setText(self._ProcessMetaData[ProcessModel]['File'])
+    
+        for flow in self._ProcessMetaData[ProcessModel]['InputType']:
+            self._InputKey[flow].setChecked(True)
+
+    @QtCore.Slot()
+    def clear_PM_setting(self):
+        self.IT_Default.setChecked(True)
+        self.IT_FName.clear()
+        for flow, CheckBox in self._InputKey.items():
+            CheckBox.setChecked(False)
+
+    @QtCore.Slot()
+    def update_PM_setting(self):
+        ProcessModel = self._ProcessNameDict[self.PM.currentText()]
+        self._ProcessMetaData[ProcessModel]['InputType'] = []
+        for flow, CheckBox in self._InputKey.items():
+            if CheckBox.isChecked():
+                self._ProcessMetaData[ProcessModel]['InputType'].append(flow)
+         
+        self._ProcessMetaData[ProcessModel]['Default'] = self.IT_Default.isChecked()
+        if not self.IT_Default.isChecked():
+            self._ProcessMetaData[ProcessModel]['File'] = self.IT_FName.text()
+        
+        self.msg_popup('Update process model setting','Settings for the {} process are updated successfully.'.format(ProcessModel),'Information')
+
     @QtCore.Slot()  #Change tab and import process models
     def Import_Process_models_func(self): 
-        global LF, WTE, AD, COMP, SF_Col, SS_MRF, CommonData, REPROC, Technosphere
+        for proc in self._ProcessMetaData:
+            clas_name= proc
+            clas_file=  self._ProcessMetaData[proc]['File'].split('.')[0]
+            module = importlib.import_module('swolfpy_processmodels.'+clas_file)
+            self._ProcessMetaData[proc]['CLS'] = module.__getattribute__(clas_name)
 
         #Import CommonData
         if self.IT_Default_0.isChecked():
@@ -454,7 +452,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         elif self.IT_UserDefine_0.isChecked():
             path = 'swolfpy_inputdata.'+self.IT_FName_0.text()[:-3].split('/')[-1]
             CommonData=importlib.import_module(path).CommonData
-        CommonData=CommonData
+        self._CommonData=CommonData
         
         #Import Technosphere
         if self.IT_Default_Tech.isChecked():
@@ -462,127 +460,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         elif self.IT_UserDefine_Tech.isChecked():
             path = 'swolfpy.'+self.IT_FName_Tech.text()[:-3].split('/')[-1]
             Technosphere=importlib.import_module(path).Technosphere
-        Technosphere=Technosphere
-        
-        #Import LF
-        if self.IT_Default.isChecked():
-            import swolfpy_processmodels.LF as LF
-        elif self.IT_UserDefine.isChecked():
-            path = 'swolfpy_processmodels.'+self.IT_FName.text()[:-3].split('/')[-1]
-            LF=importlib.import_module(path).LF
-        LF=LF
-        #Import WTE
-        if self.IT_Default_2.isChecked():
-            import swolfpy_processmodels.WTE as WTE
-        elif self.IT_UserDefine_2.isChecked():
-            path = 'swolfpy_processmodels.'+self.IT_FName_2.text()[:-3].split('/')[-1]
-            WTE=importlib.import_module(path).WTE
-        WTE=WTE
-        #Import AD
-        if self.IT_Default_3.isChecked():
-            import swolfpy_processmodels.AD as AD
-        elif self.IT_UserDefine_3.isChecked():
-            path = 'swolfpy_processmodels.'+self.IT_FName_3.text()[:-3].split('/')[-1]
-            AD=importlib.import_module(path).AD
-        AD=AD   
-        #Import COMP
-        if self.IT_Default_4.isChecked():
-            import swolfpy_processmodels.Comp as COMP
-        elif self.IT_UserDefine_4.isChecked():
-            path = 'swolfpy_processmodels.'+self.IT_FName_4.text()[:-3].split('/')[-1]
-            COMP=importlib.import_module(path).Comp
-        COMP=COMP
-        #Import SS_MRF
-        if self.IT_Default_5.isChecked():
-            import swolfpy_processmodels.SS_MRF as SS_MRF
-        elif self.IT_UserDefine_5.isChecked():
-            path = 'swolfpy_processmodels.'+self.IT_FName_5.text()[:-3].split('/')[-1]
-            SS_MRF=importlib.import_module(path).SS_MRF
-        SS_MRF=SS_MRF    
-        
-        #Import DS_MRF later
-        #Import MS_MRF later
-        
-        #Import REPROC
-        if self.IT_Default_8.isChecked():
-            import swolfpy_processmodels.Reproc as REPROC
-        elif self.IT_UserDefine_8.isChecked():
-            path = 'swolfpy_processmodels.'+self.IT_FName_8.text()[:-3].split('/')[-1]
-            REPROC=importlib.import_module(path).Reproc
-        REPROC=REPROC    
-        
-        
-        #Import SF_Collection
-        if self.IT_Default_col.isChecked():
-            import swolfpy_processmodels.SF_Col as SF_Col
-        elif self.IT_UserDefine_col.isChecked():
-            path = 'swolfpy_processmodels.'+self.IT_FName_col.text()[:-3].split('/')[-1]
-            SF_Col=importlib.import_module(path).SF_Col
-        SF_Col=SF_Col    
-        
-        self.LF_input_type = []
-        for x in [self.IT_RWC,self.IT_SSO,self.IT_DryRes,self.IT_REC,self.IT_WetRes,self.IT_MRDO,self.IT_SSR,
-                  self.IT_DSR,self.IT_MSR,self.IT_MSRDO,self.IT_SSYW,self.IT_SSYWDO,self.IT_Bottom_Ash,self.IT_Fly_Ash,
-                  self.IT_Other_Residual,self.IT_Separated_Organics,self.IT_OCC,self.IT_Mixed_Paper,self.IT_ONP,
-                  self.IT_OFF,self.IT_Fiber_Other,self.IT_PET,self.IT_HDPE_Unsorted,self.IT_HDPE_P,self.IT_HDPE_T,
-                  self.IT_Polystyrene,self.IT_Plastic_Other,self.IT_Mixed_Plastic,self.IT_Brown_glass,self.IT_Clear_glass,
-                  self.IT_Green_glass,self.IT_Mixed_Glass,self.IT_PVC,self.IT_LDPE_Film,self.IT_Polypropylene,
-                  self.IT_Fe,self.IT_Al,self.IT_Cu]:
-            self.helper_1(x,self.LF_input_type)
-        
-        self.WTE_input_type = []
-        for x in [self.IT_RWC_2,self.IT_SSO_2,self.IT_DryRes_2,self.IT_REC_2,self.IT_WetRes_2,self.IT_MRDO_2,self.IT_SSR_2,
-                  self.IT_DSR_2,self.IT_MSR_2,self.IT_MSRDO_2,self.IT_SSYW_2,self.IT_SSYWDO_2,self.IT_Bottom_Ash_2,self.IT_Fly_Ash_2,
-                  self.IT_Other_Residual_2,self.IT_Separated_Organics_2,self.IT_OCC_2,self.IT_Mixed_Paper_2,self.IT_ONP_2,
-                  self.IT_OFF_2,self.IT_Fiber_Other_2,self.IT_PET_2,self.IT_HDPE_Unsorted_2,self.IT_HDPE_P_2,self.IT_HDPE_T_2,
-                  self.IT_Polystyrene_2,self.IT_Plastic_Other_2,self.IT_Mixed_Plastic_2,self.IT_Brown_glass_2,self.IT_Clear_glass_2,
-                  self.IT_Green_glass_2,self.IT_Mixed_Glass_2,self.IT_PVC_2,self.IT_LDPE_Film_2,self.IT_Polypropylene_2,
-                  self.IT_Fe_2,self.IT_Al_2,self.IT_Cu_2]:
-            self.helper_1(x,self.WTE_input_type)
-
-        self.AD_input_type = []
-        for x in [self.IT_RWC_3,self.IT_SSO_3,self.IT_DryRes_3,self.IT_REC_3,self.IT_WetRes_3,self.IT_MRDO_3,self.IT_SSR_3,
-                  self.IT_DSR_3,self.IT_MSR_3,self.IT_MSRDO_3,self.IT_SSYW_3,self.IT_SSYWDO_3,self.IT_Bottom_Ash_3,self.IT_Fly_Ash_3,
-                  self.IT_Other_Residual_3,self.IT_Separated_Organics_3,self.IT_OCC_3,self.IT_Mixed_Paper_3,self.IT_ONP_3,
-                  self.IT_OFF_3,self.IT_Fiber_Other_3,self.IT_PET_3,self.IT_HDPE_Unsorted_3,self.IT_HDPE_P_3,self.IT_HDPE_T_3,
-                  self.IT_Polystyrene_3,self.IT_Plastic_Other_3,self.IT_Mixed_Plastic_3,self.IT_Brown_glass_3,self.IT_Clear_glass_3,
-                  self.IT_Green_glass_3,self.IT_Mixed_Glass_3,self.IT_PVC_3,self.IT_LDPE_Film_3,self.IT_Polypropylene_3,
-                  self.IT_Fe_3,self.IT_Al_3,self.IT_Cu_3]:
-            self.helper_1(x,self.AD_input_type)
-
-        self.COMP_input_type = []
-        for x in [self.IT_RWC_4,self.IT_SSO_4,self.IT_DryRes_4,self.IT_REC_4,self.IT_WetRes_4,self.IT_MRDO_4,self.IT_SSR_4,
-                  self.IT_DSR_4,self.IT_MSR_4,self.IT_MSRDO_4,self.IT_SSYW_4,self.IT_SSYWDO_4,self.IT_Bottom_Ash_4,self.IT_Fly_Ash_4,
-                  self.IT_Other_Residual_4,self.IT_Separated_Organics_4,self.IT_OCC_4,self.IT_Mixed_Paper_4,self.IT_ONP_4,
-                  self.IT_OFF_4,self.IT_Fiber_Other_4,self.IT_PET_4,self.IT_HDPE_Unsorted_4,self.IT_HDPE_P_4,self.IT_HDPE_T_4,
-                  self.IT_Polystyrene_4,self.IT_Plastic_Other_4,self.IT_Mixed_Plastic_4,self.IT_Brown_glass_4,self.IT_Clear_glass_4,
-                  self.IT_Green_glass_4,self.IT_Mixed_Glass_4,self.IT_PVC_4,self.IT_LDPE_Film_4,self.IT_Polypropylene_4,
-                  self.IT_Fe_4,self.IT_Al_4,self.IT_Cu_4]:
-            self.helper_1(x,self.COMP_input_type)
-
-        self.SS_MRF_input_type = []
-        for x in [self.IT_RWC_5,self.IT_SSO_5,self.IT_DryRes_5,self.IT_REC_5,self.IT_WetRes_5,self.IT_MRDO_5,self.IT_SSR_5,
-                  self.IT_DSR_5,self.IT_MSR_5,self.IT_MSRDO_5,self.IT_SSYW_5,self.IT_SSYWDO_5,self.IT_Bottom_Ash_5,self.IT_Fly_Ash_5,
-                  self.IT_Other_Residual_5,self.IT_Separated_Organics_5,self.IT_OCC_5,self.IT_Mixed_Paper_5,self.IT_ONP_5,
-                  self.IT_OFF_5,self.IT_Fiber_Other_5,self.IT_PET_5,self.IT_HDPE_Unsorted_5,self.IT_HDPE_P_5,self.IT_HDPE_T_5,
-                  self.IT_Polystyrene_5,self.IT_Plastic_Other_5,self.IT_Mixed_Plastic_5,self.IT_Brown_glass_5,self.IT_Clear_glass_5,
-                  self.IT_Green_glass_5,self.IT_Mixed_Glass_5,self.IT_PVC_5,self.IT_LDPE_Film_5,self.IT_Polypropylene_5,
-                  self.IT_Fe_5,self.IT_Al_5,self.IT_Cu_5]:
-            self.helper_1(x,self.SS_MRF_input_type)
-
-        #DS_MRF Add later
-        #MS_MRF Add later
-
-        self.REPROC_input_type = []
-        for x in [self.IT_RWC_8,self.IT_SSO_8,self.IT_DryRes_8,self.IT_REC_8,self.IT_WetRes_8,self.IT_MRDO_8,self.IT_SSR_8,
-                  self.IT_DSR_8,self.IT_MSR_8,self.IT_MSRDO_8,self.IT_SSYW_8,self.IT_SSYWDO_8,self.IT_Bottom_Ash_8,self.IT_Fly_Ash_8,
-                  self.IT_Other_Residual_8,self.IT_Separated_Organics_8,self.IT_OCC_8,self.IT_Mixed_Paper_8,self.IT_ONP_8,
-                  self.IT_OFF_8,self.IT_Fiber_Other_8,self.IT_PET_8,self.IT_HDPE_Unsorted_8,self.IT_HDPE_P_8,self.IT_HDPE_T_8,
-                  self.IT_Polystyrene_8,self.IT_Plastic_Other_8,self.IT_Mixed_Plastic_8,self.IT_Brown_glass_8,self.IT_Clear_glass_8,
-                  self.IT_Green_glass_8,self.IT_Mixed_Glass_8,self.IT_PVC_8,self.IT_LDPE_Film_8,self.IT_Polypropylene_8,
-                  self.IT_Fe_8,self.IT_Al_8,self.IT_Cu_8]:
-            self.helper_1(x,self.REPROC_input_type)
-
+        self._Technosphere=Technosphere
 
         #Does include collection
         self.isCollection = QtWidgets.QMessageBox()
@@ -598,7 +476,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.PySWOLF.setCurrentWidget(self.Define_SWM)
             self.Define_SWM.setEnabled(True)
             self.Define_SWM_1.setCurrentWidget(self.Collection_process)
-            #self.Collection.setCurrentWidget(self.Col1_tab)
             self.Collection_process.setEnabled(True)
             #init collection
             self.init_collection()
@@ -623,8 +500,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
     def init_collection(self):
         self.col_index = 1
-        self._col_list = ['...','SF_Colllection']
-        #self._col_list = ['...','SF_Colllection','MF_Colllection','COM_Colllection']
+        self._col_list = ['...']
+        for proc in self._ProcessMetaData:
+            if self._ProcessMetaData[proc]['Process_Type'] == 'Collection':
+                self._col_list.append(self._ProcessMetaData[proc]['Name'])
         self.Add_col.clicked.connect(self.Add_collection)
         self.Create_Collection_process.clicked.connect(self.Create_collection_dict)
     
@@ -632,7 +511,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def Add_collection(self):
         Tab = QtWidgets.QWidget()
         Tab.setObjectName("Collection_process_{}".format(self.col_index))
-        #self.gridLayout_12 = QtWidgets.QGridLayout(Tab)
         self.Collection.addTab(Tab,"Sector {}".format(self.col_index))
         self.Collection.setCurrentWidget(Tab)
     
@@ -646,9 +524,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         # Frame1 for browsing the input
         Frame1 = QtWidgets.QFrame(Tab)
-        #Frame1.setMinimumSize(QtCore.QSize(0, 0))
-        #Frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        #Frame1.setFrameShadow(QtWidgets.QFrame.Raised)
         Frame1.setObjectName("Frame1_{}".format(self.col_index))
         F1_layout = QtWidgets.QGridLayout(Frame1)
         F1_layout.setObjectName("F1_layout_{}".format(self.col_index))
@@ -656,9 +531,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         # For collection scheme table
         Frame2 = QtWidgets.QFrame(Tab)
-        #Frame2.setMinimumSize(QtCore.QSize(0, 0))
-        #Frame2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        #Frame2.setFrameShadow(QtWidgets.QFrame.Raised)
         Frame2.setObjectName("Frame2_{}".format(self.col_index))
         F2_layout = QtWidgets.QGridLayout(Frame2)
         F2_layout.setObjectName("F2_layout_{}".format(self.col_index))
@@ -789,8 +661,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             for j in ['SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']:
                 Collection_scheme[i]['separate_col'][j]=DF[i][j]
         return(Collection_scheme)
-                            
-    @QtCore.Slot()    
+
+    @QtCore.Slot()
     def set_col_name(self,name_place,index):
         def set_name_helper(name):
             if name !='...':
@@ -800,8 +672,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             name_place.setText(full_name)
         return(set_name_helper)
 
-
-
 #%% Treatment Processes
 # =============================================================================
 # =============================================================================
@@ -810,7 +680,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================    
     def init_TreatmentProcesses(self):
         #Create treatment dict
-        self._Plist = ['...','LF','WTE','Composting','AD','SS_MRF','REPROC']
+        self._Plist = ['...']
+        for proc in self._ProcessMetaData:
+            if self._ProcessMetaData[proc]['Process_Type'] == 'Treatment' or self._ProcessMetaData[proc]['Process_Type'] == 'Reprocessing':
+                self._Plist.append(self._ProcessMetaData[proc]['Name'])
         self.P_index = 1
         
         # Add process and create dict
@@ -884,7 +757,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def set_process_name(self,name_place,index):
         def set_name_helper(name):
             if name !='...':
-                full_name ='P'+str(index)+"_"+name
+                full_name ='P'+str(index)+"_"+self._ProcessNameDict[name]
             else:
                 full_name = ''
             name_place.setText(full_name)
@@ -902,7 +775,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         font2.setBold(False)
         
         input_data_path = self.IT_FName_00.text() if self.IT_UserDefine_00.isChecked() else None
-        self.CommonData = CommonData(input_data_path=input_data_path)            
+        self.CommonData = self._CommonData(input_data_path=input_data_path)            
             
         for Index in np.arange(1,self.P_index):
             Process = self.frame_Process_treatment.findChildren(QtWidgets.QComboBox,"Process_"+str(Index))[0]
@@ -911,73 +784,24 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             Type_input = self.frame_Process_treatment.findChildren(QtWidgets.QCheckBox,"P_"+str(Index)+"_Type_input")[0]
             Process_Label = self.frame_Process_treatment.findChildren(QtWidgets.QLabel,"Process_Label_"+str(Index))[0]
             
-            if Process.currentText()== 'LF':
-                self._Treatment_processes[Process_Name.text()]={}
-                if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = LF(CommonDataObjct=self.CommonData)
-                else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = LF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
-                self._Treatment_processes[Process_Name.text()]['input_type']=self.LF_input_type
-                Process_Label.setFont(font1)
-                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-        
-            elif Process.currentText() == 'WTE':
-                self._Treatment_processes[Process_Name.text()]={}
-                if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = WTE(CommonDataObjct=self.CommonData)
-                else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = WTE(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
-                self._Treatment_processes[Process_Name.text()]['input_type']=self.WTE_input_type
-                Process_Label.setFont(font1)
-                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-        
-            elif Process.currentText() == 'AD':
-                self._Treatment_processes[Process_Name.text()]={}
-                if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = AD(CommonDataObjct=self.CommonData)
-                else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = AD(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
-                self._Treatment_processes[Process_Name.text()]['input_type']=self.AD_input_type
-                Process_Label.setFont(font1)
-                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-        
-            elif Process.currentText() == 'Composting':
-                self._Treatment_processes[Process_Name.text()]={}
-                if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = COMP(CommonDataObjct=self.CommonData)
-                else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = COMP(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
-                self._Treatment_processes[Process_Name.text()]['input_type']=self.COMP_input_type
-                Process_Label.setFont(font1)
-                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-
-            elif Process.currentText() == 'SS_MRF':
-                self._Treatment_processes[Process_Name.text()]={}
-                if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF(CommonDataObjct=self.CommonData)
-                else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = SS_MRF(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
-                self._Treatment_processes[Process_Name.text()]['input_type']=self.SS_MRF_input_type
-                Process_Label.setFont(font1)
-                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
-
-            elif Process.currentText() == 'REPROC':
-                self._Treatment_processes[Process_Name.text()]={}
-                if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC(CommonDataObjct=self.CommonData)
-                else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = REPROC(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
-                self._Treatment_processes[Process_Name.text()]['input_type']=self.REPROC_input_type
-                Process_Label.setFont(font1)
-                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
             
+            self._Treatment_processes[Process_Name.text()] = {}
+            if Process.currentText() != '...':
+                CLS = self._ProcessMetaData[self._ProcessNameDict[Process.currentText()]]['CLS']
+                if Type_input.isChecked():
+                    self._Treatment_processes[Process_Name.text()]['model'] = CLS(CommonDataObjct=self.CommonData)
+                else:
+                    self._Treatment_processes[Process_Name.text()]['model'] = CLS(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                
+                self._Treatment_processes[Process_Name.text()]['input_type']= self._ProcessMetaData[self._ProcessNameDict[Process.currentText()]]['InputType']
+                Process_Label.setFont(font1)
+                print('Process {} is added to dictionary as {}'.format(Process_Name.text(),Process.currentText()))
             else:
                 Process_Label.setFont(font2)
                        
         print(self._Treatment_processes)
         self.Define_SWM_1.setCurrentWidget(self.Network)
         self.Network.setEnabled(True)
-
 
     @QtCore.Slot()
     def Treat_process_Clear_func(self):
@@ -1006,7 +830,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
         if len(self._Treatment_processes)> 0:
             self._Treatment_processes = {}
-            
             
 
 #%% Write project
@@ -1050,8 +873,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     
         self.Show_SWM_Network_AllFlows.setChecked(True)
         
-        
-    
     @QtCore.Slot()
     def Create_Distance_Table(self):
         self.Distance_table.setEnabled(1)
@@ -1079,19 +900,20 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 y = self.Collection.findChildren(QtWidgets.QLineEdit,"Col_name_{}".format(i))[0].text()
                 m = self.Collection.findChildren(QtWidgets.QLineEdit,"Col_input_path_{}".format(i))[0].text()
                 z = self.Collection.findChildren(QtWidgets.QCheckBox,"Col_def_input_{}".format(i))[0].isChecked()
-                if x == 'SF_Colllection':
+                
+                if x != '...':
+                    CLS = self._ProcessMetaData[self._ProcessNameDict[x]]['CLS']
                     if z:
-                        self._Collection_processes[y]['model'] = SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData)
+                        self._Collection_processes[y]['model'] = CLS(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData)
                     else:
-                        self._Collection_processes[y]['model'] = SF_Col(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData,input_data_path=m)
-            
-            print(self._Collection_processes)
+                        self._Collection_processes[y]['model'] = CLS(y,self._Collection_processes[y]['scheme'],self._Treatment_processes,Distance=self.distance,CommonDataObjct=self.CommonData,input_data_path=m)
+                    print(self._Collection_processes)
 
         if self.IT_UserDefine_Tech.isChecked() or self.IT_UserDefine_LCI.isChecked() or self.IT_UserDefine_LCI_Ref.isChecked() or self.IT_UserDefine_EcoSpold2.isChecked():
             LCI_path = self.IT_FName_LCI.text() if self.IT_UserDefine_LCI.isChecked()  else None
             LCI_Reference_path = self.IT_FName_LCI_Ref.text() if self.IT_UserDefine_LCI_Ref.isChecked() else None
             Ecospold2_Path = self.IT_FName_EcoSpold2.text() if self.IT_UserDefine_EcoSpold2.isChecked()  else None
-            self.Technosphere = Technosphere(project_name=self.P_Name,LCI_path=LCI_path,LCI_Reference_path=LCI_Reference_path,Ecospold2_Path=Ecospold2_Path)
+            self.Technosphere = self._Technosphere(project_name=self.P_Name,LCI_path=LCI_path,LCI_Reference_path=LCI_Reference_path,Ecospold2_Path=Ecospold2_Path)
             self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,Collection_processes=self._Collection_processes,Technosphere_obj=self.Technosphere)
         else:
             self.demo = Project(self.P_Name,self.CommonData,self._Treatment_processes,self.distance,self._Collection_processes)
