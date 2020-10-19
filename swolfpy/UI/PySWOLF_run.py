@@ -407,6 +407,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot(str)  #Load process model setting
     def load_PM_setting(self,ProcessModel):
         ProcessModel = self._ProcessNameDict[ProcessModel]
+        
         self.clear_PM_setting()
         self.IT_Default.setChecked(self._ProcessMetaData[ProcessModel]['Default'])
         self.IT_UserDefine.setChecked(not self._ProcessMetaData[ProcessModel]['Default'])
@@ -416,6 +417,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     
         for flow in self._ProcessMetaData[ProcessModel]['InputType']:
             self._InputKey[flow].setChecked(True)
+        
+        self.groupBox_2.setDisabled(self._ProcessMetaData[ProcessModel]['Process_Type'] == 'Collection')
 
     @QtCore.Slot()
     def clear_PM_setting(self):
