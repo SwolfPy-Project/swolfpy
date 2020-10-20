@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'PySWOLF.ui',
 # licensing of 'PySWOLF.ui' applies.
 #
-# Created: Mon Oct 19 19:59:16 2020
+# Created: Tue Oct 20 00:09:20 2020
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -728,7 +728,7 @@ class Ui_MainWindow(object):
         self.Define_SWM_1.setMinimumSize(QtCore.QSize(0, 600))
         self.Define_SWM_1.setObjectName("Define_SWM_1")
         self.Collection_process = QtWidgets.QWidget()
-        self.Collection_process.setGeometry(QtCore.QRect(0, 0, 1482, 910))
+        self.Collection_process.setGeometry(QtCore.QRect(0, 0, 250, 109))
         self.Collection_process.setObjectName("Collection_process")
         self.gridLayout_99 = QtWidgets.QGridLayout(self.Collection_process)
         self.gridLayout_99.setObjectName("gridLayout_99")
@@ -765,7 +765,7 @@ class Ui_MainWindow(object):
         self.gridLayout_99.addLayout(self.horizontalLayout_18, 2, 0, 1, 1)
         self.Define_SWM_1.addItem(self.Collection_process, "")
         self.Treatment_process = QtWidgets.QWidget()
-        self.Treatment_process.setGeometry(QtCore.QRect(0, 0, 1482, 910))
+        self.Treatment_process.setGeometry(QtCore.QRect(0, 0, 426, 149))
         self.Treatment_process.setObjectName("Treatment_process")
         self.gridLayout_100 = QtWidgets.QGridLayout(self.Treatment_process)
         self.gridLayout_100.setObjectName("gridLayout_100")
@@ -846,7 +846,7 @@ class Ui_MainWindow(object):
         self.Create_Distance.setObjectName("Create_Distance")
         self.horizontalLayout_21.addWidget(self.Create_Distance)
         self.label_42 = QtWidgets.QLabel(self.Network)
-        self.label_42.setMinimumSize(QtCore.QSize(80, 0))
+        self.label_42.setMinimumSize(QtCore.QSize(100, 0))
         font = QtGui.QFont()
         font.setWeight(75)
         font.setBold(True)
@@ -859,7 +859,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Project_Name.sizePolicy().hasHeightForWidth())
         self.Project_Name.setSizePolicy(sizePolicy)
-        self.Project_Name.setMinimumSize(QtCore.QSize(150, 0))
+        self.Project_Name.setMinimumSize(QtCore.QSize(200, 0))
         self.Project_Name.setMaximumSize(QtCore.QSize(200, 16777215))
         self.Project_Name.setObjectName("Project_Name")
         self.horizontalLayout_21.addWidget(self.Project_Name)
@@ -1436,7 +1436,7 @@ class Ui_MainWindow(object):
         self.scrollArea_7.setWidgetResizable(True)
         self.scrollArea_7.setObjectName("scrollArea_7")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 1430, 851))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 490, 851))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -2002,7 +2002,7 @@ class Ui_MainWindow(object):
         self.scrollArea_5.setWidgetResizable(True)
         self.scrollArea_5.setObjectName("scrollArea_5")
         self.scrollAreaWidgetContents_9 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, 0, 1494, 1123))
+        self.scrollAreaWidgetContents_9.setGeometry(QtCore.QRect(0, 0, 1503, 1123))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -2608,7 +2608,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuReferences.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.PySWOLF.setCurrentIndex(7)
+        self.PySWOLF.setCurrentIndex(2)
         self.init_process_toolbox.setCurrentIndex(0)
         self.Define_SWM_1.setCurrentIndex(2)
         self.Collection.setCurrentIndex(-1)

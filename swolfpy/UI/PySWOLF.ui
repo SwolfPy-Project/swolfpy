@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -1595,8 +1595,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1482</width>
-                    <height>910</height>
+                    <width>250</width>
+                    <height>109</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1690,8 +1690,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1482</width>
-                    <height>910</height>
+                    <width>426</width>
+                    <height>149</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1902,7 +1902,7 @@ p, li { white-space: pre-wrap; }
                       <widget class="QLabel" name="label_42">
                        <property name="minimumSize">
                         <size>
-                         <width>80</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
@@ -1928,7 +1928,7 @@ p, li { white-space: pre-wrap; }
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>150</width>
+                         <width>200</width>
                          <height>0</height>
                         </size>
                        </property>
@@ -3228,7 +3228,7 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1430</width>
+                       <width>490</width>
                        <height>851</height>
                       </rect>
                      </property>
@@ -4415,7 +4415,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1494</width>
+             <width>1503</width>
              <height>1123</height>
             </rect>
            </property>
