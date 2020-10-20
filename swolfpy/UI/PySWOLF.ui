@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>7</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -287,19 +287,6 @@ p, li { white-space: pre-wrap; }
                <string>Process Model</string>
               </property>
               <layout class="QGridLayout" name="gridLayout_24">
-               <item row="0" column="2">
-                <spacer name="horizontalSpacer_5">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>350</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
                <item row="0" column="1">
                 <widget class="QComboBox" name="PM">
                  <property name="sizePolicy">
@@ -334,6 +321,36 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="text">
                   <string>Process Model:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>350</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="Help_ImportProcess">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="PyWOLF_Resource.qrc">
+                   <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -1578,8 +1595,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>250</width>
-                    <height>108</height>
+                    <width>1482</width>
+                    <height>910</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1596,6 +1613,23 @@ p, li { white-space: pre-wrap; }
                        <property name="icon">
                         <iconset resource="PyWOLF_Resource.qrc">
                          <normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</normaloff>:/ICONS/PySWOLF_ICONS/ADD.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="Help_ColSector">
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
                        </property>
                       </widget>
                      </item>
@@ -1656,8 +1690,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>426</width>
-                    <height>148</height>
+                    <width>1482</width>
+                    <height>910</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1799,6 +1833,23 @@ p, li { white-space: pre-wrap; }
                       </widget>
                      </item>
                      <item>
+                      <widget class="QPushButton" name="Help_AddProcess">
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <spacer name="horizontalSpacer_40">
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
@@ -1893,6 +1944,23 @@ p, li { white-space: pre-wrap; }
                       </widget>
                      </item>
                      <item>
+                      <widget class="QPushButton" name="Help_DistanceTable">
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <spacer name="horizontalSpacer_48">
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
@@ -1963,6 +2031,23 @@ p, li { white-space: pre-wrap; }
                        <property name="icon">
                         <iconset resource="PyWOLF_Resource.qrc">
                          <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="Help_Project_Param">
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="PyWOLF_Resource.qrc">
+                         <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
                        </property>
                       </widget>
                      </item>
@@ -2342,99 +2427,47 @@ p, li { white-space: pre-wrap; }
               </property>
               <layout class="QGridLayout" name="gridLayout_16">
                <item row="0" column="0">
-                <layout class="QVBoxLayout" name="verticalLayout_6">
-                 <item>
+                <layout class="QFormLayout" name="formLayout">
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="Start_new_sen">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string>Start New Scenario</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
                   <layout class="QHBoxLayout" name="horizontalLayout_4">
                    <item>
-                    <layout class="QFormLayout" name="formLayout">
-                     <item row="0" column="0">
-                      <widget class="QPushButton" name="Start_new_sen">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="text">
-                        <string>Start New Scenario</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QLabel" name="label_38">
-                       <property name="text">
-                        <string>Name of scenario</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QLineEdit" name="Name_new_scenario">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>200</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="maxLength">
-                        <number>32768</number>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Enter the name of scenario</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QLabel" name="label_37">
-                       <property name="minimumSize">
-                        <size>
-                         <width>0</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Data Base:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QComboBox" name="Process">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
-                      <spacer name="horizontalSpacer_32">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>193</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
+                    <widget class="QPushButton" name="Help_CreateScenario">
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="PyWOLF_Resource.qrc">
+                       <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>24</width>
+                       <height>24</height>
+                      </size>
+                     </property>
+                    </widget>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer_16">
+                    <spacer name="horizontalSpacer_32">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
-                       <width>40</width>
+                       <width>128</width>
                        <height>20</height>
                       </size>
                      </property>
@@ -2442,19 +2475,74 @@ p, li { white-space: pre-wrap; }
                    </item>
                   </layout>
                  </item>
-                 <item>
-                  <widget class="QTableView" name="act_in_process_table">
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_38">
+                   <property name="text">
+                    <string>Name of scenario</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="Name_new_scenario">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>200</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maxLength">
+                    <number>32768</number>
+                   </property>
+                   <property name="placeholderText">
+                    <string>Enter the name of scenario</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_37">
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>300</height>
+                     <height>0</height>
                     </size>
+                   </property>
+                   <property name="text">
+                    <string>Data Base:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QComboBox" name="Process">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
                   </widget>
                  </item>
                 </layout>
                </item>
-               <item row="1" column="0">
+               <item row="0" column="1">
+                <spacer name="horizontalSpacer_16">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>735</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="2" column="0" colspan="2">
                 <layout class="QVBoxLayout" name="verticalLayout_8">
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -2556,6 +2644,16 @@ p, li { white-space: pre-wrap; }
                  </item>
                 </layout>
                </item>
+               <item row="1" column="0" colspan="2">
+                <widget class="QTableView" name="act_in_process_table">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>300</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
@@ -2573,7 +2671,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0">
          <widget class="QTabWidget" name="LCA_subTab">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="LCA_setup_tab">
            <attribute name="title">
@@ -3693,6 +3791,29 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="text">
                     <string>Only show input variables with defined uncertainty</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="Help_UncertaintyDist">
+                   <property name="font">
+                    <font>
+                     <weight>50</weight>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Uncertainty Distributions Help</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="PyWOLF_Resource.qrc">
+                     <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
@@ -5338,6 +5459,12 @@ p, li { white-space: pre-wrap; }
                   </item>
                   <item>
                    <widget class="QLabel" name="label_9">
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <bold>false</bold>
+                     </font>
+                    </property>
                     <property name="text">
                      <string>Results:</string>
                     </property>
@@ -5351,6 +5478,12 @@ p, li { white-space: pre-wrap; }
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <bold>false</bold>
+                     </font>
+                    </property>
                    </widget>
                   </item>
                   <item>
@@ -5360,6 +5493,12 @@ p, li { white-space: pre-wrap; }
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <bold>false</bold>
+                     </font>
                     </property>
                    </widget>
                   </item>
@@ -5378,6 +5517,12 @@ p, li { white-space: pre-wrap; }
                   </item>
                   <item>
                    <widget class="QPushButton" name="adv_opt_btm">
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <bold>false</bold>
+                     </font>
+                    </property>
                     <property name="text">
                      <string>Optimization setting</string>
                     </property>
