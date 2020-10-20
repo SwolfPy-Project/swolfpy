@@ -262,7 +262,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         data_table = Table_from_pandas(data)
         self.load_treatment_info.setModel(data_table)
+        self.load_treatment_info.setWordWrap(True)
         self.load_treatment_info.resizeColumnsToContents()
+        self.load_treatment_info.setColumnWidth(1, 500)
+        self.load_treatment_info.resizeRowsToContents()
 
         
         param_data=pd.DataFrame(self.demo.parameters_list)
@@ -1190,6 +1193,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             Dialog = QtWidgets.QDialog()
             Dialog.setObjectName("showMethod_Dialog")
             Dialog.setWindowIcon(self.icon)
+            Dialog.setWindowTitle('swolfpy: LCIA method')
             gridLayout = QtWidgets.QGridLayout(Dialog)
             gridLayout.setObjectName("showMethod_gridLayout")
             frame = QtWidgets.QFrame(Dialog)
@@ -1214,10 +1218,16 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #Setup the QTableView                
             Method_table_model = Table_from_pandas(CFS_data)
             Method_table.setModel(Method_table_model)
-            Method_table.resizeColumnsToContents()
             Method_table.installEventFilter(self)
             Method_table.setSortingEnabled(True)
-            
+            Method_table.setWordWrap(True)
+            Method_table.resizeColumnsToContents()
+            Method_table.setColumnWidth(0, 350)
+            Method_table.setColumnWidth(1, 350)
+            Method_table.resizeRowsToContents()
+
+            Dialog.setMinimumWidth(700)
+            Dialog.setMinimumHeight(600)
             #Show Dialog    
             Dialog.show()
             Dialog.exec_()
@@ -1595,7 +1605,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #setup the TableView for inventory
         LCA_LCI_Table_model = Table_from_pandas(Inventory_DF .sort_values('name'))
         self.LCA_LCI_Table.setModel(LCA_LCI_Table_model)
+        self.LCA_LCI_Table.setWordWrap(True)
         self.LCA_LCI_Table.resizeColumnsToContents()
+        self.LCA_LCI_Table.setColumnWidth(0, 400)
+        self.LCA_LCI_Table.setColumnWidth(1, 300)
+        self.LCA_LCI_Table.setColumnWidth(2, 350)
+        self.LCA_LCI_Table.resizeRowsToContents()
 
         
         
@@ -1647,6 +1662,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_Model.addItems(keys)
             self.MC_Model.currentTextChanged.connect(self.MC_load_uncertain_func)
             self.MC_load_uncertain_func(self.MC_Model.currentText())
+            self.MC_uncertain_filter_func()
             self.MC_uncertain_filter.clicked.connect(self.MC_uncertain_filter_func)
             self.MC_uncertain_update.clicked.connect(self.MC_uncertain_update_func)
             self.MC_unceratin_clear.clicked.connect(self.MC_uncertain_clear_func)
@@ -1704,7 +1720,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         else:
             MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data)
         self.MC_Uncertain_table.setModel(MC_Uncertain_model)            
+        self.MC_Uncertain_table.setWordWrap(True)
         self.MC_Uncertain_table.resizeColumnsToContents()
+        self.MC_Uncertain_table.setColumnWidth(2, 300)
+        self.MC_Uncertain_table.setColumnWidth(3, 300)
+        self.MC_Uncertain_table.setColumnWidth(12, 300)
+        self.MC_Uncertain_table.setColumnWidth(13, 300)
+        self.MC_Uncertain_table.setColumnHidden(1,True)
+        self.MC_Uncertain_table.resizeRowsToContents()
 
     @QtCore.Slot()
     def MC_uncertain_update_func(self):
