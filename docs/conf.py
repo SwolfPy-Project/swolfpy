@@ -24,11 +24,9 @@ import os
 import sys
 import importlib
 
+numfig = True
+
 sys.path.insert(0, os.path.abspath('..'))
-
-
-
-
 
 
 # -- General configuration ---------------------------------------------
@@ -39,7 +37,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'nbsphinx']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'nbsphinx','sphinx.ext.mathjax']
 
 autodoc_mock_imports = []
 for mod in ['swolfpy',\
