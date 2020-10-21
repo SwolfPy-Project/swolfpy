@@ -116,7 +116,7 @@ html_theme = 'alabaster'
 # theme further.  For a list of options available for each theme, see the
 # documentation.
 #
-#html_theme_options = {}
+html_theme_options = {'page_width': '1200px',}
 #
 html_logo = "../swolfpy/UI/PySWOLF_ICONS/PySWOLF.ico"
 
