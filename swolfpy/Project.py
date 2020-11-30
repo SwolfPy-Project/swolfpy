@@ -250,23 +250,22 @@ class Project():
                     go to different destinations, so sum of parameters from each source should be 1. (0<= `parameters` <=1)
 
         """
-        self.new_param_data = new_param_data
 
         progress = 0
         if signal:
             signal.emit(progress)
 
-        for j in self.new_param_data:
+        for j in new_param_data:
             for k in self.parameters_list:
                 if k['name'] == j['name']:
                     self.parameters.update_values(j['name'], j['amount'])
 
         if self.parameters.check_sum():
-            for j in self.new_param_data:
+            for j in new_param_data:
                 for k in self.parameters_list:
                     if k['name'] == j['name']:
                         k['amount'] = j['amount']
-            parameters.new_project_parameters(self.new_param_data)
+            parameters.new_project_parameters(new_param_data)
             for j in self.processes:
                 if len(self.act_include_param[j]) > 0:
                     ActivityParameter.recalculate_exchanges(j)
@@ -276,7 +275,7 @@ class Project():
                     signal.emit(progress)
 
         else:
-            for j in self.new_param_data:
+            for j in new_param_data:
                 for k in self.parameters_list:
                     if k['name'] == j['name']:
                         self.parameters.update_values(k['name'], k['amount'])
@@ -284,21 +283,20 @@ class Project():
     def process_start_scenario(self, input_dict, scenario_name):
         """Creates a new scenario (activity).
         """
-        self.input_dict = input_dict
-        self.scenario_name = scenario_name
-        self.waste_BD.new_activity(code=self.scenario_name, name=self.scenario_name, type="process", unit="Mg").save()
-        for P in self.input_dict:
-            for y in self.input_dict[P]:
-                if self.input_dict[P][y] != 0:
-                    self.waste_BD.get(self.scenario_name).new_exchange(input=(P, y), amount=self.input_dict[P][y], type="technosphere").save()
-        self.waste_BD.get(self.scenario_name).save()
+        input_dict = input_dict
+        self.waste_BD.new_activity(code=scenario_name, name=scenario_name, type="process", unit="Mg").save()
+        for P in input_dict:
+            for y in input_dict[P]:
+                if input_dict[P][y] != 0:
+                    self.waste_BD.get(scenario_name).new_exchange(input=(P, y), amount=input_dict[P][y], type="technosphere").save()
+        self.waste_BD.get(scenario_name).save()
 
     def Do_LCA(self, scenario_name, impact_method, functioanl_unit):
         """
         Perform LCA by instantiating the ``bw2calc.lca.LCA`` class from Brightway2.
         """
-        self.demand = {(self.waste_BD.name, scenario_name): functioanl_unit}
-        lca = LCA(self.demand, impact_method)
+        demand = {(self.waste_BD.name, scenario_name): functioanl_unit}
+        lca = LCA(demand, impact_method)
         lca.lci()
         lca.lcia()
         print("lca socre= ", lca.score)
