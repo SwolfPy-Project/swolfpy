@@ -71,7 +71,7 @@ Installation
 
 7- Open python to run swolfpy::
 
-        ipython
+        python
 
 8- Run swolfpy in python::
 

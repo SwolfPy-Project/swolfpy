@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1345</width>
+    <width>1157</width>
     <height>1179</height>
    </rect>
   </property>
@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -72,22 +72,22 @@
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:20pt; font-weight:600; color:#aa0000;&quot;&gt;Solid Waste Optimization Life-cycle Framework in Python&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; color:#aa0000;&quot;&gt;Developed at North Carolina State University&lt;/span&gt;&lt;/p&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#aa0000;&quot;&gt;Solid Waste Optimization Life-cycle Framework in Python&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; color:#aa0000;&quot;&gt;Developed at North Carolina State University&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/ICONS/PySWOLF_ICONS/PySWOLF.ico&quot; /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Development Team:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia','serif'; font-weight:600; color:#000000;&quot;&gt;Mojtaba Sardarmehni&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia','serif'; color:#000000;&quot;&gt;, Ph.D. Student&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia','serif'; font-size:17px; font-weight:600; color:#3e4349; background-color:#ffffff;&quot;&gt;Pedro Anchieta&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia','serif'; color:#000000;&quot;&gt;, Master Student &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia','serif'; font-weight:600; color:#000000;&quot;&gt;Dr. James W. Levis&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia','serif'; color:#000000;&quot;&gt;, Research Assistant Professor&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Related Links:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Install: &lt;/span&gt;&lt;a href=&quot;https://pypi.org/project/swolfpy/&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://pypi.org/project/swolfpy/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Document: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_docs&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_docs&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Source Code: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_source_code&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_source_code&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600;&quot;&gt;Report bugs: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_issues&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_issues&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Development Team:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;&quot;&gt;Mojtaba Sardarmehni&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; color:#000000;&quot;&gt;, Ph.D. Student&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;&quot;&gt;Pedro Anchieta&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; color:#000000;&quot;&gt;, Master Student &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;&quot;&gt;Dr. James W. Levis&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; color:#000000;&quot;&gt;, Research Assistant Professor&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Related Links:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Install: &lt;/span&gt;&lt;a href=&quot;https://pypi.org/project/swolfpy/&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://pypi.org/project/swolfpy/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Document: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_docs&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_docs&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Source Code: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_source_code&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_source_code&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Report bugs: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_issues&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_issues&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="openExternalLinks">
              <bool>true</bool>
@@ -1565,8 +1565,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1301</width>
-             <height>1050</height>
+             <width>1113</width>
+             <height>1074</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_105">
@@ -1595,8 +1595,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>250</width>
-                    <height>109</height>
+                    <width>187</width>
+                    <height>96</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1690,8 +1690,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>426</width>
-                    <height>149</height>
+                    <width>310</width>
+                    <height>129</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1871,15 +1871,15 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1263</width>
-                    <height>910</height>
+                    <width>1075</width>
+                    <height>955</height>
                    </rect>
                   </property>
                   <attribute name="label">
                    <string>System</string>
                   </attribute>
-                  <layout class="QGridLayout" name="gridLayout_26">
-                   <item row="0" column="0">
+                  <layout class="QVBoxLayout" name="verticalLayout_13">
+                   <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
                      <item>
                       <widget class="QPushButton" name="Create_Distance">
@@ -1975,114 +1975,123 @@ p, li { white-space: pre-wrap; }
                      </item>
                     </layout>
                    </item>
-                   <item row="1" column="0">
-                    <widget class="QTableView" name="Distance_table">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
+                   <item>
+                    <widget class="QSplitter" name="splitter_8">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
                      </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>800</width>
-                       <height>200</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
+                     <widget class="QTableView" name="Distance_table">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>800</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                     </widget>
+                     <widget class="QWidget" name="layoutWidget">
+                      <layout class="QVBoxLayout" name="verticalLayout_12">
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_26">
+                         <item>
+                          <widget class="QPushButton" name="write_project">
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                           <property name="text">
+                            <string>Create System</string>
+                           </property>
+                           <property name="icon">
+                            <iconset resource="PyWOLF_Resource.qrc">
+                             <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QProgressBar" name="progressBar_write_project">
+                           <property name="value">
+                            <number>0</number>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="Load_params">
+                           <property name="text">
+                            <string>Load Parameters</string>
+                           </property>
+                           <property name="icon">
+                            <iconset resource="PyWOLF_Resource.qrc">
+                             <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="Help_Project_Param">
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset resource="PyWOLF_Resource.qrc">
+                             <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>24</width>
+                             <height>24</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="horizontalSpacer_49">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <widget class="QTableView" name="Param_table">
+                         <property name="minimumSize">
+                          <size>
+                           <width>800</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
                     </widget>
                    </item>
-                   <item row="2" column="0">
-                    <layout class="QHBoxLayout" name="horizontalLayout_26">
-                     <item>
-                      <widget class="QPushButton" name="write_project">
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="text">
-                        <string>Create System</string>
-                       </property>
-                       <property name="icon">
-                        <iconset resource="PyWOLF_Resource.qrc">
-                         <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QProgressBar" name="progressBar_write_project">
-                       <property name="value">
-                        <number>0</number>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="Load_params">
-                       <property name="text">
-                        <string>Load Parameters</string>
-                       </property>
-                       <property name="icon">
-                        <iconset resource="PyWOLF_Resource.qrc">
-                         <normaloff>:/ICONS/PySWOLF_ICONS/Load.png</normaloff>:/ICONS/PySWOLF_ICONS/Load.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="Help_Project_Param">
-                       <property name="text">
-                        <string/>
-                       </property>
-                       <property name="icon">
-                        <iconset resource="PyWOLF_Resource.qrc">
-                         <normaloff>:/ICONS/PySWOLF_ICONS/Help.png</normaloff>:/ICONS/PySWOLF_ICONS/Help.png</iconset>
-                       </property>
-                       <property name="iconSize">
-                        <size>
-                         <width>24</width>
-                         <height>24</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="horizontalSpacer_49">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                   <item row="3" column="0">
-                    <widget class="QTableView" name="Param_table">
-                     <property name="minimumSize">
-                      <size>
-                       <width>800</width>
-                       <height>200</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="0">
+                   <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_25">
                      <item>
                       <widget class="QPushButton" name="update_param">
@@ -2169,8 +2178,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1301</width>
-             <height>1050</height>
+             <width>1113</width>
+             <height>1074</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_106">
@@ -2412,8 +2421,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1301</width>
-             <height>1050</height>
+             <width>1113</width>
+             <height>1074</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_52">
@@ -3228,8 +3237,8 @@ p, li { white-space: pre-wrap; }
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>490</width>
-                       <height>851</height>
+                       <width>404</width>
+                       <height>846</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -3467,8 +3476,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1301</width>
-             <height>1050</height>
+             <width>1113</width>
+             <height>1074</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_30">
@@ -3861,8 +3870,8 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>442</width>
-                      <height>402</height>
+                      <width>419</width>
+                      <height>423</height>
                      </rect>
                     </property>
                     <attribute name="label">
@@ -3937,8 +3946,8 @@ p, li { white-space: pre-wrap; }
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>422</width>
-                          <height>325</height>
+                          <width>399</width>
+                          <height>358</height>
                          </rect>
                         </property>
                         <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -3952,8 +3961,8 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>237</width>
-                      <height>82</height>
+                      <width>184</width>
+                      <height>70</height>
                      </rect>
                     </property>
                     <attribute name="label">
@@ -4136,6 +4145,7 @@ p, li { white-space: pre-wrap; }
                      <font>
                       <weight>50</weight>
                       <bold>false</bold>
+                      <kerning>true</kerning>
                      </font>
                     </property>
                     <property name="text">
@@ -4427,8 +4437,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1275</width>
-             <height>1123</height>
+             <width>1113</width>
+             <height>1074</height>
             </rect>
            </property>
            <property name="palette">
@@ -5478,6 +5488,7 @@ p, li { white-space: pre-wrap; }
                      <font>
                       <weight>50</weight>
                       <bold>false</bold>
+                      <kerning>true</kerning>
                      </font>
                     </property>
                     <property name="text">
@@ -5497,6 +5508,7 @@ p, li { white-space: pre-wrap; }
                      <font>
                       <weight>50</weight>
                       <bold>false</bold>
+                      <kerning>true</kerning>
                      </font>
                     </property>
                    </widget>
@@ -5513,6 +5525,7 @@ p, li { white-space: pre-wrap; }
                      <font>
                       <weight>50</weight>
                       <bold>false</bold>
+                      <kerning>true</kerning>
                      </font>
                     </property>
                    </widget>
@@ -5536,6 +5549,7 @@ p, li { white-space: pre-wrap; }
                      <font>
                       <weight>50</weight>
                       <bold>false</bold>
+                      <kerning>true</kerning>
                      </font>
                     </property>
                     <property name="text">
@@ -5568,8 +5582,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1345</width>
-     <height>30</height>
+     <width>1157</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

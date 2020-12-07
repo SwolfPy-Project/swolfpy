@@ -27,7 +27,11 @@ __version__ = '0.1.9'
 
 class swolfpy():
     def __init__(self):
-        self.app = QtWidgets.QApplication(sys.argv)
+        if not QtWidgets.QApplication.instance():
+            self.app = QtWidgets.QApplication(sys.argv)
+        else:
+            self.app = QtWidgets.QApplication.instance()
+
         self.qt_app = MyQtApp()
         availableGeometry = self.app.desktop().availableGeometry(self.qt_app)
         self.qt_app.resize(availableGeometry.width() * 2 / 3, availableGeometry.height() * 2.85 / 3)
