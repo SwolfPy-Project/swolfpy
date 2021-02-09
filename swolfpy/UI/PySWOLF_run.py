@@ -795,9 +795,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             if Process.currentText() != '...':
                 CLS = self._ProcessMetaData[self._ProcessNameDict[Process.currentText()]]['CLS']
                 if Type_input.isChecked():
-                    self._Treatment_processes[Process_Name.text()]['model'] = CLS(CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = CLS(process_name=Process_Name.text(), CommonDataObjct=self.CommonData)
                 else:
-                    self._Treatment_processes[Process_Name.text()]['model'] = CLS(input_data_path=Process_path.text(),CommonDataObjct=self.CommonData)
+                    self._Treatment_processes[Process_Name.text()]['model'] = CLS(process_name=Process_Name.text(), input_data_path=Process_path.text(),
+                                                                                  CommonDataObjct=self.CommonData)
                 
                 self._Treatment_processes[Process_Name.text()]['input_type']= self._ProcessMetaData[self._ProcessNameDict[Process.currentText()]]['InputType']
                 Process_Label.setFont(font1)
