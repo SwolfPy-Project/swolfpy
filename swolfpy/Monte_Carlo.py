@@ -72,7 +72,7 @@ class Monte_Carlo(LCA_matrix):
         with pool_adapter(mp.Pool(processes=nproc)) as pool:
             res = pool.map(Monte_Carlo.worker,
                            [(self.project, self.functional_unit, self.method, self.parameters, self.process_models,
-                             self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed + i, n // nproc)
+                             self.process_model_names, self.common_data, self.tech_matrix, self.bio_matrix, self.seed+i*100, n // nproc)
                             for i in range(nproc)])
         self.results = [x for lst in res for x in lst]
 # =============================================================================
@@ -90,12 +90,12 @@ class Monte_Carlo(LCA_matrix):
         project, functional_unit, method, parameters, process_models, process_model_names, common_data, tech_matrix, bio_matrix, seed, n = args
         projects.set_current(project, writable=False)
         if common_data:
-            common_data.setup_MC(seed)
+            common_data.setup_MC(seed+100000)
         if process_models:
-            for x in process_models:
-                x.setup_MC(seed)
+            for seed_, x in enumerate(process_models):
+                x.setup_MC(seed+seed_)
         if parameters:
-            parameters.setup_MC(seed)
+            parameters.setup_MC(seed+200000)
 
         lca = LCA(functional_unit, method[0])
         lca.lci()
