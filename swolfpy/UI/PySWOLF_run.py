@@ -1906,8 +1906,59 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.MC_Widget.Update_plot.clicked.connect(self.mc_plot_func)
         self.MC_Widget.Update_dist_fig.clicked.connect(self.mc_plot_dist_func)
         
+        ### Corr Plot
+        self.corr_data = self.MC_results.corr(method='pearson')
+        
+        self.fig_plot_corr = Figure(figsize=(4, 10), dpi=65, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+        self.canvas_plot_corr = FigureCanvas(self.fig_plot_corr)
+        toolbar3 = NavigationToolbar(self.canvas_plot_corr, self)
+        lay3 = QtWidgets.QVBoxLayout(self.MC_Widget.Corr_plot)
+        lay3.addWidget(toolbar3)
+        lay3.addWidget(self.canvas_plot_corr)
+        
+        self._method_for_corr= self.MC_method_table_model._data['LCIA method'].values.tolist()
+        self.MC_Widget.Corr_Impact.addItems([str(x) for x in self._method_for_corr])
+        self.MC_Widget.Update_Corr_fig.clicked.connect(self.mc_plot_corr_func)
+        
         Dialog.show()
         Dialog.exec_()
+
+    @QtCore.Slot()    
+    def mc_plot_corr_func(self):
+        self.fig_plot_corr.clear()
+        self.ax_corr = self.fig_plot_corr.add_subplot(111)
+        
+        #ploting the DataFrame
+        param=list(self.corr_data.columns)
+        print(param)
+        for x in self._method_for_corr:
+            param.remove(x)
+        
+        print(param)
+        print(self.corr_data)
+        corr_data_plot = self.corr_data[ast.literal_eval(self.MC_Widget.Corr_Impact.currentText())][param]
+        print(corr_data_plot)
+        sorted_corr=corr_data_plot.abs().sort_values(ascending=False)    
+
+        if len(sorted_corr.index) <= 10:
+            index = sorted_corr.index
+        else:
+            index = sorted_corr.index[0:10]
+
+        #ploting the DataFrame
+        self.ax_corr=corr_data_plot[index].plot(kind='barh', ax=self.ax_corr)
+
+        #set lables
+        self.ax_corr.set_xlabel('Correlation with {}'.format(self.MC_Widget.Corr_Impact.currentText()), fontsize=18)
+        self.ax_corr.set_xlim(-1, 1)
+        self.ax_corr.tick_params(axis='both', which='major', labelsize=18,rotation='auto')
+        self.ax_corr.tick_params(axis='both', which='minor', labelsize=16,rotation='auto')
+
+        #set margins
+        self.canvas_plot_corr.draw()
+        self.fig_plot_corr.set_tight_layout(True)
+
+
         
     @QtCore.Slot()
     def mc_plot_func(self):

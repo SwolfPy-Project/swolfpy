@@ -23,11 +23,17 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="MC_Data">
       <attribute name="title">
@@ -55,7 +61,7 @@
             <x>0</x>
             <y>0</y>
             <width>1136</width>
-            <height>998</height>
+            <height>1004</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
@@ -284,6 +290,66 @@
            </item>
           </layout>
          </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="MC_Corr">
+      <attribute name="title">
+       <string>Correlation</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_9">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Correlation plot</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Impact</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="Corr_Impact">
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="Update_Corr_fig">
+            <property name="text">
+             <string>Update</string>
+            </property>
+            <property name="icon">
+             <iconset resource="PyWOLF_Resource.qrc">
+              <normaloff>:/ICONS/PySWOLF_ICONS/Update.png</normaloff>:/ICONS/PySWOLF_ICONS/Update.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>589</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0" colspan="4">
+           <widget class="QWidget" name="Corr_plot" native="true"/>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
