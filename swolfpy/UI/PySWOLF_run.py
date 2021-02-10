@@ -152,6 +152,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.actionSave.triggered.connect(self.save)
         ### Exit
         self.actionExit.triggered.connect(sys.exit)
+        
+        
+        self.actionHelp_Guides.triggered.connect(self.actionHelp_GuidesFunc)
+
+
+    # Help function
+    @QtCore.Slot()
+    def actionHelp_GuidesFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/index.html')
 
 
 #%% First Page
@@ -320,6 +329,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================           
     def Importing_processes(self):
         self.init_process_toolbox.setCurrentWidget(self.PM_PMTab)
+        self.Help_ImportProcess.clicked.connect(self.Help_ImportProcessFunc)
 
        # CommonData
         self.helper(self.IT_Default_0,self.IT_UserDefine_0,self.IT_BR_0,self.IT_FName_0,"Python (*.py)")
@@ -392,6 +402,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #Connect the PushButton [ImportProcessModels]
         self.ImportProcessModels.clicked.connect(self.Import_Process_models_func)
 
+
+
+    # Help function
+    @QtCore.Slot()
+    def Help_ImportProcessFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#import-process-models')
 
     # Check to ethier select Default or User Defined option
     def helper(self,IT_Default,IT_UserDefine,IT_BR,IT_FName,Filter):
@@ -512,7 +528,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 self._col_list.append(self._ProcessMetaData[proc]['Name'])
         self.Add_col.clicked.connect(self.Add_collection)
         self.Create_Collection_process.clicked.connect(self.Create_collection_dict)
-    
+        self.Help_ColSector.clicked.connect(self.Help_ColSectorFunc)
+
+    # Help function
+    @QtCore.Slot()
+    def Help_ColSectorFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#define-collection-processes')    
     
     def Add_collection(self):
         Tab = QtWidgets.QWidget()
@@ -700,6 +721,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         #Create Treatment Dictionary
         self.Create_Treat_prc_dict.clicked.connect(self.Create_Treatment_process_dict)
+        self.Help_AddProcess.clicked.connect(self.Help_AddProcessFunc)
+
+
+    # Help function
+    @QtCore.Slot()
+    def Help_AddProcessFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#define-treatment-processes')  
         
         
     def add_process_func(self,frame,gridLayout):
@@ -880,6 +908,19 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     
         self.Show_SWM_Network_AllFlows.setChecked(True)
         
+        self.Help_DistanceTable.clicked.connect(self.Help_DistanceTableFunc)
+        self.Help_Project_Param.clicked.connect(self.Help_Project_ParamFunc)
+
+    # Help function
+    @QtCore.Slot()
+    def Help_DistanceTableFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#id1')  
+
+    # Help function
+    @QtCore.Slot()
+    def Help_Project_ParamFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#id1')  
+        
     @QtCore.Slot()
     def Create_Distance_Table(self):
         self.Distance_table.setEnabled(1)
@@ -1023,8 +1064,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Clear_act.clicked.connect(self.delect_act_included)
             self.Create_scenario.clicked.connect(self.create_new_scenario)
             self.init_CreateScenario_status = True
+            self.Name_new_scenario.setDisabled(True)
             self.Included_act_table.setDisabled(True)
             self.act_in_process_table.setDisabled(True)
+            self.Help_CreateScenario.clicked.connect(self.Help_CreateScenarioFunc)
             
             #QTableView
             self.act_in_process_table.installEventFilter(self)
@@ -1032,15 +1075,21 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Included_act_table.installEventFilter(self)
             self.Included_act_table.setSortingEnabled(True)
             
-            
+
+    # Help function
+    @QtCore.Slot()
+    def Help_CreateScenarioFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#create-scenario')            
         
     @QtCore.Slot()
     def Create_scenario_func(self):
+        self.Name_new_scenario.setEnabled(True)
         self._column_name_def_scenario = ['Process','Name','Amount','Unit']
         self.Process.clear()
         self.Process.addItems(['...']+[x for x in self.demo.Treatment_processes.keys()])
         self.act_included = pd.DataFrame(columns=self._column_name_def_scenario)
         self.delect_act_included()
+        
             
     @QtCore.Slot(int)
     def load_Waste_fraction(self,i):
@@ -1088,6 +1137,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Included_act_table.resizeColumnsToContents()
         self.Included_act_table.setDisabled(1)
         self.Name_new_scenario.setText('')
+        self.Process.setCurrentIndex(0)
 
     @QtCore.Slot()
     def create_new_scenario(self):
@@ -1683,6 +1733,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.MC_method_table.setSortingEnabled(True)
             self.MC_Uncertain_table.installEventFilter(self)
             self.MC_Uncertain_table.setSortingEnabled(True)
+            
+            #Help
+            self.Help_UncertaintyDist.clicked.connect(self.Help_UncertaintyDistFunc)
+
+
+    # Help function
+    @QtCore.Slot()
+    def Help_UncertaintyDistFunc(self):
+        QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#uncertainty-distribution') 
         
     def create_check_box (self,Name,Frame,Layout):
         checkBox = QtWidgets.QCheckBox(Frame,Layout) 
