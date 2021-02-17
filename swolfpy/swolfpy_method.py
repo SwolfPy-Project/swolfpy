@@ -55,12 +55,12 @@ def import_methods():
 
     SWOLF_Capital_Cost = [(('biosphere3', 'Capital_Cost'), 1)]
 
-    SWOLF_Operational_Cost = [(('biosphere3', 'Operational_Cost'), 1), (('biosphere3', 'Utility Cost'), 1),
+    SWOLF_Operational_Cost = [(('biosphere3', 'Operational_Cost'), 1), (('biosphere3', 'Utility_Cost'), 1),
                               (('biosphere3', 'Fuel_Cost'), 1), (('biosphere3', 'Electricity_Cost'), 1),
                               (('biosphere3', 'Transportation_Cost'), 1), (('biosphere3', 'Material_Cost'), 1)]
 
     SWOLF_Total_Cost = [(('biosphere3', 'Capital_Cost'), 1), (('biosphere3', 'Operational_Cost'), 1),
-                        (('biosphere3', 'Utility Cost'), 1), (('biosphere3', 'Fuel_Cost'), 1),
+                        (('biosphere3', 'Utility_Cost'), 1), (('biosphere3', 'Fuel_Cost'), 1),
                         (('biosphere3', 'Electricity_Cost'), 1), (('biosphere3', 'Transportation_Cost'), 1),
                         (('biosphere3', 'Material_Cost'), 1)]
 
