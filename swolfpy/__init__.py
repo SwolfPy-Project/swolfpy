@@ -12,6 +12,10 @@ from .Monte_Carlo import Monte_Carlo
 from .UI.PySWOLF_run import MyQtApp
 from PySide2 import QtWidgets
 import sys
+import warnings
+
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 __all__ = ['Technosphere',
