@@ -819,8 +819,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             Process_Label = self.frame_Process_treatment.findChildren(QtWidgets.QLabel,"Process_Label_"+str(Index))[0]
             
             
-            self._Treatment_processes[Process_Name.text()] = {}
             if Process.currentText() != '...':
+                self._Treatment_processes[Process_Name.text()] = {}
                 CLS = self._ProcessMetaData[self._ProcessNameDict[Process.currentText()]]['CLS']
                 if Type_input.isChecked():
                     self._Treatment_processes[Process_Name.text()]['model'] = CLS(process_name=Process_Name.text(), CommonDataObjct=self.CommonData)
