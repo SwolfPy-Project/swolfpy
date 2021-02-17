@@ -110,7 +110,7 @@ class Optimization(LCA_matrix):
                     model = self.Treatment_processes[col]['model']
                     model.calc()
                     report_dict = model.report()
-                    process_name = model.name
+                    process_name = model.process_name
                     LCA_matrix.update_techmatrix(process_name, report_dict, self.tech_matrix)
 
             tech = np.array(list(self.tech_matrix.values()), dtype=float)
