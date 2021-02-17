@@ -81,17 +81,18 @@ class LCA_matrix(LCA):
                 for y in report_dict["LCI"].keys():
                     for m in report_dict["LCI"][y].keys():
                         for n in report_dict["LCI"][y][m].keys():
-                            if not np.isnan(report_dict["LCI"][y][m][n]):
-                                if (n, (process_name + '_product', y + '_' + 'to' + '_' + m)) in tech_matrix.keys():
-                                    if tech_matrix[(n, (process_name + '_product', y + '_' + 'to' + '_' + m))] != report_dict["LCI"][y][m][n]:
-                                        tech_matrix[(n, (process_name + '_product', y + '_' + 'to' + '_' + m))] = report_dict["LCI"][y][m][n]
+                            if 'biosphere3' not in n:
+                                if not np.isnan(report_dict["LCI"][y][m][n]):
+                                    if (n, (process_name + '_product', y + '_' + 'to' + '_' + m)) in tech_matrix.keys():
+                                        if tech_matrix[(n, (process_name + '_product', y + '_' + 'to' + '_' + m))] != report_dict["LCI"][y][m][n]:
+                                            tech_matrix[(n, (process_name + '_product', y + '_' + 'to' + '_' + m))] = report_dict["LCI"][y][m][n]
+                                    else:
+                                        raise KeyError('Exchange {} is calculated but not exist in LCA technosphere'
+                                                       .format((n, (process_name + '_product', y + '_' + 'to' + '_' + m))))
                                 else:
-                                    raise KeyError('Exchange {} is calculated but not exist in LCA technosphere'
-                                                   .format((n, (process_name + '_product', y + '_' + 'to' + '_' + m))))
-                            else:
-                                raise ValueError("""Amount for Exchange {} is Nan. The amount should be number,
-                                                 check the calculations in the process model"""
-                                                 .format((n, (process_name + '_product', y + '_' + 'to' + '_' + m))))
+                                    raise ValueError("""Amount for Exchange {} is Nan. The amount should be number,
+                                                     check the calculations in the process model"""
+                                                     .format((n, (process_name + '_product', y + '_' + 'to' + '_' + m))))
 
     @staticmethod
     def update_biomatrix(process_name, report_dict, bio_matrix):
@@ -103,3 +104,20 @@ class LCA_matrix(LCA):
                 else:
                     raise ValueError('Amount for Exchange {} is Nan. The amount should be number, check the calculations in the process model'
                                      .format(((key2), (process_name, material))))
+            ### Adding activity for collection cost
+            if 'LCI' in report_dict.keys():
+                for y in report_dict["LCI"].keys():
+                    for m in report_dict["LCI"][y].keys():
+                        for n in report_dict["LCI"][y][m].keys():
+                            if 'biosphere3' in n:
+                                if not np.isnan(report_dict["LCI"][y][m][n]):
+                                    if (n, (process_name + '_product', y + '_' + 'to' + '_' + m)) in bio_matrix.keys():
+                                        if bio_matrix[(n, (process_name + '_product', y + '_' + 'to' + '_' + m))] != report_dict["LCI"][y][m][n]:
+                                            bio_matrix[(n, (process_name + '_product', y + '_' + 'to' + '_' + m))] = report_dict["LCI"][y][m][n]
+                                    else:
+                                        raise KeyError('Exchange {} is calculated but not exist in LCA biosphere'
+                                                       .format((n, (process_name + '_product', y + '_' + 'to' + '_' + m))))
+                                else:
+                                    raise ValueError("""Amount for Exchange {} is Nan. The amount should be number,
+                                                     check the calculations in the process model"""
+                                                     .format((n, (process_name + '_product', y + '_' + 'to' + '_' + m))))

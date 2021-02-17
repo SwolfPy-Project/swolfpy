@@ -158,12 +158,12 @@ class ProcessDB():
                 for y in self.Report["LCI"].keys():
                     for m in self.Report["LCI"][y].keys():
                         self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)] = {}
-                        self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['name'] = 'LCI' + '_' + y + 'to' + '_' + m
+                        self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['name'] = 'LCI' + '_' + y + '_to' + '_' + m
                         self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['unit'] = 'Mg/year'
                         self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['exchanges'] = []
                         ### Adding exchage to transport activity between the collection and treatment processes
                         for n in self.Report["LCI"][y][m].keys():
-                            ex = self.exchange(n, 'technosphere', '_', self.Report["LCI"][y][m][n])
+                            ex = self.exchange(n, 'technosphere' if 'biosphere3' not in n else 'biosphere', '_', self.Report["LCI"][y][m][n])
                             self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['exchanges'].append(ex)
 
             ### Adding activity for transport between the treatment processes
