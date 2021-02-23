@@ -4,13 +4,14 @@ Created on Wed May 29 12:13:23 2019
 
 @author: msmsa
 """
-from brightway2 import projects, Database, parameters, LCA
+from brightway2 import projects, Database, parameters, LCA, get_activity
 from bw2data.parameters import ActivityParameter
 from .ProcessDB import ProcessDB
 from bw2analyzer import ContributionAnalysis
 from .Parameters import Parameters
 from .Technosphere import Technosphere
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Project():
@@ -284,7 +285,17 @@ class Project():
         """Creates a new scenario (activity).
         """
         input_dict = input_dict
-        self.waste_BD.new_activity(code=scenario_name, name=scenario_name, type="process", unit="Mg").save()
+        # Calculate Unit
+        mass=0
+        for P in input_dict:
+            for y in input_dict[P]:
+                if input_dict[P][y] != 0:
+                    unit_i = get_activity((P, y)).as_dict()['unit'].split(sep=' ')
+                    if len(unit_i) > 1:
+                        mass += float(unit_i[0]) * input_dict[P][y]
+                    if unit_i[0] == 'Mg/year':
+                        mass += 1 * input_dict[P][y]
+        self.waste_BD.new_activity(code=scenario_name, name=scenario_name, type="process", unit='{} Mg/year'.format(np.round(mass,decimals=2))).save()
         for P in input_dict:
             for y in input_dict[P]:
                 if input_dict[P][y] != 0:
