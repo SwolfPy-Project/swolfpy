@@ -536,7 +536,7 @@ class Optimization(LCA_matrix):
         store_data['valuesuffix'] = "Mg"
         store_data['node'] = node
         store_data['link'] = link
-        
-        filename=fileName.split('.')[0]+'.JSON' if fileName else 'Sankey_Data.JSON'
+
+        filename = fileName.split('.')[0] + '.JSON' if fileName else 'Sankey_Data.JSON'
         with open(filename, 'w') as outfile:
             json.dump(store_data, outfile, indent=4)
