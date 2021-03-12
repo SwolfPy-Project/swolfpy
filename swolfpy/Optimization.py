@@ -395,7 +395,8 @@ class Optimization(LCA_matrix):
         if res_global.success:
             self.success = True
             self.optimized_x = list()
-            res_global.x = res_global.x.round(decimals=3)
+            res_global.x = res_global.x.round(decimals=4)
+            self._objective_function(res_global.x)
 
             for i in range(len(self.project.parameters_list)):
                 self.optimized_x.append({'name': self.project.parameters_list[i]['name'],
