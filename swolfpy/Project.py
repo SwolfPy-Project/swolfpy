@@ -4,7 +4,7 @@ Created on Wed May 29 12:13:23 2019
 
 @author: msmsa
 """
-from brightway2 import projects, Database, parameters, LCA, get_activity
+from brightway2 import projects, Database, parameters, LCA, get_activity, calculation_setups, MultiLCA, Method
 from bw2data.parameters import ActivityParameter
 from .ProcessDB import ProcessDB
 from bw2analyzer import ContributionAnalysis
@@ -12,6 +12,7 @@ from .Parameters import Parameters
 from .Technosphere import Technosphere
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
 class Project():
@@ -302,58 +303,97 @@ class Project():
                     self.waste_BD.get(scenario_name).new_exchange(input=(P, y), amount=input_dict[P][y], type="technosphere").save()
         self.waste_BD.get(scenario_name).save()
 
-    def Do_LCA(self, scenario_name, impact_method, functioanl_unit):
+    
+    @staticmethod
+    def setup_LCA(name, functioanl_units, impact_methods):
         """
         Perform LCA by instantiating the ``bw2calc.lca.LCA`` class from Brightway2.
         """
-        demand = {(self.waste_BD.name, scenario_name): functioanl_unit}
-        lca = LCA(demand, impact_method)
+        if len(functioanl_units)>0 and len(impact_methods)>0:
+            calculation_setups[name] = {'inv':functioanl_units, 'ia':impact_methods}
+            MultiLca = MultiLCA(name)
+            index=[str(x) for x in list(MultiLca.all.keys())]
+            columns=[str(x) for x in impact_methods]
+            results = pd.DataFrame(MultiLca.results,
+                                   columns=columns,
+                                   index=index)
+            return(results)
+        else:
+            raise ValueError('Check the in inputs')
+
+    
+    @staticmethod
+    def contribution_analysis(functional_unit, impact_method, limit, limit_type='number', target='emissions', figsize=(6,4), font_scale=1):
+        lca = LCA(functional_unit, impact_method)
         lca.lci()
         lca.lcia()
-        print("lca socre= ", lca.score)
-        CA = ContributionAnalysis()
-        top_process = CA.annotated_top_processes(lca)
-        cc = []
-        for x in top_process:
-            cc.append([x[0], x[2]['name']])
-        cc.sort()
+        impacts = []
+        amounts = []
+        activities = []
+        flow_unit = []
+        compartments=[]
+        f = font_scale * 14
+    
+        if target == 'activities':
+            data = ContributionAnalysis().annotated_top_processes(lca, limit=50, limit_type='number')
+        else:
+            data = ContributionAnalysis().annotated_top_emissions(lca, limit=50, limit_type='number')
+        for impact, amount, act in data:
+            impacts.append(impact)
+            amounts.append(amount)
+            flow_unit.append(act.as_dict()['unit'])
+            if target == 'activities':
+                activities.append(act.as_dict()['name'].replace('_',' '))
+            else:
+                activities.append(act.as_dict()['name'])
+                compartments.append(act.as_dict()['categories'])
+        
+        if target == 'activities':
+            top_df = pd.DataFrame(columns=['Activity', 'Flow', 'Flow Unit', 'Contribution', 'Unit'])
+            top_df['Activity'] = activities
+        else:   
+            top_df = pd.DataFrame(columns=['Emission', 'Compartment', 'Flow', 'Flow Unit', 'Contribution', 'Unit'])
+            top_df['Emission'] = activities
+            top_df['Compartment'] = compartments
+        
+        top_df['Flow'] = amounts
+        top_df['Flow Unit'] = flow_unit
+        top_df['Contribution'] = impacts
+        top_df['Unit'] = Method(lca.method).metadata['unit']
+        
+        if limit_type == 'number':
+            DF = top_df.loc[0:limit,:]
+        else:
+            for i,j in enumerate(top_df['Contribution']):
+                if abs(j) <= abs((limit * lca.score)):
+                    break
+                DF = top_df.loc[0:i,:]
+        
+        
+        plot_DF = pd.DataFrame(data=[[x for x in DF['Contribution']]],
+                               columns=DF.iloc[:,0].values,
+                               index=list(functional_unit.keys()))
+        
+        legend = []
+        if target == 'emissions':
+            for x,y in DF[['Emission','Compartment']].values:
+                y = str(y).replace("'",'')
+                legend.append('{}\n{}'.format(x,y))
+        else:
+            for x in DF['Activity'].values:
+                if len(x)>20:
+                    x = x[0:15] + x[15:].replace(' ', '\n', 1)
+                legend.append(x)
 
-        CutOff = 0.05
-        maxcc = abs(max(cc)[0])
-        mincc = abs(min(cc)[0])
-        dd = list()
-        i = 0
-        for x in cc:
-            if abs(x[0]) > CutOff * maxcc or abs(x[0]) > CutOff * mincc:
-                dd.append(cc[i])
-            i += 1
-        plt.rcParams["figure.figsize"] = (20, 5)
-        plt.rcParams.update({'font.size': 16})
-        negative = []
-        positive = []
-        dd.reverse()
-        lgnd = list()
-        for x in range(len(dd)):
-            if dd[x][0] < 0:
-                negative.append(dd[x][0])
-                if x == 0:
-                    plt.barh("Activity", dd[x][0], height=0.1, left=0)
-                else:
-                    plt.barh("Activity", dd[x][0], height=0.1, left=sum(negative[:-1]))
-                lgnd.append(dd[x][1])
+        fig, ax = plt.subplots(figsize=figsize)
+        plot_DF.plot(kind='bar', stacked=True, ax=ax)
+        ax.set_title('Contribution to {}'.format(str(lca.method).replace("'",'')), fontsize=f)
+        ax.legend(legend, fontsize=f, bbox_to_anchor=(1, 0, .2, 1), loc=2)
+        ax.tick_params(axis='both', which='major', labelsize=f, rotation='auto')
+        ax.tick_params(axis='both', which='minor', labelsize=f, rotation='auto')
+        ax.set_ylabel(Method(lca.method).metadata['unit'], fontsize=f)
+        return(DF,(fig,ax))
 
-        dd.reverse()
-        for x in range(len(dd)):
-            if dd[x][0] > 0:
-                positive.append(dd[x][0])
-                if x == 0:
-                    plt.barh("Activity", dd[x][0], height=0.1, left=0)
-                else:
-                    plt.barh("Activity", dd[x][0], height=0.1, left=sum(positive[:-1]))
-                lgnd.append(dd[x][1])
-
-        plt.legend(lgnd, loc=3)
-        plt.title('Top Activities Contribution, CutOff = 0.05,' + scenario_name)
 
     def save(self, filename):
         """
