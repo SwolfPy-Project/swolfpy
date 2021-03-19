@@ -29,6 +29,10 @@ numfig = True
 sys.path.insert(0, os.path.abspath('..'))
 
 
+import plotly.io as pio
+pio.renderers.default = 'sphinx_gallery'
+
+
 # -- General configuration ---------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
