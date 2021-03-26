@@ -1,7 +1,7 @@
 .. General
 
 ================================================================
-Solid Waste Optimization Life-cycle Framework in Python(swolfpy)
+Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
 ================================================================
 
 .. image:: https://img.shields.io/pypi/v/swolfpy.svg
@@ -28,19 +28,52 @@ Solid Waste Optimization Life-cycle Framework in Python(swolfpy)
 * Documentation: https://swolfpy.readthedocs.io.
 * Repository: https://bitbucket.org/msm_sardar/swolfpy
 * Other links: 
-        https://go.ncsu.edu/swolfpy
 
-        https://jwlevis.wixsite.com/swolf
+  * https://go.ncsu.edu/swolfpy
+  * https://jwlevis.wixsite.com/swolf
 
-
+|
 Features
 --------
 
-* Life cycle assessment of Municipal Solid Waste (MSW) systems. Process models include Landfill, Waste-to-Energy (WTE), Composting, Anaerobic Digestion (AD), Single Stream Material Recovery Facility (MRF), Reprocessing, and Collection.
-* Monte Carlo simulation
-* Optimization
+* **Life-cycle assessment of Municipal Solid Waste (MSW) systems**
+
+  * Comparative LCA
+  * Contribution analysis
+  * LCI report
+
+* **Monte Carlo simulation**
+
+  * Uncertainty analysis
+  * Data visualization (distributions & correlations)
+
+* **Optimization**
+
+  * Minimize environmental burdens or cost subject to a number of technical or policy-related constraints
 
 
+.. list-table:: Life-cycle process models
+   :widths: auto
+   :header-rows: 1
+
+   * - Process model 
+     - Description
+   * - Landfill (**LF**)
+     - Calculates emissions, material use, and energy use associated with construction, operations, 
+       closure and post-closure activities, landfill gas and leachate management, and carbon storage.
+   * - Waste-to-Energy (**WTE**)
+     - Calculates emissions, mass flows, and resource use and recovery for the mass burn WTE process. 
+   * - Composting (**Comp**)
+     - Calculates emissions, mass flows, and resource use and recovery for aerobic composting process and final use of compost.
+   * - Anaerobic Digestion (**AD**)
+     - Calculates emissions, mass flows, and resource use and recovery for anaerobic digestion process and final use of compost.
+   * - Single-Stream Material Recovery facility (**SS_MRF**)
+     - Calculates cost, emissions, and energy use associated with material recovery facilities.
+   * - Single Family Collection (**SF_Col**)
+     - Calculates cost, emissions, and fossil fuel use associated with MSW collection.
+
+
+|
 .. Installation
 
 Installation
@@ -75,7 +108,7 @@ Installation
 
 8- Run swolfpy in python::
 
-        from swolfpy import *
-        swolfpy()
+        import swolfpy as sp 
+        sp.swolfpy()
 
 .. endInstallation
