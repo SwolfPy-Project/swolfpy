@@ -44,6 +44,7 @@ from ..Project import *
 from ..Optimization import *
 from ..Monte_Carlo import *
 from swolfpy_processmodels.ProcessModelsMetaData import ProcessModelsMetaData
+import swolfpy
 
 
 from .Workers import * 
@@ -147,6 +148,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #Icons
         self.icon = QtGui.QIcon()
         self.icon.addPixmap(QtGui.QPixmap(":/ICONS/PySWOLF_ICONS/PySWOLF.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        
+        #Title
+        self.setWindowTitle('SwolfPy (V {})'.format(swolfpy.__version__))
 
         ### Menu
         self.actionSave.triggered.connect(self.save)
