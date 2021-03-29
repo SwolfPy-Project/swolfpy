@@ -4,8 +4,9 @@ Created on Wed Apr 22 19:09:14 2020
 
 @author: msmsa
 """
-from brightway2 import LCA
+from brightway2 import LCA, get_activity
 import numpy as np
+import pandas as pd
 
 
 class LCA_matrix(LCA):
@@ -50,6 +51,20 @@ class LCA_matrix(LCA):
 
     @staticmethod
     def update_techmatrix(process_name, report_dict, tech_matrix):
+        """
+        Updates the `tech_matrix` according to the  `report_dict`. `tech_matrix` is an instance of ``LCA_matrix.tech_matrix``.
+        Useful for Monte Carlo simulation, and optimization.
+
+        :param process_name: Name of the life-cycle process model.
+        :type process_name: str
+
+        :param report_dict: LCI report of the life-cycle process model (``swolfpy_processmodels.ProcessModel.report()``).
+        :type report_dict: dict
+
+        :param tech_matrix:
+        :type tech_matrix: ``LCA_matrix.tech_matrix``
+
+        """
         for material, value in report_dict["Technosphere"].items():
             for key2, value2 in value.items():
                 if not np.isnan(value2):
@@ -96,6 +111,20 @@ class LCA_matrix(LCA):
 
     @staticmethod
     def update_biomatrix(process_name, report_dict, bio_matrix):
+        """
+        Updates the `bio_matrix` according to the  report_dict. `bio_matrix` is an instance of ``LCA_matrix.bio_matrix``.
+        Useful for Monte Carlo simulation, and optimization.
+
+        :param process_name: Name of the life-cycle process model.
+        :type process_name: str
+
+        :param report_dict: LCI report of the life-cycle process model (``swolfpy_processmodels.ProcessModel.report()``).
+        :type report_dict: dict
+
+        :param bio_matrix:
+        :type bio_matrix: ``LCA_matrix.bio_matrix``
+
+        """
         for material, value in report_dict["Biosphere"].items():
             for key2, value2 in value.items():
                 if not np.isnan(value2):
@@ -121,3 +150,58 @@ class LCA_matrix(LCA):
                                     raise ValueError("""Amount for Exchange {} is Nan. The amount should be number,
                                                      check the calculations in the process model"""
                                                      .format((n, (process_name + '_product', y + '_' + 'to' + '_' + m))))
+
+    @staticmethod
+    def get_mass_flow(LCA, process):
+        """
+        Calculates the total mass of flows to process based on the `supply_array` in ``bw2calc.lca.LCA``.
+
+        :param LCA: LCA object.
+        :type LCA: ``bw2calc.lca.LCA`` or ``swolfpy.LCA_matrix.LCA_matrix``
+
+        :param process: Name of the process databases.
+        :type process: str
+
+        :return: Total mass of flows to `process`
+        :rtype: float
+
+        """
+        mass = 0
+        for i in LCA.activity_dict:
+            if process == i[0]:
+                unit = get_activity(i).as_dict()['unit'].split(' ')
+                if len(unit) > 1:
+                    mass += LCA.supply_array[LCA.activity_dict[i]] * float(unit[0])
+                else:
+                    mass += LCA.supply_array[LCA.activity_dict[i]]
+        return(mass)
+
+    @staticmethod
+    def get_mass_flow_comp(LCA, process, index):
+        """
+        Calculates the mass of flows to process based on the `index` and `supply_array` in ``bw2calc.lca.LCA``.
+
+        :param LCA: LCA object.
+        :type LCA: ``bw2calc.lca.LCA`` or ``swolfpy.LCA_matrix.LCA_matrix``
+
+        :param process: Name of the process databases.
+        :type process: str
+
+        :param index: Name of the process databases.
+        :type index: str
+
+        :return: Pandas series with mass flows as values and index as rows.
+        :rtype: pandas.core.series.Series
+
+        """
+        mass = pd.Series(np.zeros(len(index)), index=index)
+        for i in LCA.activity_dict:
+            if process == i[0]:
+                for j in index:
+                    if j == i[1]:
+                        unit = get_activity(i).as_dict()['unit'].split(' ')
+                        if len(unit) > 1:
+                            mass[j] += LCA.supply_array[LCA.activity_dict[i]] * float(unit[0])
+                        else:
+                            mass[j] += LCA.supply_array[LCA.activity_dict[i]]
+        return(mass)

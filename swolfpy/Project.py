@@ -307,7 +307,9 @@ class Project():
     @staticmethod
     def setup_LCA(name, functioanl_units, impact_methods):
         """
-        Perform LCA by instantiating the ``bw2calc.lca.LCA`` class from Brightway2.
+        Perform LCA by instantiating the ``bw2calc.multi_lca`` class from Brightway2.
+        ``bw2calc.multi_lca`` is a wrapper class for performing LCA calculations with many
+        functional units and LCIA methods.
         """
         if len(functioanl_units) > 0 and len(impact_methods) > 0:
             calculation_setups[name] = {'inv': functioanl_units, 'ia': impact_methods}
@@ -322,7 +324,17 @@ class Project():
             raise ValueError('Check the in inputs')
 
     @staticmethod
-    def contribution_analysis(functional_unit, impact_method, limit, limit_type='number', target='emissions', figsize=(6, 4), font_scale=1):
+    def contribution_analysis(functional_unit, impact_method, limit, limit_type='number', target='emissions',
+                              figsize=(6, 4), font_scale=1):
+        """
+        Perform LCA by instantiating the ``bw2calc.lca.LCA`` class from ``Brightway2`` and then
+        perform contribution analysis by ``bw2analyzer.ContributionAnalysis`` class.
+        Check the following functions in ``bw2analyzer`` for more info:
+
+        * ``bw2analyzer.ContributionAnalysis.annotated_top_processes``
+        * ``bw2analyzer.ContributionAnalysis.annotated_top_emissions``
+
+        """
         lca = LCA(functional_unit, impact_method)
         lca.lci()
         lca.lcia()
