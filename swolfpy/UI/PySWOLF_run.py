@@ -11,6 +11,7 @@ from .Table_from_pandas import *
 from . import MC_ui
 from . import adv_opt_ui
 from . import PySWOLF_ui
+from . import Reference_ui
 
 # Import Top level
 import os
@@ -45,6 +46,7 @@ from ..Optimization import *
 from ..Monte_Carlo import *
 from swolfpy_processmodels.ProcessModelsMetaData import ProcessModelsMetaData
 import swolfpy
+import swolfpy_inputdata as spid
 
 
 from .Workers import * 
@@ -157,6 +159,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         ### Exit
         self.actionExit.triggered.connect(sys.exit)
         
+        self.actionReferences.triggered.connect(self.show_References_func)
         
         self.actionHelp_Guides.triggered.connect(self.actionHelp_GuidesFunc)
 
@@ -2556,3 +2559,47 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             download.setPath(path)
             download.accept()
 
+### References
+    @QtCore.Slot()
+    def show_References_func(self):
+        Dialog = QtWidgets.QDialog()
+        self.References = Reference_ui.Ui_References()
+        self.References.setupUi(Dialog)
+        
+        self.RefDF = pd.read_csv(spid.__path__[0]+'\\Data\\References.csv')
+        references = Table_from_pandas_editable(self.RefDF)
+        self.References.TableRef.setModel(references)
+        self.References.TableRef.installEventFilter(self)
+        self.References.TableRef.setWordWrap(True)
+        self.References.TableRef.resizeColumnsToContents()
+        self.References.TableRef.setColumnWidth(1, 600)
+        self.References.TableRef.resizeRowsToContents()        
+        
+            
+        ### Connect the push bottoms
+        self.References.Filter.clicked.connect(self.Ref_filter_func)
+        self.References.Export.clicked.connect(self.Ref_Export_func())
+        
+        Dialog.show()
+        Dialog.exec_()
+
+    @QtCore.Slot()
+    def Ref_filter_func(self):
+        kwrd = self.References.kwrd.text()
+        references = Table_from_pandas_editable(self.RefDF[[kwrd.lower() in str(x).lower() for x in self.RefDF['Reference']]])
+        self.References.TableRef.setModel(references)
+        self.References.TableRef.installEventFilter(self)
+        self.References.TableRef.setWordWrap(True)
+        self.References.TableRef.resizeColumnsToContents()
+        self.References.TableRef.setColumnWidth(1, 600)
+        self.References.TableRef.resizeRowsToContents() 
+
+    @QtCore.Slot()
+    def Ref_Export_func(self):        
+        fileDialog = QtWidgets.QFileDialog()
+        def helper():
+            DF=self.RefDF
+            file_name = str(fileDialog.getSaveFileName(filter="CSV (*.csv)")[0])
+            if file_name:
+                DF.to_csv(file_name)
+        return(helper)
