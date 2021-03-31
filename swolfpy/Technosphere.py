@@ -10,6 +10,7 @@ import pandas as pd
 from .Required_keys import biosphere_keys
 from .swolfpy_method import import_methods
 from swolfpy_inputdata import Technosphere_Input
+import warnings
 
 
 class Technosphere:
@@ -89,8 +90,15 @@ class Technosphere:
         self.user_tech.apply_strategies()
         stats = self.user_tech.statistics()
         if stats[2] > 0:
-            raise KeyError('There is {} unlink flows in the user defined technosphere (ecospold files). Make sure you are using the LCI ecosplod'
-                           .format(stats[2]))
+            warnings.warn('There is {} unlink flows in the user defined technosphere (ecospold files). Make sure you are using the LCI ecosplod'
+                          .format(stats[2]))
+            print('\nUnique unlinked exchanges:\n')
+            for x in self.user_tech.unlinked:
+                print(x['type'], x['name'], x['amount'])
+
+            print('\nAdd unlinked flows to biosphere database:\n')
+            self.user_tech.add_unlinked_flows_to_biosphere_database()
+
         print("""
                 ####
                 ++++++  Writing the {}
