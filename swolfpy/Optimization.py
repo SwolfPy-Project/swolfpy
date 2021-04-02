@@ -13,6 +13,8 @@ import plotly.graph_objects as go
 from plotly.offline import plot
 from copy import deepcopy
 import json
+from multiprocessing import Pool, cpu_count
+import os
 
 
 class Optimization(LCA_matrix):
@@ -351,67 +353,83 @@ class Optimization(LCA_matrix):
             print(res.message)
             return res
 
-    def multi_start_optimization(self, constraints=None, waste_param=True, collection=False, max_iter=30):
-        self.constraints = constraints
-        self.waste_param = waste_param
-        self.collection = collection
+    @staticmethod
+    def multi_start_optimization(optObject, constraints=None, waste_param=True, collection=False, max_iter=30, nproc=None):
+        optObject.constraints = constraints
+        optObject.waste_param = waste_param
+        optObject.collection = collection
 
-        self.magnitude = len(str(int(abs(self.score))))
+        optObject.magnitude = len(str(int(abs(optObject.score))))
 
         global_min = 1E100
 
-        self.cons = self._create_constraints()
+        optObject.all_results = []
 
-        self.all_results = []
-
-        if self.collection:
-            n_dec_vars = len(self.project.parameters_list) + self.n_scheme_vars
+        if optObject.collection:
+            n_dec_vars = len(optObject.project.parameters_list) + optObject.n_scheme_vars
         else:
-            n_dec_vars = len(self.project.parameters_list)
+            n_dec_vars = len(optObject.project.parameters_list)
 
         bnds = tuple([(0, 1) for _ in range(n_dec_vars)])
-
-        for _ in range(max_iter):
+        
+        args = []
+        for j in range(max_iter):
             x0 = [random() for i in range(n_dec_vars)]  # initializing with the users initial solution
-            self.oldx = [0 for i in range(len(x0))]
-            res = minimize(self._objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
+            args.append((optObject, bnds, x0, j))
+            
+        if not nproc:
+            nproc = cpu_count()
 
-            self.all_results.append(res)
+        with Pool(processes=nproc) as pool:
+            all_results = pool.map(Optimization.worker, args)
+            
+ 
+        for i, res in enumerate(all_results):
             if res.success:
                 if res.fun < global_min:
                     res_global = res
                     global_min = res.fun
-
             print("""\n
                   Iteration: {}
                   Status: {}, Message: {}
                   Objective function: {}
                   Global min: {} \n
-                  """.format(_,
+                  """.format(i,
                              res.success, res.message,
-                             res.fun * 10**self.magnitude,
-                             global_min * 10**self.magnitude))
+                             res.fun * 10**optObject.magnitude,
+                             global_min * 10**optObject.magnitude))
 
         if res_global.success:
-            self.success = True
-            self.optimized_x = list()
+            optObject.oldx = [0 for i in range(len(x0))]
+            optObject.success = True
+            optObject.optimized_x = list()
             res_global.x = res_global.x.round(decimals=4)
-            self._objective_function(res_global.x)
+            optObject._objective_function(res_global.x)
 
-            for i in range(len(self.project.parameters_list)):
-                self.optimized_x.append({'name': self.project.parameters_list[i]['name'],
+            for i in range(len(optObject.project.parameters_list)):
+                optObject.optimized_x.append({'name': optObject.project.parameters_list[i]['name'],
                                          'amount': res_global.x[i]})
 
-            if self.collection:
-                for k, v in self.scheme_vars_dict.items():
-                    self.optimized_x.append({'name': v,
+            if optObject.collection:
+                for k, v in optObject.scheme_vars_dict.items():
+                    optObject.optimized_x.append({'name': v,
                                              'amount': res_global.x[k]})
 
             return res_global
         else:
-            self.success = False
+            optObject.success = False
             print(res_global.message)
             return res_global
+
+    @staticmethod
+    def worker(args):
+         optObject, bnds, x0, iteration = args
+         print("Iteration: {}\nPID: {}\n".format(iteration, os.getpid()))
+         optObject.oldx = [0 for i in range(len(x0))]
+         optObject.cons = optObject._create_constraints()
+         res = minimize(optObject._objective_function, x0, method='SLSQP', bounds=bnds, constraints=optObject.cons)
+         return(res)
+
 
     def set_optimized_parameters_to_project(self):
         assert hasattr(self, "project"), "Must run optimize_parameters first"
