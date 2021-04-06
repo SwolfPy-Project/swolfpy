@@ -15,6 +15,8 @@ from copy import deepcopy
 import json
 from multiprocessing import Pool, cpu_count
 import os
+import pyDOE
+from time import time
 
 
 class Optimization(LCA_matrix):
@@ -363,8 +365,6 @@ class Optimization(LCA_matrix):
 
         global_min = 1E100
 
-        optObject.all_results = []
-
         if optObject.collection:
             n_dec_vars = len(optObject.project.parameters_list) + optObject.n_scheme_vars
         else:
@@ -373,15 +373,17 @@ class Optimization(LCA_matrix):
         bnds = tuple([(0, 1) for _ in range(n_dec_vars)])
         
         args = []
+        all_x0 = pyDOE.lhs(n_dec_vars, samples=max_iter, criterion='center')
         for j in range(max_iter):
-            x0 = [random() for i in range(n_dec_vars)]  # initializing with the users initial solution
-            args.append((optObject, bnds, x0, j))
+            args.append((optObject, bnds, all_x0[j], j))
             
         if not nproc:
             nproc = cpu_count()
 
         with Pool(processes=nproc) as pool:
             all_results = pool.map(Optimization.worker, args)
+        
+        optObject.all_results = all_results
             
  
         for i, res in enumerate(all_results):
@@ -400,7 +402,7 @@ class Optimization(LCA_matrix):
                              global_min * 10**optObject.magnitude))
 
         if res_global.success:
-            optObject.oldx = [0 for i in range(len(x0))]
+            optObject.oldx = [0 for i in range(n_dec_vars)]
             optObject.success = True
             optObject.optimized_x = list()
             res_global.x = res_global.x.round(decimals=4)
@@ -423,12 +425,17 @@ class Optimization(LCA_matrix):
 
     @staticmethod
     def worker(args):
-         optObject, bnds, x0, iteration = args
-         print("Iteration: {}\nPID: {}\n".format(iteration, os.getpid()))
-         optObject.oldx = [0 for i in range(len(x0))]
-         optObject.cons = optObject._create_constraints()
-         res = minimize(optObject._objective_function, x0, method='SLSQP', bounds=bnds, constraints=optObject.cons)
-         return(res)
+        start = time()
+        optObject, bnds, x0, iteration = args
+        print("Iteration: {} PID: {}\n".format(iteration, os.getpid()))
+        optObject.oldx = [0 for i in range(len(x0))]
+        optObject.cons = optObject._create_constraints()
+        res = minimize(optObject._objective_function, x0, method='SLSQP', bounds=bnds, constraints=optObject.cons)
+        print("Iteration: {} PID: {} time:{} sec, Success:{} \n".format(iteration,
+                                                                 os.getpid(),
+                                                                 round(time()-start),
+                                                                 res.success))
+        return(res)
 
 
     def set_optimized_parameters_to_project(self):
