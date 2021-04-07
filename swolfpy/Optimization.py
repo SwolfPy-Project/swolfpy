@@ -8,7 +8,6 @@ from .LCA_matrix import LCA_matrix
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
-from random import random
 import plotly.graph_objects as go
 from plotly.offline import plot
 from copy import deepcopy
@@ -371,21 +370,20 @@ class Optimization(LCA_matrix):
             n_dec_vars = len(optObject.project.parameters_list)
 
         bnds = tuple([(0, 1) for _ in range(n_dec_vars)])
-        
+
         args = []
         all_x0 = pyDOE.lhs(n_dec_vars, samples=max_iter, criterion='center')
         for j in range(max_iter):
             args.append((optObject, bnds, all_x0[j], j))
-            
+
         if not nproc:
             nproc = cpu_count()
 
         with Pool(processes=nproc) as pool:
             all_results = pool.map(Optimization.worker, args)
-        
+
         optObject.all_results = all_results
-            
- 
+
         for i, res in enumerate(all_results):
             if res.success:
                 if res.fun < global_min:
@@ -410,12 +408,12 @@ class Optimization(LCA_matrix):
 
             for i in range(len(optObject.project.parameters_list)):
                 optObject.optimized_x.append({'name': optObject.project.parameters_list[i]['name'],
-                                         'amount': res_global.x[i]})
+                                              'amount': res_global.x[i]})
 
             if optObject.collection:
                 for k, v in optObject.scheme_vars_dict.items():
                     optObject.optimized_x.append({'name': v,
-                                             'amount': res_global.x[k]})
+                                                  'amount': res_global.x[k]})
 
             return res_global
         else:
@@ -431,12 +429,14 @@ class Optimization(LCA_matrix):
         optObject.oldx = [0 for i in range(len(x0))]
         optObject.cons = optObject._create_constraints()
         res = minimize(optObject._objective_function, x0, method='SLSQP', bounds=bnds, constraints=optObject.cons)
+        time_ = round(time() - start)
         print("Iteration: {} PID: {} time:{} sec, Success:{} \n".format(iteration,
-                                                                 os.getpid(),
-                                                                 round(time()-start),
-                                                                 res.success))
+                                                                        os.getpid(),
+                                                                        time_,
+                                                                        res.success))
+        res['time'] = time_
+        res['PID'] = os.getpid()
         return(res)
-
 
     def set_optimized_parameters_to_project(self):
         assert hasattr(self, "project"), "Must run optimize_parameters first"
