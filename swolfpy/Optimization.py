@@ -115,6 +115,7 @@ class Optimization(LCA_matrix):
                     report_dict = model.report()
                     process_name = model.process_name
                     LCA_matrix.update_techmatrix(process_name, report_dict, self.tech_matrix)
+                    LCA_matrix.update_biomatrix(process_name, report_dict, self.bio_matrix)
 
             tech = np.array(list(self.tech_matrix.values()), dtype=float)
             bio = np.array(list(self.bio_matrix.values()), dtype=float)
