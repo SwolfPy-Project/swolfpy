@@ -12,7 +12,9 @@ import plotly.graph_objects as go
 from plotly.offline import plot
 from copy import deepcopy
 import json
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool, cpu_count, TimeoutError
+from multiprocessing.dummy import Pool as ThreadPool
+from functools import partial
 import os
 import pyDOE
 from time import time
@@ -356,7 +358,8 @@ class Optimization(LCA_matrix):
             return res
 
     @staticmethod
-    def multi_start_optimization(optObject, constraints=None, waste_param=True, collection=False, max_iter=30, nproc=None):
+    def multi_start_optimization(optObject, constraints=None, waste_param=True, collection=False, max_iter=30,
+                                 nproc=None, timeout=None, initialize_guess='random'):
         optObject.constraints = constraints
         optObject.waste_param = waste_param
         optObject.collection = collection
@@ -373,32 +376,58 @@ class Optimization(LCA_matrix):
         bnds = tuple([(0, 1) for _ in range(n_dec_vars)])
 
         args = []
-        all_x0 = pyDOE.lhs(n_dec_vars, samples=max_iter, criterion='center')
+        if initialize_guess == 'LHS':
+            all_x0 = pyDOE.lhs(n_dec_vars, samples=max_iter)
+        elif initialize_guess == 'random':
+            all_x0 = np.random.rand(max_iter, n_dec_vars)
+
         for j in range(max_iter):
             args.append((optObject, bnds, all_x0[j], j))
 
         if not nproc:
             nproc = cpu_count()
 
-        with Pool(processes=nproc) as pool:
-            all_results = pool.map(Optimization.worker, args)
+        all_results = []
+        pool = Pool(processes=nproc, maxtasksperchild=1)
+        for arg in args:
+            abortable_func = partial(Optimization.abortable_worker, Optimization.worker, timeout=timeout)
+            all_results.append(pool.apply_async(abortable_func, args=arg))
+        results = [res.get() for res in all_results]
+        pool.close()
+        pool.join()
+        optObject.all_results = results
 
-        optObject.all_results = all_results
+        res_global = False
+        for i, res in enumerate(optObject.all_results):
+            if res:
+                if res.success:
+                    if res.fun < global_min:
+                        res_global = res
+                        global_min = res.fun
+                print("""\n
+                      Iteration: {}
+                      Status: {}, Message: {}
+                      Objective function: {}
+                      Global min: {} \n
+                      """.format(i,
+                                 res.success, res.message,
+                                 res.fun * 10**optObject.magnitude,
+                                 global_min * 10**optObject.magnitude))
+            else:
+                print("""\n
+                      Iteration: {}
+                      Status: {}, Message: {}
+                      Objective function: {}
+                      Global min: {} \n
+                      """.format(i,
+                                 False, 'Aborting due to timeout!',
+                                 'NAN',
+                                 global_min * 10**optObject.magnitude))
 
-        for i, res in enumerate(all_results):
-            if res.success:
-                if res.fun < global_min:
-                    res_global = res
-                    global_min = res.fun
-            print("""\n
-                  Iteration: {}
-                  Status: {}, Message: {}
-                  Objective function: {}
-                  Global min: {} \n
-                  """.format(i,
-                             res.success, res.message,
-                             res.fun * 10**optObject.magnitude,
-                             global_min * 10**optObject.magnitude))
+        if not res_global:
+            optObject.success = False
+            print('None of the iterations were successful!')
+            return None
 
         if res_global.success:
             optObject.oldx = [0 for i in range(n_dec_vars)]
@@ -423,9 +452,20 @@ class Optimization(LCA_matrix):
             return res_global
 
     @staticmethod
-    def worker(args):
+    def abortable_worker(func, *args, **kwargs):
+        iteration = args[3]
+        timeout = kwargs.get('timeout', None)
+        p = ThreadPool(1)
+        res = p.apply_async(func, args)
+        try:
+            return(res.get(timeout))  # Wait timeout seconds for func to complete.
+        except TimeoutError:
+            print("(Iteration:{}, PID:{}): Aborting due to timeout!".format(iteration, os.getpid()))
+            return(None)
+
+    @staticmethod
+    def worker(optObject, bnds, x0, iteration):
         start = time()
-        optObject, bnds, x0, iteration = args
         print("Iteration: {} PID: {}\n".format(iteration, os.getpid()))
         optObject.oldx = [0 for i in range(len(x0))]
         optObject.cons = optObject._create_constraints()
