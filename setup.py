@@ -16,7 +16,8 @@ requirements = [
 "brightway2",
 "PySide2",
 "plotly",
-"graphviz"
+"graphviz",
+"pyDOE"
 ]
 
 setup_requirements = [ ]
