@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1157</width>
-    <height>1179</height>
+    <width>1041</width>
+    <height>829</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -1565,8 +1565,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1113</width>
-             <height>1074</height>
+             <width>997</width>
+             <height>724</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_105">
@@ -1871,16 +1871,32 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>1075</width>
-                    <height>955</height>
+                    <width>959</width>
+                    <height>605</height>
                    </rect>
                   </property>
                   <attribute name="label">
                    <string>System</string>
                   </attribute>
-                  <layout class="QVBoxLayout" name="verticalLayout_13">
-                   <item>
+                  <layout class="QGridLayout" name="gridLayout_26">
+                   <item row="0" column="0">
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
+                     <item>
+                      <widget class="QLabel" name="label_8">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Transportation modes:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QSpinBox" name="spinBox"/>
+                     </item>
                      <item>
                       <widget class="QPushButton" name="Create_Distance">
                        <property name="maximumSize">
@@ -1895,51 +1911,6 @@ p, li { white-space: pre-wrap; }
                        <property name="icon">
                         <iconset resource="PyWOLF_Resource.qrc">
                          <normaloff>:/ICONS/PySWOLF_ICONS/Create.png</normaloff>:/ICONS/PySWOLF_ICONS/Create.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_42">
-                       <property name="minimumSize">
-                        <size>
-                         <width>100</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                         <kerning>true</kerning>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Project Name:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="Project_Name">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>200</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>200</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Enter the name of project</string>
                        </property>
                       </widget>
                      </item>
@@ -1975,35 +1946,71 @@ p, li { white-space: pre-wrap; }
                      </item>
                     </layout>
                    </item>
-                   <item>
+                   <item row="1" column="0">
                     <widget class="QSplitter" name="splitter_8">
                      <property name="orientation">
                       <enum>Qt::Vertical</enum>
                      </property>
-                     <widget class="QTableView" name="Distance_table">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
+                     <widget class="QTabWidget" name="TransportWidget">
                       <property name="minimumSize">
                        <size>
-                        <width>800</width>
-                        <height>0</height>
+                        <width>0</width>
+                        <height>200</height>
                        </size>
                       </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16777215</height>
-                       </size>
+                      <property name="currentIndex">
+                       <number>-1</number>
                       </property>
                      </widget>
                      <widget class="QWidget" name="layoutWidget">
                       <layout class="QVBoxLayout" name="verticalLayout_12">
                        <item>
                         <layout class="QHBoxLayout" name="horizontalLayout_26">
+                         <item>
+                          <widget class="QLabel" name="label_42">
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <weight>75</weight>
+                             <bold>true</bold>
+                             <kerning>true</kerning>
+                            </font>
+                           </property>
+                           <property name="text">
+                            <string>Project Name:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLineEdit" name="Project_Name">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="minimumSize">
+                            <size>
+                             <width>100</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>200</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                           <property name="placeholderText">
+                            <string>Enter the name of project</string>
+                           </property>
+                          </widget>
+                         </item>
                          <item>
                           <widget class="QPushButton" name="write_project">
                            <property name="maximumSize">
@@ -2023,6 +2030,12 @@ p, li { white-space: pre-wrap; }
                          </item>
                          <item>
                           <widget class="QProgressBar" name="progressBar_write_project">
+                           <property name="minimumSize">
+                            <size>
+                             <width>300</width>
+                             <height>0</height>
+                            </size>
+                           </property>
                            <property name="value">
                             <number>0</number>
                            </property>
@@ -2091,7 +2104,7 @@ p, li { white-space: pre-wrap; }
                      </widget>
                     </widget>
                    </item>
-                   <item>
+                   <item row="2" column="0">
                     <layout class="QHBoxLayout" name="horizontalLayout_25">
                      <item>
                       <widget class="QPushButton" name="update_param">
@@ -2178,8 +2191,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1113</width>
-             <height>1074</height>
+             <width>980</width>
+             <height>801</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_106">
@@ -2421,8 +2434,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1113</width>
-             <height>1074</height>
+             <width>980</width>
+             <height>726</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_52">
@@ -3476,8 +3489,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1113</width>
-             <height>1074</height>
+             <width>980</width>
+             <height>736</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_30">
@@ -3870,8 +3883,8 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>419</width>
-                      <height>423</height>
+                      <width>365</width>
+                      <height>190</height>
                      </rect>
                     </property>
                     <attribute name="label">
@@ -3946,8 +3959,8 @@ p, li { white-space: pre-wrap; }
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>399</width>
-                          <height>358</height>
+                          <width>345</width>
+                          <height>125</height>
                          </rect>
                         </property>
                         <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -3961,7 +3974,7 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>184</width>
+                      <width>180</width>
                       <height>70</height>
                      </rect>
                     </property>
@@ -4437,8 +4450,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1113</width>
-             <height>1074</height>
+             <width>1032</width>
+             <height>1051</height>
             </rect>
            </property>
            <property name="palette">
@@ -5582,7 +5595,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1157</width>
+     <width>1041</width>
      <height>21</height>
     </rect>
    </property>

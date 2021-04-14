@@ -129,7 +129,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Treatment_process.setDisabled(True)
         self.Collection_process.setDisabled(True)
         self.Network.setDisabled(True)
-        self.Distance_table.setDisabled(True)
+        #self.Distance_table.setDisabled(True)
 
         self.textBrowser.setSizeAdjustPolicy(self.textBrowser.AdjustToContents)
         
@@ -881,6 +881,10 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
 # =============================================================================
     def init_write_project(self):
+        self._n_trans_mode = 0
+        self.spinBox.setMinimum(1)
+        self.spinBox.setValue(1)
+        
         #Import distance data
         self.Create_Distance.clicked.connect(self.Create_Distance_Table)
         
@@ -906,7 +910,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.progressBar_updateParam.setValue(0)
         
         #QTableView
-        self.Distance_table.installEventFilter(self)
+        #self.Distance_table.installEventFilter(self)
         self.Param_table.installEventFilter(self)
         self.Param_table.setSortingEnabled(True) 
         
@@ -928,27 +932,94 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def Help_Project_ParamFunc(self):
         QtGui.QDesktopServices.openUrl('https://swolfpy.readthedocs.io/en/latest/Getting_started.html#id1')  
         
+    
     @QtCore.Slot()
     def Create_Distance_Table(self):
-        self.Distance_table.setEnabled(1)
-        columns =  [x for x in self._Treatment_processes.keys()] + [x for x in self._Collection_processes.keys()]
-        Distance = pd.DataFrame(columns=columns,index=columns)
-        for i in range(len(columns)):
-            j=i
-            while j+1 < len(columns):
-                Distance[columns[j+1]][columns[i]] = 20
-                j+=1
+        for i in range(self._n_trans_mode):
+            i += 1
+            tab = self.TransportWidget.findChildren(QtWidgets.QWidget, "Mode {}".format(i))[0]
+            tab.deleteLater()
+        self._n_trans_mode = 0
+        for i in range(self.spinBox.value()):
+            i += 1
+            Tab = QtWidgets.QWidget()
+            Tab.setObjectName("Mode {}".format(i))
+            self.TransportWidget.addTab(Tab, "Mode {}".format(i)) 
+    
+            gridLayout = QtWidgets.QGridLayout(Tab)
+            gridLayout.setObjectName("main_layout_{}".format(i))
+
+            # Frame1 
+            Frame1 = QtWidgets.QFrame(Tab)
+            Frame1.setObjectName("Frame1_{}".format(i))
+            F1_layout = QtWidgets.QVBoxLayout(Frame1)
+            F1_layout.setObjectName("F1_layout_{}".format(i))
+            Frame1.setMaximumWidth(230)
+            
+            # Frame2 
+            Frame2 = QtWidgets.QFrame(Tab)
+            Frame2.setObjectName("Frame2_{}".format(i))
+            F2_layout = QtWidgets.QVBoxLayout(Frame2)
+            F2_layout.setObjectName("F2_layout_{}".format(i))
+            
+            gridLayout.addWidget(Frame1, 0, 0, 1, 1)
+            gridLayout.addWidget(Frame2, 0, 1, 1, 1)
+            
+            # setup Frame1
+            label_1 = QtWidgets.QLabel(Frame1)
+            label_1.setObjectName("Label_Mode{}".format(i))
+            F1_layout.addWidget(label_1)
+            label_1.setText('Transportation mode:')
+            
+            act = QtWidgets.QComboBox(Frame1)
+            act.setObjectName("Act_Mode_{}".format(i))
+            F1_layout.addWidget(act)
+            if i>1:
+                act.addItems(['Heavy Duty Truck', 'Medium Duty Truck', 'Rail', 'Barge', 'Cargo Ship'])
+            else:
+                act.addItems(['Heavy Duty Truck'])
+
+            spacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+            F1_layout.addItem(spacer)
+            
+            # setup Frame2
+            Dist_table = QtWidgets.QTableView(Frame2)
+            Dist_table.setObjectName("Dist_Mode_{}".format(i))
+            Dist_table.setMinimumSize(QtCore.QSize(200, 200))
+            F2_layout.addWidget(Dist_table)
+            
+            columns =  [x for x in self._Treatment_processes.keys()] + [x for x in self._Collection_processes.keys()]
+            Distance = pd.DataFrame(columns=columns,index=columns)
+            for j in range(len(columns)):
+                jj=j
+                while jj+1 < len(columns):
+                    if i==1:
+                        Distance[columns[jj+1]][columns[j]] = 20
+                    else:
+                        Distance[columns[jj+1]][columns[j]] = 0
+                    jj+=1
                 
-        Distance=Distance.fillna('')
-        self.Dis_data = Table_modeifed_distanceTable(Distance)
-        self.Distance_table.setModel(self.Dis_data)
-        self.Distance_table.resizeColumnsToContents()
+            Distance=Distance.fillna('')
+            Dis_data = Table_modeifed_distanceTable(Distance)
+            Dist_table.setModel(Dis_data)
+            Dist_table.resizeColumnsToContents()
+        self._n_trans_mode += self.spinBox.value()
+
+    @QtCore.Slot()
+    def read_distance_func(self):
+        data = {}
+        for i in range(self._n_trans_mode):
+            i+=1
+            TableView = self.TransportWidget.findChildren(QtWidgets.QTableView, "Dist_Mode_{}".format(i))[0]
+            mode = self.TransportWidget.findChildren(QtWidgets.QComboBox, "Act_Mode_{}".format(i))[0].currentText()
+            data[mode] = TableView.model()._data
+        self.distance = Distance(data=data)
+
         
     @QtCore.Slot()
     def write_project_func(self):
+        self.read_distance_func()
         self.P_Name=self.Project_Name.text()
-        self.distance = Distance(Data=self.Dis_data._data)
-        
         if len(self._Collection_processes)>0:
             for i in np.arange(1,self.col_index):
                 x = self.Collection.findChildren(QtWidgets.QComboBox,"Col_{}".format(i))[0].currentText()

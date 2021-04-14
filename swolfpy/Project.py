@@ -55,8 +55,8 @@ class Project():
     >>> from swolfpy_processmodels import Distance
     >>> import pandas as pd
     >>> Processes = ['LF','WTE','SF_COl']
-    >>> Data = pd.DataFrame([[None,20,20],[None,None,20],[None,None,None]],index=Processes,columns=Processes)
-    >>> distance = Distance(Data=Data)
+    >>> data = Distance.create_distance_table(Processes, ['Heavy Duty Truck'], default_dist=20)
+    >>> distance = Distance(data)
 
     Step 3: Create Collection_processes dict with one single family sector which only has residual waste collection:
 

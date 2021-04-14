@@ -6,7 +6,6 @@ Created on Tue May 12 22:40:36 2020
 
 Tests for `swolfpy` package.
 """
-import pandas as pd
 from swolfpy_inputdata import CommonData
 from swolfpy_processmodels import LF, WTE, SF_Col, Distance
 from swolfpy import Technosphere
@@ -25,9 +24,10 @@ def test_demo_swolfpy():
     Treatment_processes['WTE'] = {'input_type': ['RWC', 'Other_Residual'], 'model': WTE()}
 
     # Distance
-    Processes = ['LF', 'WTE', 'SF_COl']
-    Data = pd.DataFrame([[None, 20, 20], [None, None, 20], [None, None, None]], index=Processes, columns=Processes)
-    distance = Distance(Data=Data)
+    data = Distance.create_distance_table(process_names=['LF', 'WTE', 'SF_COl'],
+                                          transport_modes=['Heavy Duty Truck'],
+                                          default_dist=20)
+    distance = Distance(data)
 
     # Collection_processes:
     # Ony include one single family sector wih residual waste collection
