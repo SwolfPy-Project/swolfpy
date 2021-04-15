@@ -358,7 +358,7 @@ class Optimization(LCA_matrix):
             return res
 
     @staticmethod
-    def multi_start_optimization(optObject, constraints=None, waste_param=True, collection=False, max_iter=30,
+    def multi_start_optimization(optObject, constraints=None, waste_param=True, collection=False, n_iter=30,
                                  nproc=None, timeout=None, initialize_guess='random'):
         optObject.constraints = constraints
         optObject.waste_param = waste_param
@@ -377,11 +377,17 @@ class Optimization(LCA_matrix):
 
         args = []
         if initialize_guess == 'LHS':
-            all_x0 = pyDOE.lhs(n_dec_vars, samples=max_iter)
+            all_x0 = pyDOE.lhs(n_dec_vars, samples=n_iter)
         elif initialize_guess == 'random':
-            all_x0 = np.random.rand(max_iter, n_dec_vars)
+            all_x0 = np.random.rand(n_iter, n_dec_vars)
+        elif initialize_guess == 'binary':
+            all_x0 = np.random.randint(low=0,
+                                       high=2,
+                                       size=(n_iter, n_dec_vars))
+        else:
+            raise ValueError(f'The {initialize_guess} method for generating the initial guess is not correct!')
 
-        for j in range(max_iter):
+        for j in range(n_iter):
             args.append((optObject, bnds, all_x0[j], j))
 
         if not nproc:
