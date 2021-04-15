@@ -19,7 +19,7 @@ def import_methods(path_to_methods=None):
     files = os.listdir(path_to_methods)
     for f in files:
         if '.csv' in f:
-            df = pd.read_csv(path_to_methods + '\\' + f)
+            df = pd.read_csv(path_to_methods + '/' + f)
             CF = []
             for i in df.index:
                 CF.append((eval(df['key'][i]), df['value'][i]))
