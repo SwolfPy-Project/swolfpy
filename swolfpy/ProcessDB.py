@@ -51,10 +51,12 @@ class ProcessDB():
         .. _Write_DB:
 
         """
+        create_static_parameters = True
         self.db_data = {}
         self.db_Pr_data = {}
         self.parameters = []  # List of dictionaries ({'name':Formula ,'amount':0})
         self.list_of_params = []  # List of parameters name
+        self.list_of_static_params = []
         self.act_in_group = set()
         self.params_dict = dict()  # Dictionary that has set() include the key (input,act) for all the exchanges with parameters.
         self.uncertain_parameters = parameters
@@ -95,13 +97,21 @@ class ProcessDB():
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
-                        ex = self.exchange((p, key), 'technosphere', 'Mg/year', 0, Formula="frac_of_" + key + '_from_' + self.P_Name + '_to_' + p,
+                        if len(self.waste_treatment[key]) > 1 or not create_static_parameters:
+                            Formula = "frac_of_" + key + '_from_' + self.P_Name + '_to_' + p
+                        else:
+                            Formula = None
+                            if "frac_of_" + key + '_from_' + self.P_Name + '_to_' + p not in self.list_of_static_params:
+                                self.list_of_static_params.append("frac_of_" + key + '_from_' + self.P_Name + '_to_' + p)
+                                self.uncertain_parameters.add_parameter(key, self.P_Name, p, 1, dynamic_param=False)
+
+                        ex = self.exchange((p, key), 'technosphere', 'Mg/year', 0 if Formula else 1 , Formula=Formula,
                                            Act=(self.P_Pr_Name, x + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex)
 
                         # addin exchange for transportation between the process models
-                        ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year', 0,
-                                                Formula="frac_of_" + key + '_from_' + self.P_Name + '_to_' + p,
+                        ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
+                                                0 if Formula else 1, Formula=Formula,
                                                 Act=(self.P_Pr_Name, x + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex_trnp)
 
@@ -110,13 +120,22 @@ class ProcessDB():
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
-                        ex = self.exchange((p, x), 'technosphere', 'Mg/year', 0, Formula="frac_of_" + key + '_from_' + self.P_Name + '_to_' + p,
+                        if len(self.waste_treatment[key]) > 1 or not create_static_parameters:
+                            Formula = "frac_of_" + key + '_from_' + self.P_Name + '_to_' + p
+                        else:
+                            Formula = None
+                            if "frac_of_" + key + '_from_' + self.P_Name + '_to_' + p not in self.list_of_static_params:
+                                self.list_of_static_params.append("frac_of_" + key + '_from_' + self.P_Name + '_to_' + p)
+                                self.uncertain_parameters.add_parameter(key, self.P_Name, p, 1, dynamic_param=False)
+
+                        # adding exchange to waste processing
+                        ex = self.exchange((p, x), 'technosphere', 'Mg/year', 0 if Formula else 1, Formula=Formula,
                                            Act=(self.P_Pr_Name, x + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex)
 
                         # addin exchange for transportation between the process models
-                        ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year', 0,
-                                                Formula="frac_of_" + key + '_from_' + self.P_Name + '_to_' + p,
+                        ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
+                                                0 if Formula else 1, Formula=Formula,
                                                 Act=(self.P_Pr_Name, x + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex_trnp)
 
@@ -125,15 +144,23 @@ class ProcessDB():
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
-                        ex = self.exchange((p, x), 'technosphere', 'Mg/year', 0,
-                                           Formula="frac_of_" + key + '_from_' + self.P_Name + '_to_' + p,
+                        if len(self.waste_treatment[key]) > 1 or not create_static_parameters:
+                            Formula = "frac_of_" + key + '_from_' + self.P_Name + '_to_' + p
+                        else:
+                            Formula = None
+                            if "frac_of_" + key + '_from_' + self.P_Name + '_to_' + p not in self.list_of_static_params:
+                                self.list_of_static_params.append("frac_of_" + key + '_from_' + self.P_Name + '_to_' + p)
+                                self.uncertain_parameters.add_parameter(key, self.P_Name, p, 1, dynamic_param=False)
+
+                        ex = self.exchange((p, x), 'technosphere', 'Mg/year', 0 if Formula else 1,
+                                           Formula=Formula,
                                            Act=(self.P_Pr_Name, x + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex)
 
                         # addin exchange for transportation between the collection sector and treatment processs
                         if p in self.Report['LCI'][key].keys():
-                            ex_trnp = self.exchange((self.P_Pr_Name, key + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year', 0,
-                                                    Formula="frac_of_" + key + '_from_' + self.P_Name + '_to_' + p,
+                            ex_trnp = self.exchange((self.P_Pr_Name, key + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
+                                                    0 if Formula else 1, Formula=Formula,
                                                     Act=(self.P_Pr_Name, x + '_' + key), product=key)
                             self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex_trnp)
                         else:

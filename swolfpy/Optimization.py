@@ -84,15 +84,19 @@ class Optimization(LCA_matrix):
         print("\n\n collection scheme vars dict: \n", self.scheme_vars_dict)
 
     def update_col_scheme(self, x):
+        process_set = set()
         if self.n_scheme_vars:
             for k in self.scheme_vars_dict:
                 process = self.scheme_vars_dict[k][0]
+                process_set.add(process)
                 i = self.scheme_vars_dict[k][1]
                 if i in ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO']:
                     self.Treatment_processes[process]['model'].col_schm[i]['Contribution'] = x[k]
                 else:
                     for j in ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO']:
                         self.Treatment_processes[process]['model'].col_schm[j]['separate_col'][i] = x[k]
+            for process in process_set:
+                self.Treatment_processes[process]['model']._normalize_scheme(warn=False)
         else:
             return()
 
@@ -522,6 +526,9 @@ class Optimization(LCA_matrix):
             for j in i:
                 product.append((j[3], params[index]))
                 index += 1
+        for _, i in self.project.parameters.static_param_dict.items():
+            for j in i:
+                product.append((j[3], 1))
 
         label = self.project.parameters.nodes
         source = []
@@ -531,23 +538,24 @@ class Optimization(LCA_matrix):
         color = []
 
         # Color & shape for plotting the SWM Network
+        # https://www.rapidtables.com/web/color/RGB_Color.html
         edge_color = {'RWC': (160, 82, 45),  # sienna	#A0522D
                       'SSR': (0, 0, 255),  # blue	#0000FF
-                      'DSR': (0, 0, 255),  # blue	#0000FF
-                      'MSR': (0, 0, 255),  # blue	#0000FF
-                      'LV': (0, 100, 0),  # dark green	#006400
+                      'DSR': (0,0,205),  # medium blue	#0000CD
+                      'MSR': 	(65,105,225),  # royal blue	#4169E1
+                      'LV': (0,255,0),  # lime	#00FF00
                       'SSYW': (0, 100, 0),  # dark green	#006400
                       'SSO': (0, 255, 127),  # spring green	#00FF7F
-                      'DryRes': (160, 82, 45),  # sienna	#A0522D
+                      'DryRes': (222,184,135),  # burly wood	#DEB887
                       'REC': (0, 0, 255),  # blue	#0000FF
-                      'WetRes': (160, 82, 45),  # sienna	#A0522D
-                      'MRDO': (160, 82, 45),  # sienna	#A0522D
-                      'SSYWDO': (0, 100, 0),  # dark green	#006400
-                      'MSRDO': (0, 0, 255),  # blue	#0000FF
+                      'WetRes': (210,105,30),  # chocolate	#D2691E
+                      'MRDO': (205,133,63),  # peru	#CD853F
+                      'SSYWDO': (107,142,35),  # olive drab	#6B8E23
+                      'MSRDO': (106,90,205),  # slate blue	#6A5ACD
                       'Bottom_Ash': (128, 128, 128),  # Gray	#808080
                       'Fly_Ash': (0, 0, 0),  # black	#000000
-                      'Separated_Organics': (0, 255, 0),  # lime	#00FF00
-                      'Other_Residual': (160, 82, 45),  # sienna	#A0522D
+                      'Separated_Organics': (50,205,50),  # lime green	#32CD32
+                      'Other_Residual': (139,69,19),  # saddle brown	#8B4513
                       'RDF': (255, 0, 0)}  # Red	#FF0000
         for i in self.project.CommonData.Reprocessing_Index:
             edge_color[i] = (0, 0, 139)  # dark blue	#00008B

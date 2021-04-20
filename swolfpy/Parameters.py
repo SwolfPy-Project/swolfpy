@@ -11,6 +11,7 @@ def approx_eq(x, y):
 class Parameters():
     def __init__(self, processes, CommonData):
         self.param_uncertainty_dict = dict()
+        self.static_param_dict = dict()
         self.params_dict = dict()
 
         self.MC_param_name = list()  # name of parameters that include uncertainty
@@ -38,7 +39,7 @@ class Parameters():
                 self.node_shape[p] = 'oval'
                 self.node_color[p] = 'azure'
 
-    def add_parameter(self, product, process_model_from, process_model_to, value):
+    def add_parameter(self, product, process_model_from, process_model_to, value, dynamic_param=True):
         """
         Define new parameter
 
@@ -54,11 +55,18 @@ class Parameters():
         """
         param_name = 'frac_of_' + product + '_from_' + process_model_from + '_to_' + process_model_to
         key = product + process_model_from
-        if key not in self.param_uncertainty_dict.keys():
-            self.param_uncertainty_dict[key] = list()
-            self.param_uncertainty_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+        if dynamic_param:
+            if key not in self.param_uncertainty_dict.keys():
+                self.param_uncertainty_dict[key] = list()
+                self.param_uncertainty_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+            else:
+                self.param_uncertainty_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
         else:
-            self.param_uncertainty_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+            if key not in self.static_param_dict.keys():
+                self.static_param_dict[key] = list()
+                self.static_param_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+            else:
+                self.static_param_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
 
     def SWM_network(self, view=True, show_vals=True, all_flow=True):
         """
@@ -73,17 +81,18 @@ class Parameters():
         for x in self.nodes:
             self.network.node(x, shape=self.node_shape[x], fillcolor=self.node_color[x], style='filled', width='1.2')
 
-        for y in self.param_uncertainty_dict.values():
-            for x in y:
-                if show_vals:
-                    if all_flow:
-                        self.add_edge(x[3][0], x[3][1], x[3][2], x[1])
-                    elif not all_flow and x[1] > 0:
-                        self.add_edge(x[3][0], x[3][1], x[3][2], x[1])
+        for param_dict in [self.param_uncertainty_dict.values(), self.static_param_dict.values()]:
+            for y in param_dict:
+                for x in y:
+                    if show_vals:
+                        if all_flow:
+                            self.add_edge(x[3][0], x[3][1], x[3][2], x[1])
+                        elif not all_flow and x[1] > 0:
+                            self.add_edge(x[3][0], x[3][1], x[3][2], x[1])
+                        else:
+                            pass
                     else:
-                        pass
-                else:
-                    self.add_edge(x[3][0], x[3][1], x[3][2])
+                        self.add_edge(x[3][0], x[3][1], x[3][2])
         try:
             self.network.render('SWM_network', view=view)
         except Exception:
