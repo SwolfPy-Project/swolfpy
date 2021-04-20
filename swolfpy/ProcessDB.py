@@ -105,7 +105,7 @@ class ProcessDB():
                                 self.list_of_static_params.append("frac_of_" + key + '_from_' + self.P_Name + '_to_' + p)
                                 self.uncertain_parameters.add_parameter(key, self.P_Name, p, 1, dynamic_param=False)
 
-                        ex = self.exchange((p, key), 'technosphere', 'Mg/year', 0 if Formula else 1 , Formula=Formula,
+                        ex = self.exchange((p, key), 'technosphere', 'Mg/year', 0 if Formula else 1, Formula=Formula,
                                            Act=(self.P_Pr_Name, x + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex)
 

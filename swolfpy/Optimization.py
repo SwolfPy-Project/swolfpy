@@ -541,21 +541,21 @@ class Optimization(LCA_matrix):
         # https://www.rapidtables.com/web/color/RGB_Color.html
         edge_color = {'RWC': (160, 82, 45),  # sienna	#A0522D
                       'SSR': (0, 0, 255),  # blue	#0000FF
-                      'DSR': (0,0,205),  # medium blue	#0000CD
-                      'MSR': 	(65,105,225),  # royal blue	#4169E1
-                      'LV': (0,255,0),  # lime	#00FF00
+                      'DSR': (0, 0, 205),  # medium blue	#0000CD
+                      'MSR': (65, 105, 225),  # royal blue	#4169E1
+                      'LV': (0, 255, 0),  # lime	#00FF00
                       'SSYW': (0, 100, 0),  # dark green	#006400
                       'SSO': (0, 255, 127),  # spring green	#00FF7F
-                      'DryRes': (222,184,135),  # burly wood	#DEB887
+                      'DryRes': (222, 184, 135),  # burly wood	#DEB887
                       'REC': (0, 0, 255),  # blue	#0000FF
-                      'WetRes': (210,105,30),  # chocolate	#D2691E
-                      'MRDO': (205,133,63),  # peru	#CD853F
-                      'SSYWDO': (107,142,35),  # olive drab	#6B8E23
-                      'MSRDO': (106,90,205),  # slate blue	#6A5ACD
+                      'WetRes': (210, 105, 30),  # chocolate	#D2691E
+                      'MRDO': (205, 133, 63),  # peru	#CD853F
+                      'SSYWDO': (107, 142, 35),  # olive drab	#6B8E23
+                      'MSRDO': (106, 90, 205),  # slate blue	#6A5ACD
                       'Bottom_Ash': (128, 128, 128),  # Gray	#808080
                       'Fly_Ash': (0, 0, 0),  # black	#000000
-                      'Separated_Organics': (50,205,50),  # lime green	#32CD32
-                      'Other_Residual': (139,69,19),  # saddle brown	#8B4513
+                      'Separated_Organics': (50, 205, 50),  # lime green	#32CD32
+                      'Other_Residual': (139, 69, 19),  # saddle brown	#8B4513
                       'RDF': (255, 0, 0)}  # Red	#FF0000
         for i in self.project.CommonData.Reprocessing_Index:
             edge_color[i] = (0, 0, 139)  # dark blue	#00008B
