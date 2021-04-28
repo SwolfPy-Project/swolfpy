@@ -190,7 +190,7 @@ class Project():
         :return: Returns a tuple (parameters,act_in_group)
         :rtype: tuple
         """
-        self.process_model[name] = ProcessDB(name, self.waste_treatment, self.Distance)
+        self.process_model[name] = ProcessDB(name, self.waste_treatment, self.CommonData, self.Distance)
         self.Treatment_processes[name]['model'].calc()
         self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
 
@@ -305,14 +305,14 @@ class Project():
         self.waste_BD.get(scenario_name).save()
 
     @staticmethod
-    def setup_LCA(name, functioanl_units, impact_methods):
+    def setup_LCA(name, functional_units, impact_methods):
         """
         Perform LCA by instantiating the ``bw2calc.multi_lca`` class from Brightway2.
         ``bw2calc.multi_lca`` is a wrapper class for performing LCA calculations with many
         functional units and LCIA methods.
         """
-        if len(functioanl_units) > 0 and len(impact_methods) > 0:
-            calculation_setups[name] = {'inv': functioanl_units, 'ia': impact_methods}
+        if len(functional_units) > 0 and len(impact_methods) > 0:
+            calculation_setups[name] = {'inv': functional_units, 'ia': impact_methods}
             MultiLca = MultiLCA(name)
             index = [str(x) for x in list(MultiLca.all.keys())]
             columns = [str(x) for x in impact_methods]
