@@ -33,9 +33,7 @@ def test_demo_swolfpy():
     # Ony include one single family sector wih residual waste collection
     Collection_processes = {}
     Collection_scheme_SF_COL = SF_Col.scheme()
-    Collection_scheme_SF_COL['RWC']['Contribution'] = 1
-    # Collection_scheme_SF_COL['RWC']['separate_col']['SSR'] = 1
-    # Collection_scheme_SF_COL['RWC']['separate_col']['SSYW'] = 1
+    Collection_scheme_SF_COL[('RWC', 'SSYW', 'SSR')] = 1
     Collection_processes['SF_COl'] = {'input_type': [],
                                       'model': SF_Col('SF_COl', Collection_scheme_SF_COL, Treatment_processes=Treatment_processes,
                                                       Distance=distance)}

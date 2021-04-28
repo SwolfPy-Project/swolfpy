@@ -6,6 +6,7 @@ Created on Fri Jun 19 22:54:15 2020
 """
 from PySide2 import QtCore
 from time import time
+from ..Optimization import Optimization
 
 #%% Write project
 
@@ -58,27 +59,39 @@ class Worker_Optimize(QtCore.QThread):
     UpdatePBr_Opt = QtCore.Signal(dict)
     report = QtCore.Signal(dict)
         
-    def __init__(self,parent,opt,constraints,waste_param,collection,is_multi,max_iter):
+    def __init__(self, parent, opt, constraints, waste_param, collection, is_multi, n_iter, n_proc, iter_mehtod, timeout):
         super().__init__(parent)
         self.opt= opt
         self.constraints = constraints
         self.waste_param = waste_param
         self.collection  = collection
         self.is_multi=is_multi
-        self.max_iter = max_iter
+        self.n_iter = n_iter
+        self.n_proc = n_proc
+        self.iter_mehtod = iter_mehtod
+        self.timeout = timeout
 
     def run(self):
         self.UpdatePBr_Opt.emit({'max':0,'val':0})
         Time_start = time()
         if self.is_multi:
-            results=self.opt.multi_start_optimization(constraints=self.constraints,
-                             waste_param=self.waste_param, 
-                             collection=self.collection,
-                             max_iter=self.max_iter)
+            results = Optimization.multi_start_optimization(self.opt, 
+                                                            constraints=self.constraints,
+                                                            waste_param=self.waste_param,
+                                                            collection=self.collection,
+                                                            n_iter=self.n_iter,
+                                                            timeout=self.timeout,
+                                                            nproc=self.n_proc,
+                                                            initialize_guess=self.iter_mehtod)
         else:
-            results=self.opt.optimize_parameters(constraints=self.constraints,
-                                         waste_param=self.waste_param, 
-                                         collection=self.collection) 
+            results = Optimization.multi_start_optimization(self.opt, 
+                                                            constraints=self.constraints,
+                                                            waste_param=self.waste_param,
+                                                            collection=self.collection,
+                                                            n_iter=1,
+                                                            timeout=None,
+                                                            nproc=1,
+                                                            initialize_guess=self.iter_mehtod)
         Time_finish = time()
         self.UpdatePBr_Opt.emit({'max':1,'val':1})
         self.report.emit({'time':round(Time_finish - Time_start),'results':results})              

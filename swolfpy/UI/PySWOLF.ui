@@ -267,7 +267,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QTabWidget" name="init_process_toolbox">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="PM_PMTab">
            <attribute name="title">
@@ -488,13 +488,6 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="7" column="1">
-                      <widget class="QCheckBox" name="IT_Green_glass">
-                       <property name="text">
-                        <string>Green_glass</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="1" column="0">
                       <widget class="QCheckBox" name="IT_OCC">
                        <property name="text">
@@ -517,52 +510,10 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="5" column="1">
-                      <widget class="QCheckBox" name="IT_Brown_glass">
-                       <property name="text">
-                        <string>Brown_glass</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="10" column="0">
-                      <widget class="QCheckBox" name="IT_PVC">
-                       <property name="text">
-                        <string>PVC</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="9" column="1">
-                      <widget class="QCheckBox" name="IT_Al">
-                       <property name="text">
-                        <string>Al</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="2" column="0">
                       <widget class="QCheckBox" name="IT_Mixed_Paper">
                        <property name="text">
                         <string>Mixed_Paper</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="10" column="1">
-                      <widget class="QCheckBox" name="IT_Fe">
-                       <property name="text">
-                        <string>Fe</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QCheckBox" name="IT_Polystyrene">
-                       <property name="text">
-                        <string>Polystyrene</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="8" column="0">
-                      <widget class="QCheckBox" name="IT_HDPE_P">
-                       <property name="text">
-                        <string>HDPE_P</string>
                        </property>
                       </widget>
                      </item>
@@ -580,73 +531,10 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="8" column="1">
-                      <widget class="QCheckBox" name="IT_Mixed_Glass">
-                       <property name="text">
-                        <string>Mixed_Glass</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="11" column="1">
-                      <widget class="QCheckBox" name="IT_Cu">
-                       <property name="text">
-                        <string>Cu</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="1">
-                      <widget class="QCheckBox" name="IT_Plastic_Other">
-                       <property name="text">
-                        <string>Plastic_Other</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="3" column="0">
                       <widget class="QCheckBox" name="IT_ONP">
                        <property name="text">
                         <string>ONP</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QCheckBox" name="IT_Polypropylene">
-                       <property name="text">
-                        <string>Polypropylene</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="7" column="0">
-                      <widget class="QCheckBox" name="IT_HDPE_Unsorted">
-                       <property name="text">
-                        <string>HDPE_Unsorted</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="1">
-                      <widget class="QCheckBox" name="IT_Mixed_Plastic">
-                       <property name="text">
-                        <string>Mixed_Plastic</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="9" column="0">
-                      <widget class="QCheckBox" name="IT_HDPE_T">
-                       <property name="text">
-                        <string>HDPE_T</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="1">
-                      <widget class="QCheckBox" name="IT_Clear_glass">
-                       <property name="text">
-                        <string>Clear_glass</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="11" column="0">
-                      <widget class="QCheckBox" name="IT_LDPE_Film">
-                       <property name="text">
-                        <string>LDPE_Film</string>
                        </property>
                       </widget>
                      </item>
@@ -662,6 +550,69 @@ p, li { white-space: pre-wrap; }
                         </size>
                        </property>
                       </spacer>
+                     </item>
+                     <item row="7" column="0">
+                      <widget class="QCheckBox" name="IT_HDPE_P">
+                       <property name="text">
+                        <string>HDPE_P</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="8" column="0">
+                      <widget class="QCheckBox" name="IT_HDPE_T">
+                       <property name="text">
+                        <string>HDPE_T</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="9" column="0">
+                      <widget class="QCheckBox" name="IT_LDPE_Film">
+                       <property name="text">
+                        <string>LDPE_Film</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QCheckBox" name="IT_Brown_glass">
+                       <property name="text">
+                        <string>Brown_glass</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QCheckBox" name="IT_Clear_glass">
+                       <property name="text">
+                        <string>Clear_glass</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QCheckBox" name="IT_Green_glass">
+                       <property name="text">
+                        <string>Green_glass</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QCheckBox" name="IT_Mixed_Glass">
+                       <property name="text">
+                        <string>Mixed_Glass</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="5" column="1">
+                      <widget class="QCheckBox" name="IT_Al">
+                       <property name="text">
+                        <string>Al</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="6" column="1">
+                      <widget class="QCheckBox" name="IT_Fe">
+                       <property name="text">
+                        <string>Fe</string>
+                       </property>
+                      </widget>
                      </item>
                     </layout>
                    </widget>
@@ -1588,15 +1539,15 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="Collection_process">
                   <property name="geometry">
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>187</width>
-                    <height>96</height>
+                    <width>959</width>
+                    <height>605</height>
                    </rect>
                   </property>
                   <attribute name="label">

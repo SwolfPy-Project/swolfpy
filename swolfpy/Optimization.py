@@ -49,23 +49,34 @@ class Optimization(LCA_matrix):
             columns.append(col + ' mode')
             schemes[col] = project.Collection_processes[col]['model'].col_schm
 
-        index = ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO',
-                 'SSR', 'DSR', 'MSR', 'MSRDO',
-                 'SSYW', 'SSYWDO']
+        index = [('RWC', 'N/A', 'N/A'),
+                 ('RWC', 'N/A', 'SSR'),
+                 # ('RWC', 'N/A', 'DSR'),
+                 # ('RWC', 'N/A', 'MSR'),
+                 ('RWC', 'SSYW', 'N/A'),
+                 ('RWC', 'SSYW', 'SSR'),
+                 # ('RWC', 'SSYW', 'DSR'),
+                 # ('RWC', 'SSYW', 'MSR'),
+                 ('REC_WetRes', 'N/A', 'REC_WetRes'),
+                 ('REC_WetRes', 'SSYW', 'REC_WetRes'),
+                 ('SSO_DryRes', 'SSO_DryRes', 'N/A'),
+                 ('SSO_DryRes', 'SSO_DryRes', 'SSR'),
+                 # ('SSO_DryRes', 'SSO_DryRes', 'DSR'),
+                 # ('SSO_DryRes', 'SSO_DryRes', 'MSR')
+                 ]
 
         config_pd = pd.DataFrame(index=index, columns=columns)
         if len(config_pd.columns) > 0:
-            config_pd[columns[1::2]] = 'Fix'
+            for c in columns[1::2]:
+                config_pd[c] = ['Optimize', 'Optimize',
+                                'Optimize', 'Optimize',
+                                'Optimize', 'Optimize',
+                                'Optimize', 'Optimize']
 
             for col, sch in schemes.items():
-                base = 'RWC'
-                for i in ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO']:
-                    config_pd[col][i] = sch[i]['Contribution']
-                    config_pd[col + ' mode'][i] = 'Optimize'
-                    if sch[i]['Contribution'] > 0:
-                        base = i
-                for i in ['SSR', 'DSR', 'MSR', 'MSRDO', 'SSYW', 'SSYWDO']:
-                    config_pd[col][i] = sch[base]['separate_col'][i]
+                for k, v in sch.items():
+                    if k in index:
+                        config_pd[col][k] = v
         return(config_pd)
 
     def set_config(self, config):
@@ -86,17 +97,12 @@ class Optimization(LCA_matrix):
     def update_col_scheme(self, x):
         process_set = set()
         if self.n_scheme_vars:
-            for k in self.scheme_vars_dict:
-                process = self.scheme_vars_dict[k][0]
+            for k, v in self.scheme_vars_dict.items():
+                process = v[0]
                 process_set.add(process)
-                i = self.scheme_vars_dict[k][1]
-                if i in ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO']:
-                    self.Treatment_processes[process]['model'].col_schm[i]['Contribution'] = x[k]
-                else:
-                    for j in ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO']:
-                        self.Treatment_processes[process]['model'].col_schm[j]['separate_col'][i] = x[k]
+                self.Treatment_processes[process]['model'].col_schm[v[1]] = x[k]
             for process in process_set:
-                self.Treatment_processes[process]['model']._normalize_scheme(warn=False)
+                self.Treatment_processes[process]['model']._normalize_scheme(DropOff=False, warn=False)
         else:
             return()
 
@@ -222,18 +228,8 @@ class Optimization(LCA_matrix):
             for k in self.scheme_vars_dict:
                 process = self.scheme_vars_dict[k][0]
                 if process not in const_dict:
-                    const_dict[process] = ([False, False, False], [], [], [])
-                i = self.scheme_vars_dict[k][1]
-                if i in ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO']:
-                    const_dict[process][0][0] = True
-                    const_dict[process][1].append(k)
-                elif i in ['SSR', 'DSR', 'MSR', 'MSRDO']:
-                    const_dict[process][0][1] = True
-                    const_dict[process][2].append(k)
-                elif i in ['SSYW', 'SSYWDO']:
-                    const_dict[process][0][2] = True
-                    const_dict[process][3].append(k)
-
+                    const_dict[process] = []
+                const_dict[process].append(k)
         print("\n\n collection constraints dict: \n", const_dict, '\n\n')
 
         for k in const_dict:
@@ -243,32 +239,13 @@ class Optimization(LCA_matrix):
         def helper_sum(x, index):
             return(sum([x[i] for i in index]))
 
-        if const_dict[k][0][0]:  # Constraint for main scheme
-            fix = 0
-            for i in ['RWC', 'SSO_DryRes', 'REC_WetRes', 'MRDO']:
-                if self.config[k + ' mode'][i] == 'Fix':
-                    fix += self.config[k][i]
-            cons.append({'type': 'eq',
-                         'fun': (lambda x: helper_sum(x, const_dict[k][1]) + fix - 1),
-                         'Name': '{} main const'.format(k)})
-
-        if const_dict[k][0][1]:  # Constraint for separate reclables collection
-            fix = 0
-            for i in ['SSR', 'DSR', 'MSR', 'MSRDO']:
-                if self.config[k + ' mode'][i] == 'Fix':
-                    fix += self.config[k][i]
-            cons.append({'type': 'ineq',
-                         'fun': (lambda x: 1 - helper_sum(x, const_dict[k][2]) + fix),
-                         'Name': '{} Rec const'.format(k)})
-
-        if const_dict[k][0][2]:  # Constraint for separate reclables collection
-            fix = 0
-            for i in ['SSYW', 'SSYWDO']:
-                if self.config[k + ' mode'][i] == 'Fix':
-                    fix += self.config[k][i]
-            cons.append({'type': 'ineq',
-                         'fun': (lambda x: 1 - helper_sum(x, const_dict[k][3]) + fix),
-                         'Name': '{} YW const'.format(k)})
+        fix = 0
+        for i in self.config.index:
+            if self.config[k + ' mode'][i] == 'Fix':
+                fix += self.config[k][i]
+        cons.append({'type': 'eq',
+                     'fun': (lambda x: helper_sum(x, const_dict[k]) + fix - 1),
+                     'Name': '{} main const'.format(k)})
 
     def _create_constraints(self):
         cons = list()
@@ -547,7 +524,7 @@ class Optimization(LCA_matrix):
                       'SSYW': (0, 100, 0),  # dark green	#006400
                       'SSO': (0, 255, 127),  # spring green	#00FF7F
                       'DryRes': (222, 184, 135),  # burly wood	#DEB887
-                      'REC': (0, 0, 255),  # blue	#0000FF
+                      'REC': (0, 191, 255),  # deep sky blue	#00BFFF
                       'WetRes': (210, 105, 30),  # chocolate	#D2691E
                       'MRDO': (205, 133, 63),  # peru	#CD853F
                       'SSYWDO': (107, 142, 35),  # olive drab	#6B8E23

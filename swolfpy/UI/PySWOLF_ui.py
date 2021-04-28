@@ -260,11 +260,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_27.addWidget(self.IT_OFF, 4, 0, 1, 1)
 
-        self.IT_Green_glass = QCheckBox(self.frame_13)
-        self.IT_Green_glass.setObjectName(u"IT_Green_glass")
-
-        self.gridLayout_27.addWidget(self.IT_Green_glass, 7, 1, 1, 1)
-
         self.IT_OCC = QCheckBox(self.frame_13)
         self.IT_OCC.setObjectName(u"IT_OCC")
 
@@ -281,40 +276,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_27.addWidget(self.label_24, 0, 0, 1, 1)
 
-        self.IT_Brown_glass = QCheckBox(self.frame_13)
-        self.IT_Brown_glass.setObjectName(u"IT_Brown_glass")
-
-        self.gridLayout_27.addWidget(self.IT_Brown_glass, 5, 1, 1, 1)
-
-        self.IT_PVC = QCheckBox(self.frame_13)
-        self.IT_PVC.setObjectName(u"IT_PVC")
-
-        self.gridLayout_27.addWidget(self.IT_PVC, 10, 0, 1, 1)
-
-        self.IT_Al = QCheckBox(self.frame_13)
-        self.IT_Al.setObjectName(u"IT_Al")
-
-        self.gridLayout_27.addWidget(self.IT_Al, 9, 1, 1, 1)
-
         self.IT_Mixed_Paper = QCheckBox(self.frame_13)
         self.IT_Mixed_Paper.setObjectName(u"IT_Mixed_Paper")
 
         self.gridLayout_27.addWidget(self.IT_Mixed_Paper, 2, 0, 1, 1)
-
-        self.IT_Fe = QCheckBox(self.frame_13)
-        self.IT_Fe.setObjectName(u"IT_Fe")
-
-        self.gridLayout_27.addWidget(self.IT_Fe, 10, 1, 1, 1)
-
-        self.IT_Polystyrene = QCheckBox(self.frame_13)
-        self.IT_Polystyrene.setObjectName(u"IT_Polystyrene")
-
-        self.gridLayout_27.addWidget(self.IT_Polystyrene, 2, 1, 1, 1)
-
-        self.IT_HDPE_P = QCheckBox(self.frame_13)
-        self.IT_HDPE_P.setObjectName(u"IT_HDPE_P")
-
-        self.gridLayout_27.addWidget(self.IT_HDPE_P, 8, 0, 1, 1)
 
         self.IT_PET = QCheckBox(self.frame_13)
         self.IT_PET.setObjectName(u"IT_PET")
@@ -326,59 +291,59 @@ class Ui_MainWindow(object):
 
         self.gridLayout_27.addWidget(self.IT_Fiber_Other, 5, 0, 1, 1)
 
-        self.IT_Mixed_Glass = QCheckBox(self.frame_13)
-        self.IT_Mixed_Glass.setObjectName(u"IT_Mixed_Glass")
-
-        self.gridLayout_27.addWidget(self.IT_Mixed_Glass, 8, 1, 1, 1)
-
-        self.IT_Cu = QCheckBox(self.frame_13)
-        self.IT_Cu.setObjectName(u"IT_Cu")
-
-        self.gridLayout_27.addWidget(self.IT_Cu, 11, 1, 1, 1)
-
-        self.IT_Plastic_Other = QCheckBox(self.frame_13)
-        self.IT_Plastic_Other.setObjectName(u"IT_Plastic_Other")
-
-        self.gridLayout_27.addWidget(self.IT_Plastic_Other, 3, 1, 1, 1)
-
         self.IT_ONP = QCheckBox(self.frame_13)
         self.IT_ONP.setObjectName(u"IT_ONP")
 
         self.gridLayout_27.addWidget(self.IT_ONP, 3, 0, 1, 1)
 
-        self.IT_Polypropylene = QCheckBox(self.frame_13)
-        self.IT_Polypropylene.setObjectName(u"IT_Polypropylene")
+        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.gridLayout_27.addWidget(self.IT_Polypropylene, 1, 1, 1, 1)
+        self.gridLayout_27.addItem(self.verticalSpacer_6, 12, 0, 1, 1)
 
-        self.IT_HDPE_Unsorted = QCheckBox(self.frame_13)
-        self.IT_HDPE_Unsorted.setObjectName(u"IT_HDPE_Unsorted")
+        self.IT_HDPE_P = QCheckBox(self.frame_13)
+        self.IT_HDPE_P.setObjectName(u"IT_HDPE_P")
 
-        self.gridLayout_27.addWidget(self.IT_HDPE_Unsorted, 7, 0, 1, 1)
-
-        self.IT_Mixed_Plastic = QCheckBox(self.frame_13)
-        self.IT_Mixed_Plastic.setObjectName(u"IT_Mixed_Plastic")
-
-        self.gridLayout_27.addWidget(self.IT_Mixed_Plastic, 4, 1, 1, 1)
+        self.gridLayout_27.addWidget(self.IT_HDPE_P, 7, 0, 1, 1)
 
         self.IT_HDPE_T = QCheckBox(self.frame_13)
         self.IT_HDPE_T.setObjectName(u"IT_HDPE_T")
 
-        self.gridLayout_27.addWidget(self.IT_HDPE_T, 9, 0, 1, 1)
-
-        self.IT_Clear_glass = QCheckBox(self.frame_13)
-        self.IT_Clear_glass.setObjectName(u"IT_Clear_glass")
-
-        self.gridLayout_27.addWidget(self.IT_Clear_glass, 6, 1, 1, 1)
+        self.gridLayout_27.addWidget(self.IT_HDPE_T, 8, 0, 1, 1)
 
         self.IT_LDPE_Film = QCheckBox(self.frame_13)
         self.IT_LDPE_Film.setObjectName(u"IT_LDPE_Film")
 
-        self.gridLayout_27.addWidget(self.IT_LDPE_Film, 11, 0, 1, 1)
+        self.gridLayout_27.addWidget(self.IT_LDPE_Film, 9, 0, 1, 1)
 
-        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.IT_Brown_glass = QCheckBox(self.frame_13)
+        self.IT_Brown_glass.setObjectName(u"IT_Brown_glass")
 
-        self.gridLayout_27.addItem(self.verticalSpacer_6, 12, 0, 1, 1)
+        self.gridLayout_27.addWidget(self.IT_Brown_glass, 1, 1, 1, 1)
+
+        self.IT_Clear_glass = QCheckBox(self.frame_13)
+        self.IT_Clear_glass.setObjectName(u"IT_Clear_glass")
+
+        self.gridLayout_27.addWidget(self.IT_Clear_glass, 2, 1, 1, 1)
+
+        self.IT_Green_glass = QCheckBox(self.frame_13)
+        self.IT_Green_glass.setObjectName(u"IT_Green_glass")
+
+        self.gridLayout_27.addWidget(self.IT_Green_glass, 3, 1, 1, 1)
+
+        self.IT_Mixed_Glass = QCheckBox(self.frame_13)
+        self.IT_Mixed_Glass.setObjectName(u"IT_Mixed_Glass")
+
+        self.gridLayout_27.addWidget(self.IT_Mixed_Glass, 4, 1, 1, 1)
+
+        self.IT_Al = QCheckBox(self.frame_13)
+        self.IT_Al.setObjectName(u"IT_Al")
+
+        self.gridLayout_27.addWidget(self.IT_Al, 5, 1, 1, 1)
+
+        self.IT_Fe = QCheckBox(self.frame_13)
+        self.IT_Fe.setObjectName(u"IT_Fe")
+
+        self.gridLayout_27.addWidget(self.IT_Fe, 6, 1, 1, 1)
 
 
         self.gridLayout_23.addWidget(self.frame_13, 0, 4, 1, 1)
@@ -841,7 +806,7 @@ class Ui_MainWindow(object):
         self.Define_SWM_1.setMinimumSize(QSize(0, 600))
         self.Collection_process = QWidget()
         self.Collection_process.setObjectName(u"Collection_process")
-        self.Collection_process.setGeometry(QRect(0, 0, 187, 96))
+        self.Collection_process.setGeometry(QRect(0, 0, 959, 605))
         self.gridLayout_99 = QGridLayout(self.Collection_process)
         self.gridLayout_99.setObjectName(u"gridLayout_99")
         self.horizontalLayout_19 = QHBoxLayout()
@@ -2831,8 +2796,8 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.PySWOLF.setCurrentIndex(2)
-        self.init_process_toolbox.setCurrentIndex(0)
-        self.Define_SWM_1.setCurrentIndex(2)
+        self.init_process_toolbox.setCurrentIndex(2)
+        self.Define_SWM_1.setCurrentIndex(0)
         self.Collection.setCurrentIndex(-1)
         self.TransportWidget.setCurrentIndex(-1)
         self.LCA_subTab.setCurrentIndex(0)
@@ -2891,28 +2856,21 @@ class Ui_MainWindow(object):
         self.IT_FName.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Path to the user defined model", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Input Flow Type:", None))
         self.IT_OFF.setText(QCoreApplication.translate("MainWindow", u"OFF", None))
-        self.IT_Green_glass.setText(QCoreApplication.translate("MainWindow", u"Green_glass", None))
         self.IT_OCC.setText(QCoreApplication.translate("MainWindow", u"OCC", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"Recyclable:", None))
-        self.IT_Brown_glass.setText(QCoreApplication.translate("MainWindow", u"Brown_glass", None))
-        self.IT_PVC.setText(QCoreApplication.translate("MainWindow", u"PVC", None))
-        self.IT_Al.setText(QCoreApplication.translate("MainWindow", u"Al", None))
         self.IT_Mixed_Paper.setText(QCoreApplication.translate("MainWindow", u"Mixed_Paper", None))
-        self.IT_Fe.setText(QCoreApplication.translate("MainWindow", u"Fe", None))
-        self.IT_Polystyrene.setText(QCoreApplication.translate("MainWindow", u"Polystyrene", None))
-        self.IT_HDPE_P.setText(QCoreApplication.translate("MainWindow", u"HDPE_P", None))
         self.IT_PET.setText(QCoreApplication.translate("MainWindow", u"PET", None))
         self.IT_Fiber_Other.setText(QCoreApplication.translate("MainWindow", u"Fiber_Other", None))
-        self.IT_Mixed_Glass.setText(QCoreApplication.translate("MainWindow", u"Mixed_Glass", None))
-        self.IT_Cu.setText(QCoreApplication.translate("MainWindow", u"Cu", None))
-        self.IT_Plastic_Other.setText(QCoreApplication.translate("MainWindow", u"Plastic_Other", None))
         self.IT_ONP.setText(QCoreApplication.translate("MainWindow", u"ONP", None))
-        self.IT_Polypropylene.setText(QCoreApplication.translate("MainWindow", u"Polypropylene", None))
-        self.IT_HDPE_Unsorted.setText(QCoreApplication.translate("MainWindow", u"HDPE_Unsorted", None))
-        self.IT_Mixed_Plastic.setText(QCoreApplication.translate("MainWindow", u"Mixed_Plastic", None))
+        self.IT_HDPE_P.setText(QCoreApplication.translate("MainWindow", u"HDPE_P", None))
         self.IT_HDPE_T.setText(QCoreApplication.translate("MainWindow", u"HDPE_T", None))
-        self.IT_Clear_glass.setText(QCoreApplication.translate("MainWindow", u"Clear_glass", None))
         self.IT_LDPE_Film.setText(QCoreApplication.translate("MainWindow", u"LDPE_Film", None))
+        self.IT_Brown_glass.setText(QCoreApplication.translate("MainWindow", u"Brown_glass", None))
+        self.IT_Clear_glass.setText(QCoreApplication.translate("MainWindow", u"Clear_glass", None))
+        self.IT_Green_glass.setText(QCoreApplication.translate("MainWindow", u"Green_glass", None))
+        self.IT_Mixed_Glass.setText(QCoreApplication.translate("MainWindow", u"Mixed_Glass", None))
+        self.IT_Al.setText(QCoreApplication.translate("MainWindow", u"Al", None))
+        self.IT_Fe.setText(QCoreApplication.translate("MainWindow", u"Fe", None))
         self.IT_REC.setText(QCoreApplication.translate("MainWindow", u"REC", None))
         self.IT_MSRDO.setText(QCoreApplication.translate("MainWindow", u"MSRDO", None))
         self.IT_LV.setText(QCoreApplication.translate("MainWindow", u"Leaves", None))
@@ -3125,4 +3083,3 @@ class Ui_MainWindow(object):
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
         self.menuReferences.setTitle(QCoreApplication.translate("MainWindow", u"References", None))
     # retranslateUi
-

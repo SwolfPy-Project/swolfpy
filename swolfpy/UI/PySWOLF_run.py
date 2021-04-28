@@ -369,7 +369,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                           'RDF':self.IT_RDF,
                           'Al':self.IT_Al,
                           'Fe':self.IT_Fe,
-                          'Cu':self.IT_Cu,
+                          #'Cu':self.IT_Cu,
                           'OCC':self.IT_OCC,
                           'Mixed_Paper':self.IT_Mixed_Paper,
                           'ONP':self.IT_ONP,
@@ -380,15 +380,16 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                           'Green_glass':self.IT_Green_glass,
                           'Mixed_Glass':self.IT_Mixed_Glass,
                           'PET':self.IT_PET,
-                          'HDPE_Unsorted':self.IT_HDPE_Unsorted,
+                          #'HDPE_Unsorted':self.IT_HDPE_Unsorted,
                           'HDPE_P':self.IT_HDPE_P,
                           'HDPE_T':self.IT_HDPE_T,
-                          'PVC':self.IT_PVC,
+                          #'PVC':self.IT_PVC,
                           'LDPE_Film':self.IT_LDPE_Film,
-                          'Polypropylene':self.IT_Polypropylene,
-                          'Polystyrene':self.IT_Polystyrene,
-                          'Plastic_Other':self.IT_Plastic_Other,
-                          'Mixed_Plastic':self.IT_Mixed_Plastic}
+                          #'Polypropylene':self.IT_Polypropylene,
+                          #'Polystyrene':self.IT_Polystyrene,
+                          #'Plastic_Other':self.IT_Plastic_Other,
+                          #'Mixed_Plastic':self.IT_Mixed_Plastic
+                          }
     
         # Process models
         self._ProcessMetaData = ProcessModelsMetaData
@@ -646,13 +647,40 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Sch_Col = QtWidgets.QTableView(Frame2)
         Sch_Col.setObjectName("Sch_Col_{}".format(self.col_index))
         Sch_Col.setMinimumSize(QtCore.QSize(500, 400))
-        F2_layout.addWidget(Sch_Col, 0, 0, 1, 1)
+        F2_layout.addWidget(Sch_Col, 0, 0, -1, 1)
         
         #Collection scheme DataFrame
-        col_scheme_pd = pd.DataFrame(columns=['RWC','SSO_DryRes','REC_WetRes','MRDO'],
-                                     index=['Contribution','SSR','DSR','MSR','MSRDO','SSYW','SSYWDO'])
+        index = [('RWC', 'N/A', 'N/A'),
+                 ('RWC', 'N/A', 'SSR'),
+                 #('RWC', 'N/A', 'DSR'),
+                 #('RWC', 'N/A', 'MSR'),
+                 #('RWC', 'N/A', 'MSRDO'),
+                 ('RWC', 'SSYW', 'N/A'),
+                 ('RWC', 'SSYW', 'SSR'),
+                 #('RWC', 'SSYW', 'DSR'),
+                 #('RWC', 'SSYW', 'MSR'),
+                 #('RWC', 'SSYW', 'MSRDO'),
+                 ('RWC', 'SSYWDO', 'N/A'),
+                 ('RWC', 'SSYWDO', 'SSR'),
+                 #('RWC', 'SSYWDO', 'DSR'),
+                 #('RWC', 'SSYWDO', 'MSR'),
+                 ('RWC', 'SSYWDO', 'MSRDO'),
+                 ('REC_WetRes', 'N/A', 'REC_WetRes'),
+                 ('REC_WetRes', 'SSYW', 'REC_WetRes'),
+                 ('REC_WetRes', 'SSYWDO', 'REC_WetRes'),
+                 ('SSO_DryRes', 'SSO_DryRes', 'N/A'),
+                 ('SSO_DryRes', 'SSO_DryRes', 'SSR'),
+                 #('SSO_DryRes', 'SSO_DryRes', 'DSR'),
+                 ('SSO_DryRes', 'SSO_DryRes', 'MSR'),
+                 #('SSO_DryRes', 'SSO_DryRes', 'MSRDO'),
+                 ('MRDO', 'N/A', 'N/A'),
+                 ('MRDO', 'N/A', 'MSRDO'),
+                 ('MRDO', 'SSYWDO', 'N/A'),
+                 ('MRDO', 'SSYWDO', 'MSRDO')]
+        col_scheme_pd = pd.DataFrame(columns=['Contribution'],
+                                     index=[str(x) for x in index], dtype=float)
         #col_scheme_pd.loc['Contribution']=[0,0,0,0]
-        col_scheme_pd=col_scheme_pd.fillna(0)
+        col_scheme_pd.fillna(0.0, inplace=True)
         col_scheme_pd_model = Table_from_pandas_editable(col_scheme_pd)
         Sch_Col.setModel(col_scheme_pd_model)
         Sch_Col.resizeColumnsToContents()
@@ -660,9 +688,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
         
         spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        F2_layout.addItem(spacerItem_1, 0, 1, 1, 1)
-        spacerItem_2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        F2_layout.addItem(spacerItem_2, 1, 0, 1, 1)
+        F2_layout.addItem(spacerItem_1, 0, 2, -1, -1)
+        #spacerItem_2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        #F2_layout.addItem(spacerItem_2, 1, 0, 1, 1)
         
         self.col_index+=1
         
@@ -688,12 +716,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def helper_DFtoDict(DF):
         DF= DF.fillna(0)
         Collection_scheme={}
-        for i in ['RWC','SSO_DryRes','REC_WetRes','MRDO']:
-            Collection_scheme[i]={}
-            Collection_scheme[i]['Contribution']=DF[i]['Contribution']
-            Collection_scheme[i]['separate_col']={}
-            for j in ['SSR','DSR','MSR','MSRDO','SSYW','SSYWDO']:
-                Collection_scheme[i]['separate_col'][j]=DF[i][j]
+        for i,j in enumerate(DF.index):
+            Collection_scheme[eval(j)] = DF.iloc[i,0]
         return(Collection_scheme)
 
     @QtCore.Slot()
@@ -979,13 +1003,21 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             else:
                 act.addItems(['Heavy Duty Truck'])
 
+            label_2 = QtWidgets.QLabel(Frame1)
+            F1_layout.addWidget(label_2)
+            label_2.setText('Distance unit:')
+            
+            unit = QtWidgets.QComboBox(Frame1)
+            F1_layout.addWidget(unit)
+            unit.addItems(['km'])
+    
             spacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
             F1_layout.addItem(spacer)
             
             # setup Frame2
             Dist_table = QtWidgets.QTableView(Frame2)
             Dist_table.setObjectName("Dist_Mode_{}".format(i))
-            Dist_table.setMinimumSize(QtCore.QSize(200, 200))
+            Dist_table.setMinimumSize(QtCore.QSize(300, 200))
             F2_layout.addWidget(Dist_table)
             
             columns =  [x for x in self._Treatment_processes.keys()] + [x for x in self._Collection_processes.keys()]
@@ -1052,7 +1084,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot(int)
     def report_time_WP(self, time):
         #Notift the user that the project has created successfully
-        self.msg_popup('Project','Project is created successfully in {} seconds'.format(time),'Information')
+        msg = f'Project is created successfully in {time} seconds'
+        print(msg)
+        self.msg_popup('Project', msg,'Information')
         
     @QtCore.Slot(int)
     def setPBr_WriteProject(self, val):
@@ -1085,7 +1119,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot(int)
     def report_time_UpdateParam(self, time):
         #Notift the user that the project has created successfully
-        self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(time),'Information')
+        msg = f'Parameters are updated successfully in {time} seconds'
+        print(msg)
+        self.msg_popup('Parameters', msg, 'Information')
         
         #self.PySWOLF.setCurrentWidget(self.Create_Scenario)
         self.Create_Scenario.setEnabled(True)
@@ -2316,6 +2352,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             conf=Optimization.config(self.demo)  
             ### conf Table
             if len(conf.columns) > 0:
+                conf.index = [str(x) for x in conf.index]
                 conf_table_model = Table_from_pandas_editable(conf)
                 self.opt_Widget.Opt_Conf_table.setModel(conf_table_model)
                 self.opt_Widget.Opt_Conf_table.resizeColumnsToContents()
@@ -2323,6 +2360,17 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.opt_Widget.Opt_Conf_table.setSortingEnabled(True)
             else:
                 self.opt_Widget.Opt_Conf_table.setDisabled(True)
+            
+            
+            self.opt_Widget.method.addItems(['random', 'LHS', 'binary'])
+            
+            self.opt_Widget.timeout.setMinimum(500)
+            self.opt_Widget.timeout.setMaximum(5000)
+            self.opt_Widget.timeout.setValue(1500)
+            
+            self.opt_Widget.nproc.setMinimum(1)
+            self.opt_Widget.nproc.setMaximum(mp.cpu_count())
+            self.opt_Widget.nproc.setValue(mp.cpu_count())
             
             self.opt_adv_options_status = True
     
@@ -2335,32 +2383,32 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Time_start = time()
         
         if self.opt_Widget.Multi_start_opt.isChecked(): 
-            max_iter=self.opt_Widget.Opt_trial.value()
+            n_iter=self.opt_Widget.Opt_trial.value()
         else:
-            max_iter = 1
+            n_iter = 1
         
-        print("""
-        Optimization setting:
-        
-        project_name = {}
-        
-        functional_unit = {}
-        
-        method = {}
-        
-        optimize flows = {}
-        
-        optimize collection scheme = {}
-        
-        number of iterations = {}
-        
-        constraints = {}
-        
-        """.format(project_name,functional_unit,method,
-                    self.opt_Widget.Opt_incld_flows.isChecked(),
-                    self.opt_Widget.Opt_incld_col.isChecked(),
-                    max_iter,
-                    self.constraints))
+        print(f"""
+Optimization setting:
+
+project_name = {project_name}
+
+functional_unit = {functional_unit}
+
+method = {method}
+
+optimize flows = {self.opt_Widget.Opt_incld_flows.isChecked()}
+
+optimize collection scheme = {self.opt_Widget.Opt_incld_col.isChecked()}
+
+number of iterations = {n_iter}
+
+number of threads = {self.opt_Widget.nproc.value()}
+
+Initial guess generator = {self.opt_Widget.method.currentText()}
+
+Timeout = {n_iter}
+
+constraints = {self.constraints}""")
         
         if len(self.constraints)>0:
             constraints =self.constraints
@@ -2369,15 +2417,20 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         
         self.opt = Optimization(functional_unit, method, self.demo) 
         if self.opt_Widget.Opt_incld_col.isChecked():
-            self.opt.set_config(self.opt_Widget.Opt_Conf_table.model()._data)
-        
+            config = deepcopy(self.opt_Widget.Opt_Conf_table.model()._data)
+            config.index = [eval(x) for x in config.index]
+            self.opt.set_config(config)
+
         optimizer_thread = Worker_Optimize(parent=self.Opt_optimize,
                                            opt=self.opt,
                                            constraints=constraints,
                                            waste_param=self.opt_Widget.Opt_incld_flows.isChecked(),
                                            collection=self.opt_Widget.Opt_incld_col.isChecked(),
                                            is_multi=self.opt_Widget.Multi_start_opt.isChecked(),
-                                           max_iter=self.opt_Widget.Opt_trial.value())
+                                           n_iter=self.opt_Widget.Opt_trial.value(),
+                                           n_proc=self.opt_Widget.nproc.value(), 
+                                           iter_mehtod=self.opt_Widget.method.currentText(), 
+                                           timeout=self.opt_Widget.timeout.value())
         optimizer_thread.UpdatePBr_Opt.connect(self.setPBr_Opt)
         optimizer_thread.report.connect(self.report_opt_func)
         optimizer_thread.start()
@@ -2429,7 +2482,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Opt_CalObjFunc_Res.setText(f_n(obj))
         print(' \n \n \n Constraints \n')
         
-        for i,func in enumerate(self.opt.cons):
+        cons = self.opt._create_constraints()
+        for i,func in enumerate(cons):
             if 'Name' in func:
                 print('Constraint {} , {} = {}'.format(i,func['Name'],f_n(func['fun'](x))))
             else:

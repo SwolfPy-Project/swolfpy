@@ -9,11 +9,12 @@ from brightway2 import Database
 
 
 class ProcessDB():
-    def __init__(self, process_name, waste_treatment, Distance=None):
+    def __init__(self, process_name, waste_treatment, CommonData, Distance=None):
         self.Report = {}
         self.P_Name = process_name
         self.P_Pr_Name = self.P_Name + '_product'
         self.Distance = Distance
+        self.CommonData = CommonData
 
         self.waste_treatment = waste_treatment
 
@@ -88,12 +89,7 @@ class ProcessDB():
                 self.act_in_group.add((self.P_Pr_Name, x + '_' + key))
 
                 # Streams that are not the same with their source.
-                if key in ['Bottom_Ash', 'Fly_Ash',
-                           'Al', 'Fe', 'Cu',
-                           'OCC', 'Mixed_Paper', 'ONP', 'OFF', 'Fiber_Other',
-                           'Brown_glass', 'Clear_glass', 'Green_glass', 'Mixed_Glass',
-                           'PET', 'HDPE_Unsorted', 'HDPE_P', 'HDPE_T', 'PVC', 'LDPE_Film', 'Polypropylene', 'Polystyrene',
-                           'Plastic_Other', 'Mixed_Plastic']:
+                if key in ['Bottom_Ash', 'Fly_Ash'] + self.CommonData.Reprocessing_Index:
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
@@ -140,7 +136,7 @@ class ProcessDB():
                         self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex_trnp)
 
                 # Collection streams. Transportation between the collection and treatment processes are calculate inside collection model.
-                elif key in ['RWC', 'SSR', 'DSR', 'MSR', 'LV', 'SSYW', 'SSO', 'DryRes', 'REC', 'WetRes', 'MRDO', 'SSYWDO', 'MSRDO']:
+                elif key in self.CommonData.Collection_Index:
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
