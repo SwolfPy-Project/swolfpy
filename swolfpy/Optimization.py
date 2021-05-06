@@ -57,12 +57,17 @@ class Optimization(LCA_matrix):
                  ('RWC', 'SSYW', 'SSR'),
                  # ('RWC', 'SSYW', 'DSR'),
                  # ('RWC', 'SSYW', 'MSR'),
+                 ('RWC', 'SSO', 'N/A'),
+                 ('RWC', 'SSO', 'SSR'),
+                 # ('RWC', 'SSO', 'DSR'),
+                 # ('RWC', 'SSO', 'MSR'),
                  ('REC_WetRes', 'N/A', 'REC_WetRes'),
                  ('REC_WetRes', 'SSYW', 'REC_WetRes'),
-                 ('SSO_DryRes', 'SSO_DryRes', 'N/A'),
-                 ('SSO_DryRes', 'SSO_DryRes', 'SSR'),
-                 # ('SSO_DryRes', 'SSO_DryRes', 'DSR'),
-                 # ('SSO_DryRes', 'SSO_DryRes', 'MSR')
+                 ('REC_WetRes', 'SSO', 'REC_WetRes'),
+                 ('ORG_DryRes', 'ORG_DryRes', 'N/A'),
+                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),
+                 # ('ORG_DryRes', 'ORG_DryRes', 'DSR'),
+                 # ('ORG_DryRes', 'ORG_DryRes', 'MSR')
                  ]
 
         config_pd = pd.DataFrame(index=index, columns=columns)
@@ -71,6 +76,7 @@ class Optimization(LCA_matrix):
                 config_pd[c] = ['Optimize', 'Optimize',
                                 'Optimize', 'Optimize',
                                 'Optimize', 'Optimize',
+                                'Optimize', 'Optimize', 'Optimize',
                                 'Optimize', 'Optimize']
 
             for col, sch in schemes.items():
@@ -457,6 +463,7 @@ class Optimization(LCA_matrix):
         optObject.oldx = [0 for i in range(len(x0))]
         optObject.cons = optObject._create_constraints()
         res = minimize(optObject._objective_function, x0, method='SLSQP', bounds=bnds, constraints=optObject.cons)
+
         time_ = round(time() - start)
         print("Iteration: {} PID: {} time:{} sec, Success:{} \n".format(iteration,
                                                                         os.getpid(),
@@ -523,6 +530,7 @@ class Optimization(LCA_matrix):
                       'LV': (0, 255, 0),  # lime	#00FF00
                       'SSYW': (0, 100, 0),  # dark green	#006400
                       'SSO': (0, 255, 127),  # spring green	#00FF7F
+                      'ORG': (46, 139, 87),  # sea green	#2E8B57
                       'DryRes': (222, 184, 135),  # burly wood	#DEB887
                       'REC': (0, 191, 255),  # deep sky blue	#00BFFF
                       'WetRes': (210, 105, 30),  # chocolate	#D2691E
@@ -532,6 +540,7 @@ class Optimization(LCA_matrix):
                       'Bottom_Ash': (128, 128, 128),  # Gray	#808080
                       'Fly_Ash': (0, 0, 0),  # black	#000000
                       'Separated_Organics': (50, 205, 50),  # lime green	#32CD32
+                      'Separated_Recyclables': (0, 128, 128),  # teal	#008080
                       'Other_Residual': (139, 69, 19),  # saddle brown	#8B4513
                       'RDF': (255, 0, 0)}  # Red	#FF0000
         for i in self.project.CommonData.Reprocessing_Index:
