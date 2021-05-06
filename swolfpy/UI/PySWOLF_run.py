@@ -356,6 +356,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                           'LV':self.IT_LV,
                           'SSYW':self.IT_SSYW,
                           'SSO':self.IT_SSO,
+                          'ORG': self.IT_ORG,
                           'DryRes':self.IT_DryRes,
                           'REC':self.IT_REC,
                           'WetRes':self.IT_WetRes,
@@ -365,6 +366,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                           'Bottom_Ash':self.IT_Bottom_Ash,
                           'Fly_Ash':self.IT_Fly_Ash,
                           'Separated_Organics':self.IT_Separated_Organics,
+                          'Separated_Recyclables':self.IT_Separated_Recyclables,
                           'Other_Residual':self.IT_Other_Residual,
                           'RDF':self.IT_RDF,
                           'Al':self.IT_Al,
@@ -453,6 +455,8 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.IT_FName.clear()
         for flow, CheckBox in self._InputKey.items():
             CheckBox.setChecked(False)
+        self.groupBox_2.setEnabled(True)
+            
 
     @QtCore.Slot()
     def update_PM_setting(self):
@@ -646,7 +650,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         # setup Frame2
         Sch_Col = QtWidgets.QTableView(Frame2)
         Sch_Col.setObjectName("Sch_Col_{}".format(self.col_index))
-        Sch_Col.setMinimumSize(QtCore.QSize(500, 400))
+        Sch_Col.setMinimumSize(QtCore.QSize(600, 400))
         F2_layout.addWidget(Sch_Col, 0, 0, -1, 1)
         
         #Collection scheme DataFrame
@@ -660,6 +664,11 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                  #('RWC', 'SSYW', 'DSR'),
                  #('RWC', 'SSYW', 'MSR'),
                  #('RWC', 'SSYW', 'MSRDO'),
+                 ('RWC', 'SSO', 'N/A'),
+                 ('RWC', 'SSO', 'SSR'),
+                 #('RWC', 'SSO', 'DSR'),
+                 #('RWC', 'SSO', 'MSR'),
+                 #('RWC', 'SSO', 'MSRDO'),
                  ('RWC', 'SSYWDO', 'N/A'),
                  ('RWC', 'SSYWDO', 'SSR'),
                  #('RWC', 'SSYWDO', 'DSR'),
@@ -667,12 +676,13 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                  ('RWC', 'SSYWDO', 'MSRDO'),
                  ('REC_WetRes', 'N/A', 'REC_WetRes'),
                  ('REC_WetRes', 'SSYW', 'REC_WetRes'),
+                 ('REC_WetRes', 'SSO', 'REC_WetRes'),
                  ('REC_WetRes', 'SSYWDO', 'REC_WetRes'),
-                 ('SSO_DryRes', 'SSO_DryRes', 'N/A'),
-                 ('SSO_DryRes', 'SSO_DryRes', 'SSR'),
-                 #('SSO_DryRes', 'SSO_DryRes', 'DSR'),
-                 ('SSO_DryRes', 'SSO_DryRes', 'MSR'),
-                 #('SSO_DryRes', 'SSO_DryRes', 'MSRDO'),
+                 ('ORG_DryRes', 'ORG_DryRes', 'N/A'),
+                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),
+                 #('ORG_DryRes', 'ORG_DryRes', 'DSR'),
+                 ('ORG_DryRes', 'ORG_DryRes', 'MSR'),
+                 #('ORG_DryRes', 'ORG_DryRes', 'MSRDO'),
                  ('MRDO', 'N/A', 'N/A'),
                  ('MRDO', 'N/A', 'MSRDO'),
                  ('MRDO', 'SSYWDO', 'N/A'),
@@ -740,7 +750,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #Create treatment dict
         self._Plist = ['...']
         for proc in self._ProcessMetaData:
-            if self._ProcessMetaData[proc]['Process_Type'] == 'Treatment' or self._ProcessMetaData[proc]['Process_Type'] == 'Reprocessing':
+            if self._ProcessMetaData[proc]['Process_Type'] != 'Collection':
                 self._Plist.append(self._ProcessMetaData[proc]['Name'])
         self.P_index = 1
         

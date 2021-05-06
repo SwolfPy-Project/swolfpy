@@ -355,43 +355,26 @@ class Ui_MainWindow(object):
         self.frame_15.setFrameShadow(QFrame.Raised)
         self.gridLayout_29 = QGridLayout(self.frame_15)
         self.gridLayout_29.setObjectName(u"gridLayout_29")
-        self.IT_REC = QCheckBox(self.frame_15)
-        self.IT_REC.setObjectName(u"IT_REC")
+        self.IT_LV = QCheckBox(self.frame_15)
+        self.IT_LV.setObjectName(u"IT_LV")
 
-        self.gridLayout_29.addWidget(self.IT_REC, 4, 0, 1, 1)
+        self.gridLayout_29.addWidget(self.IT_LV, 14, 0, 1, 1)
 
         self.IT_MSRDO = QCheckBox(self.frame_15)
         self.IT_MSRDO.setObjectName(u"IT_MSRDO")
 
         self.gridLayout_29.addWidget(self.IT_MSRDO, 10, 0, 1, 1)
 
-        self.IT_LV = QCheckBox(self.frame_15)
-        self.IT_LV.setObjectName(u"IT_LV")
+        self.IT_REC = QCheckBox(self.frame_15)
+        self.IT_REC.setObjectName(u"IT_REC")
 
-        self.gridLayout_29.addWidget(self.IT_LV, 13, 0, 1, 1)
-
-        self.IT_SSO = QCheckBox(self.frame_15)
-        self.IT_SSO.setObjectName(u"IT_SSO")
-
-        self.gridLayout_29.addWidget(self.IT_SSO, 2, 0, 1, 1)
-
-        self.IT_RWC = QCheckBox(self.frame_15)
-        self.IT_RWC.setObjectName(u"IT_RWC")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.IT_RWC.sizePolicy().hasHeightForWidth())
-        self.IT_RWC.setSizePolicy(sizePolicy2)
-
-        self.gridLayout_29.addWidget(self.IT_RWC, 1, 0, 1, 1)
-
-        self.IT_MSR = QCheckBox(self.frame_15)
-        self.IT_MSR.setObjectName(u"IT_MSR")
-
-        self.gridLayout_29.addWidget(self.IT_MSR, 9, 0, 1, 1)
+        self.gridLayout_29.addWidget(self.IT_REC, 4, 0, 1, 1)
 
         self.IT_DryRes = QCheckBox(self.frame_15)
         self.IT_DryRes.setObjectName(u"IT_DryRes")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.IT_DryRes.sizePolicy().hasHeightForWidth())
         self.IT_DryRes.setSizePolicy(sizePolicy2)
 
@@ -400,17 +383,34 @@ class Ui_MainWindow(object):
         self.IT_SSYWDO = QCheckBox(self.frame_15)
         self.IT_SSYWDO.setObjectName(u"IT_SSYWDO")
 
-        self.gridLayout_29.addWidget(self.IT_SSYWDO, 12, 0, 1, 1)
+        self.gridLayout_29.addWidget(self.IT_SSYWDO, 13, 0, 1, 1)
+
+        self.IT_RWC = QCheckBox(self.frame_15)
+        self.IT_RWC.setObjectName(u"IT_RWC")
+        sizePolicy2.setHeightForWidth(self.IT_RWC.sizePolicy().hasHeightForWidth())
+        self.IT_RWC.setSizePolicy(sizePolicy2)
+
+        self.gridLayout_29.addWidget(self.IT_RWC, 1, 0, 1, 1)
+
+        self.IT_ORG = QCheckBox(self.frame_15)
+        self.IT_ORG.setObjectName(u"IT_ORG")
+
+        self.gridLayout_29.addWidget(self.IT_ORG, 2, 0, 1, 1)
+
+        self.IT_MSR = QCheckBox(self.frame_15)
+        self.IT_MSR.setObjectName(u"IT_MSR")
+
+        self.gridLayout_29.addWidget(self.IT_MSR, 9, 0, 1, 1)
 
         self.IT_WetRes = QCheckBox(self.frame_15)
         self.IT_WetRes.setObjectName(u"IT_WetRes")
 
         self.gridLayout_29.addWidget(self.IT_WetRes, 5, 0, 1, 1)
 
-        self.IT_MRDO = QCheckBox(self.frame_15)
-        self.IT_MRDO.setObjectName(u"IT_MRDO")
+        self.IT_DSR = QCheckBox(self.frame_15)
+        self.IT_DSR.setObjectName(u"IT_DSR")
 
-        self.gridLayout_29.addWidget(self.IT_MRDO, 6, 0, 1, 1)
+        self.gridLayout_29.addWidget(self.IT_DSR, 8, 0, 1, 1)
 
         self.IT_SSYW = QCheckBox(self.frame_15)
         self.IT_SSYW.setObjectName(u"IT_SSYW")
@@ -422,10 +422,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_29.addWidget(self.IT_SSR, 7, 0, 1, 1)
 
-        self.IT_DSR = QCheckBox(self.frame_15)
-        self.IT_DSR.setObjectName(u"IT_DSR")
+        self.IT_MRDO = QCheckBox(self.frame_15)
+        self.IT_MRDO.setObjectName(u"IT_MRDO")
 
-        self.gridLayout_29.addWidget(self.IT_DSR, 8, 0, 1, 1)
+        self.gridLayout_29.addWidget(self.IT_MRDO, 6, 0, 1, 1)
 
         self.label_22 = QLabel(self.frame_15)
         self.label_22.setObjectName(u"label_22")
@@ -441,7 +441,12 @@ class Ui_MainWindow(object):
 
         self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.gridLayout_29.addItem(self.verticalSpacer_5, 14, 0, 1, 1)
+        self.gridLayout_29.addItem(self.verticalSpacer_5, 15, 0, 1, 1)
+
+        self.IT_SSO = QCheckBox(self.frame_15)
+        self.IT_SSO.setObjectName(u"IT_SSO")
+
+        self.gridLayout_29.addWidget(self.IT_SSO, 12, 0, 1, 1)
 
 
         self.gridLayout_23.addWidget(self.frame_15, 0, 0, 1, 1)
@@ -469,15 +474,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_28.addWidget(self.IT_Fly_Ash, 2, 0, 1, 1)
 
-        self.IT_Bottom_Ash = QCheckBox(self.frame_14)
-        self.IT_Bottom_Ash.setObjectName(u"IT_Bottom_Ash")
-
-        self.gridLayout_28.addWidget(self.IT_Bottom_Ash, 1, 0, 1, 1)
-
-        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_28.addItem(self.verticalSpacer_7, 6, 0, 1, 1)
-
         self.IT_Other_Residual = QCheckBox(self.frame_14)
         self.IT_Other_Residual.setObjectName(u"IT_Other_Residual")
 
@@ -486,7 +482,21 @@ class Ui_MainWindow(object):
         self.IT_RDF = QCheckBox(self.frame_14)
         self.IT_RDF.setObjectName(u"IT_RDF")
 
-        self.gridLayout_28.addWidget(self.IT_RDF, 5, 0, 1, 1)
+        self.gridLayout_28.addWidget(self.IT_RDF, 6, 0, 1, 1)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_28.addItem(self.verticalSpacer_7, 7, 0, 1, 1)
+
+        self.IT_Bottom_Ash = QCheckBox(self.frame_14)
+        self.IT_Bottom_Ash.setObjectName(u"IT_Bottom_Ash")
+
+        self.gridLayout_28.addWidget(self.IT_Bottom_Ash, 1, 0, 1, 1)
+
+        self.IT_Separated_Recyclables = QCheckBox(self.frame_14)
+        self.IT_Separated_Recyclables.setObjectName(u"IT_Separated_Recyclables")
+
+        self.gridLayout_28.addWidget(self.IT_Separated_Recyclables, 5, 0, 1, 1)
 
 
         self.gridLayout_23.addWidget(self.frame_14, 0, 2, 1, 1)
@@ -792,7 +802,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_6 = QWidget()
         self.scrollAreaWidgetContents_6.setObjectName(u"scrollAreaWidgetContents_6")
-        self.scrollAreaWidgetContents_6.setGeometry(QRect(0, 0, 997, 724))
+        self.scrollAreaWidgetContents_6.setGeometry(QRect(0, 0, 107, 638))
         self.gridLayout_105 = QGridLayout(self.scrollAreaWidgetContents_6)
         self.gridLayout_105.setObjectName(u"gridLayout_105")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents_6)
@@ -806,7 +816,7 @@ class Ui_MainWindow(object):
         self.Define_SWM_1.setMinimumSize(QSize(0, 600))
         self.Collection_process = QWidget()
         self.Collection_process.setObjectName(u"Collection_process")
-        self.Collection_process.setGeometry(QRect(0, 0, 959, 605))
+        self.Collection_process.setGeometry(QRect(0, 0, 187, 96))
         self.gridLayout_99 = QGridLayout(self.Collection_process)
         self.gridLayout_99.setObjectName(u"gridLayout_99")
         self.horizontalLayout_19 = QHBoxLayout()
@@ -957,7 +967,7 @@ class Ui_MainWindow(object):
         self.Define_SWM_1.addItem(self.Treatment_process, u"Treatment Processes")
         self.Network = QWidget()
         self.Network.setObjectName(u"Network")
-        self.Network.setGeometry(QRect(0, 0, 959, 605))
+        self.Network.setGeometry(QRect(0, 0, 820, 508))
         self.gridLayout_26 = QGridLayout(self.Network)
         self.gridLayout_26.setObjectName(u"gridLayout_26")
         self.horizontalLayout_21 = QHBoxLayout()
@@ -1002,7 +1012,7 @@ class Ui_MainWindow(object):
         self.splitter_8.setOrientation(Qt.Vertical)
         self.TransportWidget = QTabWidget(self.splitter_8)
         self.TransportWidget.setObjectName(u"TransportWidget")
-        self.TransportWidget.setMinimumSize(QSize(0, 200))
+        self.TransportWidget.setMinimumSize(QSize(0, 300))
         self.splitter_8.addWidget(self.TransportWidget)
         self.layoutWidget = QWidget(self.splitter_8)
         self.layoutWidget.setObjectName(u"layoutWidget")
@@ -1131,7 +1141,7 @@ class Ui_MainWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_7 = QWidget()
         self.scrollAreaWidgetContents_7.setObjectName(u"scrollAreaWidgetContents_7")
-        self.scrollAreaWidgetContents_7.setGeometry(QRect(0, 0, 980, 801))
+        self.scrollAreaWidgetContents_7.setGeometry(QRect(0, 0, 635, 801))
         self.gridLayout_106 = QGridLayout(self.scrollAreaWidgetContents_7)
         self.gridLayout_106.setObjectName(u"gridLayout_106")
         self.frame_40 = QFrame(self.scrollAreaWidgetContents_7)
@@ -1279,7 +1289,7 @@ class Ui_MainWindow(object):
         self.scrollArea_4.setWidgetResizable(True)
         self.scrollAreaWidgetContents_8 = QWidget()
         self.scrollAreaWidgetContents_8.setObjectName(u"scrollAreaWidgetContents_8")
-        self.scrollAreaWidgetContents_8.setGeometry(QRect(0, 0, 980, 726))
+        self.scrollAreaWidgetContents_8.setGeometry(QRect(0, 0, 540, 726))
         self.gridLayout_52 = QGridLayout(self.scrollAreaWidgetContents_8)
         self.gridLayout_52.setObjectName(u"gridLayout_52")
         self.frame_39 = QFrame(self.scrollAreaWidgetContents_8)
@@ -1915,7 +1925,7 @@ class Ui_MainWindow(object):
         self.scrollArea_6.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 980, 736))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 902, 736))
         self.gridLayout_30 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_30.setObjectName(u"gridLayout_30")
         self.splitter_6 = QSplitter(self.scrollAreaWidgetContents)
@@ -2061,7 +2071,7 @@ class Ui_MainWindow(object):
         self.MC_setting.setFont(font2)
         self.Normal = QWidget()
         self.Normal.setObjectName(u"Normal")
-        self.Normal.setGeometry(QRect(0, 0, 365, 190))
+        self.Normal.setGeometry(QRect(0, 0, 218, 133))
         self.gridLayout_71 = QGridLayout(self.Normal)
         self.gridLayout_71.setObjectName(u"gridLayout_71")
         self.label_68 = QLabel(self.Normal)
@@ -2091,7 +2101,7 @@ class Ui_MainWindow(object):
         self.MC_included_models.setWidgetResizable(True)
         self.scrollAreaWidgetContents_10 = QWidget()
         self.scrollAreaWidgetContents_10.setObjectName(u"scrollAreaWidgetContents_10")
-        self.scrollAreaWidgetContents_10.setGeometry(QRect(0, 0, 345, 125))
+        self.scrollAreaWidgetContents_10.setGeometry(QRect(0, 0, 198, 28))
         self.verticalLayout_3 = QVBoxLayout(self.scrollAreaWidgetContents_10)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.MC_included_models.setWidget(self.scrollAreaWidgetContents_10)
@@ -2795,8 +2805,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.PySWOLF.setCurrentIndex(2)
-        self.init_process_toolbox.setCurrentIndex(2)
+        self.PySWOLF.setCurrentIndex(1)
+        self.init_process_toolbox.setCurrentIndex(0)
         self.Define_SWM_1.setCurrentIndex(0)
         self.Collection.setCurrentIndex(-1)
         self.TransportWidget.setCurrentIndex(-1)
@@ -2858,39 +2868,41 @@ class Ui_MainWindow(object):
         self.IT_OFF.setText(QCoreApplication.translate("MainWindow", u"OFF", None))
         self.IT_OCC.setText(QCoreApplication.translate("MainWindow", u"OCC", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"Recyclable:", None))
-        self.IT_Mixed_Paper.setText(QCoreApplication.translate("MainWindow", u"Mixed_Paper", None))
+        self.IT_Mixed_Paper.setText(QCoreApplication.translate("MainWindow", u"Mixed Paper", None))
         self.IT_PET.setText(QCoreApplication.translate("MainWindow", u"PET", None))
-        self.IT_Fiber_Other.setText(QCoreApplication.translate("MainWindow", u"Fiber_Other", None))
+        self.IT_Fiber_Other.setText(QCoreApplication.translate("MainWindow", u"Fiber Other", None))
         self.IT_ONP.setText(QCoreApplication.translate("MainWindow", u"ONP", None))
-        self.IT_HDPE_P.setText(QCoreApplication.translate("MainWindow", u"HDPE_P", None))
-        self.IT_HDPE_T.setText(QCoreApplication.translate("MainWindow", u"HDPE_T", None))
-        self.IT_LDPE_Film.setText(QCoreApplication.translate("MainWindow", u"LDPE_Film", None))
-        self.IT_Brown_glass.setText(QCoreApplication.translate("MainWindow", u"Brown_glass", None))
-        self.IT_Clear_glass.setText(QCoreApplication.translate("MainWindow", u"Clear_glass", None))
-        self.IT_Green_glass.setText(QCoreApplication.translate("MainWindow", u"Green_glass", None))
-        self.IT_Mixed_Glass.setText(QCoreApplication.translate("MainWindow", u"Mixed_Glass", None))
+        self.IT_HDPE_P.setText(QCoreApplication.translate("MainWindow", u"HDPE P", None))
+        self.IT_HDPE_T.setText(QCoreApplication.translate("MainWindow", u"HDPE T", None))
+        self.IT_LDPE_Film.setText(QCoreApplication.translate("MainWindow", u"LDPE Film", None))
+        self.IT_Brown_glass.setText(QCoreApplication.translate("MainWindow", u"Brown glass", None))
+        self.IT_Clear_glass.setText(QCoreApplication.translate("MainWindow", u"Clear glass", None))
+        self.IT_Green_glass.setText(QCoreApplication.translate("MainWindow", u"Green glass", None))
+        self.IT_Mixed_Glass.setText(QCoreApplication.translate("MainWindow", u"Mixed Glass", None))
         self.IT_Al.setText(QCoreApplication.translate("MainWindow", u"Al", None))
         self.IT_Fe.setText(QCoreApplication.translate("MainWindow", u"Fe", None))
-        self.IT_REC.setText(QCoreApplication.translate("MainWindow", u"REC", None))
-        self.IT_MSRDO.setText(QCoreApplication.translate("MainWindow", u"MSRDO", None))
         self.IT_LV.setText(QCoreApplication.translate("MainWindow", u"Leaves", None))
-        self.IT_SSO.setText(QCoreApplication.translate("MainWindow", u"SSO", None))
-        self.IT_RWC.setText(QCoreApplication.translate("MainWindow", u"RWC", None))
-        self.IT_MSR.setText(QCoreApplication.translate("MainWindow", u"MSR", None))
+        self.IT_MSRDO.setText(QCoreApplication.translate("MainWindow", u"MSRDO", None))
+        self.IT_REC.setText(QCoreApplication.translate("MainWindow", u"REC", None))
         self.IT_DryRes.setText(QCoreApplication.translate("MainWindow", u"DryRes", None))
         self.IT_SSYWDO.setText(QCoreApplication.translate("MainWindow", u"SSYWDO", None))
+        self.IT_RWC.setText(QCoreApplication.translate("MainWindow", u"RWC", None))
+        self.IT_ORG.setText(QCoreApplication.translate("MainWindow", u"ORG", None))
+        self.IT_MSR.setText(QCoreApplication.translate("MainWindow", u"MSR", None))
         self.IT_WetRes.setText(QCoreApplication.translate("MainWindow", u"WetRes", None))
-        self.IT_MRDO.setText(QCoreApplication.translate("MainWindow", u"MRDO", None))
+        self.IT_DSR.setText(QCoreApplication.translate("MainWindow", u"DSR", None))
         self.IT_SSYW.setText(QCoreApplication.translate("MainWindow", u"SSYW", None))
         self.IT_SSR.setText(QCoreApplication.translate("MainWindow", u"SSR", None))
-        self.IT_DSR.setText(QCoreApplication.translate("MainWindow", u"DSR", None))
+        self.IT_MRDO.setText(QCoreApplication.translate("MainWindow", u"MRDO", None))
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"Collection Type:", None))
-        self.IT_Separated_Organics.setText(QCoreApplication.translate("MainWindow", u"Separated_Organics", None))
+        self.IT_SSO.setText(QCoreApplication.translate("MainWindow", u"SSO", None))
+        self.IT_Separated_Organics.setText(QCoreApplication.translate("MainWindow", u"Separated Organics", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Product:", None))
-        self.IT_Fly_Ash.setText(QCoreApplication.translate("MainWindow", u"Fly_Ash", None))
-        self.IT_Bottom_Ash.setText(QCoreApplication.translate("MainWindow", u"Bottom_Ash", None))
-        self.IT_Other_Residual.setText(QCoreApplication.translate("MainWindow", u"Other_Residual", None))
+        self.IT_Fly_Ash.setText(QCoreApplication.translate("MainWindow", u"Fly Ash", None))
+        self.IT_Other_Residual.setText(QCoreApplication.translate("MainWindow", u"Other Residual", None))
         self.IT_RDF.setText(QCoreApplication.translate("MainWindow", u"RDF", None))
+        self.IT_Bottom_Ash.setText(QCoreApplication.translate("MainWindow", u"Bottom Ash", None))
+        self.IT_Separated_Recyclables.setText(QCoreApplication.translate("MainWindow", u"Separated Recyclables", None))
         self.Clear_PM_setting.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.Update_PM_setting.setText(QCoreApplication.translate("MainWindow", u"Update", None))
         self.init_process_toolbox.setTabText(self.init_process_toolbox.indexOf(self.PM_PMTab), QCoreApplication.translate("MainWindow", u"Process Models", None))

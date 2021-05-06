@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -267,7 +267,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QTabWidget" name="init_process_toolbox">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="PM_PMTab">
            <attribute name="title">
@@ -513,7 +513,7 @@ p, li { white-space: pre-wrap; }
                      <item row="2" column="0">
                       <widget class="QCheckBox" name="IT_Mixed_Paper">
                        <property name="text">
-                        <string>Mixed_Paper</string>
+                        <string>Mixed Paper</string>
                        </property>
                       </widget>
                      </item>
@@ -527,7 +527,7 @@ p, li { white-space: pre-wrap; }
                      <item row="5" column="0">
                       <widget class="QCheckBox" name="IT_Fiber_Other">
                        <property name="text">
-                        <string>Fiber_Other</string>
+                        <string>Fiber Other</string>
                        </property>
                       </widget>
                      </item>
@@ -554,49 +554,49 @@ p, li { white-space: pre-wrap; }
                      <item row="7" column="0">
                       <widget class="QCheckBox" name="IT_HDPE_P">
                        <property name="text">
-                        <string>HDPE_P</string>
+                        <string>HDPE P</string>
                        </property>
                       </widget>
                      </item>
                      <item row="8" column="0">
                       <widget class="QCheckBox" name="IT_HDPE_T">
                        <property name="text">
-                        <string>HDPE_T</string>
+                        <string>HDPE T</string>
                        </property>
                       </widget>
                      </item>
                      <item row="9" column="0">
                       <widget class="QCheckBox" name="IT_LDPE_Film">
                        <property name="text">
-                        <string>LDPE_Film</string>
+                        <string>LDPE Film</string>
                        </property>
                       </widget>
                      </item>
                      <item row="1" column="1">
                       <widget class="QCheckBox" name="IT_Brown_glass">
                        <property name="text">
-                        <string>Brown_glass</string>
+                        <string>Brown glass</string>
                        </property>
                       </widget>
                      </item>
                      <item row="2" column="1">
                       <widget class="QCheckBox" name="IT_Clear_glass">
                        <property name="text">
-                        <string>Clear_glass</string>
+                        <string>Clear glass</string>
                        </property>
                       </widget>
                      </item>
                      <item row="3" column="1">
                       <widget class="QCheckBox" name="IT_Green_glass">
                        <property name="text">
-                        <string>Green_glass</string>
+                        <string>Green glass</string>
                        </property>
                       </widget>
                      </item>
                      <item row="4" column="1">
                       <widget class="QCheckBox" name="IT_Mixed_Glass">
                        <property name="text">
-                        <string>Mixed_Glass</string>
+                        <string>Mixed Glass</string>
                        </property>
                       </widget>
                      </item>
@@ -633,10 +633,10 @@ p, li { white-space: pre-wrap; }
                      <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_29">
-                     <item row="4" column="0">
-                      <widget class="QCheckBox" name="IT_REC">
+                     <item row="14" column="0">
+                      <widget class="QCheckBox" name="IT_LV">
                        <property name="text">
-                        <string>REC</string>
+                        <string>Leaves</string>
                        </property>
                       </widget>
                      </item>
@@ -647,37 +647,10 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="13" column="0">
-                      <widget class="QCheckBox" name="IT_LV">
+                     <item row="4" column="0">
+                      <widget class="QCheckBox" name="IT_REC">
                        <property name="text">
-                        <string>Leaves</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QCheckBox" name="IT_SSO">
-                       <property name="text">
-                        <string>SSO</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QCheckBox" name="IT_RWC">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="text">
-                        <string>RWC</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="9" column="0">
-                      <widget class="QCheckBox" name="IT_MSR">
-                       <property name="text">
-                        <string>MSR</string>
+                        <string>REC</string>
                        </property>
                       </widget>
                      </item>
@@ -694,10 +667,37 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="12" column="0">
+                     <item row="13" column="0">
                       <widget class="QCheckBox" name="IT_SSYWDO">
                        <property name="text">
                         <string>SSYWDO</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QCheckBox" name="IT_RWC">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="text">
+                        <string>RWC</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QCheckBox" name="IT_ORG">
+                       <property name="text">
+                        <string>ORG</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="9" column="0">
+                      <widget class="QCheckBox" name="IT_MSR">
+                       <property name="text">
+                        <string>MSR</string>
                        </property>
                       </widget>
                      </item>
@@ -708,10 +708,10 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="6" column="0">
-                      <widget class="QCheckBox" name="IT_MRDO">
+                     <item row="8" column="0">
+                      <widget class="QCheckBox" name="IT_DSR">
                        <property name="text">
-                        <string>MRDO</string>
+                        <string>DSR</string>
                        </property>
                       </widget>
                      </item>
@@ -729,10 +729,10 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="8" column="0">
-                      <widget class="QCheckBox" name="IT_DSR">
+                     <item row="6" column="0">
+                      <widget class="QCheckBox" name="IT_MRDO">
                        <property name="text">
-                        <string>DSR</string>
+                        <string>MRDO</string>
                        </property>
                       </widget>
                      </item>
@@ -752,7 +752,7 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="14" column="0">
+                     <item row="15" column="0">
                       <spacer name="verticalSpacer_5">
                        <property name="orientation">
                         <enum>Qt::Vertical</enum>
@@ -764,6 +764,13 @@ p, li { white-space: pre-wrap; }
                         </size>
                        </property>
                       </spacer>
+                     </item>
+                     <item row="12" column="0">
+                      <widget class="QCheckBox" name="IT_SSO">
+                       <property name="text">
+                        <string>SSO</string>
+                       </property>
+                      </widget>
                      </item>
                     </layout>
                    </widget>
@@ -787,7 +794,7 @@ p, li { white-space: pre-wrap; }
                      <item row="4" column="0">
                       <widget class="QCheckBox" name="IT_Separated_Organics">
                        <property name="text">
-                        <string>Separated_Organics</string>
+                        <string>Separated Organics</string>
                        </property>
                       </widget>
                      </item>
@@ -809,18 +816,25 @@ p, li { white-space: pre-wrap; }
                      <item row="2" column="0">
                       <widget class="QCheckBox" name="IT_Fly_Ash">
                        <property name="text">
-                        <string>Fly_Ash</string>
+                        <string>Fly Ash</string>
                        </property>
                       </widget>
                      </item>
-                     <item row="1" column="0">
-                      <widget class="QCheckBox" name="IT_Bottom_Ash">
+                     <item row="3" column="0">
+                      <widget class="QCheckBox" name="IT_Other_Residual">
                        <property name="text">
-                        <string>Bottom_Ash</string>
+                        <string>Other Residual</string>
                        </property>
                       </widget>
                      </item>
                      <item row="6" column="0">
+                      <widget class="QCheckBox" name="IT_RDF">
+                       <property name="text">
+                        <string>RDF</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="7" column="0">
                       <spacer name="verticalSpacer_7">
                        <property name="orientation">
                         <enum>Qt::Vertical</enum>
@@ -833,17 +847,17 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </spacer>
                      </item>
-                     <item row="3" column="0">
-                      <widget class="QCheckBox" name="IT_Other_Residual">
+                     <item row="1" column="0">
+                      <widget class="QCheckBox" name="IT_Bottom_Ash">
                        <property name="text">
-                        <string>Other_Residual</string>
+                        <string>Bottom Ash</string>
                        </property>
                       </widget>
                      </item>
                      <item row="5" column="0">
-                      <widget class="QCheckBox" name="IT_RDF">
+                      <widget class="QCheckBox" name="IT_Separated_Recyclables">
                        <property name="text">
-                        <string>RDF</string>
+                        <string>Separated Recyclables</string>
                        </property>
                       </widget>
                      </item>
@@ -1516,8 +1530,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>997</width>
-             <height>724</height>
+             <width>107</width>
+             <height>638</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_105">
@@ -1546,8 +1560,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>959</width>
-                    <height>605</height>
+                    <width>187</width>
+                    <height>96</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1822,8 +1836,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>959</width>
-                    <height>605</height>
+                    <width>820</width>
+                    <height>508</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -1906,7 +1920,7 @@ p, li { white-space: pre-wrap; }
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
-                        <height>200</height>
+                        <height>300</height>
                        </size>
                       </property>
                       <property name="currentIndex">
@@ -2142,7 +2156,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>980</width>
+             <width>635</width>
              <height>801</height>
             </rect>
            </property>
@@ -2385,7 +2399,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>980</width>
+             <width>540</width>
              <height>726</height>
             </rect>
            </property>
@@ -3440,7 +3454,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>980</width>
+             <width>902</width>
              <height>736</height>
             </rect>
            </property>
@@ -3834,8 +3848,8 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>365</width>
-                      <height>190</height>
+                      <width>218</width>
+                      <height>133</height>
                      </rect>
                     </property>
                     <attribute name="label">
@@ -3910,8 +3924,8 @@ p, li { white-space: pre-wrap; }
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>345</width>
-                          <height>125</height>
+                          <width>198</width>
+                          <height>28</height>
                          </rect>
                         </property>
                         <layout class="QVBoxLayout" name="verticalLayout_3"/>
