@@ -102,7 +102,11 @@ class Project():
             for j in self.Collection_processes.keys():
                 self.Treatment_processes[j] = self.Collection_processes[j]
 
-        self.processes = [x for x in Treatment_processes.keys()]
+        self.processes = [x for x in self.Treatment_processes.keys()]
+        self.processTypes = {}
+        for p in self.processes:
+            self.processTypes[p] = self.Treatment_processes[p]['model'].Process_Type
+
         projects.set_current(self.project_name)
 
         self.waste_treatment = {}
@@ -190,15 +194,24 @@ class Project():
         :return: Returns a tuple (parameters,act_in_group)
         :rtype: tuple
         """
-        self.process_model[name] = ProcessDB(name, self.waste_treatment, self.CommonData, self.Distance)
+        self.process_model[name] = ProcessDB(name, self.waste_treatment, self.CommonData, self.processTypes, self.Distance)
         self.Treatment_processes[name]['model'].calc()
         self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
 
         if self.Treatment_processes[name]['model'].Process_Type in ['Treatment', 'Collection']:
-            (P, G) = self.process_model[name].Write_DB(self.CommonData.Index, self.parameters, self.Treatment_processes[name]['model'].Process_Type)
+            (P, G) = self.process_model[name].Write_DB(waste_flows=self.CommonData.Index,
+                                                       parameters=self.parameters,
+                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
+
         elif self.Treatment_processes[name]['model'].Process_Type == 'Reprocessing':
-            (P, G) = self.process_model[name].Write_DB(self.CommonData.Reprocessing_Index, self.parameters,
-                                                       self.Treatment_processes[name]['model'].Process_Type)
+            (P, G) = self.process_model[name].Write_DB(waste_flows=self.CommonData.Reprocessing_Index,
+                                                       parameters=self.parameters,
+                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
+
+        elif self.Treatment_processes[name]['model'].Process_Type == 'Transfer_Station':
+            (P, G) = self.process_model[name].Write_DB(waste_flows=self.Treatment_processes[name]['model']._Extened_Index,
+                                                       parameters=self.parameters,
+                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
         return((P, G))
 
     def report_parameters(self):

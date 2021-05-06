@@ -9,21 +9,20 @@ from brightway2 import Database
 
 
 class ProcessDB():
-    def __init__(self, process_name, waste_treatment, CommonData, Distance=None):
+    def __init__(self, process_name, waste_treatment, CommonData, process_types, Distance=None):
         self.Report = {}
         self.P_Name = process_name
         self.P_Pr_Name = self.P_Name + '_product'
         self.Distance = Distance
         self.CommonData = CommonData
+        self._process_types = process_types
 
         self.waste_treatment = waste_treatment
 
         # Databases
         self.database_biosphere = Database("biosphere3")
         self.database_Product = Database(self.P_Pr_Name)
-        ### ==========================
         self.database_Waste_technosphere = Database("Technosphere")
-        ### ==========================
 
     def check_nan(self, x):  # replace zeros when there is no data ("nan")
         if str(x) == "nan":
@@ -71,22 +70,20 @@ class ProcessDB():
                 self.db_data[(self.P_Name, x)]['unit'] = 'Mg/year'
             self.db_data[(self.P_Name, x)]['exchanges'] = []
 
-# =============================================================================
-#                 if key in ['Bottom_Ash','Fly_Ash','Separated_Organics','Other_Residual',
-#                  'RDF','Al','Fe','Cu','RWC','SSR','DSR','MSR','LV','SSYW','SSO','DryRes','REC','WetRes','MRDO','SSYWDO','MSRDO',
-#                  'OCC','Mixed_Paper','ONP','OFF','Fiber_Other','PET','HDPE_Unsorted','HDPE_P','HDPE_T','PVC','LDPE_Film',
-#                  'Polypropylene','Polystyrene','Plastic_Other','Mixed_Plastic','Brown_glass','Clear_glass','Green_glass','Mixed_Glass']:
-# =============================================================================
+            if Process_Type == 'Transfer_Station':
+                xx = ProcessDB._helper_wasteflow_name(x)
+            else:
+                xx = x
 
             for key in self.Report["Waste"][x]:
-                ex = self.exchange((self.P_Pr_Name, x + '_' + key), 'technosphere', 'Mg/year', self.Report["Waste"][x][key])
+                ex = self.exchange((self.P_Pr_Name, xx + '_' + key), 'technosphere', 'Mg/year', self.Report["Waste"][x][key])
                 self.db_data[(self.P_Name, x)]['exchanges'].append(ex)
 
-                self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)] = {}  # add activity to Waste_database
-                self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['name'] = self.P_Pr_Name + "_" + x + '_' + key
-                self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['unit'] = 'Mg/year'
-                self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'] = []
-                self.act_in_group.add((self.P_Pr_Name, x + '_' + key))
+                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)] = {}  # add activity to Waste_database
+                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['name'] = self.P_Pr_Name + "_" + xx + '_' + key
+                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['unit'] = 'Mg/year'
+                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'] = []
+                self.act_in_group.add((self.P_Pr_Name, xx + '_' + key))
 
                 # Streams that are not the same with their source.
                 if key in ['Bottom_Ash', 'Fly_Ash'] + self.CommonData.Reprocessing_Index:
@@ -102,17 +99,17 @@ class ProcessDB():
                                 self.uncertain_parameters.add_parameter(key, self.P_Name, p, 1, dynamic_param=False)
 
                         ex = self.exchange((p, key), 'technosphere', 'Mg/year', 0 if Formula else 1, Formula=Formula,
-                                           Act=(self.P_Pr_Name, x + '_' + key), product=key)
-                        self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex)
+                                           Act=(self.P_Pr_Name, xx + '_' + key), product=key)
+                        self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex)
 
                         # addin exchange for transportation between the process models
                         ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
                                                 0 if Formula else 1, Formula=Formula,
-                                                Act=(self.P_Pr_Name, x + '_' + key), product=key)
-                        self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex_trnp)
+                                                Act=(self.P_Pr_Name, xx + '_' + key), product=key)
+                        self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex_trnp)
 
                 # Streams that are same with the source.
-                elif key in ['Separated_Organics', 'Other_Residual', 'RDF']:
+                elif key in ['Separated_Organics', 'Other_Residual', 'Separated_Recyclables', 'RDF']:
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
@@ -125,17 +122,18 @@ class ProcessDB():
                                 self.uncertain_parameters.add_parameter(key, self.P_Name, p, 1, dynamic_param=False)
 
                         # adding exchange to waste processing
-                        ex = self.exchange((p, x), 'technosphere', 'Mg/year', 0 if Formula else 1, Formula=Formula,
-                                           Act=(self.P_Pr_Name, x + '_' + key), product=key)
-                        self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex)
+                        ex = self.exchange((p, xx), 'technosphere', 'Mg/year', 0 if Formula else 1, Formula=Formula,
+                                           Act=(self.P_Pr_Name, xx + '_' + key), product=key)
+                        self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex)
 
                         # addin exchange for transportation between the process models
                         ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
                                                 0 if Formula else 1, Formula=Formula,
-                                                Act=(self.P_Pr_Name, x + '_' + key), product=key)
-                        self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex_trnp)
+                                                Act=(self.P_Pr_Name, xx + '_' + key), product=key)
+                        self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex_trnp)
 
-                # Collection streams. Transportation between the collection and treatment processes are calculate inside collection model.
+                ### Collection streams.
+                # Transportation between the collection and treatment processes are calculate inside collection model.
                 elif key in self.CommonData.Collection_Index:
                     # finding the destination
                     for p in self.waste_treatment[key]:
@@ -147,18 +145,31 @@ class ProcessDB():
                             if "frac_of_" + key + '_from_' + self.P_Name + '_to_' + p not in self.list_of_static_params:
                                 self.list_of_static_params.append("frac_of_" + key + '_from_' + self.P_Name + '_to_' + p)
                                 self.uncertain_parameters.add_parameter(key, self.P_Name, p, 1, dynamic_param=False)
+                        if self._process_types[p] == 'Transfer_Station':
+                            ex = self.exchange(Input=(p, key + '_' + x),
+                                               Type='technosphere',
+                                               Unit='Mg/year',
+                                               Amount=0 if Formula else 1,
+                                               Formula=Formula,
+                                               Act=(self.P_Pr_Name, xx + '_' + key),
+                                               product=key)
+                        else:
+                            ex = self.exchange(Input=(p, x),
+                                               Type='technosphere',
+                                               Unit='Mg/year',
+                                               Amount=0 if Formula else 1,
+                                               Formula=Formula,
+                                               Act=(self.P_Pr_Name, xx + '_' + key),
+                                               product=key)
 
-                        ex = self.exchange((p, x), 'technosphere', 'Mg/year', 0 if Formula else 1,
-                                           Formula=Formula,
-                                           Act=(self.P_Pr_Name, x + '_' + key), product=key)
-                        self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex)
+                        self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex)
 
                         # addin exchange for transportation between the collection sector and treatment processs
                         if p in self.Report['LCI'][key].keys():
                             ex_trnp = self.exchange((self.P_Pr_Name, key + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
                                                     0 if Formula else 1, Formula=Formula,
                                                     Act=(self.P_Pr_Name, x + '_' + key), product=key)
-                            self.db_Pr_data[(self.P_Pr_Name, x + '_' + key)]['exchanges'].append(ex_trnp)
+                            self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex_trnp)
                         else:
                             raise ValueError('Inconsistent treatment processes in model and collection')
 
@@ -282,3 +293,12 @@ class ProcessDB():
                 self.params_dict[Formula].add((Input, Act))
 
         return(exchange)
+
+    @staticmethod
+    def _helper_wasteflow_name(name):
+        if 'DryRes' == name[0:6] or 'WetRes' == name[0:6]:
+            return(name[7:])
+        elif 'ORG' == name[0:3] or 'REC' == name[0:3]:
+            return(name[4:])
+        else:
+            return(None)

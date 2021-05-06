@@ -23,19 +23,20 @@ class Parameters():
 
         # Color & shape for plotting the SWM Network
         self.edge_color = {'RWC': 'black', 'SSR': 'blue', 'DSR': 'blue', 'MSR': 'blue', 'LV': 'green4',
-                           'SSYW': 'green4', 'SSO': 'green4', 'DryRes': 'black', 'REC': 'blue',
+                           'SSYW': 'green4', 'SSO': 'green4', 'ORG': 'green4', 'DryRes': 'black', 'REC': 'blue',
                            'WetRes': 'black', 'MRDO': 'black', 'SSYWDO': 'green4', 'MSRDO': 'blue',
                            'Bottom_Ash': 'gray', 'Fly_Ash': 'gray', 'Separated_Organics': 'green4',
+                           'Separated_Recyclables': 'blue',
                            'Other_Residual': 'black', 'RDF': 'red'}
         for i in CommonData.Reprocessing_Index:
             self.edge_color[i] = 'blue'
         self.node_shape = {}
         self.node_color = {}
         for p in self.processes:
-            if self.processes[p]['model'].Process_Type == 'Treatment' or self.processes[p]['model'].Process_Type == 'Reprocessing':
+            if self.processes[p]['model'].Process_Type != 'Collection':
                 self.node_shape[p] = 'rectangle'
                 self.node_color[p] = 'cyan3'
-            if self.processes[p]['model'].Process_Type == 'Collection':
+            else:
                 self.node_shape[p] = 'oval'
                 self.node_color[p] = 'azure'
 

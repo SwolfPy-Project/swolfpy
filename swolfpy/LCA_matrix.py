@@ -79,7 +79,15 @@ class LCA_matrix(LCA):
 
         for material, value in report_dict["Waste"].items():
             for key2, value2 in value.items():
-                key2 = (process_name + "_product", material + '_' + key2)
+                # Remove prefix from material name in the case of Transfer Station
+                if report_dict['process name'][1] == 'Transfer_Station':
+                    if 'DryRes' == material[0:6] or 'WetRes' == material[0:6]:
+                        material_ = material[7:]
+                    elif 'ORG' == material[0:3] or 'REC' == material[0:3]:
+                        material_ = material[4:]
+                else:
+                    material_ = material
+                key2 = (process_name + "_product", material_ + '_' + key2)
                 if not np.isnan(value2):
                     if ((key2), (process_name, material)) in tech_matrix.keys():
                         if tech_matrix[((key2), (process_name, material))] != value2:
