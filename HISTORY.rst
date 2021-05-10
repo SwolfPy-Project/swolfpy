@@ -2,12 +2,13 @@
 History
 =======
 
-0.1.10 (2021-XX-XX)
+0.2.0 (2021-05-10)
 ------------------
 
 * Add tab for correlation analysis. 
 * Add cost calculations.
-* Add help to interface
+* Add help to interface.
+* Parallel optimization.
 
 
 

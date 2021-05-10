@@ -13,7 +13,7 @@ with open('HISTORY.rst') as history_file:
 requirements = [
 "swolfpy_inputdata",
 "swolfpy_processmodels",
-"brightway2",
+"brightway2==2.3",
 "PySide2",
 "plotly",
 "graphviz",
@@ -53,6 +53,7 @@ setup(
     install_requires=requirements,
     license="GNU GENERAL PUBLIC LICENSE V2",
     long_description=readme + '\n\n' + history,
+    long_description_content_type= 'text/x-rst',
     include_package_data=True,
     keywords='swolfpy',
     name='swolfpy',
@@ -63,6 +64,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://bitbucket.org/msm_sardar/swolfpy',
-    version='0.1.9',
+    version='0.2.0',
     zip_safe=False,
 )

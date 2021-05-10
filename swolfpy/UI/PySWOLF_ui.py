@@ -802,7 +802,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_6 = QWidget()
         self.scrollAreaWidgetContents_6.setObjectName(u"scrollAreaWidgetContents_6")
-        self.scrollAreaWidgetContents_6.setGeometry(QRect(0, 0, 107, 638))
+        self.scrollAreaWidgetContents_6.setGeometry(QRect(0, 0, 997, 724))
         self.gridLayout_105 = QGridLayout(self.scrollAreaWidgetContents_6)
         self.gridLayout_105.setObjectName(u"gridLayout_105")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents_6)
@@ -816,7 +816,7 @@ class Ui_MainWindow(object):
         self.Define_SWM_1.setMinimumSize(QSize(0, 600))
         self.Collection_process = QWidget()
         self.Collection_process.setObjectName(u"Collection_process")
-        self.Collection_process.setGeometry(QRect(0, 0, 187, 96))
+        self.Collection_process.setGeometry(QRect(0, 0, 959, 605))
         self.gridLayout_99 = QGridLayout(self.Collection_process)
         self.gridLayout_99.setObjectName(u"gridLayout_99")
         self.horizontalLayout_19 = QHBoxLayout()
@@ -1141,7 +1141,7 @@ class Ui_MainWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_7 = QWidget()
         self.scrollAreaWidgetContents_7.setObjectName(u"scrollAreaWidgetContents_7")
-        self.scrollAreaWidgetContents_7.setGeometry(QRect(0, 0, 635, 801))
+        self.scrollAreaWidgetContents_7.setGeometry(QRect(0, 0, 980, 801))
         self.gridLayout_106 = QGridLayout(self.scrollAreaWidgetContents_7)
         self.gridLayout_106.setObjectName(u"gridLayout_106")
         self.frame_40 = QFrame(self.scrollAreaWidgetContents_7)
@@ -1289,7 +1289,7 @@ class Ui_MainWindow(object):
         self.scrollArea_4.setWidgetResizable(True)
         self.scrollAreaWidgetContents_8 = QWidget()
         self.scrollAreaWidgetContents_8.setObjectName(u"scrollAreaWidgetContents_8")
-        self.scrollAreaWidgetContents_8.setGeometry(QRect(0, 0, 540, 726))
+        self.scrollAreaWidgetContents_8.setGeometry(QRect(0, 0, 980, 726))
         self.gridLayout_52 = QGridLayout(self.scrollAreaWidgetContents_8)
         self.gridLayout_52.setObjectName(u"gridLayout_52")
         self.frame_39 = QFrame(self.scrollAreaWidgetContents_8)
@@ -1925,7 +1925,7 @@ class Ui_MainWindow(object):
         self.scrollArea_6.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 902, 736))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 980, 736))
         self.gridLayout_30 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_30.setObjectName(u"gridLayout_30")
         self.splitter_6 = QSplitter(self.scrollAreaWidgetContents)
@@ -2071,7 +2071,7 @@ class Ui_MainWindow(object):
         self.MC_setting.setFont(font2)
         self.Normal = QWidget()
         self.Normal.setObjectName(u"Normal")
-        self.Normal.setGeometry(QRect(0, 0, 218, 133))
+        self.Normal.setGeometry(QRect(0, 0, 365, 190))
         self.gridLayout_71 = QGridLayout(self.Normal)
         self.gridLayout_71.setObjectName(u"gridLayout_71")
         self.label_68 = QLabel(self.Normal)
@@ -2101,7 +2101,7 @@ class Ui_MainWindow(object):
         self.MC_included_models.setWidgetResizable(True)
         self.scrollAreaWidgetContents_10 = QWidget()
         self.scrollAreaWidgetContents_10.setObjectName(u"scrollAreaWidgetContents_10")
-        self.scrollAreaWidgetContents_10.setGeometry(QRect(0, 0, 198, 28))
+        self.scrollAreaWidgetContents_10.setGeometry(QRect(0, 0, 345, 125))
         self.verticalLayout_3 = QVBoxLayout(self.scrollAreaWidgetContents_10)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.MC_included_models.setWidget(self.scrollAreaWidgetContents_10)
@@ -2805,7 +2805,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.PySWOLF.setCurrentIndex(1)
+        self.PySWOLF.setCurrentIndex(0)
         self.init_process_toolbox.setCurrentIndex(0)
         self.Define_SWM_1.setCurrentIndex(0)
         self.Collection.setCurrentIndex(-1)
@@ -2832,20 +2832,15 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/ICONS/PySWOLF_ICONS/PySWOLF.ico\" /></p>\n"
 "<p style=\"-qt-p"
                         "aragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600; color:#aa0000;\">Development Team:</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;\">Mojtaba Sardarmehni</span><span style=\" font-family:'Georgia,serif'; font-size:8pt; color:#000000;\">, Ph.D. Student</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\""
-                        "><span style=\" font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;\">Pedro Anchieta</span><span style=\" font-family:'Georgia,serif'; font-size:8pt; color:#000000;\">, Master Student </span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;\">Dr. James W. Levis</span><span style=\" font-family:'Georgia,serif'; font-size:8pt; color:#000000;\">, Research Assistant Professor</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; font-weight:600; color:#aa0000;\">Related Links:</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom"
-                        ":12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Install: </span><a href=\"https://pypi.org/project/swolfpy/\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">https://pypi.org/project/swolfpy/</span></a></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Install: </span><a href=\"https://pypi.org/project/swolfpy/\"><span style=\" font-size:8pt; text-decoration: underline;"
+                        " color:#0000ff;\">https://pypi.org/project/swolfpy/</span></a></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Document: </span><a href=\"https://go.ncsu.edu/swolfpy_docs\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolfpy_docs</span></a></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Source Code: </span><a href=\"https://go.ncsu.edu/swolfpy_source_code\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolf"
-                        "py_source_code</span></a></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Report bugs: </span><a href=\"https://go.ncsu.edu/swolfpy_issues\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolfpy_issues</span></a></p></body></html>", None))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Source Code: </span><a href=\"https://go.ncsu.edu/swolfpy_source_code\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolfpy_source_code</span></a></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Report bugs: </span><a href=\"https://go.nc"
+                        "su.edu/swolfpy_issues\"><span style=\" font-size:8pt; text-decoration: underline; color:#0000ff;\">https://go.ncsu.edu/swolfpy_issues</span></a></p></body></html>", None))
         self.groupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Strat New Project", None))
         self.label_55.setText(QCoreApplication.translate("MainWindow", u"Options:", None))
         self.Start_def_process.setText(QCoreApplication.translate("MainWindow", u"Default Process Models", None))

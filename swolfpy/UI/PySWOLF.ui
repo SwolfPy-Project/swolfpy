@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -77,11 +77,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; color:#aa0000;&quot;&gt;Developed at North Carolina State University&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/ICONS/PySWOLF_ICONS/PySWOLF.ico&quot; /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Development Team:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;&quot;&gt;Mojtaba Sardarmehni&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; color:#000000;&quot;&gt;, Ph.D. Student&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;&quot;&gt;Pedro Anchieta&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; color:#000000;&quot;&gt;, Master Student &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; font-weight:600; color:#000000;&quot;&gt;Dr. James W. Levis&lt;/span&gt;&lt;span style=&quot; font-family:'Georgia,serif'; font-size:8pt; color:#000000;&quot;&gt;, Research Assistant Professor&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Related Links:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Install: &lt;/span&gt;&lt;a href=&quot;https://pypi.org/project/swolfpy/&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://pypi.org/project/swolfpy/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
@@ -1530,8 +1526,8 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>107</width>
-             <height>638</height>
+             <width>997</width>
+             <height>724</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_105">
@@ -1560,8 +1556,8 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>187</width>
-                    <height>96</height>
+                    <width>959</width>
+                    <height>605</height>
                    </rect>
                   </property>
                   <attribute name="label">
@@ -2156,7 +2152,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>635</width>
+             <width>980</width>
              <height>801</height>
             </rect>
            </property>
@@ -2399,7 +2395,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>540</width>
+             <width>980</width>
              <height>726</height>
             </rect>
            </property>
@@ -3454,7 +3450,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>902</width>
+             <width>980</width>
              <height>736</height>
             </rect>
            </property>
@@ -3848,8 +3844,8 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>218</width>
-                      <height>133</height>
+                      <width>365</width>
+                      <height>190</height>
                      </rect>
                     </property>
                     <attribute name="label">
@@ -3924,8 +3920,8 @@ p, li { white-space: pre-wrap; }
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>198</width>
-                          <height>28</height>
+                          <width>345</width>
+                          <height>125</height>
                          </rect>
                         </property>
                         <layout class="QVBoxLayout" name="verticalLayout_3"/>
