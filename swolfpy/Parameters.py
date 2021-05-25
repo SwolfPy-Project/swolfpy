@@ -137,21 +137,21 @@ class Parameters():
         """
         Check that sum of the waste fractions (parameters) for each stream from one source to all available destinations is 1.
         """
-        sum = 0
+        sum_ = 0
         flag = 1
         for item in self.param_uncertainty_dict.values():
             for list_item in item:
-                sum += list_item[1]
+                sum_ += list_item[1]
                 if list_item[1] < 0 or list_item[1] > 1:
                     raise ValueError("Parameters should be in range(0,1), check: {}".format(list_item[2]))
-            if not approx_eq(sum, 1):
+            if not approx_eq(sum_, 1):
                 for i in item:
                     print("{}: {}".format(i[2], i[1]))
                 raise ValueError("Sum of the parameters is not 1")
-                sum = 0
+                sum_ = 0
                 flag = 0
                 break
-            sum = 0
+            sum_ = 0
         return flag
 
     def add_uncertainty(self, param_name, **kwargs):
@@ -210,15 +210,15 @@ class Parameters():
         Normalize the parameters after updating the valuse by monte carlo.
         """
         for item in self.MC_param_uncertainty_dict.values():
-            sum = 0
+            sum_ = 0
             for list_item in item:
                 if list_item[1] < 0:
                     raise ValueError("Parameters should be positive, check the uncertainty base for param: {}".format(list_item[2]))
-                sum += list_item[1]
+                sum_ += list_item[1]
 
             for list_item in item:
-                if sum != 0:
-                    list_item[1] = list_item[1] / sum
+                if sum_ != 0:
+                    list_item[1] = list_item[1] / sum_
                 else:
                     list_item[1] = 1 / len(item)
 
