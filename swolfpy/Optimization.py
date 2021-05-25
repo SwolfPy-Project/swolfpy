@@ -125,7 +125,7 @@ class Optimization(LCA_matrix):
                     if key in self.tech_matrix:
                         self.tech_matrix[key] = value
 
-            if self.collection:
+            if self.collection and self.oldx[self.N_param:] != list(x)[self.N_param:]:
                 self.update_col_scheme(x)
                 for col in self.Collection_processes:
                     model = self.Treatment_processes[col]['model']
