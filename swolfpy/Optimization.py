@@ -98,7 +98,6 @@ class Optimization(LCA_matrix):
                     self.x0_col.append(self.config[c.split(' mode')[0]][i])
                     self.scheme_vars_index += 1
                     self.n_scheme_vars += 1
-        print("\n\n collection scheme vars dict: \n", self.scheme_vars_dict)
 
     def update_col_scheme(self, x):
         process_set = set()
@@ -279,7 +278,9 @@ class Optimization(LCA_matrix):
                                                             self.constraints[key]['ConstType'])})
         return cons
 
-    def optimize_parameters(self, constraints=None, waste_param=True, collection=False):
+    @staticmethod
+    def multi_start_optimization(optObject, constraints=None, collection=False, n_iter=30,
+                                 nproc=None, timeout=None, initialize_guess='random'):
         """
         Call the ``scipy.optimize.minimize()`` to minimize the LCA score. \n
         ``constraints`` is python dictionary. \n
@@ -306,49 +307,7 @@ class Optimization(LCA_matrix):
         >>> constraints[('biosphere3', 'eba59fd6-f37e-41dc-9ca3-c7ea22d602c7')] = {'limit':100,'KeyType':'Emission','ConstType':"<="}
 
         """
-
-        self.constraints = constraints
-        self.waste_param = waste_param
-        self.collection = collection
-
-        self.magnitude = len(str(int(abs(self.score))))
-
-        x0 = [i['amount'] for i in self.project.parameters_list]  # initializing with the users initial solution
-
-        if self.collection and self.n_scheme_vars:
-            x0 = x0 + self.x0_col
-
-        # x0 = [1 for _ in self.project.parameters_list]  # changing initial x0 to outside feasible region
-
-        self.oldx = [0 for i in range(len(x0))]
-
-        bnds = tuple([(0, 1) for _ in x0])
-        self.cons = self._create_constraints()
-
-        res = minimize(self._objective_function, x0, method='SLSQP', bounds=bnds, constraints=self.cons)
-        # options={'eps':0.01,'ftol':0.000001,'disp': True})
-        if res.success:
-            self.success = True
-            self.optimized_x = list()
-            res.x = res.x.round(decimals=3)
-            for i in range(len(self.project.parameters_list)):
-                self.optimized_x.append({'name': self.project.parameters_list[i]['name'], 'amount': res.x[i]})
-
-            if self.collection:
-                for k, v in self.scheme_vars_dict.items():
-                    self.optimized_x.append({'name': v, 'amount': res.x[k]})
-            print(self.optimized_x)
-            return res
-        else:
-            self.success = False
-            print(res.message)
-            return res
-
-    @staticmethod
-    def multi_start_optimization(optObject, constraints=None, waste_param=True, collection=False, n_iter=30,
-                                 nproc=None, timeout=None, initialize_guess='random'):
         optObject.constraints = constraints
-        optObject.waste_param = waste_param
         optObject.collection = collection
 
         optObject.magnitude = len(str(int(abs(optObject.score))))
@@ -390,12 +349,12 @@ class Optimization(LCA_matrix):
         pool.join()
         optObject.all_results = results
 
-        res_global = False
+        optObject.res_global = False
         for i, res in enumerate(optObject.all_results):
             if res:
                 if res.success:
                     if res.fun < global_min:
-                        res_global = res
+                        optObject.res_global = res
                         global_min = res.fun
                 print("""\n
                       Iteration: {}
@@ -417,32 +376,32 @@ class Optimization(LCA_matrix):
                                  'NAN',
                                  global_min * 10**optObject.magnitude))
 
-        if not res_global:
+        if not optObject.res_global:
             optObject.success = False
             print('None of the iterations were successful!')
             return None
 
-        if res_global.success:
+        if optObject.res_global.success:
             optObject.oldx = [0 for i in range(n_dec_vars)]
             optObject.success = True
             optObject.optimized_x = list()
-            res_global.x = res_global.x.round(decimals=4)
-            optObject._objective_function(res_global.x)
+            optObject.res_global.x = optObject.res_global.x.round(decimals=4)
+            optObject._objective_function(optObject.res_global.x)
 
             for i in range(len(optObject.project.parameters_list)):
                 optObject.optimized_x.append({'name': optObject.project.parameters_list[i]['name'],
-                                              'amount': res_global.x[i]})
+                                              'amount': optObject.res_global.x[i]})
 
             if optObject.collection:
                 for k, v in optObject.scheme_vars_dict.items():
                     optObject.optimized_x.append({'name': v,
-                                                  'amount': res_global.x[k]})
+                                                  'amount': optObject.res_global.x[k]})
 
-            return res_global
+            return optObject.res_global
         else:
             optObject.success = False
-            print(res_global.message)
-            return res_global
+            print(optObject.res_global.message)
+            return optObject.res_global
 
     @staticmethod
     def abortable_worker(func, *args, **kwargs):
@@ -530,6 +489,7 @@ class Optimization(LCA_matrix):
                       'LV': (0, 255, 0),  # lime	#00FF00
                       'SSYW': (0, 100, 0),  # dark green	#006400
                       'SSO': (0, 255, 127),  # spring green	#00FF7F
+                      'SSO_HC': (128, 128, 0),  # olive #808000
                       'ORG': (46, 139, 87),  # sea green	#2E8B57
                       'DryRes': (222, 184, 135),  # burly wood	#DEB887
                       'REC': (0, 191, 255),  # deep sky blue	#00BFFF
