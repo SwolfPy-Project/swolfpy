@@ -22,10 +22,14 @@ class Parameters():
         self.nodes = list(self.processes.keys())
 
         # Color & shape for plotting the SWM Network
-        self.edge_color = {'RWC': 'black', 'SSR': 'blue', 'DSR': 'blue', 'MSR': 'blue', 'LV': 'green4',
-                           'SSYW': 'green4', 'SSO': 'green4', 'ORG': 'green4', 'DryRes': 'black', 'REC': 'blue',
-                           'WetRes': 'black', 'MRDO': 'black', 'SSYWDO': 'green4', 'MSRDO': 'blue',
-                           'Bottom_Ash': 'gray', 'Fly_Ash': 'gray', 'Separated_Organics': 'green4',
+        self.edge_color = {'RWC': 'black', 'SSR': 'blue', 'DSR': 'blue',
+                           'MSR': 'blue',
+                           'LV': 'green4', 'SSYW': 'green4', 'SSO': 'green4',
+                           'SSO_HC': 'green4', 'ORG': 'green4', 'DryRes': 'black',
+                           'REC': 'blue', 'WetRes': 'black',
+                           'MRDO': 'black', 'SSYWDO': 'green4', 'MSRDO': 'blue',
+                           'Bottom_Ash': 'gray', 'Fly_Ash': 'gray',
+                           'Separated_Organics': 'green4',
                            'Separated_Recyclables': 'blue',
                            'Other_Residual': 'black', 'RDF': 'red'}
         for i in CommonData.Reprocessing_Index:
