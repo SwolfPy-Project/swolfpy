@@ -82,7 +82,7 @@ class Parameters():
 
         """
         # Initialize SWM network
-        self.network = graphviz.Digraph(name=filename, filename=filename+'.gv', format='png', engine='dot')
+        self.network = graphviz.Digraph(name=filename, filename=filename + '.gv', format='png', engine='dot')
         self.network.graph_attr['rankdir'] = 'LR'
         for x in self.nodes:
             self.network.node(x, shape=self.node_shape[x], fillcolor=self.node_color[x], style='filled', width='1.2')
@@ -100,7 +100,7 @@ class Parameters():
                     else:
                         self.add_edge(x[3][0], x[3][1], x[3][2])
         try:
-            self.network.render(filename+'.gv', view=view)
+            self.network.render(filename + '.gv', view=view)
         except Exception:
             print("""
             To render the generated DOT source code, you also need to install Graphviz (`Graphviz <https://www.graphviz.org/download>`_).\n
