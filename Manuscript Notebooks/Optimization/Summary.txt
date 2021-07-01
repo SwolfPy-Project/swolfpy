@@ -1,6 +1,6 @@
 
 ********  Config *********
-Time: 2021-06-30 & 19:48:22
+Time: 2021-07-01 & 17:27:24
 Initial guess generation: LHS
 N iter: 100
 N proc: 8
@@ -9,32 +9,32 @@ N proc: 8
 
 ********  Scenario 1 - Summary *********
 Number of decision variables: 18
+Number of constraints: 8
+Total time: 0:14:58
+Average time per iteration: 0:01:04
+Successful iterations: 99
+Number of best iterations: 59
+Number of >95 iterations: 70
+
+
+
+********  Scenario 2 - Summary *********
+Number of decision variables: 18
 Number of constraints: 7
-Total time: 0:09:56
-Average time per iteration: 0:00:40
+Total time: 0:09:49
+Average time per iteration: 0:00:41
 Successful iterations: 100
 Number of best iterations: 100
 Number of >95 iterations: 100
 
 
 
-********  Scenario 2 - Summary *********
-Number of decision variables: 18
-Number of constraints: 8
-Total time: 0:15:34
-Average time per iteration: 0:01:06
-Successful iterations: 100
-Number of best iterations: 63
-Number of >95 iterations: 69
-
-
-
 ********  Scenario 3 - Summary *********
 Number of decision variables: 18
 Number of constraints: 9
-Total time: 0:20:28
+Total time: 0:19:43
 Average time per iteration: 0:01:26
 Successful iterations: 100
 Number of best iterations: 8
-Number of >95 iterations: 73
+Number of >95 iterations: 69
 

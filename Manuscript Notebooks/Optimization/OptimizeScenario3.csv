@@ -1,13 +1,13 @@
 ,Value,Unit
-Diversion,40.0,%
-GWP,-369.56,kg CO2/Mg
+Diversion,40.01,%
+GWP,-369.52,kg CO2/Mg
 Operation Cost,54.67,$/Mg
 Capital cost,11.81,$/Mg
-Total cost,66.49,$/Mg
+Total cost,66.48,$/Mg
 Collection,74621,Mg/yr
-LF,44771,Mg/yr
+LF,44767,Mg/yr
 WTE,0,Mg/yr
 Composting,0,Mg/yr
-AD,14875,Mg/yr
-SS_MRF,18305,Mg/yr
-Reprocessing,15861,Mg/yr
+AD,14873,Mg/yr
+SS_MRF,18303,Mg/yr
+Reprocessing,15860,Mg/yr
