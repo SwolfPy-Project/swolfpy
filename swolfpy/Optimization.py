@@ -76,8 +76,8 @@ class Optimization(LCA_matrix):
                 config_pd[c] = ['Optimize', 'Optimize',
                                 'Optimize', 'Optimize',
                                 'Optimize', 'Optimize',
-                                'Optimize', 'Optimize', 'Optimize',
-                                'Optimize', 'Optimize']
+                                'Fix', 'Fix', 'Fix',
+                                'Fix', 'Fix']
 
             for col, sch in schemes.items():
                 for k, v in sch.items():
@@ -451,17 +451,18 @@ class Optimization(LCA_matrix):
         :type show: bool
 
         """
-        if params:
-            params = params
+        if optimized_flow:
+            params = [i['amount'] for i in self.optimized_x]
         else:
-            if optimized_flow:
-                params = [i['amount'] for i in self.optimized_x]
+            if params:
+                params = params
             else:
                 params = [i['amount'] for i in self.project.parameters_list]
-                self.oldx = [0 for i in range(len(params))]
-                self.magnitude = len(str(int(abs(self.score))))
-                self.N_param = len(self.project.parameters_list)
-                self.col_model = []
+
+            self.oldx = [0 for i in range(len(params))]
+            self.magnitude = len(str(int(abs(self.score))))
+            self.N_param = len(self.project.parameters_list)
+            self.col_model = []
 
         product = []
         index = 0
