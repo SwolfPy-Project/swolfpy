@@ -356,6 +356,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                           'LV':self.IT_LV,
                           'SSYW':self.IT_SSYW,
                           'SSO':self.IT_SSO,
+                          'SSO_HC':self.IT_SSO_HC,
                           'ORG': self.IT_ORG,
                           'DryRes':self.IT_DryRes,
                           'REC':self.IT_REC,
@@ -752,6 +753,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         for proc in self._ProcessMetaData:
             if self._ProcessMetaData[proc]['Process_Type'] != 'Collection':
                 self._Plist.append(self._ProcessMetaData[proc]['Name'])
+        self._Plist.sort()
         self.P_index = 1
         
         # Add process and create dict
@@ -2357,8 +2359,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.opt_Widget = adv_opt_ui.Ui_adv_opt()
             self.opt_Widget.setupUi(self.adv_opt)
             
-            self.opt_Widget.Opt_incld_flows.setChecked(True)
-            
             conf=Optimization.config(self.demo)  
             ### conf Table
             if len(conf.columns) > 0:
@@ -2377,6 +2377,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.opt_Widget.timeout.setMinimum(500)
             self.opt_Widget.timeout.setMaximum(5000)
             self.opt_Widget.timeout.setValue(1500)
+            
+            self.opt_Widget.Opt_trial.setMinimum(2)
+            self.opt_Widget.Opt_trial.setValue(2)
             
             self.opt_Widget.nproc.setMinimum(1)
             self.opt_Widget.nproc.setMaximum(mp.cpu_count())
@@ -2406,8 +2409,6 @@ functional_unit = {functional_unit}
 
 method = {method}
 
-optimize flows = {self.opt_Widget.Opt_incld_flows.isChecked()}
-
 optimize collection scheme = {self.opt_Widget.Opt_incld_col.isChecked()}
 
 number of iterations = {n_iter}
@@ -2434,7 +2435,6 @@ constraints = {self.constraints}""")
         optimizer_thread = Worker_Optimize(parent=self.Opt_optimize,
                                            opt=self.opt,
                                            constraints=constraints,
-                                           waste_param=self.opt_Widget.Opt_incld_flows.isChecked(),
                                            collection=self.opt_Widget.Opt_incld_col.isChecked(),
                                            is_multi=self.opt_Widget.Multi_start_opt.isChecked(),
                                            n_iter=self.opt_Widget.Opt_trial.value(),
@@ -2444,17 +2444,6 @@ constraints = {self.constraints}""")
         optimizer_thread.UpdatePBr_Opt.connect(self.setPBr_Opt)
         optimizer_thread.report.connect(self.report_opt_func)
         optimizer_thread.start()
-# =============================================================================
-#         if self.opt_Widget.Multi_start_opt.isChecked():
-#             results = self.opt.multi_start_optimization(constraints=constraints,
-#                                                         waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
-#                                                         collection=self.opt_Widget.Opt_incld_col.isChecked(),
-#                                                         max_iter=self.opt_Widget.Opt_trial.value())
-#         else:
-#             results = self.opt.optimize_parameters(constraints=constraints,
-#                                                waste_param=self.opt_Widget.Opt_incld_flows.isChecked(), 
-#                                                collection=self.opt_Widget.Opt_incld_col.isChecked())
-# =============================================================================
 
     @QtCore.Slot(dict)
     def report_opt_func(self, report):
@@ -2527,13 +2516,17 @@ constraints = {self.constraints}""")
         self.Opt_Const_table_update()
         self.constraints={}
         
-    def Opt_draw_sankey_func(self,params = None):
+    def Opt_draw_sankey_func(self, params=None):
         ### plot mass sankey
         if params:
-            self.opt.plot_sankey(optimized_flow=True,show=False,fileName=os.getcwd()+'\\Optimized_sankey.html',params=params)
+            self.opt.plot_sankey(optimized_flow=False,
+                                 show=False,
+                                 fileName=os.getcwd()+'\\Optimized_sankey.html',
+                                 params=params)
         else:        
-            self.opt.plot_sankey(optimized_flow=self.opt_Widget.Opt_incld_flows.isChecked(),
-                                 show=False,fileName=os.getcwd()+'\\Optimized_sankey.html')
+            self.opt.plot_sankey(optimized_flow=True,
+                                 show=False,
+                                 fileName=os.getcwd()+'\\Optimized_sankey.html')
         self.html_figur = QWebEngineView()
         self.html_figur.setWindowIcon(self.icon)
         self.html_figur.setWindowTitle('swolfpy: Sankey Diagram')

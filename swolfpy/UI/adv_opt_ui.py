@@ -42,57 +42,52 @@ class Ui_adv_opt(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.gridLayout.addItem(self.horizontalSpacer, 1, 2, 1, 1)
-
-        self.label = QLabel(self.groupBox)
-        self.label.setObjectName(u"label")
-
-        self.gridLayout.addWidget(self.label, 3, 0, 1, 1)
-
-        self.nproc = QSpinBox(self.groupBox)
-        self.nproc.setObjectName(u"nproc")
-
-        self.gridLayout.addWidget(self.nproc, 3, 1, 1, 1)
+        self.gridLayout.addItem(self.horizontalSpacer, 0, 2, 1, 1)
 
         self.label_2 = QLabel(self.groupBox)
         self.label_2.setObjectName(u"label_2")
 
-        self.gridLayout.addWidget(self.label_2, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_2, 3, 0, 1, 1)
 
         self.method = QComboBox(self.groupBox)
         self.method.setObjectName(u"method")
 
-        self.gridLayout.addWidget(self.method, 4, 1, 1, 1)
+        self.gridLayout.addWidget(self.method, 3, 1, 1, 1)
 
-        self.Opt_trial = QSpinBox(self.groupBox)
-        self.Opt_trial.setObjectName(u"Opt_trial")
+        self.label = QLabel(self.groupBox)
+        self.label.setObjectName(u"label")
 
-        self.gridLayout.addWidget(self.Opt_trial, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.label, 2, 0, 1, 1)
+
+        self.nproc = QSpinBox(self.groupBox)
+        self.nproc.setObjectName(u"nproc")
+
+        self.gridLayout.addWidget(self.nproc, 2, 1, 1, 1)
 
         self.Multi_start_opt = QCheckBox(self.groupBox)
         self.Multi_start_opt.setObjectName(u"Multi_start_opt")
 
-        self.gridLayout.addWidget(self.Multi_start_opt, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.Multi_start_opt, 1, 0, 1, 1)
 
-        self.Opt_incld_flows = QCheckBox(self.groupBox)
-        self.Opt_incld_flows.setObjectName(u"Opt_incld_flows")
+        self.Opt_trial = QSpinBox(self.groupBox)
+        self.Opt_trial.setObjectName(u"Opt_trial")
 
-        self.gridLayout.addWidget(self.Opt_incld_flows, 0, 0, 1, 2)
+        self.gridLayout.addWidget(self.Opt_trial, 1, 1, 1, 1)
 
         self.Opt_incld_col = QCheckBox(self.groupBox)
         self.Opt_incld_col.setObjectName(u"Opt_incld_col")
 
-        self.gridLayout.addWidget(self.Opt_incld_col, 1, 0, 1, 2)
+        self.gridLayout.addWidget(self.Opt_incld_col, 0, 0, 1, 2)
 
         self.label_3 = QLabel(self.groupBox)
         self.label_3.setObjectName(u"label_3")
 
-        self.gridLayout.addWidget(self.label_3, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_3, 4, 0, 1, 1)
 
         self.timeout = QSpinBox(self.groupBox)
         self.timeout.setObjectName(u"timeout")
 
-        self.gridLayout.addWidget(self.timeout, 5, 1, 1, 1)
+        self.gridLayout.addWidget(self.timeout, 4, 1, 1, 1)
 
 
         self.gridLayout_5.addWidget(self.groupBox, 0, 0, 1, 1)
@@ -107,10 +102,9 @@ class Ui_adv_opt(object):
         adv_opt.setWindowTitle(QCoreApplication.translate("adv_opt", u"Optimization setting", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("adv_opt", u"Collection scheme decision variables", None))
         self.groupBox.setTitle(QCoreApplication.translate("adv_opt", u"Options", None))
-        self.label.setText(QCoreApplication.translate("adv_opt", u"Number of theads", None))
         self.label_2.setText(QCoreApplication.translate("adv_opt", u"Initial guess", None))
+        self.label.setText(QCoreApplication.translate("adv_opt", u"Number of theads", None))
         self.Multi_start_opt.setText(QCoreApplication.translate("adv_opt", u"Multi_start", None))
-        self.Opt_incld_flows.setText(QCoreApplication.translate("adv_opt", u"Optimize waste fractions", None))
         self.Opt_incld_col.setText(QCoreApplication.translate("adv_opt", u"Optimize collection scheme", None))
         self.label_3.setText(QCoreApplication.translate("adv_opt", u"Timeout", None))
     # retranslateUi

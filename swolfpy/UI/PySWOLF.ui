@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -263,7 +263,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QTabWidget" name="init_process_toolbox">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="PM_PMTab">
            <attribute name="title">
@@ -629,24 +629,10 @@ p, li { white-space: pre-wrap; }
                      <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_29">
-                     <item row="14" column="0">
-                      <widget class="QCheckBox" name="IT_LV">
-                       <property name="text">
-                        <string>Leaves</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="10" column="0">
                       <widget class="QCheckBox" name="IT_MSRDO">
                        <property name="text">
                         <string>MSRDO</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="0">
-                      <widget class="QCheckBox" name="IT_REC">
-                       <property name="text">
-                        <string>REC</string>
                        </property>
                       </widget>
                      </item>
@@ -663,7 +649,14 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="13" column="0">
+                     <item row="4" column="0">
+                      <widget class="QCheckBox" name="IT_REC">
+                       <property name="text">
+                        <string>REC</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="14" column="0">
                       <widget class="QCheckBox" name="IT_SSYWDO">
                        <property name="text">
                         <string>SSYWDO</string>
@@ -683,10 +676,17 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="2" column="0">
-                      <widget class="QCheckBox" name="IT_ORG">
+                     <item row="15" column="0">
+                      <widget class="QCheckBox" name="IT_LV">
                        <property name="text">
-                        <string>ORG</string>
+                        <string>Leaves</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="8" column="0">
+                      <widget class="QCheckBox" name="IT_DSR">
+                       <property name="text">
+                        <string>DSR</string>
                        </property>
                       </widget>
                      </item>
@@ -704,13 +704,6 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="8" column="0">
-                      <widget class="QCheckBox" name="IT_DSR">
-                       <property name="text">
-                        <string>DSR</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="11" column="0">
                       <widget class="QCheckBox" name="IT_SSYW">
                        <property name="text">
@@ -718,17 +711,17 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
+                     <item row="2" column="0">
+                      <widget class="QCheckBox" name="IT_ORG">
+                       <property name="text">
+                        <string>ORG</string>
+                       </property>
+                      </widget>
+                     </item>
                      <item row="7" column="0">
                       <widget class="QCheckBox" name="IT_SSR">
                        <property name="text">
                         <string>SSR</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="0">
-                      <widget class="QCheckBox" name="IT_MRDO">
-                       <property name="text">
-                        <string>MRDO</string>
                        </property>
                       </widget>
                      </item>
@@ -748,7 +741,14 @@ p, li { white-space: pre-wrap; }
                        </property>
                       </widget>
                      </item>
-                     <item row="15" column="0">
+                     <item row="6" column="0">
+                      <widget class="QCheckBox" name="IT_MRDO">
+                       <property name="text">
+                        <string>MRDO</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="16" column="0">
                       <spacer name="verticalSpacer_5">
                        <property name="orientation">
                         <enum>Qt::Vertical</enum>
@@ -765,6 +765,13 @@ p, li { white-space: pre-wrap; }
                       <widget class="QCheckBox" name="IT_SSO">
                        <property name="text">
                         <string>SSO</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="13" column="0">
+                      <widget class="QCheckBox" name="IT_SSO_HC">
+                       <property name="text">
+                        <string>SSO_HC</string>
                        </property>
                       </widget>
                      </item>

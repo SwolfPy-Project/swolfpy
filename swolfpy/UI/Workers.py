@@ -59,11 +59,10 @@ class Worker_Optimize(QtCore.QThread):
     UpdatePBr_Opt = QtCore.Signal(dict)
     report = QtCore.Signal(dict)
         
-    def __init__(self, parent, opt, constraints, waste_param, collection, is_multi, n_iter, n_proc, iter_mehtod, timeout):
+    def __init__(self, parent, opt, constraints, collection, is_multi, n_iter, n_proc, iter_mehtod, timeout):
         super().__init__(parent)
         self.opt= opt
         self.constraints = constraints
-        self.waste_param = waste_param
         self.collection  = collection
         self.is_multi=is_multi
         self.n_iter = n_iter
@@ -74,24 +73,13 @@ class Worker_Optimize(QtCore.QThread):
     def run(self):
         self.UpdatePBr_Opt.emit({'max':0,'val':0})
         Time_start = time()
-        if self.is_multi:
-            results = Optimization.multi_start_optimization(self.opt, 
-                                                            constraints=self.constraints,
-                                                            waste_param=self.waste_param,
-                                                            collection=self.collection,
-                                                            n_iter=self.n_iter,
-                                                            timeout=self.timeout,
-                                                            nproc=self.n_proc,
-                                                            initialize_guess=self.iter_mehtod)
-        else:
-            results = Optimization.multi_start_optimization(self.opt, 
-                                                            constraints=self.constraints,
-                                                            waste_param=self.waste_param,
-                                                            collection=self.collection,
-                                                            n_iter=1,
-                                                            timeout=None,
-                                                            nproc=1,
-                                                            initialize_guess=self.iter_mehtod)
+        results = Optimization.multi_start_optimization(self.opt, 
+                                                        constraints=self.constraints,
+                                                        collection=self.collection,
+                                                        n_iter=self.n_iter if self.is_multi else 1,
+                                                        timeout=self.timeout,
+                                                        nproc=self.n_proc,
+                                                        initialize_guess=self.iter_mehtod)
         Time_finish = time()
         self.UpdatePBr_Opt.emit({'max':1,'val':1})
         self.report.emit({'time':round(Time_finish - Time_start),'results':results})              

@@ -355,20 +355,10 @@ class Ui_MainWindow(object):
         self.frame_15.setFrameShadow(QFrame.Raised)
         self.gridLayout_29 = QGridLayout(self.frame_15)
         self.gridLayout_29.setObjectName(u"gridLayout_29")
-        self.IT_LV = QCheckBox(self.frame_15)
-        self.IT_LV.setObjectName(u"IT_LV")
-
-        self.gridLayout_29.addWidget(self.IT_LV, 14, 0, 1, 1)
-
         self.IT_MSRDO = QCheckBox(self.frame_15)
         self.IT_MSRDO.setObjectName(u"IT_MSRDO")
 
         self.gridLayout_29.addWidget(self.IT_MSRDO, 10, 0, 1, 1)
-
-        self.IT_REC = QCheckBox(self.frame_15)
-        self.IT_REC.setObjectName(u"IT_REC")
-
-        self.gridLayout_29.addWidget(self.IT_REC, 4, 0, 1, 1)
 
         self.IT_DryRes = QCheckBox(self.frame_15)
         self.IT_DryRes.setObjectName(u"IT_DryRes")
@@ -380,10 +370,15 @@ class Ui_MainWindow(object):
 
         self.gridLayout_29.addWidget(self.IT_DryRes, 3, 0, 1, 1)
 
+        self.IT_REC = QCheckBox(self.frame_15)
+        self.IT_REC.setObjectName(u"IT_REC")
+
+        self.gridLayout_29.addWidget(self.IT_REC, 4, 0, 1, 1)
+
         self.IT_SSYWDO = QCheckBox(self.frame_15)
         self.IT_SSYWDO.setObjectName(u"IT_SSYWDO")
 
-        self.gridLayout_29.addWidget(self.IT_SSYWDO, 13, 0, 1, 1)
+        self.gridLayout_29.addWidget(self.IT_SSYWDO, 14, 0, 1, 1)
 
         self.IT_RWC = QCheckBox(self.frame_15)
         self.IT_RWC.setObjectName(u"IT_RWC")
@@ -392,10 +387,15 @@ class Ui_MainWindow(object):
 
         self.gridLayout_29.addWidget(self.IT_RWC, 1, 0, 1, 1)
 
-        self.IT_ORG = QCheckBox(self.frame_15)
-        self.IT_ORG.setObjectName(u"IT_ORG")
+        self.IT_LV = QCheckBox(self.frame_15)
+        self.IT_LV.setObjectName(u"IT_LV")
 
-        self.gridLayout_29.addWidget(self.IT_ORG, 2, 0, 1, 1)
+        self.gridLayout_29.addWidget(self.IT_LV, 15, 0, 1, 1)
+
+        self.IT_DSR = QCheckBox(self.frame_15)
+        self.IT_DSR.setObjectName(u"IT_DSR")
+
+        self.gridLayout_29.addWidget(self.IT_DSR, 8, 0, 1, 1)
 
         self.IT_MSR = QCheckBox(self.frame_15)
         self.IT_MSR.setObjectName(u"IT_MSR")
@@ -407,25 +407,20 @@ class Ui_MainWindow(object):
 
         self.gridLayout_29.addWidget(self.IT_WetRes, 5, 0, 1, 1)
 
-        self.IT_DSR = QCheckBox(self.frame_15)
-        self.IT_DSR.setObjectName(u"IT_DSR")
-
-        self.gridLayout_29.addWidget(self.IT_DSR, 8, 0, 1, 1)
-
         self.IT_SSYW = QCheckBox(self.frame_15)
         self.IT_SSYW.setObjectName(u"IT_SSYW")
 
         self.gridLayout_29.addWidget(self.IT_SSYW, 11, 0, 1, 1)
 
+        self.IT_ORG = QCheckBox(self.frame_15)
+        self.IT_ORG.setObjectName(u"IT_ORG")
+
+        self.gridLayout_29.addWidget(self.IT_ORG, 2, 0, 1, 1)
+
         self.IT_SSR = QCheckBox(self.frame_15)
         self.IT_SSR.setObjectName(u"IT_SSR")
 
         self.gridLayout_29.addWidget(self.IT_SSR, 7, 0, 1, 1)
-
-        self.IT_MRDO = QCheckBox(self.frame_15)
-        self.IT_MRDO.setObjectName(u"IT_MRDO")
-
-        self.gridLayout_29.addWidget(self.IT_MRDO, 6, 0, 1, 1)
 
         self.label_22 = QLabel(self.frame_15)
         self.label_22.setObjectName(u"label_22")
@@ -439,14 +434,24 @@ class Ui_MainWindow(object):
 
         self.gridLayout_29.addWidget(self.label_22, 0, 0, 1, 1)
 
+        self.IT_MRDO = QCheckBox(self.frame_15)
+        self.IT_MRDO.setObjectName(u"IT_MRDO")
+
+        self.gridLayout_29.addWidget(self.IT_MRDO, 6, 0, 1, 1)
+
         self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.gridLayout_29.addItem(self.verticalSpacer_5, 15, 0, 1, 1)
+        self.gridLayout_29.addItem(self.verticalSpacer_5, 16, 0, 1, 1)
 
         self.IT_SSO = QCheckBox(self.frame_15)
         self.IT_SSO.setObjectName(u"IT_SSO")
 
         self.gridLayout_29.addWidget(self.IT_SSO, 12, 0, 1, 1)
+
+        self.IT_SSO_HC = QCheckBox(self.frame_15)
+        self.IT_SSO_HC.setObjectName(u"IT_SSO_HC")
+
+        self.gridLayout_29.addWidget(self.IT_SSO_HC, 13, 0, 1, 1)
 
 
         self.gridLayout_23.addWidget(self.frame_15, 0, 0, 1, 1)
@@ -2805,8 +2810,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.PySWOLF.setCurrentIndex(0)
-        self.init_process_toolbox.setCurrentIndex(0)
+        self.PySWOLF.setCurrentIndex(5)
+        self.init_process_toolbox.setCurrentIndex(2)
         self.Define_SWM_1.setCurrentIndex(0)
         self.Collection.setCurrentIndex(-1)
         self.TransportWidget.setCurrentIndex(-1)
@@ -2876,21 +2881,22 @@ class Ui_MainWindow(object):
         self.IT_Mixed_Glass.setText(QCoreApplication.translate("MainWindow", u"Mixed Glass", None))
         self.IT_Al.setText(QCoreApplication.translate("MainWindow", u"Al", None))
         self.IT_Fe.setText(QCoreApplication.translate("MainWindow", u"Fe", None))
-        self.IT_LV.setText(QCoreApplication.translate("MainWindow", u"Leaves", None))
         self.IT_MSRDO.setText(QCoreApplication.translate("MainWindow", u"MSRDO", None))
-        self.IT_REC.setText(QCoreApplication.translate("MainWindow", u"REC", None))
         self.IT_DryRes.setText(QCoreApplication.translate("MainWindow", u"DryRes", None))
+        self.IT_REC.setText(QCoreApplication.translate("MainWindow", u"REC", None))
         self.IT_SSYWDO.setText(QCoreApplication.translate("MainWindow", u"SSYWDO", None))
         self.IT_RWC.setText(QCoreApplication.translate("MainWindow", u"RWC", None))
-        self.IT_ORG.setText(QCoreApplication.translate("MainWindow", u"ORG", None))
+        self.IT_LV.setText(QCoreApplication.translate("MainWindow", u"Leaves", None))
+        self.IT_DSR.setText(QCoreApplication.translate("MainWindow", u"DSR", None))
         self.IT_MSR.setText(QCoreApplication.translate("MainWindow", u"MSR", None))
         self.IT_WetRes.setText(QCoreApplication.translate("MainWindow", u"WetRes", None))
-        self.IT_DSR.setText(QCoreApplication.translate("MainWindow", u"DSR", None))
         self.IT_SSYW.setText(QCoreApplication.translate("MainWindow", u"SSYW", None))
+        self.IT_ORG.setText(QCoreApplication.translate("MainWindow", u"ORG", None))
         self.IT_SSR.setText(QCoreApplication.translate("MainWindow", u"SSR", None))
-        self.IT_MRDO.setText(QCoreApplication.translate("MainWindow", u"MRDO", None))
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"Collection Type:", None))
+        self.IT_MRDO.setText(QCoreApplication.translate("MainWindow", u"MRDO", None))
         self.IT_SSO.setText(QCoreApplication.translate("MainWindow", u"SSO", None))
+        self.IT_SSO_HC.setText(QCoreApplication.translate("MainWindow", u"SSO_HC", None))
         self.IT_Separated_Organics.setText(QCoreApplication.translate("MainWindow", u"Separated Organics", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Product:", None))
         self.IT_Fly_Ash.setText(QCoreApplication.translate("MainWindow", u"Fly Ash", None))
