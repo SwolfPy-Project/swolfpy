@@ -73,7 +73,8 @@ class Parameters():
             else:
                 self.static_param_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
 
-    def SWM_network(self, view=True, show_vals=True, all_flow=True):
+    def SWM_network(self, view=True, show_vals=True, all_flow=True,
+                    filename='SWM_network'):
         """
         To render the generated DOT source code, you also need to install `Graphviz <https://www.graphviz.org/download>`_.
 
@@ -81,7 +82,7 @@ class Parameters():
 
         """
         # Initialize SWM network
-        self.network = graphviz.Digraph(name='SWM_network', filename='SWM_network.gv', format='png', engine='dot')
+        self.network = graphviz.Digraph(name=filename, filename=filename+'.gv', format='png', engine='dot')
         self.network.graph_attr['rankdir'] = 'LR'
         for x in self.nodes:
             self.network.node(x, shape=self.node_shape[x], fillcolor=self.node_color[x], style='filled', width='1.2')
@@ -99,7 +100,7 @@ class Parameters():
                     else:
                         self.add_edge(x[3][0], x[3][1], x[3][2])
         try:
-            self.network.render('SWM_network', view=view)
+            self.network.render(filename+'.gv', view=view)
         except Exception:
             print("""
             To render the generated DOT source code, you also need to install Graphviz (`Graphviz <https://www.graphviz.org/download>`_).\n
