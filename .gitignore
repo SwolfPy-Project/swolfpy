@@ -105,5 +105,4 @@ ENV/
 .vscode/
 
 # html and pickle files
-*.html
 *.pickle
