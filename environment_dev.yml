@@ -1,11 +1,10 @@
-name: swolfpy
+name: base
 channels:
   - defaults
   - conda-forge
   - cmutel
   - haasad
 dependencies:
-  - python=3.7
   - brightway2
   - pip
   - pip:
@@ -14,5 +13,8 @@ dependencies:
     - PySide2
     - plotly
     - pandas
+    - pyDOE
     - jupyter
-
+    - pytest
+    - pytest-cov
+    - pytest-flake8
