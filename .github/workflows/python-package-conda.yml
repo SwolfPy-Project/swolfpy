@@ -20,12 +20,20 @@ jobs:
         with:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
+
       - name: Conda info
         shell: bash -l {0}
         run: conda info
+
       - name: Conda list
         shell: pwsh
         run: conda list
+      
+      - name: Add conda to system path
+        run: |
+          # $CONDA is an environment variable pointing to the root of the miniconda directory
+          echo $CONDA/bin >> $GITHUB_PATH
+      
       - name: Install dependencies
         run: |
           conda env update --file environment.yml --name base
