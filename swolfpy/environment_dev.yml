@@ -1,0 +1,20 @@
+name: test
+channels:
+  - defaults
+  - conda-forge
+  - cmutel
+  - haasad
+dependencies:
+  - brightway2
+  - pip
+  - pip:
+    - graphviz
+    - xlrd
+    - PySide2
+    - plotly
+    - pandas
+    - pyDOE
+    - jupyter
+    - pytest
+    - pytest-cov
+    - pytest-flake8
