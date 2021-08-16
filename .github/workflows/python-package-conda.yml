@@ -18,8 +18,10 @@ jobs:
     steps:
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          auto-update-conda: true
+          activate-environment: test
+          environment-file: environment_dev.yml
           python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
 
       - name: Conda info
         shell: bash -l {0}
@@ -33,10 +35,7 @@ jobs:
         run: |
           # $CONDA is an environment variable pointing to the root of the miniconda directory
           echo $CONDA/bin >> $GITHUB_PATH
-      
-      - name: Install dependencies
-        run: |
-          conda update --file environment_dev.yml --name test
+
       - name: Test with pytest
         run: |
           py.test
