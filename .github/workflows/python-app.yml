@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build-linux:
+  build:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 5
