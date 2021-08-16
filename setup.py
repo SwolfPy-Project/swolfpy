@@ -33,14 +33,14 @@ files = None
 setup(
     author="Mojtaba Sardarmehni",
     author_email='msardar2@ncsu.edu',
-    python_requires='>=3.5',
+    python_requires='>=3.7',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Education',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.7',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
@@ -63,7 +63,7 @@ setup(
     data_files = files,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://bitbucket.org/msm_sardar/swolfpy',
-    version='0.2.0',
+    url='https://github.com/SwolfPy-Project/swolfpy',
+    version='0.2.1',
     zip_safe=False,
 )
