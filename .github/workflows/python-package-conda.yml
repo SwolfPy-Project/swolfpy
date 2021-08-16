@@ -36,7 +36,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          conda env update --file environment.yml --name test
+          conda update --file environment_dev.yml --name test
       - name: Test with pytest
         run: |
           py.test
