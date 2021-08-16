@@ -1,4 +1,4 @@
-name: swolfpy
+name: base
 channels:
   - defaults
   - conda-forge
