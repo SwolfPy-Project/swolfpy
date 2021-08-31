@@ -295,7 +295,7 @@ class Project():
                     if k['name'] == j['name']:
                         self.parameters.update_values(k['name'], k['amount'])
 
-    def process_start_scenario(self, input_dict, scenario_name):
+    def create_scenario(self, input_dict, scenario_name):
         """Creates a new scenario (activity).
         """
         input_dict = input_dict
