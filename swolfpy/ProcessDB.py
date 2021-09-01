@@ -33,10 +33,12 @@ class ProcessDB():
     def init_DB(DB_name, waste_flows):
         db_data = {}
         for x in waste_flows:
-            db_data[(DB_name, x)] = {}  # add activity to database
-            db_data[(DB_name, x)]['name'] = DB_name + "_" + x
-            db_data[(DB_name, x)]['unit'] = 'Mg/year'
-            db_data[(DB_name, x)]['exchanges'] = []
+            # add activity to database
+            db_data[(DB_name, x)] = {
+                'name': DB_name + "_" + x,
+                'reference product': DB_name + "_" + x,
+                'unit': 'Mg/year',
+                'exchanges': []}
 
         print("""
               ####
@@ -62,13 +64,20 @@ class ProcessDB():
         self.uncertain_parameters = parameters
 
         for x in waste_flows:    # x is waste fraction
-            self.db_data[(self.P_Name, x)] = {}    # add activity to database
-            self.db_data[(self.P_Name, x)]['name'] = self.P_Name + "_" + x
+            # add activity to database
+            self.db_data[(self.P_Name, x)] = {
+                'name': self.P_Name + "_" + x,
+                'reference product': self.P_Name + "_" + x,
+                'unit': 'Mg/year',
+                'exchanges': []}
             if Process_Type == 'Collection':
                 self.db_data[(self.P_Name, x)]['unit'] = '{} Mg/year'.format(np.round(sum(self.Report["Waste"][x].values()), decimals=2))
-            else:
-                self.db_data[(self.P_Name, x)]['unit'] = 'Mg/year'
-            self.db_data[(self.P_Name, x)]['exchanges'] = []
+            # Reference flow
+            ex = self.exchange(Input=(self.P_Name, x),
+                               Type='production',
+                               Unit=self.db_data[(self.P_Name, x)]['unit'],
+                               Amount=1)
+            self.db_data[(self.P_Name, x)]['exchanges'].append(ex)
 
             if Process_Type == 'Transfer_Station':
                 xx = ProcessDB._helper_wasteflow_name(x)
@@ -79,10 +88,18 @@ class ProcessDB():
                 ex = self.exchange((self.P_Pr_Name, xx + '_' + key), 'technosphere', 'Mg/year', self.Report["Waste"][x][key])
                 self.db_data[(self.P_Name, x)]['exchanges'].append(ex)
 
-                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)] = {}  # add activity to Waste_database
-                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['name'] = self.P_Pr_Name + "_" + xx + '_' + key
-                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['unit'] = 'Mg/year'
-                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'] = []
+                # add activity to Waste_database
+                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)] = {
+                    'name': self.P_Pr_Name + "_" + xx + '_' + key,
+                    'reference product': self.P_Pr_Name + "_" + xx + '_' + key,
+                    'unit': 'Mg/year',
+                    'exchanges': []}
+                # Reference flow
+                ex = self.exchange(Input=(self.P_Pr_Name, xx + '_' + key),
+                                   Type='production',
+                                   Unit=self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['unit'],
+                                   Amount=1)
+                self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex)
                 self.act_in_group.add((self.P_Pr_Name, xx + '_' + key))
 
                 # Streams that are not the same with their source.
@@ -205,10 +222,17 @@ class ProcessDB():
         """
         for y in self.Report["LCI"].keys():
             for m in self.Report["LCI"][y].keys():
-                self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)] = {}
-                self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['name'] = 'LCI' + '_' + y + '_to' + '_' + m
-                self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['unit'] = 'Mg/year'
-                self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['exchanges'] = []
+                self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)] = {
+                    'name': 'LCI' + '_' + y + '_to' + '_' + m,
+                    'reference product': 'LCI' + '_' + y + '_to' + '_' + m,
+                    'unit': 'Mg/year',
+                    'exchanges': []}
+                # Reference flow
+                ex = self.exchange(Input=(self.P_Pr_Name, y + '_' + 'to' + '_' + m),
+                                   Type='production',
+                                   Unit=self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['unit'],
+                                   Amount=1)
+                self.db_Pr_data[(self.P_Pr_Name, y + '_' + 'to' + '_' + m)]['exchanges'].append(ex)
                 ### Adding exchage to transport activity between the collection and treatment processes
                 for n in self.Report["LCI"][y][m].keys():
                     ex = self.exchange(n, 'technosphere' if 'biosphere3' not in n else 'biosphere', '_', self.Report["LCI"][y][m][n])
@@ -222,10 +246,17 @@ class ProcessDB():
         if len(self.db_Pr_data) > 0:
             for p, q in self.Distance.Distance.keys():
                 if p == self.P_Name and p != q:
-                    self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)] = {}
-                    self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)]['name'] = 'LCI' + '_' + p + '_' + 'to' + '_' + q
-                    self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)]['unit'] = 'Mg/year'
-                    self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)]['exchanges'] = []
+                    self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)] = {
+                        'name': 'LCI' + '_' + p + '_' + 'to' + '_' + q,
+                        'reference product': 'LCI' + '_' + p + '_' + 'to' + '_' + q,
+                        'unit': 'Mg/year',
+                        'exchanges': []}
+                    # Reference flow
+                    ex = self.exchange(Input=(self.P_Pr_Name, p + '_' + 'to' + '_' + q),
+                                       Type='production',
+                                       Unit=self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)]['unit'],
+                                       Amount=1)
+                    self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)]['exchanges'].append(ex)
                     ### Adding exchage to transport activity between the treatment processes
                     for mode in self.Distance.Distance[(p, q)].keys():
                         if mode == 'Heavy Duty Truck':

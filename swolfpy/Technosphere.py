@@ -113,10 +113,20 @@ class Technosphere:
         # activities
         names = [x for x in self.LCI_swolfpy_data.columns][3:]
         for x in names:
-            self.technosphere_data[(self.technosphere_db_name, x)] = {}  # add activity to database
-            self.technosphere_data[(self.technosphere_db_name, x)]['name'] = x
-            self.technosphere_data[(self.technosphere_db_name, x)]['unit'] = (lambda y: 'NA' if pd.isnull(y) else y)(self.LCI_swolfpy_data[x][0])
-            self.technosphere_data[(self.technosphere_db_name, x)]['exchanges'] = []
+            # add activity to database
+            self.technosphere_data[(self.technosphere_db_name, x)] = {
+                'name': x,
+                'reference product': x,
+                'unit': (lambda y: 'NA' if pd.isnull(y) else y)(self.LCI_swolfpy_data[x][0]),
+                'exchanges': []}
+            # Reference flow
+            ex = {}
+            ex['amount'] = 1
+            ex['input'] = (self.technosphere_db_name, x)
+            ex['type'] = 'production'
+            ex['unit'] = self.technosphere_data[(self.technosphere_db_name, x)]['unit']
+            self.technosphere_data[(self.technosphere_db_name, x)]['exchanges'].append(ex)
+
             if pd.isnull(self.LCI_reference['Reference_activity_id'][x]):
                 i = 0
                 for val in self.LCI_swolfpy_data[x][1:]:
