@@ -1268,22 +1268,15 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot()
     def create_new_scenario(self):
         print('\n \n \n new scenario \n',self.Inc_act_table._data,'\n\n\n')
-        name = self.Name_new_scenario.text()
-        mass = 0
-        for i in range(len(self.Inc_act_table._data['Unit'])):
-            unit = self.Inc_act_table._data['Unit'][i]
-            flow = self.Inc_act_table._data['Amount'][i]
-            unit_i = unit.split(sep=' ')
-            if len(unit_i) > 1:
-                mass += float(unit_i[0]) * flow
-            if unit_i[0] == 'Mg/year':
-                mass += 1 * flow
-        
-        self.demo.waste_BD.new_activity(code = name, name = name, type = "process", unit = '{} Mg/year'.format(np.round(mass,decimals=2))).save()
+        input_dict = {}
         for i in range(len(self.Inc_act_table._data['Process'])):
-            self.demo.waste_BD.get(name).new_exchange(input=(self.Inc_act_table._data['Process'][i],self.Inc_act_table._data['Name'][i]),amount=self.Inc_act_table._data['Amount'][i],type="technosphere").save()
-        self.demo.waste_BD.get(name).save()   
-        
+            if self.Inc_act_table._data['Process'][i] not in input_dict:
+                input_dict[self.Inc_act_table._data['Process'][i]] = {}
+            if self.Inc_act_table._data['Name'][i] in input_dict[self.Inc_act_table._data['Process'][i]]:
+                input_dict[self.Inc_act_table._data['Process'][i]][self.Inc_act_table._data['Name'][i]] += self.Inc_act_table._data['Amount'][i]
+            else:
+                input_dict[self.Inc_act_table._data['Process'][i]][self.Inc_act_table._data['Name'][i]] = self.Inc_act_table._data['Amount'][i]
+        self.demo.create_scenario(input_dict=input_dict, scenario_name=self.Name_new_scenario.text())
         #Notift the user that the scenario has created successfully
         self.msg_popup('Create Scenario','Scenario {} is created successfully'.format(self.Name_new_scenario.text()),'Information')
         self.delect_act_included()
