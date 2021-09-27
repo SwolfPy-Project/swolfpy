@@ -15,6 +15,10 @@ Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
     :target: https://pypi.org/project/swolfpy/
     :alt: License
 
+.. image:: https://img.shields.io/pypi/dm/swolfpy.svg?label=Pypi%20downloads
+    :target: https://pypi.org/project/swolfpy/
+    :alt: Downloads
+
 .. image:: https://img.shields.io/pypi/format/swolfpy.svg
     :target: https://pypi.org/project/swolfpy/
     :alt: Format
@@ -55,26 +59,41 @@ Features
   * Minimize environmental burdens or cost subject to a number of technical or policy-related constraints
 
 
-.. list-table:: Life-cycle process models
+.. list-table:: **Life-cycle process models**
    :widths: auto
    :header-rows: 1
 
-   * - Process model 
+   * - 
+     - Process model 
      - Description
-   * - Landfill (**LF**)
+   * - 1
+     - Landfill (**LF**)
      - Calculates emissions, material use, and energy use associated with construction, operations, 
        closure and post-closure activities, landfill gas and leachate management, and carbon storage.
-   * - Waste-to-Energy (**WTE**)
-     - Calculates emissions, mass flows, and resource use and recovery for the mass burn WTE process. 
-   * - Composting (**Comp**)
+   * - 2
+     - Waste-to-Energy (**WTE**)
+     - Calculates emissions, mass flows, and resource use and recovery for the mass burn WTE process.
+   * - 3
+     - Gasification & Syngas Combustion (**GC**)
+     - Calculates emissions, mass flows, and resource use and recovery for the GC process (Produced syngas from
+       gasification is combusted to produce electricity by steam turbine). 
+   * - 4
+     - Composting (**Comp**)
      - Calculates emissions, mass flows, and resource use and recovery for aerobic composting process and final use of compost.
-   * - Anaerobic Digestion (**AD**)
+   * - 5
+     - Home Composting (**HC**)
+     - Calculates emissions, mass flows, and resource use and recovery for home composting process and final use of compost.
+   * - 6
+     - Anaerobic Digestion (**AD**)
      - Calculates emissions, mass flows, and resource use and recovery for anaerobic digestion process and final use of compost.
-   * - Single-Stream Material Recovery facility (**SS_MRF**)
+   * - 7
+     - Single-Stream Material Recovery facility (**SS_MRF**)
      - Calculates cost, emissions, and energy use associated with material recovery facilities.
-   * - Transfer Station (**TS**)
+   * - 8
+     - Transfer Station (**TS**)
      - Calculates cost, emissions, and energy use associated with Transfer Stations.
-   * - Single Family Collection (**SF_Col**)
+   * - 9
+     - Single Family Collection (**SF_Col**)
      - Calculates cost, emissions, and fossil fuel use associated with MSW collection.
 
 
