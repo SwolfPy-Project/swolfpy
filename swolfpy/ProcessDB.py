@@ -103,7 +103,7 @@ class ProcessDB():
                 self.act_in_group.add((self.P_Pr_Name, xx + '_' + key))
 
                 # Streams that are not the same with their source.
-                if key in ['Bottom_Ash', 'Fly_Ash'] + self.CommonData.Reprocessing_Index:
+                if key in ['Bottom_Ash', 'Fly_Ash', 'RDF'] + self.CommonData.Reprocessing_Index:
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
@@ -126,7 +126,7 @@ class ProcessDB():
                         self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex_trnp)
 
                 # Streams that are same with the source.
-                elif key in ['Separated_Organics', 'Other_Residual', 'Separated_Recyclables', 'RDF']:
+                elif key in ['Separated_Organics', 'Other_Residual', 'Separated_Recyclables']:
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing

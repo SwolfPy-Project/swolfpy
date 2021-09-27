@@ -160,6 +160,8 @@ class Project():
                 ProcessDB.init_DB(DB_name, self.CommonData.Index)
             elif self.Treatment_processes[DB_name]['model'].Process_Type == 'Reprocessing':
                 ProcessDB.init_DB(DB_name, self.CommonData.Reprocessing_Index)
+            elif self.Treatment_processes[DB_name]['model'].Process_Type == 'RDF':
+                ProcessDB.init_DB(DB_name, ['RDF'])
 
         Database("waste").register()
         self.waste_BD = Database("waste")
@@ -210,6 +212,10 @@ class Project():
 
         elif self.Treatment_processes[name]['model'].Process_Type == 'Transfer_Station':
             (P, G) = self.process_model[name].Write_DB(waste_flows=self.Treatment_processes[name]['model']._Extened_Index,
+                                                       parameters=self.parameters,
+                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
+        elif self.Treatment_processes[name]['model'].Process_Type == 'RDF':
+            (P, G) = self.process_model[name].Write_DB(waste_flows=['RDF'],
                                                        parameters=self.parameters,
                                                        Process_Type=self.Treatment_processes[name]['model'].Process_Type)
         return((P, G))

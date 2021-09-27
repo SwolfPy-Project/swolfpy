@@ -514,8 +514,8 @@ class Optimization(LCA_matrix):
             label_link.append(key[2])
             # color.append('rgba({},{},{}, 0.8)'.format(*np.random.randint(256, size=3)))
             color.append('rgba({}, {}, {}, 0.8)'.format(*edge_color[key[2]]))
-            mass = 0
-            for m in self.project.CommonData.Index:
+            mass = 0.0
+            for m in self.project.CommonData.Index + ['RDF']:
                 mass += self.get_mass_flow((key[0] + '_product', m + '_' + key[2]), 'WasteToProcess', params)
                 mass += self.get_mass_flow((key[0] + '_product', key[2]), 'WasteToProcess', params)
 
