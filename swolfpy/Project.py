@@ -315,13 +315,15 @@ class Project():
                         mass += float(unit_i[0]) * input_dict[P][y]
                     if unit_i[0] == 'Mg/year':
                         mass += 1 * input_dict[P][y]
-        self.waste_BD.new_activity(code=scenario_name, name=scenario_name, type="process",
-                                   unit='{} Mg/year'.format(np.round(mass, decimals=2))).save()
+        new_act = self.waste_BD.new_activity(code=scenario_name, name=scenario_name, type="process",
+                                             unit='{} Mg/year'.format(np.round(mass, decimals=2)),
+                                             **{'reference product': scenario_name})
+        new_act.save()
+        new_act.new_exchange(input=new_act, amount=1, type="production").save()
         for P in input_dict:
             for y in input_dict[P]:
                 if input_dict[P][y] != 0:
-                    self.waste_BD.get(scenario_name).new_exchange(input=(P, y), amount=input_dict[P][y], type="technosphere").save()
-        self.waste_BD.get(scenario_name).save()
+                    new_act.new_exchange(input=(P, y), amount=input_dict[P][y], type="technosphere").save()
 
     @staticmethod
     def setup_LCA(name, functional_units, impact_methods):
