@@ -29,6 +29,7 @@ class Parameters():
                            'REC': 'blue', 'WetRes': 'black',
                            'MRDO': 'black', 'SSYWDO': 'green4', 'MSRDO': 'blue',
                            'Bottom_Ash': 'gray', 'Fly_Ash': 'gray',
+                           'Unreacted_Ash': 'gray',
                            'Separated_Organics': 'green4',
                            'Separated_Recyclables': 'blue',
                            'Other_Residual': 'black', 'RDF': 'red'}

@@ -500,6 +500,7 @@ class Optimization(LCA_matrix):
                       'MSRDO': (106, 90, 205),  # slate blue	#6A5ACD
                       'Bottom_Ash': (128, 128, 128),  # Gray	#808080
                       'Fly_Ash': (0, 0, 0),  # black	#000000
+                      'Unreacted_Ash': (128, 128, 128),  # Gray	#808080
                       'Separated_Organics': (50, 205, 50),  # lime green	#32CD32
                       'Separated_Recyclables': (0, 128, 128),  # teal	#008080
                       'Other_Residual': (139, 69, 19),  # saddle brown	#8B4513

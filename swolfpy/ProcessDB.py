@@ -126,7 +126,7 @@ class ProcessDB():
                         self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex_trnp)
 
                 # Streams that are same with the source.
-                elif key in ['Separated_Organics', 'Other_Residual', 'Separated_Recyclables']:
+                elif key in ['Separated_Organics', 'Other_Residual', 'Separated_Recyclables', 'Unreacted_Ash']:
                     # finding the destination
                     for p in self.waste_treatment[key]:
                         # adding exchange to waste processing
@@ -189,6 +189,8 @@ class ProcessDB():
                             self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex_trnp)
                         else:
                             raise ValueError('Inconsistent treatment processes in model and collection')
+                else:
+                    raise Exception(f'Unknown waste proudct! {key} is not defined in PrcessDB class')
 
             ### Adding the technosphere exchnages to activities
             for key in self.Report["Technosphere"][x]:
