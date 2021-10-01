@@ -2410,7 +2410,7 @@ number of threads = {self.opt_Widget.nproc.value()}
 
 Initial guess generator = {self.opt_Widget.method.currentText()}
 
-Timeout = {n_iter}
+Timeout = {self.opt_Widget.timeout.value()}
 
 constraints = {self.constraints}""")
         
