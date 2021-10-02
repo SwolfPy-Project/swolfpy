@@ -90,9 +90,12 @@ Features
      - Single-Stream Material Recovery facility (**SS_MRF**)
      - Calculates cost, emissions, and energy use associated with material recovery facilities.
    * - 8
+     - Refuse-Derived Fuel (**RDF**)
+     - Calculates cost, emissions, and energy use associated with RDF prodcution facilities.
+   * - 9
      - Transfer Station (**TS**)
      - Calculates cost, emissions, and energy use associated with Transfer Stations.
-   * - 9
+   * - 10
      - Single Family Collection (**SF_Col**)
      - Calculates cost, emissions, and fossil fuel use associated with MSW collection.
 
