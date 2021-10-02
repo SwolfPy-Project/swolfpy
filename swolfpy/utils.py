@@ -20,6 +20,7 @@ def plot_sankey(data_json, fileName=None):
 
     layout = go.Layout(title_text=data['title_text'],
                        font_size=data['font_size'],
+                       title_font={'color': 'black', 'family': "Times New Roman"},
                        hoverlabel=data['hoverlabel'])
     data_ = go.Sankey(valueformat=data['valueformat'],
                       valuesuffix=data['valuesuffix'],
