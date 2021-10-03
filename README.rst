@@ -93,12 +93,14 @@ Features
      - Refuse-Derived Fuel (**RDF**)
      - Calculates cost, emissions, and energy use associated with RDF prodcution facilities.
    * - 9
+     - Reprocessing (**Reproc**)
+     - Calculates emissions, mass flows, and resource use and recovery associated with recycling materials.	 
+   * - 10
      - Transfer Station (**TS**)
      - Calculates cost, emissions, and energy use associated with Transfer Stations.
-   * - 10
+   * - 11
      - Single Family Collection (**SF_Col**)
      - Calculates cost, emissions, and fossil fuel use associated with MSW collection.
-
 
 
 .. Installation
