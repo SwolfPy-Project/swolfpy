@@ -33,6 +33,10 @@ jobs:
         pip install https://github.com/SwolfPy-Project/swolfpy-inputdata/archive/refs/heads/master.zip
         pip install https://github.com/SwolfPy-Project/swolfpy-processmodels/archive/refs/heads/master.zip
 
+    - name: Check installed packages
+      run: |
+        pip list
+        
     - name: Test with pytest
       run: |
         py.test
