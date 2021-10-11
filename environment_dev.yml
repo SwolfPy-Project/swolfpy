@@ -5,12 +5,12 @@ channels:
   - cmutel
   - haasad
 dependencies:
-  - brightway2==2.3
   - pip
   - pip:
+    - brightway2==2.3
     - graphviz
     - xlrd
-    - PySide2
+    - PySide2==5.14
     - plotly
     - pandas
     - pyDOE
