@@ -14,7 +14,7 @@ requirements = [
 "swolfpy_inputdata",
 "swolfpy_processmodels",
 "brightway2==2.3",
-"PySide2",
+"PySide2==5.14",
 "plotly",
 "graphviz",
 "pyDOE"
