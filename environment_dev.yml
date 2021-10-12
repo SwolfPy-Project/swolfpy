@@ -1,10 +1,11 @@
-name: base
+name: swolfpy
 channels:
   - defaults
   - conda-forge
   - cmutel
   - haasad
 dependencies:
+  - python=3.7
   - pip
   - pip:
     - PySide2
