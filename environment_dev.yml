@@ -7,7 +7,7 @@ channels:
 dependencies:
   - pip
   - pip:
-    - PySide2==5.14.0
+    - PySide2
     - brightway2==2.3.0
     - graphviz
     - xlrd==1.2.0
