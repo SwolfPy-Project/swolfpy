@@ -30,6 +30,7 @@ jobs:
     - name: Install dependencies
       run: |
         conda env update --file environment_dev.yml --name base
+        conda init --all
         conda activate base
         pip install https://github.com/SwolfPy-Project/swolfpy-inputdata/archive/refs/heads/master.zip
         pip install https://github.com/SwolfPy-Project/swolfpy-processmodels/archive/refs/heads/master.zip
