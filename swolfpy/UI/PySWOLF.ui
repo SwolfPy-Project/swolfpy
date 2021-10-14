@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1041</width>
-    <height>829</height>
+    <width>941</width>
+    <height>830</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -36,7 +36,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Start">
        <attribute name="title">
@@ -73,17 +73,17 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#aa0000;&quot;&gt;Solid Waste Optimization Life-cycle Framework in Python&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; color:#aa0000;&quot;&gt;Developed at North Carolina State University&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:20pt; font-weight:600; color:#aa0000;&quot;&gt;Solid Waste Optimization Life-cycle Framework in Python&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; color:#aa0000;&quot;&gt;Developed at North Carolina State University&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/ICONS/PySWOLF_ICONS/PySWOLF.ico&quot; /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Related Links:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Install: &lt;/span&gt;&lt;a href=&quot;https://pypi.org/project/swolfpy/&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://pypi.org/project/swolfpy/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Document: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_docs&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_docs&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Source Code: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_source_code&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_source_code&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Report bugs: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_issues&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_issues&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:600; color:#aa0000;&quot;&gt;Related Links:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;&quot;&gt;Install: &lt;/span&gt;&lt;a href=&quot;https://pypi.org/project/swolfpy/&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://pypi.org/project/swolfpy/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;&quot;&gt;Document: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_docs&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_docs&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;&quot;&gt;Source Code: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_source_code&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_source_code&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;&quot;&gt;Report bugs: &lt;/span&gt;&lt;a href=&quot;https://go.ncsu.edu/swolfpy_issues&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://go.ncsu.edu/swolfpy_issues&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="openExternalLinks">
              <bool>true</bool>
@@ -263,7 +263,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QTabWidget" name="init_process_toolbox">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="PM_PMTab">
            <attribute name="title">
@@ -461,412 +461,6 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </spacer>
                   </item>
-                  <item row="0" column="4">
-                   <widget class="QFrame" name="frame_13">
-                    <property name="font">
-                     <font>
-                      <weight>50</weight>
-                      <bold>false</bold>
-                      <kerning>true</kerning>
-                     </font>
-                    </property>
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_27">
-                     <item row="4" column="0">
-                      <widget class="QCheckBox" name="IT_OFF">
-                       <property name="text">
-                        <string>OFF</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QCheckBox" name="IT_OCC">
-                       <property name="text">
-                        <string>OCC</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <widget class="QLabel" name="label_24">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                         <underline>true</underline>
-                         <kerning>true</kerning>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Recyclable:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QCheckBox" name="IT_Mixed_Paper">
-                       <property name="text">
-                        <string>Mixed Paper</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="0">
-                      <widget class="QCheckBox" name="IT_PET">
-                       <property name="text">
-                        <string>PET</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="0">
-                      <widget class="QCheckBox" name="IT_Fiber_Other">
-                       <property name="text">
-                        <string>Fiber Other</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QCheckBox" name="IT_ONP">
-                       <property name="text">
-                        <string>ONP</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="12" column="0">
-                      <spacer name="verticalSpacer_6">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item row="7" column="0">
-                      <widget class="QCheckBox" name="IT_HDPE_P">
-                       <property name="text">
-                        <string>HDPE P</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="8" column="0">
-                      <widget class="QCheckBox" name="IT_HDPE_T">
-                       <property name="text">
-                        <string>HDPE T</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="9" column="0">
-                      <widget class="QCheckBox" name="IT_LDPE_Film">
-                       <property name="text">
-                        <string>LDPE Film</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QCheckBox" name="IT_Brown_glass">
-                       <property name="text">
-                        <string>Brown glass</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="1">
-                      <widget class="QCheckBox" name="IT_Clear_glass">
-                       <property name="text">
-                        <string>Clear glass</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="1">
-                      <widget class="QCheckBox" name="IT_Green_glass">
-                       <property name="text">
-                        <string>Green glass</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="1">
-                      <widget class="QCheckBox" name="IT_Mixed_Glass">
-                       <property name="text">
-                        <string>Mixed Glass</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="1">
-                      <widget class="QCheckBox" name="IT_Al">
-                       <property name="text">
-                        <string>Al</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="1">
-                      <widget class="QCheckBox" name="IT_Fe">
-                       <property name="text">
-                        <string>Fe</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QFrame" name="frame_15">
-                    <property name="font">
-                     <font>
-                      <weight>50</weight>
-                      <bold>false</bold>
-                      <kerning>true</kerning>
-                     </font>
-                    </property>
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_29">
-                     <item row="10" column="0">
-                      <widget class="QCheckBox" name="IT_MSRDO">
-                       <property name="text">
-                        <string>MSRDO</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QCheckBox" name="IT_DryRes">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="text">
-                        <string>DryRes</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="4" column="0">
-                      <widget class="QCheckBox" name="IT_REC">
-                       <property name="text">
-                        <string>REC</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="14" column="0">
-                      <widget class="QCheckBox" name="IT_SSYWDO">
-                       <property name="text">
-                        <string>SSYWDO</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QCheckBox" name="IT_RWC">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="text">
-                        <string>RWC</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="15" column="0">
-                      <widget class="QCheckBox" name="IT_LV">
-                       <property name="text">
-                        <string>Leaves</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="8" column="0">
-                      <widget class="QCheckBox" name="IT_DSR">
-                       <property name="text">
-                        <string>DSR</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="9" column="0">
-                      <widget class="QCheckBox" name="IT_MSR">
-                       <property name="text">
-                        <string>MSR</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="0">
-                      <widget class="QCheckBox" name="IT_WetRes">
-                       <property name="text">
-                        <string>WetRes</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="11" column="0">
-                      <widget class="QCheckBox" name="IT_SSYW">
-                       <property name="text">
-                        <string>SSYW</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QCheckBox" name="IT_ORG">
-                       <property name="text">
-                        <string>ORG</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="7" column="0">
-                      <widget class="QCheckBox" name="IT_SSR">
-                       <property name="text">
-                        <string>SSR</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <widget class="QLabel" name="label_22">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <italic>false</italic>
-                         <bold>true</bold>
-                         <underline>true</underline>
-                         <kerning>true</kerning>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Collection Type:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="0">
-                      <widget class="QCheckBox" name="IT_MRDO">
-                       <property name="text">
-                        <string>MRDO</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="16" column="0">
-                      <spacer name="verticalSpacer_5">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item row="12" column="0">
-                      <widget class="QCheckBox" name="IT_SSO">
-                       <property name="text">
-                        <string>SSO</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="13" column="0">
-                      <widget class="QCheckBox" name="IT_SSO_HC">
-                       <property name="text">
-                        <string>SSO_HC</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item row="0" column="2">
-                   <widget class="QFrame" name="frame_14">
-                    <property name="font">
-                     <font>
-                      <weight>50</weight>
-                      <bold>false</bold>
-                      <kerning>true</kerning>
-                     </font>
-                    </property>
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_28">
-                     <item row="4" column="0">
-                      <widget class="QCheckBox" name="IT_Separated_Organics">
-                       <property name="text">
-                        <string>Separated Organics</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <widget class="QLabel" name="label_23">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                         <underline>true</underline>
-                         <kerning>true</kerning>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Product:</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="2" column="0">
-                      <widget class="QCheckBox" name="IT_Fly_Ash">
-                       <property name="text">
-                        <string>Fly Ash</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QCheckBox" name="IT_Other_Residual">
-                       <property name="text">
-                        <string>Other Residual</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="6" column="0">
-                      <widget class="QCheckBox" name="IT_RDF">
-                       <property name="text">
-                        <string>RDF</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="7" column="0">
-                      <spacer name="verticalSpacer_7">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QCheckBox" name="IT_Bottom_Ash">
-                       <property name="text">
-                        <string>Bottom Ash</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="5" column="0">
-                      <widget class="QCheckBox" name="IT_Separated_Recyclables">
-                       <property name="text">
-                        <string>Separated Recyclables</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
                   <item row="0" column="3">
                    <spacer name="horizontalSpacer_8">
                     <property name="orientation">
@@ -879,6 +473,57 @@ p, li { white-space: pre-wrap; }
                      </size>
                     </property>
                    </spacer>
+                  </item>
+                  <item row="0" column="4">
+                   <widget class="QFrame" name="frame_rec">
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <bold>false</bold>
+                      <kerning>true</kerning>
+                     </font>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QFrame" name="frame_Prod">
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <bold>false</bold>
+                      <kerning>true</kerning>
+                     </font>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QFrame" name="frame_Col">
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <bold>false</bold>
+                      <kerning>true</kerning>
+                     </font>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </widget>
@@ -1533,7 +1178,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>997</width>
+             <width>897</width>
              <height>724</height>
             </rect>
            </property>
@@ -1563,7 +1208,7 @@ p, li { white-space: pre-wrap; }
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>959</width>
+                    <width>859</width>
                     <height>605</height>
                    </rect>
                   </property>
@@ -2159,7 +1804,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>980</width>
+             <width>880</width>
              <height>801</height>
             </rect>
            </property>
@@ -2402,7 +2047,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>980</width>
+             <width>880</width>
              <height>726</height>
             </rect>
            </property>
@@ -3457,7 +3102,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>980</width>
+             <width>902</width>
              <height>736</height>
             </rect>
            </property>
@@ -3851,7 +3496,7 @@ p, li { white-space: pre-wrap; }
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>365</width>
+                      <width>334</width>
                       <height>190</height>
                      </rect>
                     </property>
@@ -3927,7 +3572,7 @@ p, li { white-space: pre-wrap; }
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>345</width>
+                          <width>314</width>
                           <height>125</height>
                          </rect>
                         </property>
@@ -5563,7 +5208,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1041</width>
+     <width>941</width>
      <height>21</height>
     </rect>
    </property>

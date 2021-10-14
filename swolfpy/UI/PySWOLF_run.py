@@ -331,6 +331,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
 # =============================================================================
     def Importing_processes(self):
+        self.init_waste_checkboxes()
         self.init_process_toolbox.setCurrentWidget(self.PM_PMTab)
         self.Help_ImportProcess.clicked.connect(self.Help_ImportProcessFunc)
 
@@ -343,52 +344,6 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.helper(self.IT_Default_LCI,self.IT_UserDefine_LCI,self.IT_BR_LCI,self.IT_FName_LCI,"CSV (*.csv)")
         self.helper(self.IT_Default_LCI_Ref,self.IT_UserDefine_LCI_Ref,self.IT_BR_LCI_Ref,self.IT_FName_LCI_Ref,"CSV (*.csv)")
         self.helper_dir(self.IT_Default_EcoSpold2,self.IT_UserDefine_EcoSpold2,self.IT_BR_EcoSpold2,self.IT_FName_EcoSpold2)
-
-        # Keys for Input flow types:
-        self._InputKey = {'RWC':self.IT_RWC,
-                          'SSR':self.IT_SSR,
-                          'DSR':self.IT_DSR,
-                          'MSR':self.IT_MSR,
-                          'LV':self.IT_LV,
-                          'SSYW':self.IT_SSYW,
-                          'SSO':self.IT_SSO,
-                          'SSO_HC':self.IT_SSO_HC,
-                          'ORG': self.IT_ORG,
-                          'DryRes':self.IT_DryRes,
-                          'REC':self.IT_REC,
-                          'WetRes':self.IT_WetRes,
-                          'MRDO':self.IT_MRDO,
-                          'SSYWDO':self.IT_SSYWDO,
-                          'MSRDO':self.IT_MRDO,
-                          'Bottom_Ash':self.IT_Bottom_Ash,
-                          'Fly_Ash':self.IT_Fly_Ash,
-                          'Separated_Organics':self.IT_Separated_Organics,
-                          'Separated_Recyclables':self.IT_Separated_Recyclables,
-                          'Other_Residual':self.IT_Other_Residual,
-                          'RDF':self.IT_RDF,
-                          'Al':self.IT_Al,
-                          'Fe':self.IT_Fe,
-                          #'Cu':self.IT_Cu,
-                          'OCC':self.IT_OCC,
-                          'Mixed_Paper':self.IT_Mixed_Paper,
-                          'ONP':self.IT_ONP,
-                          'OFF':self.IT_OFF,
-                          'Fiber_Other':self.IT_Fiber_Other,
-                          'Brown_glass':self.IT_Brown_glass,
-                          'Clear_glass':self.IT_Clear_glass,
-                          'Green_glass':self.IT_Green_glass,
-                          'Mixed_Glass':self.IT_Mixed_Glass,
-                          'PET':self.IT_PET,
-                          #'HDPE_Unsorted':self.IT_HDPE_Unsorted,
-                          'HDPE_P':self.IT_HDPE_P,
-                          'HDPE_T':self.IT_HDPE_T,
-                          #'PVC':self.IT_PVC,
-                          'LDPE_Film':self.IT_LDPE_Film,
-                          #'Polypropylene':self.IT_Polypropylene,
-                          #'Polystyrene':self.IT_Polystyrene,
-                          #'Plastic_Other':self.IT_Plastic_Other,
-                          #'Mixed_Plastic':self.IT_Mixed_Plastic
-                          }
 
         # Process models
         self._ProcessMetaData = ProcessModelsMetaData
@@ -409,8 +364,97 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         #Connect the PushButton [ImportProcessModels]
         self.ImportProcessModels.clicked.connect(self.Import_Process_models_func)
 
+    # Add the check boxes for waste indexes from common data
+    def init_waste_checkboxes(self):
+        self._InputKey = {}
+        
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setItalic(False)
+        font.setUnderline(True)
+        font.setWeight(75)
+        font.setKerning(True)
+        
+        n_checkbox_in_col = 10
+        
+        # Collection products
+        grid_col = QtWidgets.QGridLayout(self.frame_Col)
+        grid_col.setObjectName("grid_col")
+        x = 0
+        y = 0
+        label = QtWidgets.QLabel(self.frame_Col)
+        label.setText("Collection Type:")
+        label.setFont(font)
+        grid_col.addWidget(label, x, y, 1, 1)
+        x += 1
+        for i in spid.CommonData.Collection_Index:
+            check_box = QtWidgets.QCheckBox(self.frame_Col)
+            check_box.setObjectName(i)
+            check_box.setText(i)
+            grid_col.addWidget(check_box, x, y, 1, 1)
+            self._InputKey[i] = check_box
+            x += 1
+            if x == n_checkbox_in_col:
+                x = 1
+                y += 1
+        verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        if y >= 1:
+            grid_col.addItem(verticalSpacer, n_checkbox_in_col, 0, 1, 1)
+        else:
+            grid_col.addItem(verticalSpacer, x, 0, 1, 1)
 
+        # Collection products
+        grid_prod = QtWidgets.QGridLayout(self.frame_Prod)
+        grid_prod.setObjectName("grid_prod")
+        x = 0
+        y = 0
+        label = QtWidgets.QLabel(self.frame_Prod)
+        label.setText("Waste Product:")
+        label.setFont(font)
+        grid_prod.addWidget(label, x, y, 1, 1)
+        x += 1
+        for i in spid.CommonData.Waste_Pr_Index:
+            check_box = QtWidgets.QCheckBox(self.frame_Prod)
+            check_box.setObjectName(i)
+            check_box.setText(i)
+            grid_prod.addWidget(check_box, x, y, 1, 1)
+            self._InputKey[i] = check_box
+            x += 1
+            if x == n_checkbox_in_col:
+                x = 1
+                y += 1
+        verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        if y >= 1:
+            grid_prod.addItem(verticalSpacer, n_checkbox_in_col, 0, 1, 1)
+        else:
+            grid_prod.addItem(verticalSpacer, x, 0, 1, 1)
 
+        # Recyclable
+        grid_rec = QtWidgets.QGridLayout(self.frame_rec)
+        grid_rec.setObjectName("grid_rec")
+        x = 0
+        y = 0
+        label = QtWidgets.QLabel(self.frame_rec)
+        label.setText("Recyclable Product:")
+        label.setFont(font)
+        grid_rec.addWidget(label, x, y, 1, 1)
+        x += 1
+        for i in spid.CommonData.Reprocessing_Index:
+            check_box = QtWidgets.QCheckBox(self.frame_rec)
+            check_box.setObjectName(i)
+            check_box.setText(i)
+            grid_rec.addWidget(check_box, x, y, 1, 1)
+            self._InputKey[i] = check_box
+            x += 1
+            if x == n_checkbox_in_col:
+                x = 1
+                y += 1
+        verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        if y >= 1:
+            grid_rec.addItem(verticalSpacer, n_checkbox_in_col, 0, 1, 1)
+        else:
+            grid_rec.addItem(verticalSpacer, x, 0, 1, 1)
+            
     # Help function
     @QtCore.Slot()
     def Help_ImportProcessFunc(self):
