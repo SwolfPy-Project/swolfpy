@@ -193,7 +193,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
             #init write project
             self.init_write_project()
-
+            
             self._Collection_processes = {}
             self._Treatment_processes = {}
 
@@ -282,7 +282,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
         param_data=pd.DataFrame(self.demo.parameters_list)
         param_data['Unit'] = 'fraction'
-        self.load_param_data = Table_from_pandas_editable(param_data)
+        self.load_param_data = Table_modeifed_params(param_data, pop_up=self.msg_popup)
         self.load_Param_table.setModel(self.load_param_data)
         self.load_Param_table.resizeColumnsToContents()
 
@@ -305,7 +305,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         param_updater=Worker_UpdateParam(parent=self.update_param, project=self.demo, param=new_param)
         param_updater.UpdatePBr_UpdateParam.connect(self.load_setPBr_UpdateParam)
         param_updater.report_time.connect(self.load_report_time_UpdateParam)
+        param_updater.report_error.connect(self.report_error_UpdateParam)
         param_updater.start()
+
 
     @QtCore.Slot(int)
     def load_report_time_UpdateParam(self, time):
@@ -732,7 +734,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                                      index=[str(x) for x in index], dtype=float)
         #col_scheme_pd.loc['Contribution']=[0,0,0,0]
         col_scheme_pd.fillna(0.0, inplace=True)
-        col_scheme_pd_model = Table_from_pandas_editable(col_scheme_pd)
+        col_scheme_pd_model = Table_modeifed_collection_schm(col_scheme_pd, pop_up=self.msg_popup)
         Sch_Col.setModel(col_scheme_pd_model)
         Sch_Col.resizeColumnsToContents()
         Sch_Col.installEventFilter(self)
@@ -747,18 +749,22 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot()
     def Create_collection_dict(self):
-        for i in np.arange(1,self.col_index):
+        self._Collection_processes = {}
+        for i in np.arange(1, self.col_index):
             x= self.Collection.findChildren(QtWidgets.QComboBox,"Col_{}".format(i))[0].currentText()
             y= self.Collection.findChildren(QtWidgets.QLineEdit,"Col_name_{}".format(i))[0].text()
             z= self.Collection.findChildren(QtWidgets.QTableView,"Sch_Col_{}".format(i))[0].model()._data
 
             if x != '...':
+                if sum(z['Contribution']) != 1:
+                    msg = f"The sum of contributions in Sector {i} is not 1!"
+                    self.msg_popup('Invalid collection scheme!', msg, 'Warning')
+                    return msg
                 self._Collection_processes[y]={}
                 self._Collection_processes[y]['input_type']=[]
                 self._Collection_processes[y]['model']=None
                 self._Collection_processes[y]['scheme'] = self.helper_DFtoDict(z)
-
-
+                
         self.Define_SWM_1.setCurrentWidget(self.Treatment_process)
         self.Treatment_process.setEnabled(True)
         print(self._Collection_processes)
@@ -893,7 +899,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
         input_data_path = self.IT_FName_00.text() if self.IT_UserDefine_00.isChecked() else None
         self.CommonData = self._CommonData(input_data_path=input_data_path)
-
+        
+        self._Treatment_processes = {}
+        
         for Index in np.arange(1,self.P_index):
             Process = self.frame_Process_treatment.findChildren(QtWidgets.QComboBox,"Process_"+str(Index))[0]
             Process_Name = self.frame_Process_treatment.findChildren(QtWidgets.QLineEdit,"Process_Name_"+str(Index))[0]
@@ -1148,7 +1156,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def load_params_func(self):
         param_data=pd.DataFrame(self.demo.parameters.default_parameters_list())
         param_data['Unit'] = 'fraction'
-        self.param_data = Table_from_pandas_editable(param_data)
+        self.param_data = Table_modeifed_params(param_data, pop_up=self.msg_popup)
         self.Param_table.setModel(self.param_data)
         self.Param_table.resizeColumnsToContents()
 
@@ -1162,11 +1170,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
 
-        param_updater=Worker_UpdateParam(parent=self.update_param, project=self.demo, param=new_param)
+        param_updater=Worker_UpdateParam(parent=self.update_param,
+                                         project=self.demo,
+                                         param=new_param)
         param_updater.UpdatePBr_UpdateParam.connect(self.setPBr_UpdateParam)
         param_updater.report_time.connect(self.report_time_UpdateParam)
-        param_updater.start()
-        self.param_status=True
+        param_updater.report_error.connect(self.report_error_UpdateParam)
+        if param_updater.start():
+            self.param_status=True
 
     @QtCore.Slot(int)
     def report_time_UpdateParam(self, time):
@@ -1188,8 +1199,14 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def setPBr_UpdateParam(self, val):
         self.progressBar_updateParam.setValue(val)
 
+    @QtCore.Slot(str)
+    def report_error_UpdateParam(self, msg):
+        # Notift the user about the error while updating the parameters
+        self.msg_popup('Update Parameter Warning!', msg, 'Warning')
+
+
     @QtCore.Slot()
-    def show_SWM_Network_func(self,all_flow):
+    def show_SWM_Network_func(self, all_flow):
         def helper():
             self.demo.parameters.SWM_network(view=True,show_vals=self.param_status,all_flow=all_flow.isChecked())
         return(helper)
@@ -1275,7 +1292,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.process_waste['Process'] = process
             self.process_waste['Amount'] = 0
             self.process_waste['Unit'] = units
-        self.process_WF = Table_from_pandas_editable(self.process_waste)
+        self.process_WF = Table_from_pandas_editable(self.process_waste, pop_up=self.msg_popup)
         self.act_in_process_table.setEnabled(True)
         self.act_in_process_table.setModel(self.process_WF)
         self.act_in_process_table.resizeColumnsToContents()
@@ -1935,9 +1952,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     @QtCore.Slot()
     def MC_uncertain_filter_func(self):
         if self.MC_uncertain_filter.isChecked():
-            MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data[:][self.uncertain_data['uncertainty_type']>1])
+            MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data[:][self.uncertain_data['uncertainty_type']>1], pop_up=self.msg_popup)
         else:
-            MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data)
+            MC_Uncertain_model = Table_from_pandas_editable(self.uncertain_data, pop_up=self.msg_popup)
         self.MC_Uncertain_table.setModel(MC_Uncertain_model)
         self.MC_Uncertain_table.setWordWrap(True)
         self.MC_Uncertain_table.resizeColumnsToContents()
@@ -2396,7 +2413,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             ### conf Table
             if len(conf.columns) > 0:
                 conf.index = [str(x) for x in conf.index]
-                conf_table_model = Table_from_pandas_editable(conf)
+                conf_table_model = Table_modeifed_opt_setting(conf, pop_up=self.msg_popup)
                 self.opt_Widget.Opt_Conf_table.setModel(conf_table_model)
                 self.opt_Widget.Opt_Conf_table.resizeColumnsToContents()
                 self.opt_Widget.Opt_Conf_table.installEventFilter(self)
@@ -2493,7 +2510,7 @@ constraints = {self.constraints}""")
 
             param_data=pd.DataFrame(self.opt.optimized_x)
             param_data['Unit'] = 'fraction'
-            Opt_Param_table_model = Table_from_pandas_editable(param_data)
+            Opt_Param_table_model = Table_modeifed_params(param_data, pop_up=self.msg_popup)
             self.Opt_Param_table.setModel(Opt_Param_table_model)
             self.Opt_Param_table.resizeColumnsToContents()
             #Draw sankey
@@ -2532,10 +2549,11 @@ constraints = {self.constraints}""")
             i+=1
         print("\n\n New parameters are : \n",new_param,"\n\n")
 
-        param_updater=Worker_UpdateParam(parent=self.Opt_update_param, project=self.demo, param=new_param)
-        #param_updater.UpdatePBr_UpdateParam.connect(self.setPBr_UpdateParam)
+        param_updater = Worker_UpdateParam(parent=self.Opt_update_param, project=self.demo, param=new_param)
         param_updater.report_time.connect(self.report_time_UpPar)
+        param_updater.report_error.connect(self.report_error_UpdateParam)
         param_updater.start()
+
 
     @QtCore.Slot(int)
     def report_time_UpPar(self, time):
@@ -2728,13 +2746,14 @@ constraints = {self.constraints}""")
         self.References.setupUi(Dialog)
 
         self.RefDF = pd.read_csv(spid.__path__[0]+'\\Data\\References.csv')
-        references = Table_from_pandas_editable(self.RefDF)
+        references = Table_from_pandas(self.RefDF)
         self.References.TableRef.setModel(references)
         self.References.TableRef.installEventFilter(self)
         self.References.TableRef.setWordWrap(True)
         self.References.TableRef.resizeColumnsToContents()
         self.References.TableRef.setColumnWidth(1, 600)
         self.References.TableRef.resizeRowsToContents()
+        self.References.TableRef.setSortingEnabled(True)
 
 
         ### Connect the push bottoms
@@ -2747,7 +2766,7 @@ constraints = {self.constraints}""")
     @QtCore.Slot()
     def Ref_filter_func(self):
         kwrd = self.References.kwrd.text()
-        references = Table_from_pandas_editable(self.RefDF[[kwrd.lower() in str(x).lower() for x in self.RefDF['Reference']]])
+        references = Table_from_pandas(self.RefDF[[kwrd.lower() in str(x).lower() for x in self.RefDF['Reference']]])
         self.References.TableRef.setModel(references)
         self.References.TableRef.installEventFilter(self)
         self.References.TableRef.setWordWrap(True)
