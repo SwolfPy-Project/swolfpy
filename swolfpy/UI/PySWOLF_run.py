@@ -738,6 +738,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Sch_Col.setModel(col_scheme_pd_model)
         Sch_Col.resizeColumnsToContents()
         Sch_Col.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
+        Sch_Col.setMinimumSize(QtCore.QSize(400, 300))
         Sch_Col.installEventFilter(self)
 
 
