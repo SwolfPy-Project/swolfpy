@@ -6,6 +6,7 @@ History
 ------------------
 
 * Improve data validation in GUI
+* Improve warning/Pop-ups
 
 
 0.2.2 (2021-10-02)
