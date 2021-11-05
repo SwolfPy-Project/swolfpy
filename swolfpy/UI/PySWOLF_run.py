@@ -693,7 +693,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         # setup Frame2
         Sch_Col = QtWidgets.QTableView(Frame2)
         Sch_Col.setObjectName("Sch_Col_{}".format(self.col_index))
-        Sch_Col.setMinimumSize(QtCore.QSize(600, 400))
+        #Sch_Col.setMinimumSize(QtCore.QSize(600, 300))
         F2_layout.addWidget(Sch_Col, 0, 0, -1, 1)
 
         #Collection scheme DataFrame
@@ -740,10 +740,54 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Sch_Col.installEventFilter(self)
 
 
-        spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        F2_layout.addItem(spacerItem_1, 0, 2, -1, -1)
-        #spacerItem_2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        #F2_layout.addItem(spacerItem_2, 1, 0, 1, 1)
+        help_col = QtWidgets.QTextBrowser(Frame2)
+        F2_layout.addWidget(help_col, 0, 1, -1, 1)
+        help_col.setHtml("""
+
+<style>
+p {
+  font-size:14px;
+  line-height:1.4;
+}
+
+ul {
+  font-size:14px;
+  line-height:1.4;
+}
+</style>                         
+
+<h1>Collection Scheme Help</h1>
+<p>The collection scheme specifies the processes for collecting the</p>
+<ul>
+  <li><strong>Residual Waste</strong></li>
+  <li style="color:green"><strong>Organic Waste</strong></li>
+  <li style="color:blue"><strong>Recyclables</strong></li>
+</ul>
+<p>The scheme is defined with a tuple: <strong>(Residual, Organic, Recyclables)</strong> (e.g., ('RWC', 'SSYW', 'SSR') which means that the recyclabes and yard waste are collected in different bins while the rest of waste (residuals) is collected in the third bin).</p>
+<p style="color:red"><strong>Note: Sum of the contributions of the schemes should be 1 in each collection sector.</strong></p>
+<p>Here is the list of abbreviations:</p>
+
+<ul>
+  <li><b>RWC</b>: Residual Waste Collection</li>
+  <li><b>MRDO</b>: Mixed Residuals DropOff</li>
+</ul>
+<ul style="color:green">
+  <li><b>SSO</b>: Source Separated Organics</li>
+  <li><b>SSYW</b>: Source Separated Yard Waste</li>
+  <li><b>SSYWDO</b>: Source Separated Yard Waste DropOff</li>
+</ul>
+<ul style="color:blue">
+  <li><b>SSR</b>: Single-Stream Recyclables</li>
+  <li><b>DSR</b>: Dual-Stream Recyclables</li>
+  <li><b>MSR</b>: Multi-Stream Recyclables</li>
+  <li><b>MSRDO</b>: Multi-Stream Recyclables DropOff</li>
+</ul>
+<ul>
+  <li><b style="color:green">ORG</b><b>_DryRes</b>: Separate Organics & Mixed Dry Residuals</li>
+  <li><b style="color:blue">REC</b><b>_WetRes</b>: Separate Recyclables & Mixed Wet Residuals</li>
+</ul>
+""")
+        
 
         self.col_index+=1
 
