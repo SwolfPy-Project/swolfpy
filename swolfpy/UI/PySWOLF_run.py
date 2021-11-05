@@ -737,21 +737,23 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         col_scheme_pd_model = Table_modeifed_collection_schm(col_scheme_pd, pop_up=self.msg_popup)
         Sch_Col.setModel(col_scheme_pd_model)
         Sch_Col.resizeColumnsToContents()
+        Sch_Col.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
         Sch_Col.installEventFilter(self)
 
 
         help_col = QtWidgets.QTextBrowser(Frame2)
+        help_col.setMinimumSize(QtCore.QSize(400, 300))
         F2_layout.addWidget(help_col, 0, 1, -1, 1)
         help_col.setHtml("""
 
 <style>
 p {
-  font-size:14px;
+  font-size:1em;
   line-height:1.4;
 }
 
 ul {
-  font-size:14px;
+  font-size:1em;
   line-height:1.4;
 }
 </style>                         
@@ -763,7 +765,7 @@ ul {
   <li style="color:green"><strong>Organic Waste</strong></li>
   <li style="color:blue"><strong>Recyclables</strong></li>
 </ul>
-<p>The scheme is defined with a tuple: <strong>(Residual, Organic, Recyclables)</strong> (e.g., ('RWC', 'SSYW', 'SSR') which means that the recyclabes and yard waste are collected in different bins while the rest of waste (residuals) is collected in the third bin).</p>
+<p>The scheme is defined with a tuple: <strong>(Residual, Organic, Recyclables)</strong> (e.g., ('RWC', 'SSYW', 'SSR') which means that the recyclables and yard waste are collected in different bins while the rest of waste (residuals) is collected in the third bin).</p>
 <p style="color:red"><strong>Note: Sum of the contributions of the schemes should be 1 in each collection sector.</strong></p>
 <p>Here is the list of abbreviations:</p>
 
@@ -787,6 +789,10 @@ ul {
   <li><b style="color:blue">REC</b><b>_WetRes</b>: Separate Recyclables & Mixed Wet Residuals</li>
 </ul>
 """)
+
+
+        spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        F2_layout.addItem(spacerItem_1, 0, 2, -1, -1)
         
 
         self.col_index+=1
