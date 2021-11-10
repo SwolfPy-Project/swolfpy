@@ -151,9 +151,11 @@ class Parameters():
                 if list_item[1] < 0 or list_item[1] > 1:
                     raise ValueError("Parameters should be in range(0,1), check: {}".format(list_item[2]))
             if not approx_eq(sum_, 1):
+                msg = "Sum of the parameters in group is not 1: \n"
                 for i in item:
                     print("{}: {}".format(i[2], i[1]))
-                raise ValueError("Sum of the parameters is not 1")
+                    msg += "{}: {}\n".format(i[2], i[1])
+                raise ValueError(msg)
                 sum_ = 0
                 flag = 0
                 break

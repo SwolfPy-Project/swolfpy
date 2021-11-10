@@ -28,20 +28,20 @@ If you are reporting a bug, please include:
 Fix Bugs
 ~~~~~~~~
 
-Look through the Bitbucket issues for bugs. Anything tagged with "bug" and "help
+Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
 wanted" is open to whoever wants to implement it.
 
 Implement Features
 ~~~~~~~~~~~~~~~~~~
 
-Look through the Bitbucket issues for features. Anything tagged with "enhancement"
+Look through the GitHub issues for features. Anything tagged with "enhancement"
 and "help wanted" is open to whoever wants to implement it.
 
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-PySWOLF could always use more documentation, whether as part of the
-official PySWOLF docs, in docstrings, or even on the web in blog posts,
+SwolfPy could always use more documentation, whether as part of the
+official SwolfPy docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback

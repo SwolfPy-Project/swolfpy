@@ -38,17 +38,23 @@ class Worker_UpdateParam(QtCore.QThread):
     """    
     UpdatePBr_UpdateParam = QtCore.Signal(int)
     report_time = QtCore.Signal(int)
+    report_error = QtCore.Signal(str)
         
-    def __init__(self,parent,project,param):
+    def __init__(self, parent, project, param):
         super().__init__(parent)
         self.project= project
         self.param = param
 
     def run(self):
         Time_start = time()
-        self.project.update_parameters(self.param,signal=self.UpdatePBr_UpdateParam)
+        try:
+            self.project.update_parameters(self.param,signal=self.UpdatePBr_UpdateParam)
+        except Exception as e:
+            self.report_error.emit(e.__str__())
+            return False
         Time_finish = time()
-        self.report_time.emit(round(Time_finish - Time_start))        
+        self.report_time.emit(round(Time_finish - Time_start))      
+        return True
 
 
 #%% Optimize
