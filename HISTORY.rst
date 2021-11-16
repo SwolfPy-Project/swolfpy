@@ -2,7 +2,7 @@
 History
 =======
 
-0.2.3 (2021-XX-XX)
+0.2.3 (2021-11-16)
 ------------------
 
 * Improve data validation in GUI

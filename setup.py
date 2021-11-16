@@ -11,13 +11,24 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+"xlrd==1.2.0",
 "swolfpy_inputdata",
 "swolfpy_processmodels",
+"bw-migrations==0.1",
+"bw2analyzer==0.9.4",
+"bw2calc==1.8.0",
+"bw2data==3.6.2",
+"bw2io==0.7.12.1",
+"bw2parameters==0.6.6",
 "brightway2==2.3",
 "PySide2==5.14",
 "plotly",
 "graphviz",
-"pyDOE"
+"pyDOE",
+"pytest",
+"pytest-cov",
+"pytest-flake8",
+"coverage",
 ]
 
 setup_requirements = [ ]
@@ -64,6 +75,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/SwolfPy-Project/swolfpy',
-    version='0.2.2',
+    version='0.2.3',
     zip_safe=False,
 )
