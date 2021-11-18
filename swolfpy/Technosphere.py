@@ -129,7 +129,7 @@ class Technosphere:
 
             if pd.isnull(self.LCI_reference['Reference_activity_id'][x]):
                 i = 0
-                for val in self.LCI_swolfpy_data[x][1:]:
+                for val in self.LCI_swolfpy_data[x][2:]:
                     if float(self._check_nan(val)) != 0:
                         ex = {}  # add exchange to activities
                         ex['amount'] = float(self._check_nan(val))
