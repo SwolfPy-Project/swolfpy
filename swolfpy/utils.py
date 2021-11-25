@@ -74,7 +74,7 @@ def find_biosphere_flows(flow_name, compartment=None, subcompartment=None, exact
         act_dict = act.as_dict()
         if (exact_match and act_dict['name'] == flow_name) or (not exact_match and flow_name.lower() in act_dict['name'].lower()):
             if compartment and subcompartment:
-                if act_dict['categories'] != (compartment, subcompartment):
+                if act_dict['categories'] == (compartment, subcompartment):
                     key.append(act.key)
                     name.append(act_dict['name'])
                     categories.append(act_dict['categories'])
