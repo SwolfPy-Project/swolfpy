@@ -2076,7 +2076,7 @@ ul {
 
                     Number of runs = {nruns}
 
-                ### Moldes included
+                ### Included Models
 
                   Names: {process_model_names}
 
