@@ -695,52 +695,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Sch_Col.setObjectName("Sch_Col_{}".format(self.col_index))
         #Sch_Col.setMinimumSize(QtCore.QSize(600, 300))
         F2_layout.addWidget(Sch_Col, 0, 0, -1, 1)
-
-        #Collection scheme DataFrame
-        index = [('RWC', 'N/A', 'N/A'),
-                 ('RWC', 'N/A', 'SSR'),
-                 #('RWC', 'N/A', 'DSR'),
-                 #('RWC', 'N/A', 'MSR'),
-                 #('RWC', 'N/A', 'MSRDO'),
-                 ('RWC', 'SSYW', 'N/A'),
-                 ('RWC', 'SSYW', 'SSR'),
-                 #('RWC', 'SSYW', 'DSR'),
-                 #('RWC', 'SSYW', 'MSR'),
-                 #('RWC', 'SSYW', 'MSRDO'),
-                 ('RWC', 'SSO', 'N/A'),
-                 ('RWC', 'SSO', 'SSR'),
-                 #('RWC', 'SSO', 'DSR'),
-                 #('RWC', 'SSO', 'MSR'),
-                 #('RWC', 'SSO', 'MSRDO'),
-                 ('RWC', 'SSYWDO', 'N/A'),
-                 ('RWC', 'SSYWDO', 'SSR'),
-                 #('RWC', 'SSYWDO', 'DSR'),
-                 #('RWC', 'SSYWDO', 'MSR'),
-                 ('RWC', 'SSYWDO', 'MSRDO'),
-                 ('REC_WetRes', 'N/A', 'REC_WetRes'),
-                 ('REC_WetRes', 'SSYW', 'REC_WetRes'),
-                 ('REC_WetRes', 'SSO', 'REC_WetRes'),
-                 ('REC_WetRes', 'SSYWDO', 'REC_WetRes'),
-                 ('ORG_DryRes', 'ORG_DryRes', 'N/A'),
-                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),
-                 #('ORG_DryRes', 'ORG_DryRes', 'DSR'),
-                 ('ORG_DryRes', 'ORG_DryRes', 'MSR'),
-                 #('ORG_DryRes', 'ORG_DryRes', 'MSRDO'),
-                 ('MRDO', 'N/A', 'N/A'),
-                 ('MRDO', 'N/A', 'MSRDO'),
-                 ('MRDO', 'SSYWDO', 'N/A'),
-                 ('MRDO', 'SSYWDO', 'MSRDO')]
-        col_scheme_pd = pd.DataFrame(columns=['Contribution'],
-                                     index=[str(x) for x in index], dtype=float)
-        #col_scheme_pd.loc['Contribution']=[0,0,0,0]
-        col_scheme_pd.fillna(0.0, inplace=True)
-        col_scheme_pd_model = Table_modeifed_collection_schm(col_scheme_pd, pop_up=self.msg_popup)
-        Sch_Col.setModel(col_scheme_pd_model)
-        Sch_Col.resizeColumnsToContents()
-        Sch_Col.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
-        Sch_Col.setMinimumSize(QtCore.QSize(400, 300))
-        Sch_Col.installEventFilter(self)
-
+        
+        #Create collection scheme table
+        col.currentTextChanged.connect(self.set_col_scheme_table(Sch_Col))        
 
         help_col = QtWidgets.QTextBrowser(Frame2)
         help_col.setMinimumSize(QtCore.QSize(400, 300))
@@ -837,6 +794,30 @@ ul {
                 full_name = ''
             name_place.setText(full_name)
         return(set_name_helper)
+
+    @QtCore.Slot()
+    def set_col_scheme_table(self, Sch_Col):
+        def set_process(proc):
+            if proc =='...':
+                index = []
+            else:
+                scheme = self._ProcessMetaData[self._ProcessNameDict[proc]]['CLS'].scheme()                
+                #Collection scheme DataFrame
+                index = list(scheme.keys())
+
+            col_scheme_pd = pd.DataFrame(
+                columns=['Contribution'],
+                index=[str(x) for x in index], dtype=float)
+
+            col_scheme_pd.fillna(0.0, inplace=True)
+            col_scheme_pd_model = Table_modeifed_collection_schm(col_scheme_pd, pop_up=self.msg_popup)
+            Sch_Col.setModel(col_scheme_pd_model)
+            Sch_Col.resizeColumnsToContents()
+            Sch_Col.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
+            Sch_Col.setMinimumSize(QtCore.QSize(400, 300))
+            Sch_Col.installEventFilter(self)
+        return set_process
+
 
 #%% Treatment Processes
 # =============================================================================
