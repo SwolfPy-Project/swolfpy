@@ -405,7 +405,7 @@ class Project():
                                columns=DF.iloc[:, 0].values,
                                index=list(functional_unit.keys()))
 
-        legend = []
+        legend = ['Net']
         if target == 'emissions':
             for x, y in DF[['Emission', 'Compartment']].values:
                 y = str(y).replace("'", '')
@@ -417,8 +417,9 @@ class Project():
                 legend.append(x)
 
         fig, ax = plt.subplots(figsize=figsize)
-        plot_DF.plot(kind='bar', stacked=True, ax=ax)
+        plot_DF.plot(kind='bar', stacked=True, ax=ax, alpha=0.9)
         ax.set_title('Contribution to {}'.format(str(lca.method).replace("'", '')), fontsize=f)
+        ax.scatter(0, lca.score, s=50, marker='D', edgecolor='w', facecolor='k')
         ax.legend(legend, fontsize=f, bbox_to_anchor=(1, 0, .2, 1), loc=2)
         ax.tick_params(axis='both', which='major', labelsize=f, rotation='auto')
         ax.tick_params(axis='both', which='minor', labelsize=f, rotation='auto')
