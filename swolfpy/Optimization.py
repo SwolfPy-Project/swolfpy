@@ -51,24 +51,18 @@ class Optimization(LCA_matrix):
 
         index = [('RWC', 'N/A', 'N/A'),
                  ('RWC', 'N/A', 'SSR'),
-                 # ('RWC', 'N/A', 'DSR'),
-                 # ('RWC', 'N/A', 'MSR'),
                  ('RWC', 'SSYW', 'N/A'),
                  ('RWC', 'SSYW', 'SSR'),
-                 # ('RWC', 'SSYW', 'DSR'),
-                 # ('RWC', 'SSYW', 'MSR'),
                  ('RWC', 'SSO', 'N/A'),
                  ('RWC', 'SSO', 'SSR'),
-                 # ('RWC', 'SSO', 'DSR'),
-                 # ('RWC', 'SSO', 'MSR'),
+                 ('RWC', 'SSO_AnF', 'N/A'),
+                 ('RWC', 'SSO_AnF', 'SSR'),
                  ('REC_WetRes', 'N/A', 'REC_WetRes'),
                  ('REC_WetRes', 'SSYW', 'REC_WetRes'),
                  ('REC_WetRes', 'SSO', 'REC_WetRes'),
+                 ('REC_WetRes', 'SSO_AnF', 'REC_WetRes'),
                  ('ORG_DryRes', 'ORG_DryRes', 'N/A'),
-                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),
-                 # ('ORG_DryRes', 'ORG_DryRes', 'DSR'),
-                 # ('ORG_DryRes', 'ORG_DryRes', 'MSR')
-                 ]
+                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),]
 
         config_pd = pd.DataFrame(index=index, columns=columns)
         if len(config_pd.columns) > 0:
@@ -76,14 +70,15 @@ class Optimization(LCA_matrix):
                 config_pd[c] = ['Optimize', 'Optimize',
                                 'Optimize', 'Optimize',
                                 'Optimize', 'Optimize',
+                                'Fix', 'Fix',
                                 'Fix', 'Fix', 'Fix',
-                                'Fix', 'Fix']
+                                'Fix', 'Fix', 'Fix']
 
             for col, sch in schemes.items():
                 for k, v in sch.items():
                     if k in index:
                         config_pd[col][k] = v
-        return(config_pd)
+        return config_pd
 
     def set_config(self, config):
         self.config = config
@@ -108,8 +103,7 @@ class Optimization(LCA_matrix):
                 self.Treatment_processes[process]['model'].col_schm[v[1]] = x[k]
             for process in process_set:
                 self.Treatment_processes[process]['model']._normalize_scheme(DropOff=False, warn=False)
-        else:
-            return()
+
 
     ### Objective function
     def _objective_function(self, x):
@@ -413,7 +407,7 @@ class Optimization(LCA_matrix):
             return(res.get(timeout))  # Wait timeout seconds for func to complete.
         except TimeoutError:
             print("(Iteration:{}, PID:{}): Aborting due to timeout!".format(iteration, os.getpid()))
-            return(None)
+            return None
 
     @staticmethod
     def worker(optObject, bnds, x0, iteration):
@@ -491,6 +485,7 @@ class Optimization(LCA_matrix):
                       'SSYW': (0, 100, 0),  # dark green	#006400
                       'SSO': (0, 255, 127),  # spring green	#00FF7F
                       'SSO_HC': (128, 128, 0),  # olive #808000
+                      'SSO_AnF': (127, 255, 0),  # chartreuse #7FFF00
                       'ORG': (46, 139, 87),  # sea green	#2E8B57
                       'DryRes': (222, 184, 135),  # burly wood	#DEB887
                       'REC': (0, 191, 255),  # deep sky blue	#00BFFF
