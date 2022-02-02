@@ -118,15 +118,11 @@ Installation
 
         conda update conda
 
-3- Add conda channels::
+3- Create a new environment for swolfpy::
 
-        conda config --append channels conda-forge
-        conda config --append channels cmutel
-        conda config --append channels haasad
+        conda create --name swolfpy python=3.7 graphviz
 
-4- Create a new environment for swolfpy::
-
-        conda create --name swolfpy python=3.7
+4- Add Graphviz executables to your system PATH (This step is optional; Enables plotting SWM network). You can find Graphviz executables in ``\\miniconda3\\envs\\swolfpy\\Library\\bin\\graphviz`` folder or search for ``dot.exe`` file in your system. Add the directory to the ``Path`` variable in your environment variables. 
 
 5- Activate the environment::
 
