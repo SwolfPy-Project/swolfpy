@@ -2751,7 +2751,7 @@ constraints = {self.constraints}""")
     @QtCore.Slot()
     def Filter_Method_func(self,keyWord_lineEdit,Method_ComboBox):
         def Filter_Method_func_helper():
-            list_methods= [str(x) for x in methods if keyWord_lineEdit.text() in str(x)]
+            list_methods= [str(x) for x in methods if (keyWord_lineEdit.text().lower() in str(x).lower())]
             list_methods.sort()
             Method_ComboBox.clear()
             Method_ComboBox.addItems(['...']+list_methods)
