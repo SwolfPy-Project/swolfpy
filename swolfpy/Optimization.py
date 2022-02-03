@@ -62,7 +62,7 @@ class Optimization(LCA_matrix):
                  ('REC_WetRes', 'SSO', 'REC_WetRes'),
                  ('REC_WetRes', 'SSO_AnF', 'REC_WetRes'),
                  ('ORG_DryRes', 'ORG_DryRes', 'N/A'),
-                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),]
+                 ('ORG_DryRes', 'ORG_DryRes', 'SSR')]
 
         config_pd = pd.DataFrame(index=index, columns=columns)
         if len(config_pd.columns) > 0:
@@ -103,7 +103,6 @@ class Optimization(LCA_matrix):
                 self.Treatment_processes[process]['model'].col_schm[v[1]] = x[k]
             for process in process_set:
                 self.Treatment_processes[process]['model']._normalize_scheme(DropOff=False, warn=False)
-
 
     ### Objective function
     def _objective_function(self, x):
