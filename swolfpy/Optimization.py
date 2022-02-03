@@ -78,7 +78,7 @@ class Optimization(LCA_matrix):
                 for k, v in sch.items():
                     if k in index:
                         config_pd[col][k] = v
-        return config_pd
+        return config_pd.fillna(0.0)
 
     def set_config(self, config):
         self.config = config
