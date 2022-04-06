@@ -34,6 +34,8 @@ class LCA_matrix(LCA):
 
         self.functional_unit = functional_unit
         self.method = method
+        self._base_method = method[0]
+
 
         self.activities_dict, _, self.biosphere_dict = self.reverse_dict()
 

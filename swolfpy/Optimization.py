@@ -18,6 +18,7 @@ from functools import partial
 import os
 import pyDOE
 from time import time
+from brightway2 import projects
 
 
 class Optimization(LCA_matrix):
@@ -62,7 +63,7 @@ class Optimization(LCA_matrix):
                  ('REC_WetRes', 'SSO', 'REC_WetRes'),
                  ('REC_WetRes', 'SSO_AnF', 'REC_WetRes'),
                  ('ORG_DryRes', 'ORG_DryRes', 'N/A'),
-                 ('ORG_DryRes', 'ORG_DryRes', 'SSR')]
+                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),]
 
         config_pd = pd.DataFrame(index=index, columns=columns)
         if len(config_pd.columns) > 0:
@@ -94,6 +95,11 @@ class Optimization(LCA_matrix):
                     self.scheme_vars_index += 1
                     self.n_scheme_vars += 1
 
+        for process in self.config.columns[0::2]:
+            for schm in self.config.index:
+                if schm in self.Treatment_processes[process]['model'].col_schm:
+                    self.Treatment_processes[process]['model'].col_schm[schm] = self.config.loc[[schm], process].values[0]
+
     def update_col_scheme(self, x):
         process_set = set()
         if self.n_scheme_vars:
@@ -103,6 +109,7 @@ class Optimization(LCA_matrix):
                 self.Treatment_processes[process]['model'].col_schm[v[1]] = x[k]
             for process in process_set:
                 self.Treatment_processes[process]['model']._normalize_scheme(DropOff=False, warn=False)
+
 
     ### Objective function
     def _objective_function(self, x):
@@ -171,8 +178,20 @@ class Optimization(LCA_matrix):
         for i in range(len(inventory)):
             if emission == self.biosphere_dict[i]:
                 emission_amount += inventory[i]
-        print(emission_amount)
         return emission_amount
+
+    ### Calculates impacts other than objective
+    def get_impact_amount(self, impact, x):
+        """
+        Calculates impacts other than objective.
+        """
+        self._objective_function(x)
+        self.switch_method(impact)
+        self.lcia()
+        score = self.score
+        self.switch_method(self._base_method)
+        self.lcia()        
+        return score
 
     def _create_equality(self, N_param_Ingroup):
         """
@@ -218,6 +237,13 @@ class Optimization(LCA_matrix):
                 f = (lambda x: limit - self.get_emission_amount(key, x))
             else:
                 f = (lambda x: self.get_emission_amount(key, x) - limit)
+            return f
+
+        elif KeyType == 'Impact':
+            if ConstType == '<=':
+                f = (lambda x: limit - self.get_impact_amount(key, x))
+            else:
+                f = (lambda x: self.get_impact_amount(key, x) - limit)
             return f
 
     def _create_collection_constraints(self, cons):
@@ -411,6 +437,7 @@ class Optimization(LCA_matrix):
     @staticmethod
     def worker(optObject, bnds, x0, iteration):
         start = time()
+        projects.set_current(optObject.project.project_name, writable=False)
         print("Iteration: {} PID: {}\n".format(iteration, os.getpid()))
         optObject.oldx = [0 for i in range(len(x0))]
         optObject.cons = optObject._create_constraints()
@@ -537,8 +564,17 @@ class Optimization(LCA_matrix):
                     color=color)
 
         # The other good option for the valueformat is ".3f". Yes
-        layout = go.Layout(title_text="Impact " + str(self.method[0]) + ": \n {}"
-                           .format(np.round(self._objective_function(params) * 10**self.magnitude, 4)),
+        score = self._objective_function(params) * 10**self.magnitude
+        if score >= 1000 or score <= -1000:
+            score = "{:,.0f}".format(score)
+        elif score <= 0.1 and score >= -0.1:
+           score = "{:,.4f}".format(score)        
+        elif score <= 1 and score >= -1:
+           score = "{:,.3f}".format(score)
+        else:
+            score = "{:,.2f}".format(score)
+
+        layout = go.Layout(title_text="LCIA: " + str(self.method[0]) + f"= {score}",
                            font_size=16,
                            hoverlabel=dict(font_size=14))
         data = go.Sankey(valueformat=".3s",
@@ -550,8 +586,7 @@ class Optimization(LCA_matrix):
 
         # Store data for ploting the sankey
         store_data = {}
-        store_data['title_text'] = "Impact " + str(self.method[0]) + ": \n {}"\
-            .format(np.round(self._objective_function(params) * 10**self.magnitude, 4))
+        store_data['title_text'] = "Impact " + str(self.method[0]) + f": {score}"
         store_data['font_size'] = 16
         store_data['hoverlabel'] = dict(font_size=14)
         store_data['valueformat'] = ".3s"
