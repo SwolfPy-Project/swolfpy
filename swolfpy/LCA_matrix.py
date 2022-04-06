@@ -36,7 +36,6 @@ class LCA_matrix(LCA):
         self.method = method
         self._base_method = method[0]
 
-
         self.activities_dict, _, self.biosphere_dict = self.reverse_dict()
 
         self.tech_matrix = dict()

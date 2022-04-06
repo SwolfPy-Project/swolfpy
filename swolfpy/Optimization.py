@@ -63,7 +63,7 @@ class Optimization(LCA_matrix):
                  ('REC_WetRes', 'SSO', 'REC_WetRes'),
                  ('REC_WetRes', 'SSO_AnF', 'REC_WetRes'),
                  ('ORG_DryRes', 'ORG_DryRes', 'N/A'),
-                 ('ORG_DryRes', 'ORG_DryRes', 'SSR'),]
+                 ('ORG_DryRes', 'ORG_DryRes', 'SSR')]
 
         config_pd = pd.DataFrame(index=index, columns=columns)
         if len(config_pd.columns) > 0:
@@ -109,7 +109,6 @@ class Optimization(LCA_matrix):
                 self.Treatment_processes[process]['model'].col_schm[v[1]] = x[k]
             for process in process_set:
                 self.Treatment_processes[process]['model']._normalize_scheme(DropOff=False, warn=False)
-
 
     ### Objective function
     def _objective_function(self, x):
@@ -190,7 +189,7 @@ class Optimization(LCA_matrix):
         self.lcia()
         score = self.score
         self.switch_method(self._base_method)
-        self.lcia()        
+        self.lcia()
         return score
 
     def _create_equality(self, N_param_Ingroup):
@@ -568,9 +567,9 @@ class Optimization(LCA_matrix):
         if score >= 1000 or score <= -1000:
             score = "{:,.0f}".format(score)
         elif score <= 0.1 and score >= -0.1:
-           score = "{:,.4f}".format(score)        
+            score = "{:,.4f}".format(score)
         elif score <= 1 and score >= -1:
-           score = "{:,.3f}".format(score)
+            score = "{:,.3f}".format(score)
         else:
             score = "{:,.2f}".format(score)
 
