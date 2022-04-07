@@ -2,6 +2,12 @@
 History
 =======
 
+0.2.5 (2022-04-07)
+------------------
+
+* Minor changes in optimization and GUI
+
+
 0.2.3 (2021-11-16)
 ------------------
 
@@ -20,7 +26,7 @@ History
 0.2.0 (2021-05-10)
 ------------------
 
-* Add tab for correlation analysis. 
+* Add tab for correlation analysis.
 * Add cost calculations.
 * Add help to interface.
 * Parallel optimization.
@@ -39,15 +45,14 @@ History
 0.1.6 (2020-04-11)
 ------------------
 
-* Add Reporcessing. 
+* Add Reprocessing.
 * Revise Functional units.
-* Reivse parameters class.
+* Revise parameters class.
 
 
 0.1.0 (2020-02-27)
 ------------------
 
-* First release on PyPI. 
+* First release on PyPI.
 * Main functionality: LCA, Monte-Carlo, and Optimization.
 * Process Models include LF, WTE, Composting, AD, SS_MRF, and Collection.
- 

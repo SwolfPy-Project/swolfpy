@@ -6,7 +6,7 @@ Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
 
 .. image:: https://img.shields.io/pypi/v/swolfpy.svg
         :target: https://pypi.python.org/pypi/swolfpy
-        
+
 .. image:: https://img.shields.io/pypi/pyversions/swolfpy.svg
     :target: https://pypi.org/project/swolfpy/
     :alt: Supported Python Versions
@@ -68,12 +68,12 @@ Features
    :widths: auto
    :header-rows: 1
 
-   * - 
-     - Process model 
+   * -
+     - Process model
      - Description
    * - 1
      - Landfill (**LF**)
-     - Calculates emissions, material use, and energy use associated with construction, operations, 
+     - Calculates emissions, material use, and energy use associated with construction, operations,
        closure and post-closure activities, landfill gas and leachate management, and carbon storage.
    * - 2
      - Waste-to-Energy (**WTE**)
@@ -81,7 +81,7 @@ Features
    * - 3
      - Gasification & Syngas Combustion (**GC**)
      - Calculates emissions, mass flows, and resource use and recovery for the GC process (Produced syngas from
-       gasification is combusted to produce electricity by steam turbine). 
+       gasification is combusted to produce electricity by steam turbine).
    * - 4
      - Composting (**Comp**)
      - Calculates emissions, mass flows, and resource use and recovery for aerobic composting process and final use of compost.
@@ -96,16 +96,25 @@ Features
      - Calculates cost, emissions, and energy use associated with material recovery facilities.
    * - 8
      - Refuse-Derived Fuel (**RDF**)
-     - Calculates cost, emissions, and energy use associated with RDF prodcution facilities.
+     - Calculates cost, emissions, and energy use associated with RDF production facilities.
    * - 9
      - Reprocessing (**Reproc**)
-     - Calculates emissions, mass flows, and resource use and recovery associated with recycling materials.	 
+     - Calculates emissions, mass flows, and resource use and recovery associated with recycling materials.
    * - 10
      - Transfer Station (**TS**)
      - Calculates cost, emissions, and energy use associated with Transfer Stations.
    * - 11
      - Single Family Collection (**SF_Col**)
-     - Calculates cost, emissions, and fossil fuel use associated with MSW collection.
+     - Calculates cost, emissions, and fossil fuel use associated with MSW collection from single family sector.
+   * - 12
+     - Multi Family Collection (**MF_Col**)
+     - Calculates cost, emissions, and fossil fuel use associated with MSW collection from multi-family sector.
+   * - 13
+     - Collection (**COM_Col**)
+     - Calculates cost, emissions, and fossil fuel use associated with MSW collection from commercial sector.
+   * - 14
+     - Animal Feed (**AnF**)
+     - Calculates cost, emissions, and energy use associated with conversion of food waste to animal feed and final use of produced feed.
 
 
 .. Installation
@@ -122,7 +131,7 @@ Installation
 
         conda create --name swolfpy python=3.7 graphviz
 
-4- Add Graphviz executables to your system PATH (This step is optional; Enables plotting SWM network). You can find Graphviz executables in ``\\miniconda3\\envs\\swolfpy\\Library\\bin\\graphviz`` folder or search for ``dot.exe`` file in your system. Add the directory to the ``Path`` variable in your environment variables. 
+4- Add Graphviz executables to your system PATH (This step is optional; Enables plotting SWM network). You can find Graphviz executables in ``\\miniconda3\\envs\\swolfpy\\Library\\bin\\graphviz`` folder or search for ``dot.exe`` file in your system. Add the directory to the ``Path`` variable in your environment variables.
 
 5- Activate the environment::
 
@@ -138,7 +147,7 @@ Installation
 
 8- Run swolfpy in python::
 
-        import swolfpy as sp 
+        import swolfpy as sp
         sp.swolfpy()
 
 .. endInstallation
