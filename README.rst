@@ -110,7 +110,7 @@ Features
      - Multi Family Collection (**MF_Col**)
      - Calculates cost, emissions, and fossil fuel use associated with MSW collection from multi-family sector.
    * - 13
-     - Collection (**COM_Col**)
+     - Commercial Collection (**COM_Col**)
      - Calculates cost, emissions, and fossil fuel use associated with MSW collection from commercial sector.
    * - 14
      - Animal Feed (**AnF**)
