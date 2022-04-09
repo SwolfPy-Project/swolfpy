@@ -17,7 +17,7 @@ import pandas as pd
 
 class Project():
     """
-    Project class creates a new project in Birghtway2.
+    Project class creates a new project in Brightway2.
 
     :param project_name: Name for the project
     :type project_name: str
@@ -139,7 +139,7 @@ class Project():
 
     def init_project(self, signal=None):
         """
-        Calls the Create_Technosphere_ method to initilize a project.\n
+        Calls the Create_Technosphere_ method to initialize a project.\n
         This function create an empty database for each process as a placeholder, so swolfpy
         can browse these databases in the next step (writing project) and
         create exchanges between them.

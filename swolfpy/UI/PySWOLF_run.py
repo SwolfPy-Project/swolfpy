@@ -20,7 +20,7 @@ import csv
 import sys
 import ast
 import pickle
-import importlib  #to import moduls with string name
+import importlib  #to import module with string name
 
 # Import Brightway
 from brightway2 import *
@@ -94,7 +94,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 # =============================================================================
 # PySide2.QtCore.QObject.eventFilter(watched, event)
 # Filters events if this object has been installed as an event filter for the watched object.
-# In your reimplementation of this function, if you want to filter the event out, i.e. stop it being
+# In your re-implementation of this function, if you want to filter the event out, i.e. stop it being
 # handled further, return true; otherwise return false.
 # Notice in the code blow that unhandled events are passed to the base class’s function,
 # since the base class might have reimplemented for its own internal purposes
@@ -140,7 +140,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.LCA_Contribution_tab_init_status = False
         self.LCA_LCI_tab_init_status = False
 
-        #init First paer
+        #init First page
         self.init_FirstPage()
 
         #Icons
@@ -188,12 +188,12 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             #import process models
             self.Importing_processes()
 
-            #init treatement processse tab
+            #init treatment processes tab
             self.init_TreatmentProcesses()
 
             #init write project
             self.init_write_project()
-            
+
             self._Collection_processes = {}
             self._Treatment_processes = {}
 
@@ -205,7 +205,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
                 self.PySWOLF.setCurrentWidget(self.Import_PM)
                 self.Import_PM.setEnabled(True)
         else:
-            #Notift the user to restart program
+            #Notify the user to restart program
             self.msg_popup('swolfpy Mode','Restart the swolfpy to start new project','Warning')
 
     @QtCore.Slot()  #Change tab and import process models
@@ -217,7 +217,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             self.PySWOLF.setCurrentWidget(self.Load_Project)
             self.Load_Project.setEnabled(True)
         else:
-            #Notift the user to restart program
+            #Notify the user to restart program
             self.msg_popup('swolfpy Mode','Restart the swolfpy to load project','Warning')
 
 
@@ -282,7 +282,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
         param_data=pd.DataFrame(self.demo.parameters_list)
         param_data['Unit'] = 'fraction'
-        self.load_param_data = Table_modeifed_params(param_data, pop_up=self.msg_popup)
+        self.load_param_data = Table_modified_params(param_data, pop_up=self.msg_popup)
         self.load_Param_table.setModel(self.load_param_data)
         self.load_Param_table.resizeColumnsToContents()
 
@@ -311,7 +311,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     @QtCore.Slot(int)
     def load_report_time_UpdateParam(self, time):
-        #Notift the user that the project has created successfully
+        #Notify the user that the project has created successfully
         self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(time),'Information')
 
     @QtCore.Slot(int)
@@ -369,16 +369,16 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
     # Add the check boxes for waste indexes from common data
     def init_waste_checkboxes(self):
         self._InputKey = {}
-        
+
         font = QtGui.QFont()
         font.setBold(True)
         font.setItalic(False)
         font.setUnderline(True)
         font.setWeight(75)
         font.setKerning(True)
-        
+
         n_checkbox_in_col = 10
-        
+
         # Collection products
         grid_col = QtWidgets.QGridLayout(self.frame_Col)
         grid_col.setObjectName("grid_col")
@@ -456,7 +456,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
             grid_rec.addItem(verticalSpacer, n_checkbox_in_col, 0, 1, 1)
         else:
             grid_rec.addItem(verticalSpacer, x, 0, 1, 1)
-            
+
     # Help function
     @QtCore.Slot()
     def Help_ImportProcessFunc(self):
@@ -677,7 +677,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         F1_layout.addWidget(Col_Br, 1, 4, 1, 1)
         Col_Br.setText('Browse')
 
-        #Uncheck the defualt input
+        #Uncheck the default input
         Col_Br.clicked.connect(lambda: Col_def_input.setChecked(False))
 
         Col_input_path = QtWidgets.QLineEdit(Frame1)
@@ -695,9 +695,9 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         Sch_Col.setObjectName("Sch_Col_{}".format(self.col_index))
         #Sch_Col.setMinimumSize(QtCore.QSize(600, 300))
         F2_layout.addWidget(Sch_Col, 0, 0, -1, 1)
-        
+
         #Create collection scheme table
-        col.currentTextChanged.connect(self.set_col_scheme_table(Sch_Col))        
+        col.currentTextChanged.connect(self.set_col_scheme_table(Sch_Col))
 
         help_col = QtWidgets.QTextBrowser(Frame2)
         help_col.setMinimumSize(QtCore.QSize(400, 300))
@@ -714,7 +714,7 @@ ul {
   font-size:1em;
   line-height:1.4;
 }
-</style>                         
+</style>
 
 <h1>Collection Scheme Help</h1>
 <p>The collection scheme specifies the processes for collecting the</p>
@@ -751,7 +751,7 @@ ul {
 
         spacerItem_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         F2_layout.addItem(spacerItem_1, 0, 2, -1, -1)
-        
+
 
         self.col_index+=1
 
@@ -772,7 +772,7 @@ ul {
                 self._Collection_processes[y]['input_type']=[]
                 self._Collection_processes[y]['model']=None
                 self._Collection_processes[y]['scheme'] = self.helper_DFtoDict(z)
-                
+
         self.Define_SWM_1.setCurrentWidget(self.Treatment_process)
         self.Treatment_process.setEnabled(True)
         print(self._Collection_processes)
@@ -801,7 +801,7 @@ ul {
             if proc =='...':
                 index = []
             else:
-                scheme = self._ProcessMetaData[self._ProcessNameDict[proc]]['CLS'].scheme()                
+                scheme = self._ProcessMetaData[self._ProcessNameDict[proc]]['CLS'].scheme()
                 #Collection scheme DataFrame
                 index = list(scheme.keys())
 
@@ -810,7 +810,7 @@ ul {
                 index=[str(x) for x in index], dtype=float)
 
             col_scheme_pd.fillna(0.0, inplace=True)
-            col_scheme_pd_model = Table_modeifed_collection_schm(col_scheme_pd, pop_up=self.msg_popup)
+            col_scheme_pd_model = Table_modified_collection_schm(col_scheme_pd, pop_up=self.msg_popup)
             Sch_Col.setModel(col_scheme_pd_model)
             Sch_Col.resizeColumnsToContents()
             Sch_Col.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContentsOnFirstShow)
@@ -880,7 +880,7 @@ ul {
             Type_input.setObjectName("P_"+str(self.P_index)+"_Type_input")
             gridLayout.addWidget(Type_input, self.P_index, 3, 1, 1)
             Type_input.setText('Default')
-            #set defualt input
+            #set default input
             Type_input.setChecked(True)
 
 
@@ -889,7 +889,7 @@ ul {
             gridLayout.addWidget(Br_input, self.P_index, 4, 1, 1)
             Br_input.setText('Browse')
 
-            #Uncheck the defualt input
+            #Uncheck the default input
             Br_input.clicked.connect(lambda: Type_input.setChecked(False))
 
 
@@ -931,9 +931,9 @@ ul {
 
         input_data_path = self.IT_FName_00.text() if self.IT_UserDefine_00.isChecked() else None
         self.CommonData = self._CommonData(input_data_path=input_data_path)
-        
+
         self._Treatment_processes = {}
-        
+
         for Index in np.arange(1,self.P_index):
             Process = self.frame_Process_treatment.findChildren(QtWidgets.QComboBox,"Process_"+str(Index))[0]
             Process_Name = self.frame_Process_treatment.findChildren(QtWidgets.QLineEdit,"Process_Name_"+str(Index))[0]
@@ -1124,7 +1124,7 @@ ul {
                     jj+=1
 
             Distance=Distance.fillna('')
-            Dis_data = Table_modeifed_distanceTable(Distance)
+            Dis_data = Table_modified_distanceTable(Distance)
             Dist_table.setModel(Dis_data)
             Dist_table.resizeColumnsToContents()
         self._n_trans_mode += self.spinBox.value()
@@ -1175,7 +1175,7 @@ ul {
 
     @QtCore.Slot(int)
     def report_time_WP(self, time):
-        #Notift the user that the project has created successfully
+        #Notify the user that the project has created successfully
         msg = f'Project is created successfully in {time} seconds'
         print(msg)
         self.msg_popup('Project', msg,'Information')
@@ -1188,7 +1188,7 @@ ul {
     def load_params_func(self):
         param_data=pd.DataFrame(self.demo.parameters.default_parameters_list())
         param_data['Unit'] = 'fraction'
-        self.param_data = Table_modeifed_params(param_data, pop_up=self.msg_popup)
+        self.param_data = Table_modified_params(param_data, pop_up=self.msg_popup)
         self.Param_table.setModel(self.param_data)
         self.Param_table.resizeColumnsToContents()
 
@@ -1213,7 +1213,7 @@ ul {
 
     @QtCore.Slot(int)
     def report_time_UpdateParam(self, time):
-        #Notift the user that the project has created successfully
+        #Notify the user that the project has created successfully
         msg = f'Parameters are updated successfully in {time} seconds'
         print(msg)
         self.msg_popup('Parameters', msg, 'Information')
@@ -1233,7 +1233,7 @@ ul {
 
     @QtCore.Slot(str)
     def report_error_UpdateParam(self, msg):
-        # Notift the user about the error while updating the parameters
+        # Notify the user about the error while updating the parameters
         self.msg_popup('Update Parameter Warning!', msg, 'Warning')
 
 
@@ -1409,7 +1409,7 @@ ul {
 
             self.LCA_impacts_index=0
             self.LCA_List_of_Impacts=[]
-            self.LCA_impacts_DF = pd.DataFrame(columns=['Imapct Category','Unit'])
+            self.LCA_impacts_DF = pd.DataFrame(columns=['Impact Category','Unit'])
             self.LCA_AddImpact.clicked.connect(self.LCA_AddImpact_Func)
 
             #Clear setup
@@ -1539,7 +1539,7 @@ ul {
         if self.LCA_impacts_index >0:
             self.LCA_impacts_index=0
             self.LCA_List_of_Impacts=[]
-            self.LCA_impacts_DF = pd.DataFrame(columns=['Imapct Category','Unit'])
+            self.LCA_impacts_DF = pd.DataFrame(columns=['Impact Category','Unit'])
             self.LCA_Impact_table.model()._data = self.LCA_impacts_DF
             self.LCA_Impact_table.model().layoutChanged.emit()
             self.LCA_Impact_table.resizeColumnsToContents()
@@ -1609,7 +1609,7 @@ ul {
 # =============================================================================
 # =============================================================================
     def LCA_Contribution_tab_init(self):
-        #Functionl unit
+        #Functional unit
         FU=[]
         for x in self.MultiLca.all.keys():
             FU.append(str(x))
@@ -2047,7 +2047,7 @@ ul {
 
         print("""
 
-                #########    Setup Monte Carlo Simulatio    ############
+                #########    Setup Monte Carlo Simulation    ############
 
                     Functional Unit = {FU}
 
@@ -2087,7 +2087,7 @@ ul {
     @QtCore.Slot(dict)
     def report_MC_func(self, report):
         print("Total time for Monte Carlo simulation: {} seconds".format(report['time']))
-        self.msg_popup('Monte Carlo simulation Result','Simulation is done succesfully. \n Total time: {} seconds'.format(report['time']),'Information')
+        self.msg_popup('Monte Carlo simulation Result','Simulation is done successfully. \n Total time: {} seconds'.format(report['time']),'Information')
         self.MC_results = report['results']
         self.show_res_func()
 
@@ -2293,7 +2293,7 @@ ul {
 
 
 # =============================================================================
-#     Index(['Category', 'Dictonary_Name', 'Parameter', 'Name', 'amount', 'unit',
+#     Index(['Category', 'Dictionary_Name', 'Parameter', 'Name', 'amount', 'unit',
 #        'uncertainty_type', 'loc', 'scale', 'shape', 'minimum', 'maximum',
 #        'Reference', 'Comment'],
 #       dtype='object')
@@ -2445,7 +2445,7 @@ ul {
             ### conf Table
             if len(conf.columns) > 0:
                 conf.index = [str(x) for x in conf.index]
-                conf_table_model = Table_modeifed_opt_setting(conf, pop_up=self.msg_popup)
+                conf_table_model = Table_modified_opt_setting(conf, pop_up=self.msg_popup)
                 self.opt_Widget.Opt_Conf_table.setModel(conf_table_model)
                 self.opt_Widget.Opt_Conf_table.resizeColumnsToContents()
                 self.opt_Widget.Opt_Conf_table.installEventFilter(self)
@@ -2542,7 +2542,7 @@ constraints = {self.constraints}""")
 
             param_data=pd.DataFrame(self.opt.optimized_x)
             param_data['Unit'] = 'fraction'
-            Opt_Param_table_model = Table_modeifed_params(param_data, pop_up=self.msg_popup)
+            Opt_Param_table_model = Table_modified_params(param_data, pop_up=self.msg_popup)
             self.Opt_Param_table.setModel(Opt_Param_table_model)
             self.Opt_Param_table.resizeColumnsToContents()
             #Draw sankey
@@ -2589,7 +2589,7 @@ constraints = {self.constraints}""")
 
     @QtCore.Slot(int)
     def report_time_UpPar(self, time):
-        #Notift the user that the project has created successfully
+        #Notify the user that the project has created successfully
         self.msg_popup('Parameters','Parameters are updated successfully in {} seconds'.format(time),'Information')
 
     @QtCore.Slot()
@@ -2668,7 +2668,7 @@ constraints = {self.constraints}""")
                 if len(rows) == 1 and len(columns) == 1:
                     for i, line in enumerate(reader):
                         for j, cell in enumerate(line):
-                            #check that the index is availble in the table
+                            #check that the index is available in the table
                             if (rows[0]+i) < model.rowCount() and (columns[0]+j) < model.columnCount():
                                 model.setData(model.index(rows[0]+i,columns[0]+j), cell)
                 else:

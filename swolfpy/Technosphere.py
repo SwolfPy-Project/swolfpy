@@ -17,9 +17,9 @@ class Technosphere:
     """
     :param project_name: Name for the project
     :type project_name: str
-    :param LCI_path: Patht to the technosphere LIC csv file
+    :param LCI_path: Path to the technosphere LIC csv file
     :type LCI_path: str
-    :param LCI_Reference_path: Path to the csv file for the technosphere refrences
+    :param LCI_Reference_path: Path to the csv file for the technosphere references
     :type LCI_Reference_path: str
     :param Ecospold2_Path: Path to the user defined technosphere LCI with ecospold2 format.
     :type Ecospold2_Path: str
@@ -39,8 +39,8 @@ class Technosphere:
         .. _Create_Technosphere:
 
         Initialize a `project` in Brightway2 by calling the ``bw2setup()`` function which creates the `biosphere3`
-        database and imports the impact assesment methods. \n
-        It also addes 7 new biosphere flows for cost calculations swoflpy. \n
+        database and imports the impact assessment methods. \n
+        It also adds 7 new biosphere flows for cost calculations swolfpy. \n
         New impact methods are imported by calling the  ``import_methods()`` from swolfpy_method_ module. \n
 
         Note: If the `project` already exists, it will delete all the databases except 'biosphere3'. `Technosphere` database is written from the
@@ -74,14 +74,14 @@ class Technosphere:
             if x not in ['biosphere3']:
                 del databases[x]
         if self.LCI_reference['Reference_activity_id'].count() > 0:
-            self._Write_user_technospher()
+            self._Write_user_technosphere()
             db = Database(self.user_tech_name)
             self.user_tech_keys = {}
             for x in db:
                 self.user_tech_keys[x.as_dict()['activity']] = x.key
         self._write_technosphere()
 
-    def _Write_user_technospher(self):
+    def _Write_user_technosphere(self):
         """
         Creates the user technosphere database from Ecospold2 files. \n
         Interface with Brightway2: Calls the ``bw2io.importers.SingleOutputEcospold2Importer`` function.
@@ -90,7 +90,7 @@ class Technosphere:
         self.user_tech.apply_strategies()
         stats = self.user_tech.statistics()
         if stats[2] > 0:
-            warnings.warn('There is {} unlink flows in the user defined technosphere (ecospold files). Make sure you are using the LCI ecosplod'
+            warnings.warn('There is {} unlink flows in the user defined technosphere (ecospold files). Make sure you are using the LCI ecospold'
                           .format(stats[2]))
             print('\nUnique unlinked exchanges:\n')
             for x in self.user_tech.unlinked:

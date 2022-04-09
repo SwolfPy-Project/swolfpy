@@ -27,7 +27,7 @@ class Optimization(LCA_matrix):
     :param functional_unit:
     :type functional_unit: dict
     :param method:
-    :type method: lsit
+    :type method: list
     :param project:
     :type project: ``swolfpy.Project.Project``
 
@@ -114,7 +114,7 @@ class Optimization(LCA_matrix):
     def _objective_function(self, x):
         """
         Use the new parameters (Waste fractions) to update the ``tech_matrix`` (``tech_param``)
-        and reculate the LCA score.
+        and recalculate the LCA score.
         """
         if self.oldx != list(x):  # Calculations are done only when the function get new x.
             if self.oldx[0:self.N_param] != list(x)[0:self.N_param]:
@@ -204,7 +204,7 @@ class Optimization(LCA_matrix):
     def _create_inequality(self, key, limit, KeyType, ConstType):
         """
 
-        :param key: process name, key for activtity in process or key for activity in biosphere
+        :param key: process name, key for activity in process or key for activity in biosphere
         :type key: str or tuple
         :param limit:
         :type limit: float
@@ -277,7 +277,7 @@ class Optimization(LCA_matrix):
         # Index for the parameters
         self.Param_index = 0
 
-        # Number of parameters in each group (from one source to different denstinations)
+        # Number of parameters in each group (from one source to different destinations)
         for key in self.project.parameters.param_uncertainty_dict.keys():
             group[key] = len(self.project.parameters.param_uncertainty_dict[key])
 
@@ -304,21 +304,21 @@ class Optimization(LCA_matrix):
         ``constraints`` is python dictionary. \n
         Constraint type can be ``'<='`` or ``'>='``. \n
         Three kind of constraints are defined as below: \n
-        * **Process:** Constraint on the total mass to the processs. The ``'KeyType'`` should be ``'Process'``
-          (e.g., The capacity of the WTE). Examaple:
+        * **Process:** Constraint on the total mass to the process. The ``'KeyType'`` should be ``'Process'``
+          (e.g., The capacity of the WTE). Example:
 
         >>> constraints = {}
         >>> # Use name the the process as key in dict
         >>> constraints['WTE'] = {'limit':100, 'KeyType':'Process','ConstType':"<="}
 
-        * **WasteToProcess:** Constraint on the total mass of waste fraction to the processs. The ``'KeyType'`` should
-          be ``'WasteToProcess'`` (e.g., Ban food waste from landfill). Examaple:
+        * **WasteToProcess:** Constraint on the total mass of waste fraction to the process. The ``'KeyType'`` should
+          be ``'WasteToProcess'`` (e.g., Ban food waste from landfill). Example:
 
         >>> constraints = {}
         >>> # Use database key as key in dict
         >>> constraints[('LF','Food_Waste_Vegetable')] = {'limit':0, 'KeyType':'WasteToProcess','ConstType':"<="}
 
-        * **Emission:** Constraint on the emissions. The ``'KeyType'`` should be ``'Emission'`` (e.g., CO2 emissions Cap). Examaple:
+        * **Emission:** Constraint on the emissions. The ``'KeyType'`` should be ``'Emission'`` (e.g., CO2 emissions Cap). Example:
 
         >>> constraints = {}
         >>> # Use database key as key in dict
@@ -453,7 +453,7 @@ class Optimization(LCA_matrix):
 
     def set_optimized_parameters_to_project(self):
         assert hasattr(self, "project"), "Must run optimize_parameters first"
-        assert self.success, "Optimization has to be sucessful first"
+        assert self.success, "Optimization has to be successful first"
 
         self.project.update_parameters(self.optimized_x)
 
@@ -463,7 +463,7 @@ class Optimization(LCA_matrix):
         Calculates the mass flows by calling ``self.get_mass_flow()``. \n
 
         :param optimized_flow: If ``True``, it plots the sankey based on the optimized waste fractions.
-                                If ``False``, it plost the sankey based on the current waste fractions by calling ``self.project.parameters_list``.
+                                If ``False``, it plots the sankey based on the current waste fractions by calling ``self.project.parameters_list``.
         :type optimized_flow: bool
 
         :param show: If ``True``, it will show the figure

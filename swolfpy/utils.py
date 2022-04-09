@@ -64,7 +64,7 @@ def dump_method(methodName, path=None):
 
 def find_biosphere_flows(flow_name, compartment=None, subcompartment=None, exact_match=True):
     """
-    Finds flows in the biosphere and reports the keys from biosph.
+    Finds flows in the biosphere and reports the keys.
     """
     key = []
     name = []

@@ -14,32 +14,32 @@ class Worker_WriteProject(QtCore.QThread):
     """
     This class instantiates a new QThread that creates the projects.\n
     We need QThread because we don't want the GUI to be freezed while writing the project.
-    """    
+    """
     UpdatePBr_WriteProject = QtCore.Signal(int)
     report_time = QtCore.Signal(int)
-        
+
     def __init__(self, parent,project):
         super().__init__(parent)
         self.project= project
 
     def run(self):
         Time_start = time()
-        # set the signal in the Porject class
+        # set the signal in the Project class
         self.project.init_project(signal=self.UpdatePBr_WriteProject)
         self.project.write_project(signal=self.UpdatePBr_WriteProject)
         self.project.group_exchanges(signal=self.UpdatePBr_WriteProject)
         Time_finish = time()
         self.report_time.emit(round(Time_finish - Time_start))
-        
+
 #%% Update parameters
 class Worker_UpdateParam(QtCore.QThread):
     """
     This class instantiates a new QThread that update the project parameters.\n
-    """    
+    """
     UpdatePBr_UpdateParam = QtCore.Signal(int)
     report_time = QtCore.Signal(int)
     report_error = QtCore.Signal(str)
-        
+
     def __init__(self, parent, project, param):
         super().__init__(parent)
         self.project= project
@@ -53,7 +53,7 @@ class Worker_UpdateParam(QtCore.QThread):
             self.report_error.emit(e.__str__())
             return False
         Time_finish = time()
-        self.report_time.emit(round(Time_finish - Time_start))      
+        self.report_time.emit(round(Time_finish - Time_start))
         return True
 
 
@@ -61,10 +61,10 @@ class Worker_UpdateParam(QtCore.QThread):
 class Worker_Optimize(QtCore.QThread):
     """
     This class instantiates a new QThread that handle the optimization.\n
-    """    
+    """
     UpdatePBr_Opt = QtCore.Signal(dict)
     report = QtCore.Signal(dict)
-        
+
     def __init__(self, parent, opt, constraints, collection, is_multi, n_iter, n_proc, iter_mehtod, timeout):
         super().__init__(parent)
         self.opt= opt
@@ -79,7 +79,7 @@ class Worker_Optimize(QtCore.QThread):
     def run(self):
         self.UpdatePBr_Opt.emit({'max':0,'val':0})
         Time_start = time()
-        results = Optimization.multi_start_optimization(self.opt, 
+        results = Optimization.multi_start_optimization(self.opt,
                                                         constraints=self.constraints,
                                                         collection=self.collection,
                                                         n_iter=self.n_iter if self.is_multi else 1,
@@ -88,17 +88,17 @@ class Worker_Optimize(QtCore.QThread):
                                                         initialize_guess=self.iter_mehtod)
         Time_finish = time()
         self.UpdatePBr_Opt.emit({'max':1,'val':1})
-        self.report.emit({'time':round(Time_finish - Time_start),'results':results})              
-            
+        self.report.emit({'time':round(Time_finish - Time_start),'results':results})
+
 
 #%% Optimize
 class Worker_MC(QtCore.QThread):
     """
     This class instantiates a new QThread that handle the MC.\n
-    """    
+    """
     UpdatePBr_Opt = QtCore.Signal(dict)
     report = QtCore.Signal(dict)
-        
+
     def __init__(self,parent,MC,nproc, n):
         super().__init__(parent)
         self.MC= MC
@@ -112,6 +112,5 @@ class Worker_MC(QtCore.QThread):
         MC_results = self.MC.result_to_DF()
         Time_finish = time()
         self.UpdatePBr_Opt.emit({'max':1,'val':1})
-        self.report.emit({'time':round(Time_finish - Time_start),'results':MC_results})     
-        
-    
+        self.report.emit({'time':round(Time_finish - Time_start),'results':MC_results})
+

@@ -119,7 +119,7 @@ class ProcessDB():
                                            Act=(self.P_Pr_Name, xx + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex)
 
-                        # addin exchange for transportation between the process models
+                        # adding exchange for transportation between the process models
                         ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
                                                 0 if Formula else 1, Formula=Formula,
                                                 Act=(self.P_Pr_Name, xx + '_' + key), product=key)
@@ -143,7 +143,7 @@ class ProcessDB():
                                            Act=(self.P_Pr_Name, xx + '_' + key), product=key)
                         self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex)
 
-                        # addin exchange for transportation between the process models
+                        # adding exchange for transportation between the process models
                         ex_trnp = self.exchange((self.P_Pr_Name, self.P_Name + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
                                                 0 if Formula else 1, Formula=Formula,
                                                 Act=(self.P_Pr_Name, xx + '_' + key), product=key)
@@ -181,7 +181,7 @@ class ProcessDB():
 
                         self.db_Pr_data[(self.P_Pr_Name, xx + '_' + key)]['exchanges'].append(ex)
 
-                        # addin exchange for transportation between the collection sector and treatment processs
+                        # adding exchange for transportation between the collection sector and treatment process
                         if p in self.Report['LCI'][key].keys():
                             ex_trnp = self.exchange((self.P_Pr_Name, key + '_' + 'to' + '_' + p), 'technosphere', 'Mg/year',
                                                     0 if Formula else 1, Formula=Formula,
@@ -190,16 +190,16 @@ class ProcessDB():
                         else:
                             raise ValueError('Inconsistent treatment processes in model and collection')
                 else:
-                    raise Exception(f'Unknown waste proudct! {key} is not defined in PrcessDB class')
+                    raise Exception(f'Unknown waste product! {key} is not defined in PrcessDB class')
 
-            ### Adding the technosphere exchnages to activities
+            ### Adding the technosphere exchanges to activities
             for key in self.Report["Technosphere"][x]:
                 # if self.Report["Technosphere"][x][key] != 0:
                 if True:
                     ex = self.exchange(key, 'technosphere', 'Mg/year', self.Report["Technosphere"][x][key])
                     self.db_data[(self.P_Name, x)]['exchanges'].append(ex)
 
-            ### Adding the biosphere exchnages
+            ### Adding the biosphere exchanges
             for key in self.Report["Biosphere"][x]:
                 # if self.Report["Biosphere"][x][key] != 0:
                 if True:
@@ -214,7 +214,7 @@ class ProcessDB():
                 self._add_transport_between_processes()
 
         ### writing the databases
-        self._writre_DB_from_dict()
+        self._write_DB_from_dict()
 
         return(self.parameters, self.act_in_group)
 
@@ -244,7 +244,7 @@ class ProcessDB():
         """
         Adding activity for transport between the treatment processes
         """
-        # check whether transportation is needed or not (if no waste is proudced, then no transportation is needed)
+        # check whether transportation is needed or not (if no waste is produced, then no transportation is needed)
         if len(self.db_Pr_data) > 0:
             for p, q in self.Distance.Distance.keys():
                 if p == self.P_Name and p != q:
@@ -264,28 +264,28 @@ class ProcessDB():
                         if mode == 'Heavy Duty Truck':
                             ex = self.exchange(('Technosphere', 'Internal_Process_Transportation_Heavy_Duty_Diesel_Truck'),
                                                'technosphere', 'Mg/year', 1000 * self.Distance.Distance[(p, q)][mode], Formula=None,
-                                               Act=None, product=None)  # unit converion Mg to kg
+                                               Act=None, product=None)  # unit conversion Mg to kg
                         elif mode == 'Medium Duty Truck':
                             ex = self.exchange(('Technosphere', 'Internal_Process_Transportation_Medium_Duty_Diesel_Truck'),
                                                'technosphere', 'Mg/year', 1000 * self.Distance.Distance[(p, q)][mode], Formula=None,
-                                               Act=None, product=None)  # unit converion Mg to kg
+                                               Act=None, product=None)  # unit conversion Mg to kg
                         elif mode == 'Rail':
                             ex = self.exchange(('Technosphere', 'Internal_Process_Transportation_Rail'),
                                                'technosphere', 'Mg/year', 1000 * self.Distance.Distance[(p, q)][mode], Formula=None,
-                                               Act=None, product=None)  # unit converion Mg to kg
+                                               Act=None, product=None)  # unit conversion Mg to kg
                         elif mode == 'Barge':
                             ex = self.exchange(('Technosphere', 'Internal_Process_Transportation_Barge'),
                                                'technosphere', 'Mg/year', 1000 * self.Distance.Distance[(p, q)][mode], Formula=None,
-                                               Act=None, product=None)  # unit converion Mg to kg
+                                               Act=None, product=None)  # unit conversion Mg to kg
                         elif mode == 'Cargo Ship':
                             ex = self.exchange(('Technosphere', 'Internal_Process_Transportation_Cargo_Ship'),
                                                'technosphere', 'Mg/year', 1000 * self.Distance.Distance[(p, q)][mode], Formula=None,
-                                               Act=None, product=None)  # unit converion Mg to kg
+                                               Act=None, product=None)  # unit conversion Mg to kg
                         else:
                             raise ValueError(f'Transport mode {mode} is incorrect!')
                         self.db_Pr_data[(self.P_Pr_Name, p + '_' + 'to' + '_' + q)]['exchanges'].append(ex)
 
-    def _writre_DB_from_dict(self):
+    def _write_DB_from_dict(self):
         if len(self.db_Pr_data) > 0:
             print("""
                   ####

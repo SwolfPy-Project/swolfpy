@@ -44,7 +44,7 @@ swolfpy_method
 ===============
 
 .. autofunction:: swolfpy.swolfpy_method.import_methods
-   
+
 
 
 .. _LCA_matrix:
@@ -55,8 +55,8 @@ LCA Matrix
 .. autoclass:: swolfpy.LCA_matrix.LCA_matrix
    :members:
    :show-inheritance:
-   
-   
+
+
 
 .. _montecarlo:
 
@@ -69,7 +69,7 @@ Monte Carlo
 
 
 
-.. _optimizaiton:
+.. _optimization:
 
 Optimization
 ============

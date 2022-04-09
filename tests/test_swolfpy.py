@@ -46,7 +46,7 @@ def test_demo_swolfpy():
     ### Check the exchanges
     projects.set_current(project_name)
 
-    def check_exhanges(name, report, waste_frac):
+    def check_exchanges(name, report, waste_frac):
         db = Database(name)
         act = db.get(waste_frac)
         tech_flows = report['Technosphere'][common_data.Index[1]].keys()
@@ -66,10 +66,10 @@ def test_demo_swolfpy():
         for x in act.biosphere():
             assert report['Biosphere'][waste_frac][x.input.key] == x.amount
 
-    check_exhanges('LF', Treatment_processes['LF']['model'].report(), common_data.Index[1])
-    check_exhanges('LF', Treatment_processes['LF']['model'].report(), common_data.Index[5])
-    check_exhanges('WTE', Treatment_processes['WTE']['model'].report(), common_data.Index[3])
-    check_exhanges('WTE', Treatment_processes['WTE']['model'].report(), common_data.Index[13])
+    check_exchanges('LF', Treatment_processes['LF']['model'].report(), common_data.Index[1])
+    check_exchanges('LF', Treatment_processes['LF']['model'].report(), common_data.Index[5])
+    check_exchanges('WTE', Treatment_processes['WTE']['model'].report(), common_data.Index[3])
+    check_exchanges('WTE', Treatment_processes['WTE']['model'].report(), common_data.Index[13])
 
     ### Group the exchanges
     demo.group_exchanges()

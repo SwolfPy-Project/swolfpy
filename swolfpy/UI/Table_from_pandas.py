@@ -10,7 +10,7 @@ import numpy as np
 def f_n(x):
     """
     format number function
-    If the input is string, it returns string but if the input in number, it will return it in sceintific format.
+    If the input is string, it returns string but if the input in number, it will return it in scientific format.
     """
     if (isinstance(x,float) or isinstance(x,int)) and len(str(x))>6:
         return("{:.4e}".format(x))
@@ -41,7 +41,7 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
             return str(self._data.columns[col])
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[col]
-    
+
     def sort(self, col, order):
         self.layoutAboutToBeChanged.emit()
         """sort table by given column number column"""
@@ -77,17 +77,17 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
                 return f_n(self._data.iloc[index.row(), index.column()])
-            
+
             elif role == QtCore.Qt.EditRole:
                 return str(self._data.iloc[index.row(), index.column()])
         return None
-                     
+
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return self._data.columns[col]
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[col]
-        
+
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if index.isValid() and role == QtCore.Qt.EditRole:
             try:
@@ -125,10 +125,10 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
         new structure into account.
         """
         self.layoutChanged.emit()
-        
+
 
 #%% Table: Distance Table
-class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
+class Table_modified_distanceTable(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None, pop_up=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self._data = data
@@ -146,17 +146,17 @@ class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
 
             if role==QtCore.Qt.BackgroundColorRole and index.row() >= index.column():
                 return QtGui.QBrush(QtCore.Qt.gray)
-            
+
             if role == QtCore.Qt.EditRole:
                 return str(self._data.iloc[index.row(), index.column()])
         return None
-                     
+
     def headerData(self, col, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             return self._data.columns[col]
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[col]
-    
+
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if index.isValid() and role == QtCore.Qt.EditRole:
             self._data.iloc[index.row(), index.column()] = float(value)
@@ -168,10 +168,10 @@ class Table_modeifed_distanceTable(QtCore.QAbstractTableModel):
         if index.row() >= index.column():
              return QtCore.Qt.ItemIsEnabled
         else:
-            return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable           
-        
+            return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable
+
 #%% Table: Collection scheme table
-class Table_modeifed_collection_schm(Table_from_pandas_editable):
+class Table_modified_collection_schm(Table_from_pandas_editable):
     def __init__(self, data, parent=None, pop_up=None):
         Table_from_pandas_editable.__init__(self, data, parent, pop_up)
 
@@ -212,7 +212,7 @@ class Table_modeifed_collection_schm(Table_from_pandas_editable):
 
 
 #%% Table: Collection scheme table
-class Table_modeifed_params(Table_from_pandas_editable):
+class Table_modified_params(Table_from_pandas_editable):
     def __init__(self, data, parent=None, pop_up=None):
         Table_from_pandas_editable.__init__(self, data, parent, pop_up)
 
@@ -237,10 +237,10 @@ class Table_modeifed_params(Table_from_pandas_editable):
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
-        
+
 
 #%% Table: Collection scheme table
-class Table_modeifed_opt_setting(Table_from_pandas_editable):
+class Table_modified_opt_setting(Table_from_pandas_editable):
     def __init__(self, data, parent=None, pop_up=None):
         Table_from_pandas_editable.__init__(self, data, parent, pop_up)
 
@@ -253,7 +253,7 @@ class Table_modeifed_opt_setting(Table_from_pandas_editable):
                         raise ValueError('The parameter should be between 0 and 1!')
                 elif index.column() % 2 == 1:
                     if value not in ['Fix', 'Optimize']:
-                        raise ValueError('The mode should be Fix or Optimize!') 
+                        raise ValueError('The mode should be Fix or Optimize!')
                 self._data.iloc[index.row(), index.column()] = value
                 self.dataChanged.emit(index, index)
                 return True
