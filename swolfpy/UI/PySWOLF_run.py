@@ -735,6 +735,7 @@ ul {
   <li><b>SSO</b>: Source Separated Organics</li>
   <li><b>SSYW</b>: Source Separated Yard Waste</li>
   <li><b>SSYWDO</b>: Source Separated Yard Waste DropOff</li>
+  <li><b>SSO_AnF</b>: Source Separated Organics for Animal Feed</li>
 </ul>
 <ul style="color:blue">
   <li><b>SSR</b>: Single-Stream Recyclables</li>
