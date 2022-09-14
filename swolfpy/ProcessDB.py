@@ -328,10 +328,15 @@ class ProcessDB():
         return(exchange)
 
     @staticmethod
-    def _helper_wasteflow_name(name):
-        if 'DryRes' == name[0:6] or 'WetRes' == name[0:6]:
-            return(name[7:])
-        elif 'ORG' == name[0:3] or 'REC' == name[0:3]:
-            return(name[4:])
+    def _helper_wasteflow_name(name: str) -> str:
+        """
+        Removes the collection index and returns the waste fraction index.
+        """
+        if name[0:6] in ['DryRes', 'WetRes']:
+            return name[7:]
+        elif name[0:4] in ['SSYW']:
+            return name[5:]
+        elif name[0:3] in ['ORG', 'REC', 'SSO', 'SSR', 'RWC']:
+            return name[4:]
         else:
-            return(None)
+            return None
