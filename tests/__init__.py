@@ -1,1 +1,3 @@
-"""Unit test package for swolfpy."""
+"""
+Unit test package for swolfpy.
+"""

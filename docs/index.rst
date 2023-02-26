@@ -14,7 +14,7 @@ Welcome to swolfpy's documentation!
    contributing
    authors
    history
-   
+
 
 Indices and tables
 ==================

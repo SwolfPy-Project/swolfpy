@@ -8,8 +8,8 @@ Process Model
 
 .. autoclass:: swolfpy_processmodels.ProcessModel
    :members:
-   
-   
+
+
 .. _Distance:
 
 Distance

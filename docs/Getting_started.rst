@@ -320,4 +320,3 @@ Guideline to define uncertainty
 		  0.04 to 0.09 based on the quality of the data.
 
 .. seealso:: For more information about distributions check `stats_arrays <https://stats-arrays.readthedocs.io/en/latest/index.html#>`_ website.
-

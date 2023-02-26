@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Jan 14 21:40:11 2020
-
-@author: msardar2
-"""
-from PySide2 import QtWidgets, QtGui, QtCore
 import numpy as np
+from PySide2 import QtCore, QtGui, QtWidgets
+
 
 def f_n(x):
     """
-    format number function
-    If the input is string, it returns string but if the input in number, it will return it in scientific format.
+    format number function If the input is string, it returns string but if the input in
+    number, it will return it in scientific format.
     """
-    if (isinstance(x,float) or isinstance(x,int)) and len(str(x))>6:
-        return("{:.4e}".format(x))
+    if (isinstance(x, float) or isinstance(x, int)) and len(str(x)) > 6:
+        return "{:.4e}".format(x)
     else:
-        return(str(x))
+        return str(x)
 
 
-#%% Table: View Pandas Data Frame
+# %% Table: View Pandas Data Frame
 class Table_from_pandas(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -44,11 +40,13 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
 
     def sort(self, col, order):
         self.layoutAboutToBeChanged.emit()
-        """sort table by given column number column"""
+        """
+        Sort table by given column number column.
+        """
         if order == QtCore.Qt.AscendingOrder:
-            self._data = self._data.sort_values(self._data.columns[col],ascending=True)
+            self._data = self._data.sort_values(self._data.columns[col], ascending=True)
         elif order == QtCore.Qt.DescendingOrder:
-            self._data = self._data.sort_values(self._data.columns[col],ascending=False)
+            self._data = self._data.sort_values(self._data.columns[col], ascending=False)
         """
         If the structure of the underlying data changes, the model can emit layoutChanged() to
         indicate to any attached views that they should redisplay any items shown, taking the
@@ -57,7 +55,7 @@ class Table_from_pandas(QtCore.QAbstractTableModel):
         self.layoutChanged.emit()
 
 
-#%% Table: View and edit Pandas Data Frame
+# %% Table: View and edit Pandas Data Frame
 class Table_from_pandas_editable(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None, pop_up=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -91,34 +89,52 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if index.isValid() and role == QtCore.Qt.EditRole:
             try:
-                if self._ColDict[index.column()] in ['Amount', 'amount', 'loc', 'scale', 'shape', 'minimum', 'maximum']:
+                if self._ColDict[index.column()] in [
+                    "Amount",
+                    "amount",
+                    "loc",
+                    "scale",
+                    "shape",
+                    "minimum",
+                    "maximum",
+                ]:
                     value = float(value)
-                elif self._ColDict[index.column()] in ['uncertainty_type']:
+                elif self._ColDict[index.column()] in ["uncertainty_type"]:
                     value = int(value)
                 self._data.iloc[index.row(), index.column()] = value
                 self.dataChanged.emit(index, index)
                 return True
             except Exception as e:
                 if self.pop_up:
-                    self.pop_up('Update Data Warning!', e.__str__(), 'Warning')
+                    self.pop_up("Update Data Warning!", e.__str__(), "Warning")
                 print(e)
                 return False
         return False
 
     def flags(self, index):
-        if self._ColDict[index.column()] in ['Amount', 'amount', 'uncertainty_type', 'loc',
-                                             'scale', 'shape', 'minimum', 'maximum']:
+        if self._ColDict[index.column()] in [
+            "Amount",
+            "amount",
+            "uncertainty_type",
+            "loc",
+            "scale",
+            "shape",
+            "minimum",
+            "maximum",
+        ]:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
     def sort(self, col, order):
         self.layoutAboutToBeChanged.emit()
-        """sort table by given column number column"""
+        """
+        Sort table by given column number column.
+        """
         if order == QtCore.Qt.AscendingOrder:
-            self._data = self._data.sort_values(self._data.columns[col],ascending=True)
+            self._data = self._data.sort_values(self._data.columns[col], ascending=True)
         elif order == QtCore.Qt.DescendingOrder:
-            self._data = self._data.sort_values(self._data.columns[col],ascending=False)
+            self._data = self._data.sort_values(self._data.columns[col], ascending=False)
         """
         If the structure of the underlying data changes, the model can emit layoutChanged() to
         indicate to any attached views that they should redisplay any items shown, taking the
@@ -127,7 +143,7 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
         self.layoutChanged.emit()
 
 
-#%% Table: Distance Table
+# %% Table: Distance Table
 class Table_modified_distanceTable(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None, pop_up=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -144,7 +160,7 @@ class Table_modified_distanceTable(QtCore.QAbstractTableModel):
             if role == QtCore.Qt.DisplayRole:
                 return f_n(self._data.iloc[index.row(), index.column()])
 
-            if role==QtCore.Qt.BackgroundColorRole and index.row() >= index.column():
+            if role == QtCore.Qt.BackgroundColorRole and index.row() >= index.column():
                 return QtGui.QBrush(QtCore.Qt.gray)
 
             if role == QtCore.Qt.EditRole:
@@ -166,11 +182,12 @@ class Table_modified_distanceTable(QtCore.QAbstractTableModel):
 
     def flags(self, index):
         if index.row() >= index.column():
-             return QtCore.Qt.ItemIsEnabled
+            return QtCore.Qt.ItemIsEnabled
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable
 
-#%% Table: Collection scheme table
+
+# %% Table: Collection scheme table
 class Table_modified_collection_schm(Table_from_pandas_editable):
     def __init__(self, data, parent=None, pop_up=None):
         Table_from_pandas_editable.__init__(self, data, parent, pop_up)
@@ -179,7 +196,7 @@ class Table_modified_collection_schm(Table_from_pandas_editable):
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
                 return f_n(self._data.iloc[index.row(), index.column()])
-            elif role==QtCore.Qt.ForegroundRole and index.column() == 0:
+            elif role == QtCore.Qt.ForegroundRole and index.column() == 0:
                 if sum(self._data.iloc[:, index.column()]) != 1.0:
                     return QtGui.QBrush(QtCore.Qt.red)
                 else:
@@ -193,13 +210,13 @@ class Table_modified_collection_schm(Table_from_pandas_editable):
             try:
                 value = float(value)
                 if not 0 <= value <= 1:
-                    raise ValueError('The contribution should be between 0 and 1!')
+                    raise ValueError("The contribution should be between 0 and 1!")
                 self._data.iloc[index.row(), index.column()] = value
                 self.dataChanged.emit(index, index)
                 return True
             except Exception as e:
                 if self.pop_up:
-                    self.pop_up('Update Data Warning!', e.__str__(), 'Warning')
+                    self.pop_up("Update Data Warning!", e.__str__(), "Warning")
                 print(e)
                 return False
         return False
@@ -211,7 +228,7 @@ class Table_modified_collection_schm(Table_from_pandas_editable):
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
 
-#%% Table: Collection scheme table
+# %% Table: Collection scheme table
 class Table_modified_params(Table_from_pandas_editable):
     def __init__(self, data, parent=None, pop_up=None):
         Table_from_pandas_editable.__init__(self, data, parent, pop_up)
@@ -221,25 +238,25 @@ class Table_modified_params(Table_from_pandas_editable):
             try:
                 value = float(value)
                 if not 0 <= value <= 1:
-                    raise ValueError('The parameter should be between 0 and 1!')
+                    raise ValueError("The parameter should be between 0 and 1!")
                 self._data.iloc[index.row(), index.column()] = value
                 self.dataChanged.emit(index, index)
                 return True
             except Exception as e:
                 if self.pop_up:
-                    self.pop_up('Update Parameter Warning!', e.__str__(), 'Warning')
+                    self.pop_up("Update Parameter Warning!", e.__str__(), "Warning")
                 print(e)
                 return False
         return False
 
     def flags(self, index):
-        if self._ColDict[index.column()] in ['amount']:
+        if self._ColDict[index.column()] in ["amount"]:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
 
-#%% Table: Collection scheme table
+# %% Table: Collection scheme table
 class Table_modified_opt_setting(Table_from_pandas_editable):
     def __init__(self, data, parent=None, pop_up=None):
         Table_from_pandas_editable.__init__(self, data, parent, pop_up)
@@ -250,16 +267,16 @@ class Table_modified_opt_setting(Table_from_pandas_editable):
                 if index.column() % 2 == 0:
                     value = float(value)
                     if not 0 <= value <= 1:
-                        raise ValueError('The parameter should be between 0 and 1!')
+                        raise ValueError("The parameter should be between 0 and 1!")
                 elif index.column() % 2 == 1:
-                    if value not in ['Fix', 'Optimize']:
-                        raise ValueError('The mode should be Fix or Optimize!')
+                    if value not in ["Fix", "Optimize"]:
+                        raise ValueError("The mode should be Fix or Optimize!")
                 self._data.iloc[index.row(), index.column()] = value
                 self.dataChanged.emit(index, index)
                 return True
             except Exception as e:
                 if self.pop_up:
-                    self.pop_up('Update Parameter Warning!', e.__str__(), 'Warning')
+                    self.pop_up("Update Parameter Warning!", e.__str__(), "Warning")
                 print(e)
                 return False
         return False

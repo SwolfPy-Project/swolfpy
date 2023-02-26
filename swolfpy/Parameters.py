@@ -1,14 +1,15 @@
-from stats_arrays import UncertaintyBase, MCRandomNumberGenerator
 import copy
+
 import graphviz
+from stats_arrays import MCRandomNumberGenerator, UncertaintyBase
 
 
 def approx_eq(x, y):
-    tol = 1.0E-6
+    tol = 1.0e-6
     return abs(x - y) <= max(abs(x), abs(y)) * tol
 
 
-class Parameters():
+class Parameters:
     def __init__(self, processes, CommonData):
         self.param_uncertainty_dict = dict()
         self.static_param_dict = dict()
@@ -22,33 +23,48 @@ class Parameters():
         self.nodes = list(self.processes.keys())
 
         # Color & shape for plotting the SWM Network
-        self.edge_color = {'RWC': 'black', 'SSR': 'blue', 'DSR': 'blue',
-                           'MSR': 'blue',
-                           'LV': 'green4', 'SSYW': 'green4', 'SSO': 'green4',
-                           'SSO_AnF': 'green4', 'SSO_HC': 'green4',
-                           'ORG': 'green4', 'DryRes': 'black',
-                           'REC': 'blue', 'WetRes': 'black',
-                           'MRDO': 'black', 'SSYWDO': 'green4', 'MSRDO': 'blue',
-                           'Bottom_Ash': 'gray', 'Fly_Ash': 'gray',
-                           'Unreacted_Ash': 'gray',
-                           'Separated_Organics': 'green4',
-                           'Separated_Recyclables': 'blue',
-                           'Other_Residual': 'black', 'RDF': 'red'}
+        self.edge_color = {
+            "RWC": "black",
+            "SSR": "blue",
+            "DSR": "blue",
+            "MSR": "blue",
+            "LV": "green4",
+            "SSYW": "green4",
+            "SSO": "green4",
+            "SSO_AnF": "green4",
+            "SSO_HC": "green4",
+            "ORG": "green4",
+            "DryRes": "black",
+            "REC": "blue",
+            "WetRes": "black",
+            "MRDO": "black",
+            "SSYWDO": "green4",
+            "MSRDO": "blue",
+            "Bottom_Ash": "gray",
+            "Fly_Ash": "gray",
+            "Unreacted_Ash": "gray",
+            "Separated_Organics": "green4",
+            "Separated_Recyclables": "blue",
+            "Other_Residual": "black",
+            "RDF": "red",
+        }
         for i in CommonData.Reprocessing_Index:
-            self.edge_color[i] = 'blue'
+            self.edge_color[i] = "blue"
         self.node_shape = {}
         self.node_color = {}
         for p in self.processes:
-            if self.processes[p]['model'].Process_Type != 'Collection':
-                self.node_shape[p] = 'rectangle'
-                self.node_color[p] = 'cyan3'
+            if self.processes[p]["model"].Process_Type != "Collection":
+                self.node_shape[p] = "rectangle"
+                self.node_color[p] = "cyan3"
             else:
-                self.node_shape[p] = 'oval'
-                self.node_color[p] = 'azure'
+                self.node_shape[p] = "oval"
+                self.node_color[p] = "azure"
 
-    def add_parameter(self, product, process_model_from, process_model_to, value, dynamic_param=True):
+    def add_parameter(
+        self, product, process_model_from, process_model_to, value, dynamic_param=True
+    ):
         """
-        Define new parameter
+        Define new parameter.
 
         :param product: Name of stream
         :type product: str
@@ -58,36 +74,72 @@ class Parameters():
         :type process_model_to: str
         :param value: Value for the parameter
         :type value: float
-
         """
-        param_name = 'frac_of_' + product + '_from_' + process_model_from + '_to_' + process_model_to
+        param_name = (
+            "frac_of_" + product + "_from_" + process_model_from + "_to_" + process_model_to
+        )
         key = product + process_model_from
         if dynamic_param:
             if key not in self.param_uncertainty_dict.keys():
                 self.param_uncertainty_dict[key] = list()
-                self.param_uncertainty_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+                self.param_uncertainty_dict[key].append(
+                    [
+                        process_model_to,
+                        value,
+                        param_name,
+                        (process_model_from, process_model_to, product),
+                    ]
+                )
             else:
-                self.param_uncertainty_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+                self.param_uncertainty_dict[key].append(
+                    [
+                        process_model_to,
+                        value,
+                        param_name,
+                        (process_model_from, process_model_to, product),
+                    ]
+                )
         else:
             if key not in self.static_param_dict.keys():
                 self.static_param_dict[key] = list()
-                self.static_param_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+                self.static_param_dict[key].append(
+                    [
+                        process_model_to,
+                        value,
+                        param_name,
+                        (process_model_from, process_model_to, product),
+                    ]
+                )
             else:
-                self.static_param_dict[key].append([process_model_to, value, param_name, (process_model_from, process_model_to, product)])
+                self.static_param_dict[key].append(
+                    [
+                        process_model_to,
+                        value,
+                        param_name,
+                        (process_model_from, process_model_to, product),
+                    ]
+                )
 
-    def SWM_network(self, view=True, show_vals=True, all_flow=True,
-                    filename='SWM_network'):
+    def SWM_network(self, view=True, show_vals=True, all_flow=True, filename="SWM_network"):
         """
-        To render the generated DOT source code, you also need to install `Graphviz <https://www.graphviz.org/download>`_.
+        To render the generated DOT source code, you also need to install `Graphviz
+        <https://www.graphviz.org/download>`_.
 
         ..note:: Make sure that the directory containing the dot executable is on your systems path.
-
         """
         # Initialize SWM network
-        self.network = graphviz.Digraph(name=filename, filename=filename + '.gv', format='png', engine='dot')
-        self.network.graph_attr['rankdir'] = 'LR'
+        self.network = graphviz.Digraph(
+            name=filename, filename=filename + ".gv", format="png", engine="dot"
+        )
+        self.network.graph_attr["rankdir"] = "LR"
         for x in self.nodes:
-            self.network.node(x, shape=self.node_shape[x], fillcolor=self.node_color[x], style='filled', width='1.2')
+            self.network.node(
+                x,
+                shape=self.node_shape[x],
+                fillcolor=self.node_color[x],
+                style="filled",
+                width="1.2",
+            )
 
         for param_dict in [self.param_uncertainty_dict.values(), self.static_param_dict.values()]:
             for y in param_dict:
@@ -102,16 +154,20 @@ class Parameters():
                     else:
                         self.add_edge(x[3][0], x[3][1], x[3][2])
         try:
-            self.network.render(filename + '.gv', view=view)
+            self.network.render(filename + ".gv", view=view)
         except Exception:
-            print("""
+            print(
+                """
             To render the generated DOT source code, you also need to install Graphviz (`Graphviz <https://www.graphviz.org/download>`_).\n
             Make sure that the directory containing the dot executable is on your systems’ path.
-            """)
+            """
+            )
 
     def add_edge(self, head, tail, name, value=None):
         if isinstance(value, (int, float)):
-            self.network.edge(head, tail, label=name + ' ({})'.format(value), color=self.edge_color[name])
+            self.network.edge(
+                head, tail, label=name + " ({})".format(value), color=self.edge_color[name]
+            )
         else:
             self.network.edge(head, tail, label=name, color=self.edge_color[name])
 
@@ -119,15 +175,15 @@ class Parameters():
         default_parameters_list = []
         for items in self.param_uncertainty_dict.values():
             for list_item in items:
-                default_parameters_list.append({'name': list_item[2], 'amount': 1 / len(items)})
-        return(default_parameters_list)
+                default_parameters_list.append({"name": list_item[2], "amount": 1 / len(items)})
+        return default_parameters_list
 
     def parameters_list(self):
         parameters_list = []
         for items in self.param_uncertainty_dict.values():
             for list_item in items:
-                parameters_list.append({'name': list_item[2], 'amount': list_item[1]})
-        return(parameters_list)
+                parameters_list.append({"name": list_item[2], "amount": list_item[1]})
+        return parameters_list
 
     def update_values(self, param_name, val, simulation=False):
         if simulation:
@@ -142,7 +198,8 @@ class Parameters():
 
     def check_sum(self):
         """
-        Check that sum of the waste fractions (parameters) for each stream from one source to all available destinations is 1.
+        Check that sum of the waste fractions (parameters) for each stream from one source
+        to all available destinations is 1.
         """
         sum_ = 0
         flag = 1
@@ -150,7 +207,9 @@ class Parameters():
             for list_item in item:
                 sum_ += list_item[1]
                 if list_item[1] < 0 or list_item[1] > 1:
-                    raise ValueError("Parameters should be in range(0,1), check: {}".format(list_item[2]))
+                    raise ValueError(
+                        "Parameters should be in range(0,1), check: {}".format(list_item[2])
+                    )
             if not approx_eq(sum_, 1):
                 msg = "Sum of the parameters in group is not 1: \n"
                 for i in item:
@@ -171,13 +230,13 @@ class Parameters():
         :type param_name: str
         """
         base_dict = dict()
-        base_dict['loc'] = kwargs.get('loc', None)
-        base_dict['scale'] = kwargs.get('scale', None)
-        base_dict['shape'] = kwargs.get('shape', None)
-        base_dict['minimum'] = kwargs.get('minimum', None)
-        base_dict['maximum'] = kwargs.get('maximum', None)
-        base_dict['negative'] = kwargs.get('negative', None)
-        base_dict['uncertainty_type'] = kwargs.get('uncertainty_type', None)
+        base_dict["loc"] = kwargs.get("loc", None)
+        base_dict["scale"] = kwargs.get("scale", None)
+        base_dict["shape"] = kwargs.get("shape", None)
+        base_dict["minimum"] = kwargs.get("minimum", None)
+        base_dict["maximum"] = kwargs.get("maximum", None)
+        base_dict["negative"] = kwargs.get("negative", None)
+        base_dict["uncertainty_type"] = kwargs.get("uncertainty_type", None)
 
         if param_name not in self.MC_param_name:
             self.MC_param_name.append(param_name)
@@ -195,7 +254,7 @@ class Parameters():
 
     def MC_calc(self):
         """
-        Generates new values for uncertain parameters
+        Generates new values for uncertain parameters.
         """
         new_vals = self.rand.next()
         for i in range(len(new_vals)):
@@ -212,7 +271,7 @@ class Parameters():
             param_vals.append(self.MC_get_param_val(key))
             for item in self.params_dict[key]:
                 param_exchanges_dict[item] = self.MC_get_param_val(key)
-        return(param_exchanges_dict, tuple(zip(param_keys, param_vals)))
+        return (param_exchanges_dict, tuple(zip(param_keys, param_vals)))
 
     def normalize(self):
         """
@@ -222,7 +281,11 @@ class Parameters():
             sum_ = 0
             for list_item in item:
                 if list_item[1] < 0:
-                    raise ValueError("Parameters should be positive, check the uncertainty base for param: {}".format(list_item[2]))
+                    raise ValueError(
+                        "Parameters should be positive, check the uncertainty base for param: {}".format(
+                            list_item[2]
+                        )
+                    )
                 sum_ += list_item[1]
 
             for list_item in item:
@@ -233,7 +296,7 @@ class Parameters():
 
     def MC_get_param_val(self, param_name):
         """
-        Report the uncertain value created for parameter
+        Report the uncertain value created for parameter.
 
         :param param_name: Name of the parameter (wastefraction) that has uncertainty
         :type param_name: str
@@ -247,7 +310,7 @@ class Parameters():
 
     def Param_exchanges(self, new_vals):
         """
-        Returns the parameters exchanges with the new values
+        Returns the parameters exchanges with the new values.
         """
         param_exchanges_dict = dict()
         self.MC_param_uncertainty_dict = copy.deepcopy(self.param_uncertainty_dict)
@@ -260,4 +323,4 @@ class Parameters():
         for key in param_list:
             for item in self.params_dict[key]:
                 param_exchanges_dict[item] = self.MC_get_param_val(key)
-        return(param_exchanges_dict)
+        return param_exchanges_dict

@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed May 29 12:13:23 2019
-
-@author: msmsa
-"""
-from brightway2 import projects, Database, parameters, LCA, get_activity, calculation_setups, MultiLCA, Method
-from bw2data.parameters import ActivityParameter
-from .ProcessDB import ProcessDB
-from bw2analyzer import ContributionAnalysis
-from .Parameters import Parameters
-from .Technosphere import Technosphere
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from brightway2 import (
+    LCA,
+    Database,
+    Method,
+    MultiLCA,
+    calculation_setups,
+    get_activity,
+    parameters,
+    projects,
+)
+from bw2analyzer import ContributionAnalysis
+from bw2data.parameters import ActivityParameter
+
+from .Parameters import Parameters
+from .ProcessDB import ProcessDB
+from .Technosphere import Technosphere
 
 
-class Project():
+class Project:
     """
     Project class creates a new project in Brightway2.
 
@@ -23,7 +28,7 @@ class Project():
     :type project_name: str
 
     :param CommonData: CommonData object
-    :type CommonData: class: `swolfpy.ProcessMoldes.CommonData`
+    :type CommonData: class: `swolfpy_inputdata.CommonData`
 
     :param Treatment_processes: Dictionary for treatment processes include their input type and model.
     :type Treatment_processes: dict
@@ -83,13 +88,24 @@ class Project():
          {'name': 'frac_of_RWC_from_SF_COl_to_WTE', 'amount': 0.5}]
     >>> demo.update_parameters(demo.parameters.default_parameters_list())
     """
-    def __init__(self, project_name, CommonData, Treatment_processes, Distance,
-                 Collection_processes=None, Technosphere_obj=None, signal=None):
+
+    def __init__(
+        self,
+        project_name,
+        CommonData,
+        Treatment_processes,
+        Distance,
+        Collection_processes=None,
+        Technosphere_obj=None,
+        signal=None,
+    ):
         if Technosphere_obj:
             self.Technosphere = Technosphere_obj
             self.project_name = self.Technosphere.project_name
             if self.project_name != project_name:
-                raise Warning('The project name should be same with the name selected for creating the technosphere')
+                raise Warning(
+                    "The project name should be same with the name selected for creating the technosphere"
+                )
         else:
             self.project_name = project_name
             self.Technosphere = Technosphere(self.project_name)
@@ -105,7 +121,7 @@ class Project():
         self.processes = [x for x in self.Treatment_processes.keys()]
         self.processTypes = {}
         for p in self.processes:
-            self.processTypes[p] = self.Treatment_processes[p]['model'].Process_Type
+            self.processTypes[p] = self.Treatment_processes[p]["model"].Process_Type
 
         projects.set_current(self.project_name)
 
@@ -122,27 +138,27 @@ class Project():
 
     def _find_destination(self, product):
         """
-        Find the processes that can treat the `product`. This function check the ``input_type`` in the ``Treatment_processes`` dictionary.
+        Find the processes that can treat the `product`. This function check the
+        ``input_type`` in the ``Treatment_processes`` dictionary.
 
         :param product: Waste product e.g., RWC, Fly_Ash, Separated_Organics, Other_Residual
         :type product: str
 
         :return: A list of the discovered processes in the ``Treatment_processes`` dictionary that can treat the `product`
         :rtype: list
-
         """
         destination = []
         for P in self.Treatment_processes:
-            if product in self.Treatment_processes[P]['input_type']:
+            if product in self.Treatment_processes[P]["input_type"]:
                 destination.append(P)
-        return(destination)
+        return destination
 
     def init_project(self, signal=None):
         """
-        Calls the Create_Technosphere_ method to initialize a project.\n
-        This function create an empty database for each process as a placeholder, so swolfpy
-        can browse these databases in the next step (writing project) and
-        create exchanges between them.
+        Calls the Create_Technosphere_ method to initialize a project.\n This function
+        create an empty database for each process as a placeholder, so swolfpy can browse
+        these databases in the next step (writing project) and create exchanges between
+        them.
         """
         if signal:
             self._progress += 5
@@ -156,12 +172,15 @@ class Project():
 
         # Initializing the databases
         for DB_name in self.Treatment_processes:
-            if self.Treatment_processes[DB_name]['model'].Process_Type in ['Treatment', 'Collection']:
+            if self.Treatment_processes[DB_name]["model"].Process_Type in [
+                "Treatment",
+                "Collection",
+            ]:
                 ProcessDB.init_DB(DB_name, self.CommonData.Index)
-            elif self.Treatment_processes[DB_name]['model'].Process_Type == 'Reprocessing':
+            elif self.Treatment_processes[DB_name]["model"].Process_Type == "Reprocessing":
                 ProcessDB.init_DB(DB_name, self.CommonData.Reprocessing_Index)
-            elif self.Treatment_processes[DB_name]['model'].Process_Type == 'RDF':
-                ProcessDB.init_DB(DB_name, ['RDF'])
+            elif self.Treatment_processes[DB_name]["model"].Process_Type == "RDF":
+                ProcessDB.init_DB(DB_name, ["RDF"])
 
         Database("waste").register()
         self.waste_BD = Database("waste")
@@ -171,7 +190,8 @@ class Project():
             signal.emit(self._progress)
 
     def write_project(self, signal=None):
-        """ Call the import_database_ for all the process models.
+        """
+        Call the import_database_ for all the process models.
         """
         self.parameters_dict = {}
         self.parameters_list = []
@@ -196,29 +216,39 @@ class Project():
         :return: Returns a tuple (parameters,act_in_group)
         :rtype: tuple
         """
-        self.process_model[name] = ProcessDB(name, self.waste_treatment, self.CommonData, self.processTypes, self.Distance)
-        self.Treatment_processes[name]['model'].calc()
-        self.process_model[name].Report = self.Treatment_processes[name]['model'].report()
+        self.process_model[name] = ProcessDB(
+            name, self.waste_treatment, self.CommonData, self.processTypes, self.Distance
+        )
+        self.Treatment_processes[name]["model"].calc()
+        self.process_model[name].Report = self.Treatment_processes[name]["model"].report()
 
-        if self.Treatment_processes[name]['model'].Process_Type in ['Treatment', 'Collection']:
-            (P, G) = self.process_model[name].Write_DB(waste_flows=self.CommonData.Index,
-                                                       parameters=self.parameters,
-                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
+        if self.Treatment_processes[name]["model"].Process_Type in ["Treatment", "Collection"]:
+            (P, G) = self.process_model[name].Write_DB(
+                waste_flows=self.CommonData.Index,
+                parameters=self.parameters,
+                Process_Type=self.Treatment_processes[name]["model"].Process_Type,
+            )
 
-        elif self.Treatment_processes[name]['model'].Process_Type == 'Reprocessing':
-            (P, G) = self.process_model[name].Write_DB(waste_flows=self.CommonData.Reprocessing_Index,
-                                                       parameters=self.parameters,
-                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
+        elif self.Treatment_processes[name]["model"].Process_Type == "Reprocessing":
+            (P, G) = self.process_model[name].Write_DB(
+                waste_flows=self.CommonData.Reprocessing_Index,
+                parameters=self.parameters,
+                Process_Type=self.Treatment_processes[name]["model"].Process_Type,
+            )
 
-        elif self.Treatment_processes[name]['model'].Process_Type == 'Transfer_Station':
-            (P, G) = self.process_model[name].Write_DB(waste_flows=self.Treatment_processes[name]['model']._Extened_Index,
-                                                       parameters=self.parameters,
-                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
-        elif self.Treatment_processes[name]['model'].Process_Type == 'RDF':
-            (P, G) = self.process_model[name].Write_DB(waste_flows=['RDF'],
-                                                       parameters=self.parameters,
-                                                       Process_Type=self.Treatment_processes[name]['model'].Process_Type)
-        return((P, G))
+        elif self.Treatment_processes[name]["model"].Process_Type == "Transfer_Station":
+            (P, G) = self.process_model[name].Write_DB(
+                waste_flows=self.Treatment_processes[name]["model"]._Extened_Index,
+                parameters=self.parameters,
+                Process_Type=self.Treatment_processes[name]["model"].Process_Type,
+            )
+        elif self.Treatment_processes[name]["model"].Process_Type == "RDF":
+            (P, G) = self.process_model[name].Write_DB(
+                waste_flows=["RDF"],
+                parameters=self.parameters,
+                Process_Type=self.Treatment_processes[name]["model"].Process_Type,
+            )
+        return (P, G)
 
     def report_parameters(self):
         """
@@ -226,9 +256,8 @@ class Project():
 
         :return: dictionary include the processes as key and parameters in each process as values.
         :rtype: dict
-
         """
-        return(self.parameters_dict)
+        return self.parameters_dict
 
     def report_parameters_list(self):
         """
@@ -236,19 +265,25 @@ class Project():
 
         :return: List of `parameters` (waste fractions) in the project
         :rtype: list
-
         """
-        return(self.parameters_list)
+        return self.parameters_list
 
     def group_exchanges(self, signal=None):
         """
-        Create a group for the `parameters` in each database and add the exchanges that include these `parameters`
-        to this group. As a results, model know to update the values in those exchanges when the `parameter` is updated
+        Create a group for the `parameters` in each database and add the exchanges that
+        include these `parameters` to this group.
+
+        As a results, model know to update the values in those exchanges when the
+        `parameter` is updated
         """
         for j in self.processes:
-            print("""
+            print(
+                """
                   Grouping the exchanges with parameters in Database {}
-                  """.format(j))
+                  """.format(
+                    j
+                )
+            )
             if len(self.act_include_param[j]) > 0:
                 for r in self.act_include_param[j]:
                     parameters.add_exchanges_to_group(j, r)
@@ -262,14 +297,14 @@ class Project():
 
     def update_parameters(self, new_param_data, signal=None):
         """
-        Updates the `parameters` and their related exchanges based on the `new_param_data`.
+        Updates the `parameters` and their related exchanges based on the
+        `new_param_data`.
 
         :param new_param_data: List of `parameters` (waste fractions) in the project with new values
         :type new_param_data: list
 
         .. note:: `parameters` are waste fractions which show what fraction of waste from one source
                     go to different destinations, so sum of parameters from each source should be 1. (0<= `parameters` <=1)
-
         """
 
         progress = 0
@@ -278,14 +313,14 @@ class Project():
 
         for j in new_param_data:
             for k in self.parameters_list:
-                if k['name'] == j['name']:
-                    self.parameters.update_values(j['name'], j['amount'])
+                if k["name"] == j["name"]:
+                    self.parameters.update_values(j["name"], j["amount"])
 
         if self.parameters.check_sum():
             for j in new_param_data:
                 for k in self.parameters_list:
-                    if k['name'] == j['name']:
-                        k['amount'] = j['amount']
+                    if k["name"] == j["name"]:
+                        k["amount"] = j["amount"]
             parameters.new_project_parameters(new_param_data)
             for j in self.processes:
                 if len(self.act_include_param[j]) > 0:
@@ -298,11 +333,12 @@ class Project():
         else:
             for j in new_param_data:
                 for k in self.parameters_list:
-                    if k['name'] == j['name']:
-                        self.parameters.update_values(k['name'], k['amount'])
+                    if k["name"] == j["name"]:
+                        self.parameters.update_values(k["name"], k["amount"])
 
     def create_scenario(self, input_dict, scenario_name):
-        """Creates a new scenario (activity).
+        """
+        Creates a new scenario (activity).
         """
         input_dict = input_dict
         # Calculate Unit
@@ -310,51 +346,62 @@ class Project():
         for P in input_dict:
             for y in input_dict[P]:
                 if input_dict[P][y] != 0:
-                    unit_i = get_activity((P, y)).as_dict()['unit'].split(sep=' ')
+                    unit_i = get_activity((P, y)).as_dict()["unit"].split(sep=" ")
                     if len(unit_i) > 1:
                         mass += float(unit_i[0]) * input_dict[P][y]
-                    if unit_i[0] == 'Mg/year':
+                    if unit_i[0] == "Mg/year":
                         mass += 1 * input_dict[P][y]
-        new_act = self.waste_BD.new_activity(code=scenario_name, name=scenario_name, type="process",
-                                             unit='{} Mg/year'.format(np.round(mass, decimals=2)),
-                                             **{'reference product': scenario_name})
+        new_act = self.waste_BD.new_activity(
+            code=scenario_name,
+            name=scenario_name,
+            type="process",
+            unit="{} Mg/year".format(np.round(mass, decimals=2)),
+            **{"reference product": scenario_name},
+        )
         new_act.save()
         new_act.new_exchange(input=new_act, amount=1, type="production").save()
         for P in input_dict:
             for y in input_dict[P]:
                 if input_dict[P][y] != 0:
-                    new_act.new_exchange(input=(P, y), amount=input_dict[P][y], type="technosphere").save()
+                    new_act.new_exchange(
+                        input=(P, y), amount=input_dict[P][y], type="technosphere"
+                    ).save()
 
     @staticmethod
     def setup_LCA(name, functional_units, impact_methods):
         """
         Perform LCA by instantiating the ``bw2calc.multi_lca`` class from Brightway2.
+
         ``bw2calc.multi_lca`` is a wrapper class for performing LCA calculations with many
         functional units and LCIA methods.
         """
         if len(functional_units) > 0 and len(impact_methods) > 0:
-            calculation_setups[name] = {'inv': functional_units, 'ia': impact_methods}
+            calculation_setups[name] = {"inv": functional_units, "ia": impact_methods}
             MultiLca = MultiLCA(name)
             index = [str(x) for x in list(MultiLca.all.keys())]
             columns = [str(x) for x in impact_methods]
-            results = pd.DataFrame(MultiLca.results,
-                                   columns=columns,
-                                   index=index)
-            return(results)
+            results = pd.DataFrame(MultiLca.results, columns=columns, index=index)
+            return results
         else:
-            raise ValueError('Check the in inputs')
+            raise ValueError("Check the in inputs")
 
     @staticmethod
-    def contribution_analysis(functional_unit, impact_method, limit, limit_type='number', target='emissions',
-                              figsize=(6, 4), font_scale=1):
+    def contribution_analysis(
+        functional_unit,
+        impact_method,
+        limit,
+        limit_type="number",
+        target="emissions",
+        figsize=(6, 4),
+        font_scale=1,
+    ):
         """
-        Perform LCA by instantiating the ``bw2calc.lca.LCA`` class from ``Brightway2`` and then
-        perform contribution analysis by ``bw2analyzer.ContributionAnalysis`` class.
+        Perform LCA by instantiating the ``bw2calc.lca.LCA`` class from ``Brightway2`` and
+        then perform contribution analysis by ``bw2analyzer.ContributionAnalysis`` class.
         Check the following functions in ``bw2analyzer`` for more info:
 
         * ``bw2analyzer.ContributionAnalysis.annotated_top_processes``
         * ``bw2analyzer.ContributionAnalysis.annotated_top_emissions``
-
         """
         lca = LCA(functional_unit, impact_method)
         lca.lci()
@@ -366,72 +413,82 @@ class Project():
         compartments = []
         f = font_scale * 14
 
-        if target == 'activities':
-            data = ContributionAnalysis().annotated_top_processes(lca, limit=50, limit_type='number')
+        if target == "activities":
+            data = ContributionAnalysis().annotated_top_processes(
+                lca, limit=50, limit_type="number"
+            )
         else:
-            data = ContributionAnalysis().annotated_top_emissions(lca, limit=50, limit_type='number')
+            data = ContributionAnalysis().annotated_top_emissions(
+                lca, limit=50, limit_type="number"
+            )
         for impact, amount, act in data:
             impacts.append(impact)
             amounts.append(amount)
-            flow_unit.append(act.as_dict()['unit'])
-            if target == 'activities':
-                activities.append(act.as_dict()['name'].replace('_', ' '))
+            flow_unit.append(act.as_dict()["unit"])
+            if target == "activities":
+                activities.append(act.as_dict()["name"].replace("_", " "))
             else:
-                activities.append(act.as_dict()['name'])
-                compartments.append(act.as_dict()['categories'])
+                activities.append(act.as_dict()["name"])
+                compartments.append(act.as_dict()["categories"])
 
-        if target == 'activities':
-            top_df = pd.DataFrame(columns=['Activity', 'Flow', 'Flow Unit', 'Contribution', 'Unit'])
-            top_df['Activity'] = activities
+        if target == "activities":
+            top_df = pd.DataFrame(columns=["Activity", "Flow", "Flow Unit", "Contribution", "Unit"])
+            top_df["Activity"] = activities
         else:
-            top_df = pd.DataFrame(columns=['Emission', 'Compartment', 'Flow', 'Flow Unit', 'Contribution', 'Unit'])
-            top_df['Emission'] = activities
-            top_df['Compartment'] = compartments
+            top_df = pd.DataFrame(
+                columns=["Emission", "Compartment", "Flow", "Flow Unit", "Contribution", "Unit"]
+            )
+            top_df["Emission"] = activities
+            top_df["Compartment"] = compartments
 
-        top_df['Flow'] = amounts
-        top_df['Flow Unit'] = flow_unit
-        top_df['Contribution'] = impacts
-        top_df['Unit'] = Method(lca.method).metadata['unit']
+        top_df["Flow"] = amounts
+        top_df["Flow Unit"] = flow_unit
+        top_df["Contribution"] = impacts
+        top_df["Unit"] = Method(lca.method).metadata["unit"]
 
-        if limit_type == 'number':
+        if limit_type == "number":
             DF = top_df.loc[0:limit, :]
         else:
-            for i, j in enumerate(top_df['Contribution']):
+            for i, j in enumerate(top_df["Contribution"]):
                 if abs(j) <= abs((limit * lca.score)):
                     break
                 DF = top_df.loc[0:i, :]
 
-        plot_DF = pd.DataFrame(data=[[x for x in DF['Contribution']]],
-                               columns=DF.iloc[:, 0].values,
-                               index=list(functional_unit.keys()))
+        plot_DF = pd.DataFrame(
+            data=[[x for x in DF["Contribution"]]],
+            columns=DF.iloc[:, 0].values,
+            index=list(functional_unit.keys()),
+        )
 
-        legend = ['Net']
-        if target == 'emissions':
-            for x, y in DF[['Emission', 'Compartment']].values:
-                y = str(y).replace("'", '')
-                legend.append('{}\n{}'.format(x, y))
+        legend = ["Net"]
+        if target == "emissions":
+            for x, y in DF[["Emission", "Compartment"]].values:
+                y = str(y).replace("'", "")
+                legend.append("{}\n{}".format(x, y))
         else:
-            for x in DF['Activity'].values:
+            for x in DF["Activity"].values:
                 if len(x) > 20:
-                    x = x[0:15] + x[15:].replace(' ', '\n', 1)
+                    x = x[0:15] + x[15:].replace(" ", "\n", 1)
                 legend.append(x)
 
         fig, ax = plt.subplots(figsize=figsize)
-        plot_DF.plot(kind='bar', stacked=True, ax=ax, alpha=0.9)
-        ax.set_title('Contribution to {}'.format(str(lca.method).replace("'", '')), fontsize=f)
-        ax.scatter(0, lca.score, s=50, marker='D', edgecolor='w', facecolor='k')
-        ax.legend(legend, fontsize=f, bbox_to_anchor=(1, 0, .2, 1), loc=2)
-        ax.tick_params(axis='both', which='major', labelsize=f, rotation='auto')
-        ax.tick_params(axis='both', which='minor', labelsize=f, rotation='auto')
-        ax.set_ylabel(Method(lca.method).metadata['unit'], fontsize=f)
-        return(DF, (fig, ax))
+        plot_DF.plot(kind="bar", stacked=True, ax=ax, alpha=0.9)
+        ax.set_title("Contribution to {}".format(str(lca.method).replace("'", "")), fontsize=f)
+        ax.scatter(0, lca.score, s=50, marker="D", edgecolor="w", facecolor="k")
+        ax.legend(legend, fontsize=f, bbox_to_anchor=(1, 0, 0.2, 1), loc=2)
+        ax.tick_params(axis="both", which="major", labelsize=f, rotation="auto")
+        ax.tick_params(axis="both", which="minor", labelsize=f, rotation="auto")
+        ax.set_ylabel(Method(lca.method).metadata["unit"], fontsize=f)
+        return (DF, (fig, ax))
 
     def save(self, filename):
         """
-        Dumps the ``Project`` class to pickle file. User can load the pickle and use it later.
+        Dumps the ``Project`` class to pickle file. User can load the pickle and use it
+        later.
 
         :param filename:
         :type filename: str
         """
         import pickle
+
         pickle.dump(self, open(filename, "wb"))
