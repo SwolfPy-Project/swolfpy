@@ -122,7 +122,8 @@ class Parameters:
 
     def SWM_network(self, view=True, show_vals=True, all_flow=True, filename="SWM_network"):
         """
-        To render the generated DOT source code, you also need to install `Graphviz
+        To render the generated DOT source code, you also need to install `Graphviz.
+
         <https://www.graphviz.org/download>`_.
 
         ..note:: Make sure that the directory containing the dot executable is on your systems path.
