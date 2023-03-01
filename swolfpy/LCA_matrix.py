@@ -34,11 +34,11 @@ class LCA_matrix(LCA):
 
         self.activities_dict, _, self.biosphere_dict = self.reverse_dict()
 
-        self.tech_matrix = dict()
+        self.tech_matrix = {}
         for i in self.tech_params:
             self.tech_matrix[(self.activities_dict[i[2]], self.activities_dict[i[3]])] = i[6]
 
-        self.bio_matrix = dict()
+        self.bio_matrix = {}
         for i in self.bio_params:
             if (
                 self.biosphere_dict[i[2]],

@@ -174,7 +174,7 @@ class Monte_Carlo(LCA_matrix):
 
         Creates new ``bio_param`` and ``tech_param`` and then recalculate the LCA.
         """
-        uncertain_inputs = list()
+        uncertain_inputs = []
         if process_models:
             if common_data:
                 uncertain_inputs += common_data.gen_MC()
@@ -208,7 +208,7 @@ class Monte_Carlo(LCA_matrix):
         if lca.lcia:
             lca.lcia_calculation()
 
-        lca_results = dict()
+        lca_results = {}
         lca_results[method[0]] = lca.score
 
         if len(method) > 1:

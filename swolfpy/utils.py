@@ -11,7 +11,7 @@ def plot_sankey(data_json, fileName=None):
     """
     Plot sankey diagram from the JSON file created by SwolfPy.
     """
-    with open(data_json) as json_file:
+    with open(data_json, mode="r", encoding="utf-8") as json_file:
         data = json.load(json_file)
 
     layout = go.Layout(

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -118,7 +119,7 @@ class Project:
             for j in self.Collection_processes.keys():
                 self.Treatment_processes[j] = self.Collection_processes[j]
 
-        self.processes = [x for x in self.Treatment_processes.keys()]
+        self.processes = list(self.Treatment_processes.keys())
         self.processTypes = {}
         for p in self.processes:
             self.processTypes[p] = self.Treatment_processes[p]["model"].Process_Type
@@ -340,7 +341,6 @@ class Project:
         """
         Creates a new scenario (activity).
         """
-        input_dict = input_dict
         # Calculate Unit
         mass = 0
         for P in input_dict:
@@ -489,6 +489,5 @@ class Project:
         :param filename:
         :type filename: str
         """
-        import pickle
-
-        pickle.dump(self, open(filename, "wb"))
+        with open(filename, "wb") as f:
+            pickle.dump(self, f)

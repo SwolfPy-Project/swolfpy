@@ -259,6 +259,8 @@ class Optimization(LCA_matrix):
                 f = lambda x: self.get_impact_amount(key, x) - limit
             return f
 
+        return None
+
     def _create_collection_constraints(self, cons):
         const_dict = {}
         if self.n_scheme_vars:
@@ -526,10 +528,7 @@ class Optimization(LCA_matrix):
         if optimized_flow:
             params = [i["amount"] for i in self.optimized_x]
         else:
-            if params:
-                params = params
-            else:
-                params = [i["amount"] for i in self.project.parameters_list]
+            params = params or [i["amount"] for i in self.project.parameters_list]
 
             self.oldx = [0 for i in range(len(params))]
             self.magnitude = len(str(int(abs(self.score))))
@@ -621,13 +620,13 @@ class Optimization(LCA_matrix):
 
         link = dict(source=source, target=target, value=value, label=label_link, color=color)
 
-        # The other good option for the valueformat is ".3f". Yes
+        # The other good option for the value format is ".3f". Yes
         score = self._objective_function(params) * 10**self.magnitude
         if score >= 1000 or score <= -1000:
             score = "{:,.0f}".format(score)
-        elif score <= 0.1 and score >= -0.1:
+        elif -0.1 <= score <= 0.1:
             score = "{:,.4f}".format(score)
-        elif score <= 1 and score >= -1:
+        elif score -1 <= score <= 1:
             score = "{:,.3f}".format(score)
         else:
             score = "{:,.2f}".format(score)
@@ -652,5 +651,5 @@ class Optimization(LCA_matrix):
         store_data["link"] = link
 
         filename = fileName.split(".")[0] + ".JSON" if fileName else "Sankey_Data.JSON"
-        with open(filename, "w") as outfile:
+        with open(filename, mode="w", encoding="utf-8") as outfile:
             json.dump(store_data, outfile, indent=4)

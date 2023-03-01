@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 13 21:42:51 2019.
-
-@author: msmsa
-"""
 import numpy as np
 from brightway2 import Database
 
@@ -286,19 +281,15 @@ class ProcessDB:
 
             ### Adding the technosphere exchanges to activities
             for key in self.Report["Technosphere"][x]:
-                # if self.Report["Technosphere"][x][key] != 0:
-                if True:
-                    ex = self.exchange(
-                        key, "technosphere", "Mg/year", self.Report["Technosphere"][x][key]
-                    )
-                    self.db_data[(self.P_Name, x)]["exchanges"].append(ex)
+                ex = self.exchange(
+                    key, "technosphere", "Mg/year", self.Report["Technosphere"][x][key]
+                )
+                self.db_data[(self.P_Name, x)]["exchanges"].append(ex)
 
             ### Adding the biosphere exchanges
             for key in self.Report["Biosphere"][x]:
-                # if self.Report["Biosphere"][x][key] != 0:
-                if True:
-                    ex = self.exchange(key, "biosphere", "kg", self.Report["Biosphere"][x][key])
-                    self.db_data[(self.P_Name, x)]["exchanges"].append(ex)
+                ex = self.exchange(key, "biosphere", "kg", self.Report["Biosphere"][x][key])
+                self.db_data[(self.P_Name, x)]["exchanges"].append(ex)
 
             if Process_Type == "Collection":
                 ### Adding activity for transport between the collection and treatment processes

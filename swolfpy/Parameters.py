@@ -11,13 +11,13 @@ def approx_eq(x, y):
 
 class Parameters:
     def __init__(self, processes, CommonData):
-        self.param_uncertainty_dict = dict()
-        self.static_param_dict = dict()
-        self.params_dict = dict()
+        self.param_uncertainty_dict = {}
+        self.static_param_dict = {}
+        self.params_dict = {}
 
-        self.MC_param_name = list()  # name of parameters that include uncertainty
-        self.MC_param_base = list()  # uncertainty base for parameters that have uncertainty
-        self.MC_param_uncertainty_dict = dict()
+        self.MC_param_name = []  # name of parameters that include uncertainty
+        self.MC_param_base = []  # uncertainty base for parameters that have uncertainty
+        self.MC_param_uncertainty_dict = {}
 
         self.processes = processes
         self.nodes = list(self.processes.keys())
@@ -81,7 +81,7 @@ class Parameters:
         key = product + process_model_from
         if dynamic_param:
             if key not in self.param_uncertainty_dict.keys():
-                self.param_uncertainty_dict[key] = list()
+                self.param_uncertainty_dict[key] = []
                 self.param_uncertainty_dict[key].append(
                     [
                         process_model_to,
@@ -101,7 +101,7 @@ class Parameters:
                 )
         else:
             if key not in self.static_param_dict.keys():
-                self.static_param_dict[key] = list()
+                self.static_param_dict[key] = []
                 self.static_param_dict[key].append(
                     [
                         process_model_to,
@@ -217,9 +217,6 @@ class Parameters:
                     print("{}: {}".format(i[2], i[1]))
                     msg += "{}: {}\n".format(i[2], i[1])
                 raise ValueError(msg)
-                sum_ = 0
-                flag = 0
-                break
             sum_ = 0
         return flag
 
@@ -230,7 +227,7 @@ class Parameters:
         :param param_name: Name of the parameter (wastefraction) that has uncertainty
         :type param_name: str
         """
-        base_dict = dict()
+        base_dict = {}
         base_dict["loc"] = kwargs.get("loc", None)
         base_dict["scale"] = kwargs.get("scale", None)
         base_dict["shape"] = kwargs.get("shape", None)
@@ -264,9 +261,9 @@ class Parameters:
         # Normalizing the generated random numbers
         self.normalize()
 
-        param_exchanges_dict = dict()
-        param_keys = list()
-        param_vals = list()
+        param_exchanges_dict = {}
+        param_keys = []
+        param_vals = []
         for key in self.params_dict.keys():
             param_keys.append(key)
             param_vals.append(self.MC_get_param_val(key))
@@ -301,19 +298,20 @@ class Parameters:
 
         :param param_name: Name of the parameter (wastefraction) that has uncertainty
         :type param_name: str
-        :return: Value fo the parameter
+        :return: Value of the parameter
         :rtype: float
         """
         for item in self.MC_param_uncertainty_dict.values():
             for list_item in item:
                 if list_item[2] == param_name:
                     return list_item[1]
+        return None
 
     def Param_exchanges(self, new_vals):
         """
         Returns the parameters exchanges with the new values.
         """
-        param_exchanges_dict = dict()
+        param_exchanges_dict = {}
         self.MC_param_uncertainty_dict = copy.deepcopy(self.param_uncertainty_dict)
         param_list = list(self.params_dict.keys())
 
