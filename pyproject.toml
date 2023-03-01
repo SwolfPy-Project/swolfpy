@@ -58,12 +58,10 @@ package_input_data = []
 [tool.black]
 line-length = 100
 preview = false
-exclude = "\swolfpy\UI\*_ui.py"
 
 [tool.isort]
 profile = "black"
 line_length = 100
-skip = ["\swolfpy\UI\PySWOLF_ui.py", "\swolfpy\UI\Reference_ui.py", "\swolfpy\UI\adv_opt_ui.py", "\swolfpy\UI\MC_ui.py"]
 
 [tool.pytest.ini_options]
 minversion = 7.0
@@ -85,7 +83,18 @@ addopts = "--cov=swolfpy --cov-report=xml --disable-warnings --ignore=swolfpy/UI
 fail-under = 10
 
 # Files or directories to be skipped. They should be base names, not paths.
-ignore = ["CVS"]
+ignore = [
+    "CVS",
+    "PySWOLF_ui.py",
+    "PyWOLF_Resource_rc.py",
+    "Reference_ui.py",
+    "MC_ui.py",
+    "adv_opt_ui.py",
+    "PySWOLF_run.py",
+    "Table_from_pandas.py",
+    "Table_from_pandas.py",
+    "Workers.py",
+]
 
 # Add files or directories matching the regular expressions patterns to the
 # ignore-list. The regex matches against paths and can be in Posix or Windows
@@ -96,7 +105,7 @@ ignore = ["CVS"]
 # Files or directories matching the regular expression patterns are skipped. The
 # regex matches against base names, not paths. The default value ignores Emacs
 # file locks
-ignore-patterns = ["^\\.#", "swolfpy/UI/*_ui.py"]
+ignore-patterns = ["^\\.#", "_ui.py$", "_rc.py$"]
 
 # List of module names for which member attributes should not be checked (useful
 # for modules/projects where namespaces are manipulated during runtime and thus
