@@ -7,14 +7,23 @@ channels:
 dependencies:
   - pip
   - pip:
-    - PySide2
-    - brightway2==2.3.0
+    - brightway2==2.4.3
+    - bw2analyzer==0.10
+    - bw2calc==1.8.2
+    - bw2data==3.6.6
+    - bw2io==0.8.8
+    - bw2parameters==1.1.0
+    - coverage
     - graphviz
-    - xlrd==1.2.0
+    - numpy==1.24.*
+    - pandas==2.0.*
     - plotly
-    - pandas
     - pyDOE
-    - jupyter
+    - PySide2==5.15.*
     - pytest
     - pytest-cov
     - pytest-flake8
+    - scipy==1.8.0
+    - swolfpy_inputdata==1.0.*
+    - swolfpy_processmodels==1.0.*
+    - xlrd==1.2.0
