@@ -626,7 +626,7 @@ class Optimization(LCA_matrix):
             score = "{:,.0f}".format(score)
         elif -0.1 <= score <= 0.1:
             score = "{:,.4f}".format(score)
-        elif score -1 <= score <= 1:
+        elif score - 1 <= score <= 1:
             score = "{:,.3f}".format(score)
         else:
             score = "{:,.2f}".format(score)
