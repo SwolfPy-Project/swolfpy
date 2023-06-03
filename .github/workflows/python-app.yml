@@ -30,8 +30,43 @@ jobs:
     - name: Install dependencies
       run: |
         conda env update --file environment_dev.yml --name base
-        pip install https://github.com/SwolfPy-Project/swolfpy-inputdata/archive/refs/heads/master.zip
-        pip install https://github.com/SwolfPy-Project/swolfpy-processmodels/archive/refs/heads/master.zip
+
+    - name: Check if feature branch exists in swolfpy-inputdata
+      run: |
+        echo "-----------------------------------------"
+        echo "github.head_ref = ${{ github.head_ref }} ---"
+        echo "github.ref = ${{ github.ref }} ---"
+        echo "github.ref_name = ${{ github.ref_name }} ---"
+        echo "------------------------------------------"
+
+        if git ls-remote --exit-code --heads https://github.com/SwolfPy-Project/swolfpy-inputdata.git ${{ github.ref_name }}; then
+          echo "Branch ${{ github.ref_name }} exists."
+          echo "BRANCH_INPUTDATA=${{ github.ref_name }}" >> $GITHUB_ENV
+        else
+          echo "Branch does not exist. Falling back to 'master' branch."
+          echo "BRANCH_INPUTDATA=master" >> $GITHUB_ENV
+        fi
+
+    - name: Check if feature branch exists in swolfpy-processmodels
+      run: |
+        if git ls-remote --exit-code --heads https://github.com/SwolfPy-Project/swolfpy-processmodels.git ${{ github.ref_name }}; then
+          echo "Branch ${{ github.ref_name }} exists."
+          echo "BRANCH_PROCESSMODELS=${{ github.ref_name }}" >> $GITHUB_ENV
+        else
+          echo "Branch does not exist. Falling back to 'master' branch."
+          echo "BRANCH_PROCESSMODELS=master" >> $GITHUB_ENV
+        fi
+
+    - name: Install swolfpy-inputdata from branch
+      run: |
+        echo "pip install git+https://github.com/SwolfPy-Project/swolfpy-inputdata.git@${{ env.BRANCH_INPUTDATA }}"
+        pip install git+https://github.com/SwolfPy-Project/swolfpy-inputdata.git@${{ env.BRANCH_INPUTDATA }}
+
+    - name: Install swolfpy-processmodels from branch
+      run: |
+        echo "pip install git+https://github.com/SwolfPy-Project/swolfpy-processmodels.git@${{ env.BRANCH_PROCESSMODELS }}"
+        pip install git+https://github.com/SwolfPy-Project/swolfpy-processmodels.git@${{ env.BRANCH_PROCESSMODELS }}
+
 
 
     - name: Check channels
