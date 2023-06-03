@@ -139,8 +139,6 @@ class Monte_Carlo(LCA_matrix):
         return [
             Monte_Carlo.parallel_mc(
                 lca,
-                project,
-                functional_unit,
                 method,
                 tech_matrix,
                 bio_matrix,
@@ -156,8 +154,6 @@ class Monte_Carlo(LCA_matrix):
     @staticmethod
     def parallel_mc(
         lca,
-        project,
-        functional_unit,
         method,
         tech_matrix,
         bio_matrix,

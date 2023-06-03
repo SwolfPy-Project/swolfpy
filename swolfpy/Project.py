@@ -99,7 +99,6 @@ class Project:
         Distance,
         Collection_processes=None,
         Technosphere_obj=None,
-        signal=None,
     ):
         if Technosphere_obj:
             self.Technosphere = Technosphere_obj
@@ -456,7 +455,7 @@ class Project:
                 DF = top_df.loc[0:i, :]
 
         plot_DF = pd.DataFrame(
-            data=[[x for x in DF["Contribution"]]],
+            data=[list(DF["Contribution"])],
             columns=DF.iloc[:, 0].values,
             index=list(functional_unit.keys()),
         )

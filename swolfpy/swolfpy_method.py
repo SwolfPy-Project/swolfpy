@@ -2,7 +2,7 @@
 import os
 
 import pandas as pd
-import swolfpy_inputdata.Data.LCIA_Methods as m
+import swolfpy_inputdata.data.lcia_methods as m
 from brightway2 import Method, methods
 
 

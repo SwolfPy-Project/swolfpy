@@ -109,7 +109,7 @@ class Technosphere:
         import_methods()
 
         # Deleting the old (expired) databases (if exist)
-        xx = [x for x in databases]
+        xx = list(databases)
         for x in xx:
             if x not in ["biosphere3"]:
                 del databases[x]
@@ -162,13 +162,15 @@ class Technosphere:
         """
         self.technosphere_data = {}
         # activities
-        names = [x for x in self.LCI_swolfpy_data.columns][3:]
+        names = list(self.LCI_swolfpy_data.columns)[3:]
         for x in names:
             # add activity to database
             self.technosphere_data[(self.technosphere_db_name, x)] = {
                 "name": x,
                 "reference product": x,
-                "unit": (lambda y: "NA" if pd.isnull(y) else y)(self.LCI_swolfpy_data[x][0]),
+                "unit": "NA"
+                if pd.isnull(self.LCI_swolfpy_data[x][0])
+                else self.LCI_swolfpy_data[x][0],
                 "exchanges": [],
             }
             # Reference flow

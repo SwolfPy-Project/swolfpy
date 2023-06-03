@@ -2654,7 +2654,7 @@ ul {
             self.opt_Widget = adv_opt_ui.Ui_adv_opt()
             self.opt_Widget.setupUi(self.adv_opt)
 
-            conf = Optimization.config(self.demo)
+            conf = Optimization.get_config(self.demo)
             ### conf Table
             if len(conf.columns) > 0:
                 conf.index = [str(x) for x in conf.index]

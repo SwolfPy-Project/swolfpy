@@ -23,13 +23,10 @@ import importlib
 import os
 import sys
 
-numfig = True
-
-sys.path.insert(0, os.path.abspath(".."))
-
-
 import plotly.io as pio
 
+numfig = True
+sys.path.insert(0, os.path.abspath(".."))
 pio.renderers.default = "sphinx_gallery"
 
 
@@ -90,7 +87,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "swolfpy"
-copyright = "2020, Mojtaba Sardarmehni"
+copyright = "2020, Mojtaba Sardarmehni"  # pylint: disable=redefined-builtin
 author = "Mojtaba Sardarmehni"
 
 # The version info for the project you're documenting, acts as replacement

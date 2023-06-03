@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
+import multiprocessing as mp
 import os
 from copy import deepcopy
 from functools import partial
-from multiprocessing import Pool, TimeoutError, cpu_count
+from multiprocessing import Pool, cpu_count
 from multiprocessing.dummy import Pool as ThreadPool
 from time import time
 
@@ -40,7 +41,7 @@ class Optimization(LCA_matrix):
         self.n_scheme_vars = 0
 
     @staticmethod
-    def config(project):
+    def get_config(project):
         columns = []
         schemes = {}
         for col in project.Collection_processes:
@@ -153,14 +154,14 @@ class Optimization(LCA_matrix):
             self.rebuild_technosphere_matrix(tech)
             self.rebuild_biosphere_matrix(bio)
             self.lci_calculation()
-            if self.lcia:
+            if self.lcia:  # pylint: disable=using-constant-test
                 self.lcia_calculation()
 
             self.oldx = list(x)
         return self.score / 10**self.magnitude
 
     ### Mass to process
-    def get_mass_flow(self, key, KeyType, x):
+    def get_mass_flow_from_supply_array(self, key, KeyType, x):
         """
         calculate the mass to the process from the `supply_array` matrix.
         """
@@ -177,7 +178,9 @@ class Optimization(LCA_matrix):
                 if key == self.activities_dict[i][0]:
                     mass_flow += self.supply_array[i]
         else:
-            raise ValueError(""" KeyType for the get_mass_flow function is not defined correct.""")
+            raise ValueError(
+                """ KeyType for the get_mass_flow_from_supply_array function is not defined correct."""
+            )
         return mass_flow
 
     ### Emission flow in LCI
@@ -233,16 +236,16 @@ class Optimization(LCA_matrix):
 
         if KeyType == "Process":
             if ConstType == "<=":
-                f = lambda x: limit - self.get_mass_flow(key, KeyType, x)
+                f = lambda x: limit - self.get_mass_flow_from_supply_array(key, KeyType, x)
             else:
-                f = lambda x: self.get_mass_flow(key, KeyType, x) - limit
+                f = lambda x: self.get_mass_flow_from_supply_array(key, KeyType, x) - limit
             return f
 
         elif KeyType == "WasteToProcess":
             if ConstType == "<=":
-                f = lambda x: limit - self.get_mass_flow(key, KeyType, x)
+                f = lambda x: limit - self.get_mass_flow_from_supply_array(key, KeyType, x)
             else:
-                f = lambda x: self.get_mass_flow(key, KeyType, x) - limit
+                f = lambda x: self.get_mass_flow_from_supply_array(key, KeyType, x) - limit
             return f
 
         elif KeyType == "Emission":
@@ -391,15 +394,15 @@ class Optimization(LCA_matrix):
             nproc = cpu_count()
 
         all_results = []
-        pool = Pool(processes=nproc, maxtasksperchild=1)
-        for arg in args:
-            abortable_func = partial(
-                Optimization.abortable_worker, Optimization.worker, timeout=timeout
-            )
-            all_results.append(pool.apply_async(abortable_func, args=arg))
-        results = [res.get() for res in all_results]
-        pool.close()
-        pool.join()
+        with Pool(processes=nproc, maxtasksperchild=1) as pool:
+            for arg in args:
+                abortable_func = partial(
+                    Optimization.abortable_worker, Optimization.worker, timeout=timeout
+                )
+                all_results.append(pool.apply_async(abortable_func, args=arg))
+
+            results = [res.get() for res in all_results]
+
         optObject.all_results = results
 
         optObject.res_global = False
@@ -477,7 +480,7 @@ class Optimization(LCA_matrix):
         res = p.apply_async(func, args)
         try:
             return res.get(timeout)  # Wait timeout seconds for func to complete.
-        except TimeoutError:
+        except mp.TimeoutError:
             print("(Iteration:{}, PID:{}): Aborting due to timeout!".format(iteration, os.getpid()))
             return None
 
@@ -516,7 +519,7 @@ class Optimization(LCA_matrix):
         """
         Plots a sankey diagram for the waste mass flows. \n Calls the
         ``plotly.graph_objs.Sankey`` to plot sankey. \n Calculates the mass flows by
-        calling ``self.get_mass_flow()``. \n.
+        calling ``self.get_mass_flow_from_supply_array()``. \n.
 
         :param optimized_flow: If ``True``, it plots the sankey based on the optimized waste fractions.
                                 If ``False``, it plots the sankey based on the current waste fractions by calling ``self.project.parameters_list``.
@@ -591,10 +594,12 @@ class Optimization(LCA_matrix):
             color.append("rgba({}, {}, {}, 0.8)".format(*edge_color[key[2]]))
             mass = 0.0
             for m in self.project.CommonData.Index + ["RDF"]:
-                mass += self.get_mass_flow(
+                mass += self.get_mass_flow_from_supply_array(
                     (key[0] + "_product", m + "_" + key[2]), "WasteToProcess", params
                 )
-                mass += self.get_mass_flow((key[0] + "_product", key[2]), "WasteToProcess", params)
+                mass += self.get_mass_flow_from_supply_array(
+                    (key[0] + "_product", key[2]), "WasteToProcess", params
+                )
 
             value.append(np.round(mass * frac, 3))
 
