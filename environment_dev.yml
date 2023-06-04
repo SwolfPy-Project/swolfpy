@@ -7,7 +7,7 @@ channels:
 dependencies:
   - pip
   - pip:
-    - brightway2==2.3
+    - brightway2==2.4.1
     - bw-migrations==0.1
     - bw2analyzer==0.10
     - bw2calc==1.8.2
