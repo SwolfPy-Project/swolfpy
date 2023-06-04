@@ -17,6 +17,6 @@ pytest
 pytest-cov
 pytest-flake8
 scipy==1.8.0
-#swolfpy_inputdata==1.0.*
-#swolfpy_processmodels==1.0.*
+swolfpy_inputdata==1.0.*
+swolfpy_processmodels==1.0.*
 xlrd==1.2.0
