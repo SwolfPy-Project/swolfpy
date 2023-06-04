@@ -16,7 +16,7 @@ dependencies:
     - bw2parameters==1.1.0
     - coverage
     - graphviz
-    - numpy==1.24.*
+    - numpy<1.20
     - pandas==2.0.*
     - plotly
     - pyDOE
