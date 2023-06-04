@@ -11,7 +11,7 @@ dependencies:
     - bw-migrations==0.1
     - bw2analyzer==0.9.4
     - bw2calc==1.8.0
-    - bw2data==3.6.5
+    - bw2data==3.6.6
     - bw2io==0.7.12.1
     - bw2parameters==0.6.6
     - coverage
