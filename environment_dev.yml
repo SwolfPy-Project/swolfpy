@@ -7,7 +7,13 @@ channels:
 dependencies:
   - pip
   - pip:
-    - brightway2==2.3.0
+    - brightway2==2.3
+    - bw-migrations==0.1
+    - bw2analyzer==0.9.4
+    - bw2calc==1.8.0
+    - bw2data==3.6.2
+    - bw2io==0.7.12.1
+    - bw2parameters==0.6.6
     - coverage
     - graphviz
     - numpy==1.24.*
