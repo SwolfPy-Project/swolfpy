@@ -7,7 +7,7 @@ History
 
 * Upgrade to Python 3.10
 * Add PreCommit
-  
+
 
 0.2.5 (2022-04-07)
 ------------------
