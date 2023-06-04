@@ -1,3 +1,4 @@
+Jinja2
 nbsphinx
 ipykernel
 brightway2
