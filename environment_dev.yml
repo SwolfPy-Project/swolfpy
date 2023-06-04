@@ -16,7 +16,6 @@ dependencies:
     - bw2parameters==1.1.0
     - coverage
     - graphviz
-    - numpy<1.20
     - plotly
     - pyDOE
     - PySide2==5.15.*
