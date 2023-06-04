@@ -24,3 +24,5 @@ dependencies:
     - pytest-flake8
     - scipy==1.8.0
     - xlrd==1.2.0
+    - pandas==2.0.*
+    - numpy==1.24.*
