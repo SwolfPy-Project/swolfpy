@@ -4,32 +4,35 @@
 
 Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
 """
-from .Technosphere import Technosphere
-from .Project import Project
-from .swolfpy_method import import_methods
-from .Optimization import Optimization
-from .Monte_Carlo import Monte_Carlo
-from .UI.PySWOLF_run import MyQtApp
-from PySide2 import QtWidgets
 import sys
 import warnings
 
+from PySide2 import QtWidgets
+
+from .Monte_Carlo import Monte_Carlo
+from .Optimization import Optimization
+from .Project import Project
+from .swolfpy_method import import_methods
+from .Technosphere import Technosphere
+from .UI.PySWOLF_run import MyQtApp
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
-__all__ = ['Technosphere',
-           'Project',
-           'import_methods',
-           'Optimization',
-           'Monte_Carlo',
-           'MyQtApp',
-           'swolfpy']
+__all__ = [
+    "Technosphere",
+    "Project",
+    "import_methods",
+    "Optimization",
+    "Monte_Carlo",
+    "MyQtApp",
+    "swolfpy",
+]
 
-__version__ = '0.2.5'
+__version__ = "1.0.0"
 
 
-class swolfpy():
+class swolfpy:
     def __init__(self):
         if not QtWidgets.QApplication.instance():
             self.app = QtWidgets.QApplication(sys.argv)

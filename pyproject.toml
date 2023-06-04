@@ -1,0 +1,339 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swolfpy"
+dynamic = ["version", "readme", "dependencies"]
+description = "Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)."
+license = {text = "GNU GENERAL PUBLIC LICENSE V2"}
+requires-python = ">=3.10"
+authors = [
+  {name = "Mojtaba Sardarmehni", email = "msardar2@alumni.ncsu.edu"},
+]
+maintainers = [
+  {name = "Mojtaba Sardarmehni", email = "msardar2@alumni.ncsu.edu"},
+]
+keywords = [
+    "LCA",
+    "solid_waste",
+    "waste_management",
+    "swolfpy",
+    "brightway2",
+]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Education',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3.10',
+    'Operating System :: MacOS :: MacOS X',
+    'Operating System :: Microsoft :: Windows',
+    'Topic :: Scientific/Engineering :: Information Analysis',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'Topic :: Scientific/Engineering :: Visualization',
+    'Natural Language :: English',
+]
+
+[project.urls]
+Homepage = "https://swolfpy-project.github.io/"
+Documentation = "https://swolfpy.readthedocs.io/en/latest/"
+"Source Code" = "https://github.com/SwolfPy-Project/swolfpy"
+
+[tool.setuptools.dynamic]
+version = {attr = "swolfpy.__version__"}
+readme = {file = ["README.rst", "HISTORY.rst"]}
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools]
+packages = ["swolfpy"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+package_input_data = []
+
+[tool.black]
+line-length = 100
+preview = false
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.pytest.ini_options]
+minversion = 7.0
+testpaths = [
+  "tests"
+]
+python_files = [  # a list of patterns to use to collect test modules
+  "tests/test_*.py"
+]
+addopts = "--cov=swolfpy --cov-report=xml --disable-warnings --ignore=swolfpy/UI/ --color=yes"
+
+#############################
+#######    pylint     #######
+#############################
+# Source for pylint settings: https://github.com/PyCQA/pylint/blob/main/examples/pyproject.toml
+
+[tool.pylint.main]
+# Specify a score threshold under which the program will exit with error.
+fail-under = 10
+
+# Files or directories to be skipped. They should be base names, not paths.
+ignore = [
+    "CVS",
+    "PySWOLF_ui.py",
+    "PyWOLF_Resource_rc.py",
+    "Reference_ui.py",
+    "MC_ui.py",
+    "adv_opt_ui.py",
+    "PySWOLF_run.py",
+    "Table_from_pandas.py",
+    "Table_from_pandas.py",
+    "Workers.py",
+]
+
+# Add files or directories matching the regular expressions patterns to the
+# ignore-list. The regex matches against paths and can be in Posix or Windows
+# format. Because '\' represents the directory delimiter on Windows systems, it
+# can't be used as an escape character.
+# ignore-paths =
+
+# Files or directories matching the regular expression patterns are skipped. The
+# regex matches against base names, not paths. The default value ignores Emacs
+# file locks
+ignore-patterns = ["^\\.#", "_ui.py$", "_rc.py$"]
+
+# List of module names for which member attributes should not be checked (useful
+# for modules/projects where namespaces are manipulated during runtime and thus
+# existing member attributes cannot be deduced by static analysis). It supports
+# qualified module names, as well as Unix pattern matching.
+# ignored-modules =
+
+# Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
+# number of processors available to use, and will cap the count on Windows to
+# avoid hangs.
+jobs = 2
+
+# Control the amount of potential inferred values when inferring a single object.
+# This can help the performance when dealing with large functions or complex,
+# nested conditions.
+limit-inference-results = 100
+
+# Pickle collected data for later comparisons.
+persistent = true
+
+# When enabled, pylint would attempt to guess common misconfiguration and emit
+# user-friendly hints instead of false-positive error messages.
+suggestion-mode = true
+
+[tool.pylint.basic]
+# Naming style matching correct argument names.
+argument-naming-style = "snake_case"
+
+# Naming style matching correct attribute names.
+attr-naming-style = "snake_case"
+
+# Bad variable names which should always be refused, separated by a comma.
+bad-names = ["foo", "bar", "baz", "toto", "tutu", "tata"]
+
+# Naming style matching correct class attribute names.
+class-attribute-naming-style = "any"
+
+# Naming style matching correct class constant names.
+class-const-naming-style = "UPPER_CASE"
+
+# Naming style matching correct class names.
+class-naming-style = "PascalCase"
+
+# Naming style matching correct constant names.
+const-naming-style = "UPPER_CASE"
+
+# Minimum line length for functions/classes that require docstrings, shorter ones
+# are exempt.
+docstring-min-length = -1
+
+# Naming style matching correct function names.
+function-naming-style = "snake_case"
+
+# Good variable names which should always be accepted, separated by a comma.
+good-names = ["i", "j", "k", "ex", "Run", "_"]
+
+# Naming style matching correct method names.
+method-naming-style = "snake_case"
+
+# Naming style matching correct module names.
+module-naming-style = "snake_case"
+
+# Regular expression which should only match function or class names that do not
+# require a docstring.
+no-docstring-rgx = "^_"
+
+# List of decorators that produce properties, such as abc.abstractproperty. Add
+# to this list to register other decorators that produce valid properties. These
+# decorators are taken in consideration only for invalid-name.
+property-classes = ["abc.abstractproperty"]
+
+# Naming style matching correct variable names.
+variable-naming-style = "snake_case"
+
+[tool.pylint.classes]
+# Warn about protected attribute access inside special methods
+# check-protected-access-in-special-methods =
+
+# List of method names used to declare (i.e. assign) instance attributes.
+defining-attr-methods = ["__init__", "__new__", "setUp", "__post_init__"]
+
+# List of member names, which should be excluded from the protected access
+# warning.
+exclude-protected = ["_asdict", "_fields", "_replace", "_source", "_make"]
+
+# List of valid names for the first argument in a class method.
+valid-classmethod-first-arg = ["cls"]
+
+# List of valid names for the first argument in a metaclass class method.
+valid-metaclass-classmethod-first-arg = ["mcs"]
+
+[tool.pylint.design]
+# Maximum number of arguments for function / method.
+max-args = 5
+
+# Maximum number of attributes for a class (see R0902).
+max-attributes = 7
+
+# Maximum number of boolean expressions in an if statement (see R0916).
+max-bool-expr = 5
+
+# Maximum number of branch for function / method body.
+max-branches = 12
+
+# Maximum number of locals for function / method body.
+max-locals = 15
+
+# Maximum number of parents for a class (see R0901).
+max-parents = 7
+
+# Maximum number of public methods for a class (see R0904).
+max-public-methods = 20
+
+# Maximum number of return / yield for function / method body.
+max-returns = 6
+
+# Maximum number of statements in function / method body.
+max-statements = 50
+
+# Minimum number of public methods for a class (see R0903).
+min-public-methods = 1
+
+[tool.pylint.exceptions]
+# Exceptions that will emit a warning when caught.
+overgeneral-exceptions = ["builtins.BaseException", "builtins.Exception"]
+
+[tool.pylint.format]
+# Regexp for a line that is allowed to be longer than the limit.
+ignore-long-lines = "^\\s*(# )?<?https?://\\S+>?$"
+
+# Number of spaces of indent required inside a hanging or continued line.
+indent-after-paren = 4
+
+# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
+# tab).
+indent-string = "    "
+
+# Maximum number of characters on a single line.
+max-line-length = 100
+
+# Maximum number of lines in a module.
+max-module-lines = 1000
+
+[tool.pylint.miscellaneous]
+# List of note tags to take in consideration, separated by a comma.
+notes = ["FIXME", "XXX", "TODO"]
+
+[tool.pylint.refactoring]
+# Maximum number of nested blocks for function / method body
+max-nested-blocks = 5
+
+# Complete name of functions that never returns. When checking for inconsistent-
+# return-statements if a never returning function is called then it will be
+# considered as an explicit return statement and no message will be printed.
+never-returning-functions = ["sys.exit", "argparse.parse_error"]
+
+[tool.pylint.similarities]
+# Comments are removed from the similarity computation
+ignore-comments = true
+
+# Docstrings are removed from the similarity computation
+ignore-docstrings = true
+
+# Imports are removed from the similarity computation
+ignore-imports = true
+
+# Signatures are removed from the similarity computation
+ignore-signatures = true
+
+# Minimum lines number of a similarity.
+min-similarity-lines = 8
+
+[tool.pylint.spelling]
+# Limits count of emitted suggestions for spelling mistakes.
+max-spelling-suggestions = 4
+
+[tool.pylint.variables]
+# Tells whether unused global variables should be treated as a violation.
+allow-global-unused-variables = true
+
+# List of strings which can identify a callback function by name. A callback name
+# must start or end with one of those strings.
+callbacks = ["cb_", "_cb"]
+
+# A regular expression matching the name of dummy variables (i.e. expected to not
+# be used).
+dummy-variables-rgx = "_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_"
+
+# Argument names that match this expression will be ignored.
+ignored-argument-names = "_.*|^ignored_|^unused_"
+
+# List of qualified module names which can have objects that can redefine
+# builtins.
+redefining-builtins-modules = ["six.moves", "past.builtins", "future.builtins", "builtins", "io"]
+
+[tool.pylint.messages_control]
+disable = [
+  "line-too-long",
+  "invalid-name",
+  "missing-function-docstring",
+  "missing-class-docstring",
+  "attribute-defined-outside-init",
+  "exec-used",
+  "consider-using-f-string",
+  "redefined-outer-name",
+  "duplicate-code",
+  "too-few-public-methods",
+  "too-many-instance-attributes",
+  "consider-iterating-dictionary",
+  "consider-using-dict-items",
+  "too-many-branches",
+  "super-init-not-called",
+  "missing-module-docstring",
+  "no-member",
+  "useless-return",
+  "consider-using-generator",
+  "too-many-arguments",
+  "pointless-string-statement",
+  "too-many-statements",
+  "too-many-locals",
+  "too-many-lines",
+  "c-extension-no-member",
+  "too-many-nested-blocks",
+  "consider-using-enumerate",
+  "unnecessary-lambda-assignment",
+  "no-else-return",
+  "protected-access",
+  "use-dict-literal",
+  "use-list-literal",
+  "broad-exception-caught",
+  "eval-used",
+  "broad-exception-raised",
+]

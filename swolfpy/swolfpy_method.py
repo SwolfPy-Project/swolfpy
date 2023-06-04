@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Apr  4 14:41:00 2019
-
-@author: msardar2
-"""
-import pandas as pd
-from brightway2 import methods, Method
 import os
-import swolfpy_inputdata.Data.LCIA_Methods as m
+
+import pandas as pd
+import swolfpy_inputdata.data.lcia_methods as m
+from brightway2 import Method, methods
 
 
 def import_methods(path_to_methods=None):
@@ -18,15 +14,19 @@ def import_methods(path_to_methods=None):
         path_to_methods = m.__path__[0]
     files = os.listdir(path_to_methods)
     for f in files:
-        if '.csv' in f:
-            df = pd.read_csv(path_to_methods + '/' + f)
+        if ".csv" in f:
+            df = pd.read_csv(path_to_methods + "/" + f)
             CF = []
             for i in df.index:
-                CF.append((eval(df['key'][i]), df['value'][i]))
+                CF.append((eval(df["key"][i]), df["value"][i]))
             name = eval(f[:-4])
-            Method(name).register(**{'unit': df['unit'][0],
-                                     'num_cfs': len(df),
-                                     'filename': f,
-                                     'path_source_file': path_to_methods})
+            Method(name).register(
+                **{
+                    "unit": df["unit"][0],
+                    "num_cfs": len(df),
+                    "filename": f,
+                    "path_source_file": path_to_methods,
+                }
+            )
             Method(name).write(CF)
     methods.flush()

@@ -1,0 +1,64 @@
+exclude: "_ui.py$|_rc.py$"
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-json
+    -   id: check-toml
+    -   id: debug-statements
+    -   id: pretty-format-json
+    -   id: check-merge-conflict
+
+-   repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+    -   id: isort
+
+-   repo: https://github.com/pycqa/docformatter
+    rev: v1.5.1
+    hooks:
+    -   id: docformatter
+        args: [
+            --in-place,
+            --make-summary-multi-line,
+            --close-quotes-on-newline ,
+            --pre-summary-newline,
+            --recursive,
+            --wrap-summaries=90,
+            --wrap-descriptions=90,
+        ]
+
+-   repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+    -   id: black
+        args: [
+            --safe,
+            --config=pyproject.toml,
+        ]
+
+-   repo: local
+    hooks:
+    -   id: pylint
+        name: pylint
+        entry: pylint
+        language: python
+        types: [python]
+        always_run: true
+        args: [
+            swolfpy,
+            tests,
+            --rcfile=pyproject.toml,
+            -rn, # Only display messages
+        ]
+
+    -   id: pytest
+        name: pytest
+        entry: pytest
+        language: python
+        verbose: true
+        pass_filenames: false
+        always_run: true

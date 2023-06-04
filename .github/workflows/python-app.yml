@@ -17,10 +17,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.7
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: 3.7
+        python-version: "3.10"
 
     - name: Add conda to system path
       run: |
@@ -30,10 +30,45 @@ jobs:
     - name: Install dependencies
       run: |
         conda env update --file environment_dev.yml --name base
-        pip install https://github.com/SwolfPy-Project/swolfpy-inputdata/archive/refs/heads/master.zip
-        pip install https://github.com/SwolfPy-Project/swolfpy-processmodels/archive/refs/heads/master.zip
-        
-        
+
+    - name: Check if feature branch exists in swolfpy-inputdata
+      run: |
+        echo "-----------------------------------------"
+        echo "github.head_ref = ${{ github.head_ref }} ---"
+        echo "github.ref = ${{ github.ref }} ---"
+        echo "github.ref_name = ${{ github.ref_name }} ---"
+        echo "------------------------------------------"
+
+        if git ls-remote --exit-code --heads https://github.com/SwolfPy-Project/swolfpy-inputdata.git ${{ github.ref_name }}; then
+          echo "Branch ${{ github.ref_name }} exists."
+          echo "BRANCH_INPUTDATA=${{ github.ref_name }}" >> $GITHUB_ENV
+        else
+          echo "Branch does not exist. Falling back to 'master' branch."
+          echo "BRANCH_INPUTDATA=master" >> $GITHUB_ENV
+        fi
+
+    - name: Check if feature branch exists in swolfpy-processmodels
+      run: |
+        if git ls-remote --exit-code --heads https://github.com/SwolfPy-Project/swolfpy-processmodels.git ${{ github.ref_name }}; then
+          echo "Branch ${{ github.ref_name }} exists."
+          echo "BRANCH_PROCESSMODELS=${{ github.ref_name }}" >> $GITHUB_ENV
+        else
+          echo "Branch does not exist. Falling back to 'master' branch."
+          echo "BRANCH_PROCESSMODELS=master" >> $GITHUB_ENV
+        fi
+
+    - name: Install swolfpy-inputdata from branch
+      run: |
+        echo "pip install git+https://github.com/SwolfPy-Project/swolfpy-inputdata.git@${{ env.BRANCH_INPUTDATA }}"
+        pip install git+https://github.com/SwolfPy-Project/swolfpy-inputdata.git@${{ env.BRANCH_INPUTDATA }}
+
+    - name: Install swolfpy-processmodels from branch
+      run: |
+        echo "pip install git+https://github.com/SwolfPy-Project/swolfpy-processmodels.git@${{ env.BRANCH_PROCESSMODELS }}"
+        pip install git+https://github.com/SwolfPy-Project/swolfpy-processmodels.git@${{ env.BRANCH_PROCESSMODELS }}
+
+
+
     - name: Check channels
       run: |
         conda config --show channels
@@ -41,7 +76,8 @@ jobs:
     - name: Check installed packages
       run: |
         pip list
-        
-    - name: Test with pytest
+
+    - name: Pre-Commit
       run: |
-        py.test
+        git fetch origin master
+        pre-commit run --from-ref origin/master --to-ref HEAD --show-diff-on-failure
