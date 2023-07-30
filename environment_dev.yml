@@ -18,7 +18,7 @@ dependencies:
     - graphviz
     - plotly
     - pyDOE
-    - PySide2==5.15.2.1
+    - PySide2
     - pytest
     - pytest-cov
     - pytest-flake8
