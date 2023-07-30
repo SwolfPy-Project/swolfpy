@@ -18,11 +18,11 @@ dependencies:
     - graphviz
     - plotly
     - pyDOE
-    - PySide2
+    - PySide2==5.15.*
     - pytest
     - pytest-cov
     - pytest-flake8
-    - scipy==1.9.0
+    - scipy==1.8.0
     - xlrd==1.2.0
     - pandas==2.0.*
     - numpy==1.24.*
