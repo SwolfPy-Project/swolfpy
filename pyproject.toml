@@ -7,7 +7,7 @@ name = "swolfpy"
 dynamic = ["version", "readme", "dependencies"]
 description = "Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)."
 license = {text = "GNU GENERAL PUBLIC LICENSE V2"}
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 authors = [
   {name = "Mojtaba Sardarmehni", email = "msardar2@alumni.ncsu.edu"},
 ]
@@ -27,7 +27,7 @@ classifiers = [
     'Intended Audience :: Science/Research',
     'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
     'Natural Language :: English',
-    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.9',
     'Operating System :: MacOS :: MacOS X',
     'Operating System :: Microsoft :: Windows',
     'Topic :: Scientific/Engineering :: Information Analysis',
@@ -47,11 +47,13 @@ readme = {file = ["README.rst", "HISTORY.rst"]}
 dependencies = {file = "requirements.txt"}
 
 [tool.setuptools]
-packages = ["swolfpy"]
 include-package-data = true
 
 [tool.setuptools.package-data]
 package_input_data = []
+
+[tool.setuptools.packages.find]
+include = ["swolfpy*"]
 
 [tool.black]
 line-length = 100
