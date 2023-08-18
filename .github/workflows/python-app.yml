@@ -12,15 +12,13 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 5
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
-        python-version: "3.9"
+        python-version: 3.9
 
     - name: Add conda to system path
       run: |
@@ -29,6 +27,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        conda update conda
         conda env update --file environment_dev.yml --name base
 
     - name: Check if feature branch exists in swolfpy-inputdata

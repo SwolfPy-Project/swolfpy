@@ -12,11 +12,11 @@ pandas==2.0.*
 numpy==1.24.*
 plotly
 pyDOE
-PySide2==5.15.*
+PySide2==5.15.2.1
 pytest
 pytest-cov
 pytest-flake8
-scipy==1.8.0
-swolfpy_inputdata==1.0.*
-swolfpy_processmodels==1.0.*
+scipy==1.9.0
+swolfpy_inputdata==1.1.*
+swolfpy_processmodels==1.1.*
 xlrd==1.2.0
