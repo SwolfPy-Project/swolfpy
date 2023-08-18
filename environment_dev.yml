@@ -29,4 +29,3 @@ dependencies:
     - swolfpy_inputdata==1.1.*
     - swolfpy_processmodels==1.1.*
     - xlrd==1.2.0
-
