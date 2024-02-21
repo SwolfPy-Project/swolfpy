@@ -2,6 +2,12 @@
 History
 =======
 
+1.3.0 (2024-02-20)
+------------------
+
+* Add entry point for the GUI (run swolfpy in terminal)
+
+
 1.2.0 (2023-07-30)
 ------------------
 

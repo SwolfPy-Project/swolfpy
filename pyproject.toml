@@ -41,6 +41,9 @@ Homepage = "https://swolfpy-project.github.io/"
 Documentation = "https://swolfpy.readthedocs.io/en/latest/"
 "Source Code" = "https://github.com/SwolfPy-Project/swolfpy"
 
+[project.scripts]
+swolfpy = "swolfpy:SwolfPy"
+
 [tool.setuptools.dynamic]
 version = {attr = "swolfpy.__version__"}
 readme = {file = ["README.rst", "HISTORY.rst"]}

@@ -26,13 +26,13 @@ __all__ = [
     "Optimization",
     "Monte_Carlo",
     "MyQtApp",
-    "swolfpy",
+    "SwolfPy",
 ]
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 
-class swolfpy:
+class SwolfPy:
     def __init__(self):
         if not QtWidgets.QApplication.instance():
             self.app = QtWidgets.QApplication(sys.argv)

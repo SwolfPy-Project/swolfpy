@@ -145,9 +145,17 @@ Installation
 
         python
 
-8- Run swolfpy in python::
+8- Run swolfpy
 
-        import swolfpy as sp
-        sp.swolfpy()
+    - In terminal::
+
+          swolfpy
+          # or
+          python -m swolfpy
+
+    - In python::
+
+          import swolfpy as sp
+          sp.SwolfPy()
 
 .. endInstallation
