@@ -27,7 +27,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        conda update conda
+        conda install conda=23.9.0
         conda env update --file environment_dev.yml --name base
 
     - name: Check if feature branch exists in swolfpy-inputdata
