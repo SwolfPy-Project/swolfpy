@@ -6,6 +6,7 @@ History
 ------------------
 
 * Pin the version of scipy to 1.8.0 to avoid inexact indices changed from a deprecation to raising an error in 1.9
+* Fix sphinx warnings
 
 1.3.0 (2024-02-20)
 ------------------
