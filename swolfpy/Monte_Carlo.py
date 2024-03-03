@@ -12,8 +12,8 @@ from .LCA_matrix import LCA_matrix
 class Monte_Carlo(LCA_matrix):
     """
     Setups the Monte Carlo simulation. This class is inherited from
-    ``swolfpy.LCA_matrix``. \n The Monte Carlo simulation will be only done for  the
-    process models, common data or parameters than the class gets by arguments.
+    ``swolfpy.LCA_matrix``. The Monte Carlo simulation will be only done for the process
+    models, common data or parameters than the class gets by arguments.
 
     :param functional_unit: ``{flow:amount}``
     :type functional_unit: dict
@@ -38,6 +38,7 @@ class Monte_Carlo(LCA_matrix):
 
     :param seed: seed for ``stats_arrays.RandomNumberGenerator``
     :type seed: int, optional
+
     """
 
     def __init__(
@@ -72,6 +73,7 @@ class Monte_Carlo(LCA_matrix):
         :type nproc: int
         :param n: Number of iterations in MC
         :type n: int
+
         """
 
         def pool_adapter(x):
@@ -169,6 +171,7 @@ class Monte_Carlo(LCA_matrix):
         and ``bio_matrix``.
 
         Creates new ``bio_param`` and ``tech_param`` and then recalculate the LCA.
+
         """
         uncertain_inputs = []
         if process_models:
@@ -223,6 +226,7 @@ class Monte_Carlo(LCA_matrix):
 
         :return: Monte Carlo results
         :rtype: ``pandas.DataFrame``
+
         """
         output = pd.DataFrame()
         # Reporting the LCIA results; Create a column for each method

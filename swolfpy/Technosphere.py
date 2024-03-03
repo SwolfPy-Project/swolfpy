@@ -12,6 +12,7 @@ from .swolfpy_method import import_methods
 
 class Technosphere:
     """
+
     :param project_name: Name for the project
     :type project_name: str
     :param LCI_path: Path to the technosphere LIC csv file
@@ -20,6 +21,7 @@ class Technosphere:
     :type LCI_Reference_path: str
     :param Ecospold2_Path: Path to the user defined technosphere LCI with ecospold2 format.
     :type Ecospold2_Path: str
+
     """
 
     def __init__(self, project_name, LCI_path=None, LCI_Reference_path=None, Ecospold2_Path=None):
@@ -43,6 +45,7 @@ class Technosphere:
 
         Note: If the `project` already exists, it will delete all the databases except 'biosphere3'. `Technosphere` database is written from the
         `SWOLF_AccountMode_LCI DATA.csv` in the `Data` folder unless user select new file with it's `path`.
+
         """
         projects.set_current(self.project_name)
         bw2setup()
@@ -127,6 +130,7 @@ class Technosphere:
 
         \n Interface with Brightway2: Calls the
         ``bw2io.importers.SingleOutputEcospold2Importer`` function.
+
         """
         self.user_tech = bw2io.importers.SingleOutputEcospold2Importer(
             dirpath=self.Ecospold2_Path, db_name=self.user_tech_name
@@ -158,7 +162,7 @@ class Technosphere:
 
     def _write_technosphere(self):
         """
-        Creates the swolfpy technosphere database.\n.
+        Creates the swolfpy technosphere database.
         """
         self.technosphere_data = {}
         # activities

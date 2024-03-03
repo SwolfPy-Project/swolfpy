@@ -7,11 +7,11 @@ from brightway2 import LCA, get_activity
 class LCA_matrix(LCA):
     """
     This class translate the ``row`` and ``col`` of the ``tech_param`` and ``bio_param``
-    to the activity `key` in the Brightway2 database. \n Both the ``tech_param`` and
+    to the activity `key` in the Brightway2 database. Both the ``tech_param`` and
     ``bio_param`` has the ``dtype=[('input', '<u4'), ('output', '<u4'), ('row', '<u4'),
     ('col', '<u4'), ('type', 'u1'), ('uncertainty_type', 'u1'), ('amount', '<f4'), ('loc',
     '<f4'), ('scale', '<f4'), ('shape', '<f4'), ('minimum', '<f4'), ('maximum', '<f4'),
-    ('negative', '?')])`` data type. \n.
+    ('negative', '?')])`` data type.
 
     ``self.tech_matrix`` is a dictionary that includes all the technosphere and waste exchanges as tuple ``(product,Feed)`` key and amount as value:
     ``{(('LF', 'Aerobic_Residual'), ('SF1_product', 'Aerobic_Residual_MRDO')):0.828}``
@@ -21,6 +21,7 @@ class LCA_matrix(LCA):
 
     So we can update the ``tech_params`` and ``bio_params`` by tuple keys that are consistent with the keys
     in the ``ProcessModel.report()``. Check :ref:`Process models class <ProcessModel>` for more info.
+
     """
 
     def __init__(self, functional_unit, method):
@@ -66,6 +67,7 @@ class LCA_matrix(LCA):
 
         :param tech_matrix:
         :type tech_matrix: ``LCA_matrix.tech_matrix``
+
         """
         for material, value in report_dict["Technosphere"].items():
             for key2, value2 in value.items():
@@ -188,6 +190,7 @@ class LCA_matrix(LCA):
 
         :param bio_matrix:
         :type bio_matrix: ``LCA_matrix.bio_matrix``
+
         """
         for material, value in report_dict["Biosphere"].items():
             for key2, value2 in value.items():
@@ -272,6 +275,7 @@ class LCA_matrix(LCA):
 
         :return: Total mass of flows to `process`
         :rtype: float
+
         """
         mass = 0
         for i in LCA.activity_dict:
@@ -300,6 +304,7 @@ class LCA_matrix(LCA):
 
         :return: Pandas series with mass flows as values and index as rows.
         :rtype: pandas.core.series.Series
+
         """
         mass = pd.Series(np.zeros(len(index)), index=index)
         for i in LCA.activity_dict:

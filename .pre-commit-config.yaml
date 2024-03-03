@@ -18,17 +18,18 @@ repos:
     -   id: isort
 
 -   repo: https://github.com/pycqa/docformatter
-    rev: v1.5.1
+    rev: v1.7.5
     hooks:
     -   id: docformatter
         args: [
             --in-place,
             --make-summary-multi-line,
-            --close-quotes-on-newline ,
+            --close-quotes-on-newline,
             --pre-summary-newline,
             --recursive,
             --wrap-summaries=90,
             --wrap-descriptions=90,
+            --blank
         ]
 
 -   repo: https://github.com/psf/black

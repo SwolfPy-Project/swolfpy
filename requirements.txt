@@ -1,4 +1,4 @@
-brightway2==2.4.1
+brightway2==2.4.1  # TODO: Upgrade to 2.5
 bw-migrations==0.1
 bw2analyzer==0.10
 bw2calc==1.8.2
@@ -16,7 +16,7 @@ PySide2==5.15.2.1
 pytest
 pytest-cov
 pytest-flake8
-scipy==1.9.0
+scipy==1.8.0  # To avoid https://stackoverflow.com/questions/74219727/brightway2-lca-scores-calculations/74371350#74371350
 swolfpy_inputdata==1.1.*
 swolfpy_processmodels==1.1.*
 xlrd==1.2.0

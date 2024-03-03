@@ -84,11 +84,14 @@ class Project:
     >>> demo.write_project()
     >>> demo.group_exchanges()
     >>> demo.parameters.default_parameters_list()
+
         [{'name': 'frac_of_Bottom_Ash_from_WTE_to_LF', 'amount': 1.0},
          {'name': 'frac_of_Fly_Ash_from_WTE_to_LF', 'amount': 1.0},
          {'name': 'frac_of_RWC_from_SF_COl_to_LF', 'amount': 0.5},
          {'name': 'frac_of_RWC_from_SF_COl_to_WTE', 'amount': 0.5}]
+
     >>> demo.update_parameters(demo.parameters.default_parameters_list())
+
     """
 
     def __init__(
@@ -147,6 +150,7 @@ class Project:
 
         :return: A list of the discovered processes in the ``Treatment_processes`` dictionary that can treat the `product`
         :rtype: list
+
         """
         destination = []
         for P in self.Treatment_processes:
@@ -156,10 +160,12 @@ class Project:
 
     def init_project(self, signal=None):
         """
-        Calls the Create_Technosphere_ method to initialize a project.\n This function
-        create an empty database for each process as a placeholder, so swolfpy can browse
-        these databases in the next step (writing project) and create exchanges between
-        them.
+        Calls the Create_Technosphere_ method to initialize a project.
+
+        This function create an empty database for each process as a placeholder, so
+        swolfpy can browse these databases in the next step (writing project) and create
+        exchanges between them.
+
         """
         if signal:
             self._progress += 5
@@ -211,11 +217,13 @@ class Project:
         """
         .. _import_database:
 
-        Instantiate the ProcessDB_ class for the process model and gets the LCI report from it; then translates
-        the report for Brightway2 and populates the databases by Write_DB_ method.
+        Instantiate the ProcessDB_ class for the process model and gets the LCI report
+        from it; then translates the report for Brightway2 and populates the databases by
+        Write_DB_ method.
 
         :return: Returns a tuple (parameters,act_in_group)
         :rtype: tuple
+
         """
         self.process_model[name] = ProcessDB(
             name, self.waste_treatment, self.CommonData, self.processTypes, self.Distance
@@ -255,8 +263,10 @@ class Project:
         """
         Reports the `parameters` in dictionary format.
 
-        :return: dictionary include the processes as key and parameters in each process as values.
+        :return: dictionary include the processes as key and parameters in each process as
+            values.
         :rtype: dict
+
         """
         return self.parameters_dict
 
@@ -266,6 +276,7 @@ class Project:
 
         :return: List of `parameters` (waste fractions) in the project
         :rtype: list
+
         """
         return self.parameters_list
 
@@ -276,6 +287,7 @@ class Project:
 
         As a results, model know to update the values in those exchanges when the
         `parameter` is updated
+
         """
         for j in self.processes:
             print(
@@ -306,6 +318,7 @@ class Project:
 
         .. note:: `parameters` are waste fractions which show what fraction of waste from one source
                     go to different destinations, so sum of parameters from each source should be 1. (0<= `parameters` <=1)
+
         """
 
         progress = 0
@@ -374,6 +387,7 @@ class Project:
 
         ``bw2calc.multi_lca`` is a wrapper class for performing LCA calculations with many
         functional units and LCIA methods.
+
         """
         if len(functional_units) > 0 and len(impact_methods) > 0:
             calculation_setups[name] = {"inv": functional_units, "ia": impact_methods}
@@ -402,6 +416,7 @@ class Project:
 
         * ``bw2analyzer.ContributionAnalysis.annotated_top_processes``
         * ``bw2analyzer.ContributionAnalysis.annotated_top_emissions``
+
         """
         lca = LCA(functional_unit, impact_method)
         lca.lci()
@@ -488,6 +503,7 @@ class Project:
 
         :param filename:
         :type filename: str
+
         """
         with open(filename, "wb") as f:
             pickle.dump(self, f)

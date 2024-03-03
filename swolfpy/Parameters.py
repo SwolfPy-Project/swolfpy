@@ -74,6 +74,7 @@ class Parameters:
         :type process_model_to: str
         :param value: Value for the parameter
         :type value: float
+
         """
         param_name = (
             "frac_of_" + product + "_from_" + process_model_from + "_to_" + process_model_to
@@ -123,10 +124,10 @@ class Parameters:
     def SWM_network(self, view=True, show_vals=True, all_flow=True, filename="SWM_network"):
         """
         To render the generated DOT source code, you also need to install `Graphviz.
-
         <https://www.graphviz.org/download>`_.
 
         ..note:: Make sure that the directory containing the dot executable is on your systems path.
+
         """
         # Initialize SWM network
         self.network = graphviz.Digraph(
@@ -222,10 +223,11 @@ class Parameters:
 
     def add_uncertainty(self, param_name, **kwargs):
         """
-        add uncertainty to parameter.
+        Add uncertainty to parameter.
 
         :param param_name: Name of the parameter (wastefraction) that has uncertainty
         :type param_name: str
+
         """
         base_dict = {}
         base_dict["loc"] = kwargs.get("loc", None)
@@ -300,6 +302,7 @@ class Parameters:
         :type param_name: str
         :return: Value of the parameter
         :rtype: float
+
         """
         for item in self.MC_param_uncertainty_dict.values():
             for list_item in item:
