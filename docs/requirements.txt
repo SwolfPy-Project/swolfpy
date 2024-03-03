@@ -1,8 +1,14 @@
 Jinja2<3.1
 nbsphinx
 ipykernel
-brightway2
-PySide2
+brightway2==2.4.1
+bw-migrations==0.1
+bw2analyzer==0.10
+bw2calc==1.8.2
+bw2data==3.6.6
+bw2io==0.8.7
+bw2parameters==1.1.0
+PySide2==5.15.2.1
 swolfpy_inputdata
 swolfpy_processmodels
 swolfpy
