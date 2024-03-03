@@ -5,7 +5,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 
 def f_n(x):
     """
-    format number function If the input is string, it returns string but if the input in
+    Format number function If the input is string, it returns string but if the input in
     number, it will return it in scientific format.
     """
     if (isinstance(x, float) or isinstance(x, int)) and len(str(x)) > 6:

@@ -163,7 +163,7 @@ class Optimization(LCA_matrix):
     ### Mass to process
     def get_mass_flow_from_supply_array(self, key, KeyType, x):
         """
-        calculate the mass to the process from the `supply_array` matrix.
+        Calculate the mass to the process from the `supply_array` matrix.
         """
         self._objective_function(x)
 
@@ -186,7 +186,7 @@ class Optimization(LCA_matrix):
     ### Emission flow in LCI
     def get_emission_amount(self, emission, x):
         """
-        calculate the mass of the `emission` to biosphere from the `inventory`.
+        Calculate the mass of the `emission` to biosphere from the `inventory`.
         """
         self._objective_function(x)
         inventory = self.biosphere_matrix * self.supply_array
@@ -337,9 +337,13 @@ class Optimization(LCA_matrix):
         initialize_guess="random",
     ):
         """
-        Call the ``scipy.optimize.minimize()`` to minimize the LCA score. \n
-        ``constraints`` is python dictionary. \n Constraint type can be ``'<='`` or
-        ``'>='``. \n Three kind of constraints are defined as below: \n.
+        Call the ``scipy.optimize.minimize()`` to minimize the LCA score.
+
+        Notes
+        -----
+        - ``constraints`` is python dictionary.
+        - Constraint type can be ``'<='`` or ``'>='``.
+        - Three kind of constraints are defined as below:
 
         * **Process:** Constraint on the total mass to the process. The ``'KeyType'`` should be ``'Process'``
           (e.g., The capacity of the WTE). Example:
@@ -360,6 +364,7 @@ class Optimization(LCA_matrix):
         >>> constraints = {}
         >>> # Use database key as key in dict
         >>> constraints[('biosphere3', 'eba59fd6-f37e-41dc-9ca3-c7ea22d602c7')] = {'limit':100,'KeyType':'Emission','ConstType':"<="}
+
         """
         optObject.constraints = constraints
         optObject.collection = collection
@@ -517,9 +522,9 @@ class Optimization(LCA_matrix):
 
     def plot_sankey(self, optimized_flow=True, show=True, fileName=None, params=None):
         """
-        Plots a sankey diagram for the waste mass flows. \n Calls the
-        ``plotly.graph_objs.Sankey`` to plot sankey. \n Calculates the mass flows by
-        calling ``self.get_mass_flow_from_supply_array()``. \n.
+        Plots a sankey diagram for the waste mass flows. Calls the
+        ``plotly.graph_objs.Sankey`` to plot sankey. Calculates the mass flows by calling
+        ``self.get_mass_flow_from_supply_array()``.
 
         :param optimized_flow: If ``True``, it plots the sankey based on the optimized waste fractions.
                                 If ``False``, it plots the sankey based on the current waste fractions by calling ``self.project.parameters_list``.
@@ -527,6 +532,7 @@ class Optimization(LCA_matrix):
 
         :param show: If ``True``, it will show the figure
         :type show: bool
+
         """
         if optimized_flow:
             params = [i["amount"] for i in self.optimized_x]
