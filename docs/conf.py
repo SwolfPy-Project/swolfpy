@@ -53,6 +53,7 @@ for mod in [
     "stats_arrays",
     "brightway2",
     "bw2data",
+    "bw2calc",
     "PySide2",
     "PySide2.QtGui",
     "PySide2.QtCore",
