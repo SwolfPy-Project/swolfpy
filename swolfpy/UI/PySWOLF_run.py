@@ -14,6 +14,7 @@ import pandas as pd
 import swolfpy_inputdata as spid
 from brightway2 import *
 from bw2analyzer import ContributionAnalysis
+from loguru import logger
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
@@ -278,7 +279,7 @@ class MyQtApp(PySWOLF_ui.Ui_MainWindow, QtWidgets.QMainWindow):
         for x in new_param:
             x["amount"] = self.load_param_data._data["amount"][i]
             i += 1
-        print("\n\n New parameters are : \n", new_param, "\n\n")
+        logger.info(f"New parameters are:\n{new_param}")
 
         param_updater = Worker_UpdateParam(
             parent=self.update_param, project=self.demo, param=new_param
@@ -806,7 +807,7 @@ ul {
 
         self.Define_SWM_1.setCurrentWidget(self.Treatment_process)
         self.Treatment_process.setEnabled(True)
-        print(self._Collection_processes)
+        logger.info(self._Collection_processes)
 
     @staticmethod
     def helper_DFtoDict(DF):
@@ -997,15 +998,15 @@ ul {
                     "input_type"
                 ] = self._ProcessMetaData[self._ProcessNameDict[Process.currentText()]]["InputType"]
                 Process_Label.setFont(font1)
-                print(
-                    "Process {} is added to dictionary as {}".format(
-                        Process_Name.text(), Process.currentText()
-                    )
+                logger.info(
+                    "Process {} is added to dictionary as {}",
+                    Process_Name.text(),
+                    Process.currentText(),
                 )
             else:
                 Process_Label.setFont(font2)
 
-        print(self._Treatment_processes)
+        logger.info(self._Treatment_processes)
         self.Define_SWM_1.setCurrentWidget(self.Network)
         self.Network.setEnabled(True)
 
@@ -1239,7 +1240,7 @@ ul {
                             CommonDataObjct=self.CommonData,
                             input_data_path=m,
                         )
-                    print(self._Collection_processes)
+                    logger.info(self._Collection_processes)
 
         if (
             self.IT_UserDefine_Tech.isChecked()
@@ -1286,7 +1287,7 @@ ul {
     def report_time_WP(self, time):
         # Notify the user that the project has created successfully
         msg = f"Project is created successfully in {time} seconds"
-        print(msg)
+        logger.success(msg)
         self.msg_popup("Project", msg, "Information")
 
     @QtCore.Slot(int)
@@ -1308,7 +1309,7 @@ ul {
         for x in new_param:
             x["amount"] = self.param_data._data["amount"][i]
             i += 1
-        print("\n\n New parameters are : \n", new_param, "\n\n")
+        logger.info(f"New parameters are:\n {new_param}")
 
         param_updater = Worker_UpdateParam(
             parent=self.update_param, project=self.demo, param=new_param
@@ -1323,7 +1324,7 @@ ul {
     def report_time_UpdateParam(self, time):
         # Notify the user that the project has created successfully
         msg = f"Parameters are updated successfully in {time} seconds"
-        print(msg)
+        logger.success(msg)
         self.msg_popup("Parameters", msg, "Information")
 
         # self.PySWOLF.setCurrentWidget(self.Create_Scenario)
@@ -1465,7 +1466,7 @@ ul {
 
     @QtCore.Slot()
     def create_new_scenario(self):
-        print("\n \n \n new scenario \n", self.Inc_act_table._data, "\n\n\n")
+        logger.info(f"New scenario\n{self.Inc_act_table._data}")
         input_dict = {}
         for i in range(len(self.Inc_act_table._data["Process"])):
             if self.Inc_act_table._data["Process"][i] not in input_dict:
@@ -1644,7 +1645,7 @@ ul {
                 "ia": self.LCA_List_of_Impacts,
             }
             self.MultiLca = MultiLCA("LCA")
-            print(self.MultiLca.results)
+            logger.info(self.MultiLca.results)
 
             # Init results tabs
             self.LCAResults_tab_init()
@@ -2211,37 +2212,36 @@ ul {
         if len(self.MC_seed.text()) > 0:
             seed = int(self.MC_seed.text())
 
-        print(
+        logger.info(
             """
 
-                #########    Setup Monte Carlo Simulation    ############
+            #########    Setup Monte Carlo Simulation    ############
 
-                    Functional Unit = {FU}
+                Functional Unit = {FU}
 
-                    Methods = {method}
+                Methods = {method}
 
-                    Number of threads = {Nthread}
+                Number of threads = {Nthread}
 
-                    Number of runs = {nruns}
+                Number of runs = {nruns}
 
-                ### Included Models
+            ### Included Models
 
-                  Names: {process_model_names}
+                Names: {process_model_names}
 
-                  Models: {process_models}
+                Models: {process_models}
 
-                  CommonData: {Yes_No}
+                CommonData: {Yes_No}
 
-                #################################
-              """.format(
-                FU=self.MC_FU,
-                method=method,
-                Nthread=int(self.MC_N_Thread.text()),
-                nruns=int(self.MC_N_runs.text()),
-                process_model_names=process_model_names,
-                process_models=process_models,
-                Yes_No=IsCommonData,
-            )
+            #################################
+              """,
+            FU=self.MC_FU,
+            method=method,
+            Nthread=int(self.MC_N_Thread.text()),
+            nruns=int(self.MC_N_runs.text()),
+            process_model_names=process_model_names,
+            process_models=process_models,
+            Yes_No=IsCommonData,
         )
 
         Monte_carlo = Monte_Carlo(
@@ -2269,10 +2269,10 @@ ul {
 
     @QtCore.Slot(dict)
     def report_MC_func(self, report):
-        print("Total time for Monte Carlo simulation: {} seconds".format(report["time"]))
+        logger.info("Total time for Monte Carlo simulation: {} seconds", report["time"])
         self.msg_popup(
             "Monte Carlo simulation Result",
-            "Simulation is done successfully. \n Total time: {} seconds".format(report["time"]),
+            f"Simulation is done successfully. \n Total time: {report['time']} seconds",
             "Information",
         )
         self.MC_results = report["results"]
@@ -2383,16 +2383,16 @@ ul {
 
         # ploting the DataFrame
         param = list(self.corr_data.columns)
-        print(param)
+        logger.info(param)
         for x in self._method_for_corr:
             param.remove(x)
 
-        print(param)
-        print(self.corr_data)
+        logger.info(param)
+        logger.info(self.corr_data)
         corr_data_plot = self.corr_data[ast.literal_eval(self.MC_Widget.Corr_Impact.currentText())][
             param
         ]
-        print(corr_data_plot)
+        logger.info(corr_data_plot)
         sorted_corr = corr_data_plot.abs().sort_values(ascending=False)
 
         if len(sorted_corr.index) <= 10:
@@ -2692,27 +2692,26 @@ ul {
         else:
             n_iter = 1
 
-        print(
-            f"""
-Optimization setting:
+        logger.info(
+            f"""Optimization setting:
 
-project_name = {project_name}
+                project_name = {project_name}
 
-functional_unit = {functional_unit}
+                functional_unit = {functional_unit}
 
-method = {method}
+                method = {method}
 
-optimize collection scheme = {self.opt_Widget.Opt_incld_col.isChecked()}
+                optimize collection scheme = {self.opt_Widget.Opt_incld_col.isChecked()}
 
-number of iterations = {n_iter}
+                number of iterations = {n_iter}
 
-number of threads = {self.opt_Widget.nproc.value()}
+                number of threads = {self.opt_Widget.nproc.value()}
 
-Initial guess generator = {self.opt_Widget.method.currentText()}
+                Initial guess generator = {self.opt_Widget.method.currentText()}
 
-Timeout = {self.opt_Widget.timeout.value()}
+                Timeout = {self.opt_Widget.timeout.value()}
 
-constraints = {self.constraints}"""
+                constraints = {self.constraints}"""
         )
 
         if len(self.constraints) > 0:
@@ -2743,9 +2742,9 @@ constraints = {self.constraints}"""
 
     @QtCore.Slot(dict)
     def report_opt_func(self, report):
-        print(report["results"])
+        logger.info(report["results"])
 
-        print("Total time for optimization: {} seconds".format(report["time"]))
+        logger.info("Total time for optimization: {} seconds".format(report["time"]))
 
         if report["results"].success:
             self.msg_popup(
@@ -2778,14 +2777,14 @@ constraints = {self.constraints}"""
         x = list(self.Opt_Param_table.model()._data["amount"].values)
         obj = self.opt._objective_function(x) * 10**self.opt.magnitude
         self.Opt_CalObjFunc_Res.setText(f_n(obj))
-        print(" \n \n \n Constraints \n")
+        logger.info("Constraints:")
 
         cons = self.opt._create_constraints()
         for i, func in enumerate(cons):
             if "Name" in func:
-                print("Constraint {} , {} = {}".format(i, func["Name"], f_n(func["fun"](x))))
+                logger.info("\tConstraint {} , {} = {}", i, func["Name"], f_n(func["fun"](x)))
             else:
-                print("Constraint {} = {}".format(i, f_n(func["fun"](x))))
+                logger.info("\tConstraint {} = {}", i, f_n(func["fun"](x)))
 
         self.Opt_draw_sankey_func(params=x)
 
@@ -2796,7 +2795,7 @@ constraints = {self.constraints}"""
         for x in new_param:
             x["amount"] = self.Opt_Param_table.model()._data["amount"][i]
             i += 1
-        print("\n\n New parameters are : \n", new_param, "\n\n")
+        logger.info(f"New parameters are:\n {new_param}")
 
         param_updater = Worker_UpdateParam(
             parent=self.Opt_update_param, project=self.demo, param=new_param
@@ -2903,7 +2902,7 @@ constraints = {self.constraints}"""
                         column = index.column() - columns[0]
                         model.setData(model.index(index.row(), index.column()), arr[row][column])
         else:
-            print("Warning: The table is not editable!")
+            logger.warning("The table is not editable!")
 
     @QtCore.Slot()  # select file and read the name of it. Import the name to the LineEdit.
     def select_file(self, LineEdit, Filter):
