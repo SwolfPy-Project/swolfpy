@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 import multiprocessing as mp
 import os
 
 import numpy as np
 import pandas as pd
 from brightway2 import LCA, projects
+from loguru import logger
 
 from .LCA_matrix import LCA_matrix
 
@@ -216,7 +216,7 @@ class Monte_Carlo(LCA_matrix):
                 lca.lcia_calculation()
                 lca_results[method[i]] = lca.score
             lca.switch_method(method[0])
-        print(os.getpid(), index)
+        logger.info("pid:{} - index {}", os.getpid(), index)
         return (os.getpid(), lca_results, uncertain_inputs)
 
     ### Export results

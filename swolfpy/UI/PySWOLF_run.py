@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import ast
 import csv
 import importlib  # to import module with string name

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 import multiprocessing as mp
 import os
@@ -13,6 +12,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import pyDOE
 from brightway2 import projects
+from loguru import logger
 from plotly.offline import plot
 from scipy.optimize import minimize
 
@@ -272,7 +272,7 @@ class Optimization(LCA_matrix):
                 if process not in const_dict:
                     const_dict[process] = []
                 const_dict[process].append(k)
-        print("\n\n collection constraints dict: \n", const_dict, "\n\n")
+        logger.info(f"Collection constraints dict: \n\t {const_dict}")
 
         for k in const_dict:
             self._col_const_helper(const_dict, k, cons)
@@ -417,39 +417,38 @@ class Optimization(LCA_matrix):
                     if res.fun < global_min:
                         optObject.res_global = res
                         global_min = res.fun
-                print(
-                    """\n
+                logger.info(
+                    """
                       Iteration: {}
                       Status: {}, Message: {}
                       Objective function: {}
-                      Global min: {} \n
-                      """.format(
-                        i,
-                        res.success,
-                        res.message,
-                        res.fun * 10**optObject.magnitude,
-                        global_min * 10**optObject.magnitude,
-                    )
+                      Global min: {}
+                      """,
+                    i,
+                    res.success,
+                    res.message,
+                    res.fun * 10**optObject.magnitude,
+                    global_min * 10**optObject.magnitude,
                 )
+
             else:
-                print(
-                    """\n
+                logger.info(
+                    """
                       Iteration: {}
                       Status: {}, Message: {}
                       Objective function: {}
-                      Global min: {} \n
-                      """.format(
-                        i,
-                        False,
-                        "Aborting due to timeout!",
-                        "NAN",
-                        global_min * 10**optObject.magnitude,
-                    )
+                      Global min: {}
+                      """,
+                    i,
+                    False,
+                    "Aborting due to timeout!",
+                    "NAN",
+                    global_min * 10**optObject.magnitude,
                 )
 
         if not optObject.res_global:
             optObject.success = False
-            print("None of the iterations were successful!")
+            logger.error("None of the iterations were successful!")
             return None
 
         if optObject.res_global.success:
@@ -474,7 +473,7 @@ class Optimization(LCA_matrix):
             return optObject.res_global
         else:
             optObject.success = False
-            print(optObject.res_global.message)
+            logger.error(optObject.res_global.message)
             return optObject.res_global
 
     @staticmethod
@@ -486,14 +485,16 @@ class Optimization(LCA_matrix):
         try:
             return res.get(timeout)  # Wait timeout seconds for func to complete.
         except mp.TimeoutError:
-            print("(Iteration:{}, PID:{}): Aborting due to timeout!".format(iteration, os.getpid()))
+            logger.warning(
+                "(Iteration:{}, PID:{}): Aborting due to timeout!", iteration, os.getpid()
+            )
             return None
 
     @staticmethod
     def worker(optObject, bnds, x0, iteration):
         start = time()
         projects.set_current(optObject.project.project_name, writable=False)
-        print("Iteration: {} PID: {}\n".format(iteration, os.getpid()))
+        logger.info("Iteration: {} PID: {}", iteration, os.getpid())
         optObject.oldx = [0 for i in range(len(x0))]
         optObject.cons = optObject._create_constraints()
         res = minimize(
@@ -505,10 +506,12 @@ class Optimization(LCA_matrix):
         )
 
         time_ = round(time() - start)
-        print(
-            "Iteration: {} PID: {} time:{} sec, Success:{} \n".format(
-                iteration, os.getpid(), time_, res.success
-            )
+        logger.info(
+            "Iteration: {} PID: {} time:{} sec, Success:{}",
+            iteration,
+            os.getpid(),
+            time_,
+            res.success,
         )
         res["time"] = time_
         res["PID"] = os.getpid()
@@ -609,16 +612,19 @@ class Optimization(LCA_matrix):
 
             value.append(np.round(mass * frac, 3))
 
-        print(
+        logger.info(
             """
               # Sankey Mass flows
               label = {}
               source = {}
               target = {}
               label_link = {}
-              value = {}""".format(
-                label, source, target, label_link, value
-            )
+              value = {}""",
+            label,
+            source,
+            target,
+            label_link,
+            value,
         )
 
         node = dict(

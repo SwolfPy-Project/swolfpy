@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 import numpy as np
+from loguru import logger
 from PySide2 import QtCore, QtGui, QtWidgets
 
 
@@ -107,7 +107,7 @@ class Table_from_pandas_editable(QtCore.QAbstractTableModel):
             except Exception as e:
                 if self.pop_up:
                     self.pop_up("Update Data Warning!", e.__str__(), "Warning")
-                print(e)
+                logger.exception(e)
                 return False
         return False
 
@@ -217,7 +217,7 @@ class Table_modified_collection_schm(Table_from_pandas_editable):
             except Exception as e:
                 if self.pop_up:
                     self.pop_up("Update Data Warning!", e.__str__(), "Warning")
-                print(e)
+                logger.exception(e)
                 return False
         return False
 
@@ -245,7 +245,7 @@ class Table_modified_params(Table_from_pandas_editable):
             except Exception as e:
                 if self.pop_up:
                     self.pop_up("Update Parameter Warning!", e.__str__(), "Warning")
-                print(e)
+                logger.exception(e)
                 return False
         return False
 
@@ -277,7 +277,7 @@ class Table_modified_opt_setting(Table_from_pandas_editable):
             except Exception as e:
                 if self.pop_up:
                     self.pop_up("Update Parameter Warning!", e.__str__(), "Warning")
-                print(e)
+                logger.exception(e)
                 return False
         return False
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pickle
 
 import matplotlib.pyplot as plt
@@ -16,6 +15,7 @@ from brightway2 import (
 )
 from bw2analyzer import ContributionAnalysis
 from bw2data.parameters import ActivityParameter
+from loguru import logger
 
 from .Parameters import Parameters
 from .ProcessDB import ProcessDB
@@ -290,13 +290,7 @@ class Project:
 
         """
         for j in self.processes:
-            print(
-                """
-                  Grouping the exchanges with parameters in Database {}
-                  """.format(
-                    j
-                )
-            )
+            logger.info(f"Grouping the exchanges with parameters in Database {j}")
             if len(self.act_include_param[j]) > 0:
                 for r in self.act_include_param[j]:
                     parameters.add_exchanges_to_group(j, r)

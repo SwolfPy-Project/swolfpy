@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
 from brightway2 import LCA, get_activity
@@ -7,7 +6,7 @@ from brightway2 import LCA, get_activity
 class LCA_matrix(LCA):
     """
     This class translate the ``row`` and ``col`` of the ``tech_param`` and ``bio_param``
-    to the activity `key` in the Brightway2 database. Both the ``tech_param`` and
+    to the activity `key` in the Brightway2 database. \n Both the ``tech_param`` and
     ``bio_param`` has the ``dtype=[('input', '<u4'), ('output', '<u4'), ('row', '<u4'),
     ('col', '<u4'), ('type', 'u1'), ('uncertainty_type', 'u1'), ('amount', '<f4'), ('loc',
     '<f4'), ('scale', '<f4'), ('shape', '<f4'), ('minimum', '<f4'), ('maximum', '<f4'),
@@ -50,7 +49,6 @@ class LCA_matrix(LCA):
                 self.bio_matrix[
                     (str(self.biosphere_dict[i[2]]) + " - 1", self.activities_dict[i[3]])
                 ] = i[6]
-                # print((str(biosphere_dict[i[2]]) + " - 1", activities_dict[i[3]]))
 
     @staticmethod
     def update_techmatrix(process_name, report_dict, tech_matrix):

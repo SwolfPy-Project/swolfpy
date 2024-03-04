@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 import warnings
 
 import bw2io
 import pandas as pd
 from brightway2 import Database, bw2setup, databases, projects
+from loguru import logger
 from swolfpy_inputdata import Technosphere_Input
 
 from .Required_keys import biosphere_keys
@@ -143,21 +143,14 @@ class Technosphere:
                     stats[2]
                 )
             )
-            print("\nUnique unlinked exchanges:\n")
+            logger.info("Unique unlinked exchanges:")
             for x in self.user_tech.unlinked:
-                print(x["type"], x["name"], x["amount"])
+                logger.info("\t {} {} {}", x["type"], x["name"], x["amount"])
 
-            print("\nAdd unlinked flows to biosphere database:\n")
+            logger.info("Add unlinked flows to biosphere database")
             self.user_tech.add_unlinked_flows_to_biosphere_database()
 
-        print(
-            """
-                ####
-                ++++++  Writing the {}
-                """.format(
-                self.user_tech_name
-            )
-        )
+        logger.info(f"Writing {self.user_tech_name}")
         self.user_tech.write_database()
 
     def _write_technosphere(self):
@@ -214,14 +207,7 @@ class Technosphere:
                 ex["unit"] = self.LCI_reference["Cost_Unit"][x]
                 self.technosphere_data[(self.technosphere_db_name, x)]["exchanges"].append(ex)
 
-        print(
-            """
-                ####
-                ++++++  Writing the {}
-                """.format(
-                self.technosphere_db_name
-            )
-        )
+        logger.info(f"Writing {self.technosphere_db_name}")
         self.technosphere_db = Database(self.technosphere_db_name)
         self.technosphere_db.write(self.technosphere_data)
         # replace zeros when there is no data ("nan")

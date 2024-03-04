@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from time import time
 
 from PySide2 import QtCore

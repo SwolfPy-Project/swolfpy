@@ -1,6 +1,7 @@
 import copy
 
 import graphviz
+from loguru import logger
 from stats_arrays import MCRandomNumberGenerator, UncertaintyBase
 
 
@@ -158,7 +159,7 @@ class Parameters:
         try:
             self.network.render(filename + ".gv", view=view)
         except Exception:
-            print(
+            logger.error(
                 """
             To render the generated DOT source code, you also need to install Graphviz (`Graphviz <https://www.graphviz.org/download>`_).\n
             Make sure that the directory containing the dot executable is on your systems’ path.
@@ -215,7 +216,7 @@ class Parameters:
             if not approx_eq(sum_, 1):
                 msg = "Sum of the parameters in group is not 1: \n"
                 for i in item:
-                    print("{}: {}".format(i[2], i[1]))
+                    logger.info("{}: {}".format(i[2], i[1]))
                     msg += "{}: {}\n".format(i[2], i[1])
                 raise ValueError(msg)
             sum_ = 0

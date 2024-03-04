@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
 """
-@author: msardar2
-
 Solid Waste Optimization Life-cycle Framework in Python(SwolfPy)
 """
 import sys
@@ -9,6 +6,7 @@ import warnings
 
 from PySide2 import QtWidgets
 
+from .log_config import setup_logging
 from .Monte_Carlo import Monte_Carlo
 from .Optimization import Optimization
 from .Project import Project
@@ -30,6 +28,8 @@ __all__ = [
 ]
 
 __version__ = "1.4.0"
+logger = setup_logging()
+logger.info("SwolfPy version: {}", __version__)
 
 
 class SwolfPy:

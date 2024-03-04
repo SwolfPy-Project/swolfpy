@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 biosphere_keys = {
     0: [("biosphere3", "38a622c6-f086-4763-a952-7c6b3b1c42ba")],
     1: [("biosphere3", "541a823c-0aad-4dc4-9123-d4af4647d942")],

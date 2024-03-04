@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 import numpy as np
 from brightway2 import Database
+from loguru import logger
 
 
 class ProcessDB:
@@ -36,14 +36,7 @@ class ProcessDB:
                 "exchanges": [],
             }
 
-        print(
-            """
-              ####
-              ++++++ Initializing the {}
-              """.format(
-                DB_name
-            )
-        )
+        logger.info(f"Initializing {DB_name}")
 
         db = Database(DB_name)
         db.write(db_data)
@@ -425,25 +418,10 @@ class ProcessDB:
 
     def _write_DB_from_dict(self):
         if len(self.db_Pr_data) > 0:
-            print(
-                """
-                  ####
-                  ++++++ Writing the {}
-                  """.format(
-                    self.P_Pr_Name
-                )
-            )
-
+            logger.info(f"Writing {self.P_Pr_Name}")
             self.database_Product.write(self.db_Pr_data)
 
-        print(
-            """
-              ####
-              ++++++ Writing the {}
-              """.format(
-                self.P_Name
-            )
-        )
+        logger.info(f"Writing {self.P_Name}")
         db = Database(self.P_Name)
         db.write(self.db_data)
         self.uncertain_parameters.params_dict.update(self.params_dict)

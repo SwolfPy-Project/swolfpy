@@ -8,6 +8,7 @@ bw2parameters==1.1.0
 coverage
 graphviz
 jupyter
+loguru
 pandas==2.0.*
 numpy==1.24.*
 plotly
